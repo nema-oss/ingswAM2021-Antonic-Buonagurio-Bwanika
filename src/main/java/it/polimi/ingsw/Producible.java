@@ -1,2 +1,4 @@
-package it.polimi.ingsw;public interface Producible {
+package it.polimi.ingsw;
+
+public interface Producible {
 }

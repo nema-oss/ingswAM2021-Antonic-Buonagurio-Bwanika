@@ -6,9 +6,8 @@ package it.polimi.ingsw;
 
 public enum ResourceType {
 
-    BLUE,
-    GREY,
-    YELLOW,
-    WHITE,
-    VIOLET
+    COIN,
+    SERVANT,
+    SHIELD,
+    STONE
 }

@@ -17,8 +17,8 @@ class StrongboxTest {
     void addResource() {
 
         ArrayList<Resource> resources = new ArrayList<Resource>();
-        Resource gold = new Resource(ResourceType.YELLOW);
-        Resource servant = new Resource(ResourceType.VIOLET);
+        Resource gold = new Resource(ResourceType.COIN);
+        Resource servant = new Resource(ResourceType.SERVANT);
         resources.add(gold);
         resources.add(servant);
         strongbox.addResource(resources);

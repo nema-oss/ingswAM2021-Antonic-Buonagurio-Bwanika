@@ -6,8 +6,6 @@ package it.polimi.ingsw;
 
 public class Resource implements Producible{
 
-
-
     private ResourceType type;
 
     Resource(ResourceType type){

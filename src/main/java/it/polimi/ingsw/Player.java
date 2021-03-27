@@ -37,5 +37,7 @@ public class Player {
 
     }
 
-
+    public Board getPlayerBoard() {
+        return playerBoard;
+    }
 }

@@ -1,12 +1,13 @@
 package it.polimi.ingsw;
 
 /*
-    *This class represents the possible resource's type
+    *This class represent the possible resource's type
  */
 
 public enum ResourceType {
+
     COIN,
-    STONE,
+    SERVANT,
     SHIELD,
-    SERVANT
+    STONE
 }

@@ -4,6 +4,8 @@ package it.polimi.ingsw;
  * this class represent the Resources
  */
 
+import java.util.ArrayList;
+
 public class Resource implements Producible{
 
     private ResourceType type;
@@ -20,6 +22,5 @@ public class Resource implements Producible{
     public ResourceType getType() {
         return type;
     }
-
 
 }

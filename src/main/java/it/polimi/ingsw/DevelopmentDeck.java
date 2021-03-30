@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class DevelopmentDeck extends Deck {
 
-     private ArrayList<DevelopmentCard> developmentDeck;
+     private final ArrayList<DevelopmentCard> developmentDeck;
      public DevelopmentDeck(ArrayList<DevelopmentCard> cardsList){
          developmentDeck = cardsList;
      }

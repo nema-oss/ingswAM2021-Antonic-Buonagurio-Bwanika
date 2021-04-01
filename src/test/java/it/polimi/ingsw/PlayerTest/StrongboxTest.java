@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gameboard.Resource;
+import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Strongbox;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

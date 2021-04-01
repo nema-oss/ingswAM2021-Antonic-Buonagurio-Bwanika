@@ -1,9 +1,10 @@
 package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import it.polimi.ingsw.player.PopeRoad;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 class PopeRoadTest {

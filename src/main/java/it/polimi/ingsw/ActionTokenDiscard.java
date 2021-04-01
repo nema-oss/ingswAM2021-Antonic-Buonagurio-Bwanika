@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cards.DevelopmentCardType;
+
 public class ActionTokenDiscard {
 
     private DevelopmentCardType type;

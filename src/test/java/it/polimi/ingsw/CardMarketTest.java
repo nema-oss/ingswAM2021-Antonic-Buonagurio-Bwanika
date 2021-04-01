@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cards.Deck;
 import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
 
 public class CardMarketTest {
 

@@ -1,10 +1,5 @@
 package it.polimi.ingsw.CardTest;
 
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-import static it.polimi.ingsw.ResourceType.*;
 import static org.junit.Assert.assertEquals;
 /*
 public class DevelopmentCardTest {

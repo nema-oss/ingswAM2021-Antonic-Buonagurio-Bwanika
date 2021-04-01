@@ -6,10 +6,8 @@ import java.util.ArrayList;
 *sketch of class Deck - unfinished
  */
 
-public class Deck {
-    private ArrayList<Card> deck;
+public interface Deck <T>{
 
-    public Deck() {
-    }
+    T drawCard();
 
 }

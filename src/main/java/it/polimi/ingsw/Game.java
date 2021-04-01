@@ -44,7 +44,7 @@ public class Game {
         for(Player p: listOfPlayers){
             ArrayList hand = new ArrayList<LeaderCard>();
             for(int i = 0; i < 4; i++){
-                hand.add(LeaderDeck.draw());
+                hand.add(leaderDeck.drawCard());
 
             }
             p.setHand(hand);

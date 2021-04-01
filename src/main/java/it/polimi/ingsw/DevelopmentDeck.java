@@ -1,10 +1,12 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class DevelopmentDeck extends Deck {
+public class DevelopmentDeck implements Deck {
 
      private final ArrayList<DevelopmentCard> developmentDeck;
+
      public DevelopmentDeck(ArrayList<DevelopmentCard> cardsList){
          developmentDeck = cardsList;
      }
@@ -14,8 +16,7 @@ public class DevelopmentDeck extends Deck {
     }
 
      public DevelopmentCard drawCard(){
-        return developmentDeck.get(0);
-    }
+         return developmentDeck.remove(0);
+     }
 
-     public void shuffle(){}
 }

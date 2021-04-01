@@ -2,7 +2,8 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 
-public class LeaderDeck extends Deck {
+public class LeaderDeck implements Deck{
+
     private ArrayList<LeaderCard> leaderDeck;
 
     public LeaderDeck(ArrayList<LeaderCard> cardsList) {
@@ -14,6 +15,6 @@ public class LeaderDeck extends Deck {
     }
 
     public LeaderCard drawCard(){
-        return leaderDeck.get(0);
+        return leaderDeck.remove(0);
     }
 }

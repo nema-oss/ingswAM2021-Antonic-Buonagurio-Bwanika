@@ -56,7 +56,7 @@ public class CardMarket {
      *this method returns the developmentCard chosen by the Player
      *@return development card (type: DevelopmentCard)
      */
-    public DevelopmentCard buyCard(int row, int column, Map<ResourceType,Integer> payment) throws NonexistentCardException, InsufficientPaymentException{
+    public DevelopmentCard buyCard(int row, int column) throws NonexistentCardException{
         DevelopmentCard developmentCard;
 
         if(row>=nRow || column>=nCol || row < 0 || column<0)
@@ -64,9 +64,12 @@ public class CardMarket {
 
         developmentCard = cardMarket[row][column].drawCard();
 
-        if(!(developmentCard.getCost().equals(payment)))
-            throw new InsufficientPaymentException();
-
         return developmentCard;
     }
+
+    public DevelopmentCard getCard(int row, int column){
+        return cardMarket[row][column].drawCard();
+    }
 }
+
+

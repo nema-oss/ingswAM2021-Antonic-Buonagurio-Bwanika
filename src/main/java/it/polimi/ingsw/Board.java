@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 
 /*
- *this class represent the player's personal game board
+ *this class represents the player's personal game board
  *@author René
 */
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /*
-    * PopeRoad represent the road on player's game board
+    * PopeRoad represents the road on player's game board
     *
     * @author René
  */
@@ -27,7 +27,7 @@ public class PopeRoad {
     }
 
     /*
-        * this method return the length of the popeRoad
+        * this method returns the length of the popeRoad
         * @return size(type:int) of popeRoad
      */
 

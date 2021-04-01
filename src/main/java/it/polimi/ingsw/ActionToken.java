@@ -1,2 +1,7 @@
-package it.polimi.ingsw;public class ActionToken {
+package it.polimi.ingsw;
+
+public abstract class ActionToken {
+
+    abstract void useEffect();
+
 }

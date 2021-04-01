@@ -3,42 +3,21 @@ package it.polimi.ingsw;
 import java.util.ArrayList;
 
 public class WhiteToResource implements EffectStrategy {
-    private Producible result;
 
-    public Producible getResult() {
+    private ResourceType result;
+
+    public ResourceType getResult() {
         return result;
     }
 
-    public WhiteToResource(Producible result) {
+    public WhiteToResource(ResourceType result) {
         this.result = result;
     }
 
-    public void useEffect(Player p){
-        /*
-        ask the market for the arrayList<Producible>
-         */
-        ArrayList<Producible> market = getResourcesFromMarket();
+    public Resource useEffect() {
 
-        for(int i=0; i<market.size(); i++){
-            if(market.get(i).equals(null))
-                market.set(i, result);
-
-        }
-
-        /*
-        return the new array via an ad hoc method
-         */
-        returnMarket(market);
-        return;
+        //if(!toTransform.getType() == result) throw new LeaderCardException();
+        return new Resource(result);
     }
 
-    public ArrayList<Producible> getResourcesFromMarket(){
-        ArrayList<Producible> r = new ArrayList<>();
-        r.add(null);
-        return r;
-    }
-
-    void returnMarket(ArrayList<Producible> market){
-        return;
-    }
 }

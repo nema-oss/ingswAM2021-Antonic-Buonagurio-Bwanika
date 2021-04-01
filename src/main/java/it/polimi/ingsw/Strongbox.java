@@ -26,6 +26,11 @@ public class Strongbox {
         }
     }
 
+    public void addResource(Resource resources) {
+        strongbox.get(resources.getType()).add(resources);
+    }
+
+
     /*
      * this method returns a given number of resources from the deposit if available
      * @return set of resources (type:ArrayList<Resource)

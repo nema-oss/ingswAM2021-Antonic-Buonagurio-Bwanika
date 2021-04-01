@@ -1,19 +1,25 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /*
     * DevelopmentCard represents a development card
     * @author Nemanja
  */
 public class DevelopmentCard implements Card{
+
     private int level;
     private DevelopmentCardType type;
     private Map<ResourceType, Integer> cost;
     private Map<ResourceType, Integer> productionRequirements;
-    private Map<Producible, Integer> productionResults;
+    private ArrayList<Resource> productionResults;
     private int victoryPoints;
 
-    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, Map<Producible, Integer> productionResults, int victoryPoints) {
+    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Resource> productionResults, int victoryPoints) {
         this.level = level;
         this.type = type;
         this.cost = cost;
@@ -54,7 +60,7 @@ public class DevelopmentCard implements Card{
      * this method returns the resulting resources of the production of the developmentCard
      * @return productionResults(type: Map<Resource, Integer>) of DevelopmentCard
      */
-    public Map<Producible, Integer> getProductionResults() {
+    public ArrayList<Resource> getProductionResults() {
         return productionResults;
     }
     /*
@@ -64,5 +70,17 @@ public class DevelopmentCard implements Card{
     @Override
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    public ArrayList<Resource> activateProduction(ArrayList<Resource> resources) throws Exception {
+
+        Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
+
+        for (ResourceType type : frequencyMap.keySet()) {
+            if (frequencyMap.get(type).intValue() != (productionRequirements.get(type))) throw new Exception();
+        }
+
+        return productionResults;
+
     }
 }

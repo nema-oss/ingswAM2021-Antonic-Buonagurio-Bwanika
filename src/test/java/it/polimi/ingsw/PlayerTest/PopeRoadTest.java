@@ -12,7 +12,7 @@ class PopeRoadTest {
 
         @BeforeEach
         public void setUp() throws Exception {
-            popeRoad = new PopeRoad();
+            popeRoad = new PopeRoad(6);
         }
 
         @Test

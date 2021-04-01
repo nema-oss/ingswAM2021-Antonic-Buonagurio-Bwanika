@@ -1,8 +1,12 @@
 package it.polimi.ingsw;
 
-public class Discount implements EffectStrategy{
+import java.util.ArrayList;
+
+public class Discount implements EffectStrategy {
+
     ResourceType discountType;
     int discountAmount;
+    ArrayList<Resource> result;
 
     public Discount(ResourceType discountType, int discountAmount) {
         this.discountType = discountType;
@@ -18,7 +22,12 @@ public class Discount implements EffectStrategy{
     }
 
     @Override
-    public void useEffect(Player p) throws LeaderCardException {
+    public ArrayList<Resource> useEffect() throws LeaderCardException {
 
+        result = new ArrayList<Resource>();
+        for(int i = 0; i < discountAmount; i++)
+            result.add(new Resource(discountType));
+        return result;
     }
+
 }

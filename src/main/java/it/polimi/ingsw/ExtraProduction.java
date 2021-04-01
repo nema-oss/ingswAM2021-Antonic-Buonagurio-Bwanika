@@ -12,12 +12,8 @@ public class ExtraProduction implements EffectStrategy {
         this.productionRequirement = productionRequirement;
     }
 
-    public void useEffect(Player p){
-        /*
-        ask for the requirements via an ad hoc method
-        check for the requirements via getProductionRequirements
-        get the results via getProductionResults
-         */
+    public ArrayList<Resource> useEffect(){
+        return new ArrayList<Resource>();
     }
 
     /*

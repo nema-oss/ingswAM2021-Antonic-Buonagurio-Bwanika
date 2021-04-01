@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
-public interface EffectStrategy {
-    void useEffect(Player p) throws LeaderCardException;
+import java.util.Optional;
+
+public interface EffectStrategy <T>{
+    T useEffect() throws LeaderCardException;
 }

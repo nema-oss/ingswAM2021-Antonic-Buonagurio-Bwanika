@@ -1,6 +1,19 @@
-{
-  "name": "ingsw",
-  "version": "1.0.0",
-  "dependencies": {
-  }
+[{
+  "level": 2,
+  "type": "BLUE",
+  "cost": {
+    "COIN": 2
+  },
+  "productionRequirements": {
+    "STONE": 3
+  },
+  "productionResults": [
+    {
+      "type": "COIN"
+    },
+    {
+      "type": "SERVANT"
+    }
+  ],
+  "victoryPoints": 3
 }

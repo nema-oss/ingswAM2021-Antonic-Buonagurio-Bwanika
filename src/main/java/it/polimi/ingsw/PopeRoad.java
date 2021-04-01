@@ -1,7 +1,9 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /*
     * PopeRoad represent the road on player's game board
@@ -11,14 +13,15 @@ import java.util.HashMap;
 
 public class PopeRoad {
 
-    private ArrayList<Cell> popeRoad;
+    private List<Cell> popeRoad;
     private ArrayList<Cell> popeSpaces;
     private HashMap<Integer, Integer> vaticanReportSectionsId;
     private Cell currentPosition;
     private int currentPositionIndex;
 
-    PopeRoad(){
-        popeRoad = new ArrayList<Cell>(20);
+    PopeRoad(Cell[] cells){
+
+        popeRoad = Arrays.asList(cells);
         currentPositionIndex = 0;
         currentPosition = popeRoad.get(0);
     }
@@ -60,6 +63,7 @@ public class PopeRoad {
         currentPositionIndex += steps;
         currentPosition = popeRoad.get(currentPositionIndex);
 
+
     }
     /*
      * this method move the player by a one step
@@ -82,4 +86,12 @@ public class PopeRoad {
     }
 
 
+    /*
+        * this method returns the points awarded after a successful vatican report
+    */
+
+    public int VaticanReport(Cell currentPlayerPosition) {
+
+        return vaticanReportSectionsId.get(currentPositionIndex);
+    }
 }

@@ -1,2 +1,7 @@
-package it.polimi.ingsw;public class ConfigFactory {
+package it.polimi.ingsw;
+
+public class ConfigFactory {
+
+
 }
+

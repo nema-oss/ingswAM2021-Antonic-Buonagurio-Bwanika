@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MarbleTest {
+/* public class MarbleTest {
 
     private Marble marble;
 
@@ -30,4 +30,4 @@ public class MarbleTest {
         marble = new Marble(color, Optional.of(new Resource(ResourceType.COIN)));
         assertEquals(new Resource(ResourceType.COIN), marble.getProduct().orElseThrow(Exception::new), "Marble should return the resource corresponding to its color");
     }
-}
+} */

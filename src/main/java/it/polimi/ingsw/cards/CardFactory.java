@@ -7,6 +7,8 @@ import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CardFactory {
 
@@ -24,16 +26,14 @@ public class CardFactory {
         try (
                 // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-                Reader reader = new FileReader("/home/rene/Documents/ingswAM2021-Antonic-Buonagurio-Bwanika/src/main/java/it/polimi/ingsw/cards.json")) {
+                Reader reader = new FileReader("/home/rene/Documents/ingswAM2021-Antonic-Buonagurio-Bwanika/src/main/java/it/polimi/ingsw/developmentCards.json")) {
 
             Gson gson = new Gson();
             // Convert JSON File to Java Object
             developmentCards = gson.fromJson(reader, DevelopmentCard[].class);
 
-            //System.out.println(card.getLevel());
 
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -48,7 +48,7 @@ public class CardFactory {
 
         try (
                 // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
-                Reader reader = new FileReader("/home/rene/Documents/ingswAM2021-Antonic-Buonagurio-Bwanika/src/main/java/it/polimi/ingsw/cards.json")) {
+                Reader reader = new FileReader("/home/rene/Documents/ingswAM2021-Antonic-Buonagurio-Bwanika/src/main/java/it/polimi/ingsw/developmentCards.json")) {
 
             Gson gson = new Gson();
             // Convert JSON File to Java Object
@@ -62,12 +62,12 @@ public class CardFactory {
         }
     }
 
-    public DevelopmentCard[] getDevelopmentCards() {
-        return developmentCards;
+    public ArrayList<DevelopmentCard> getDevelopmentCards() {
+        return new ArrayList<>(Arrays.asList(developmentCards));
     }
 
-    public LeaderCard[] getLeaderCards() {
-        return leaderCards;
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return new ArrayList<>(Arrays.asList(leaderCards));
     }
 
 

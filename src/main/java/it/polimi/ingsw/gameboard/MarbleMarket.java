@@ -4,9 +4,10 @@ import java.util.*;
 
 public class MarbleMarket {
 
-    private Marble[][] marbleMarket;
+    private final Marble[][] marbleMarket;
     private Marble freeMarble;
-    private int nRow, nCol;
+    private final int nRow;
+    private final int nCol;
 
     public MarbleMarket(int nRow, int nCol, ArrayList<Marble> marbles ){
         marbleMarket = new Marble[nRow][nCol];
@@ -30,10 +31,9 @@ public class MarbleMarket {
         return freeMarble;
     }
 
-    public ArrayList<Producible> buy(int row, int column) {
+    public ArrayList<Marble> buy(int row, int column) {
 
         Marble[] marbles;
-        ArrayList<Producible> results = new ArrayList<>();
         Marble tempFreeMarble;
 
 
@@ -65,12 +65,7 @@ public class MarbleMarket {
         }
 
 
-        for (Marble marble : marbles) {
-            if (marble.getProduct().isPresent())
-                results.add(marble.getProduct().get());
-        }
-
-        return results;
+        return new ArrayList<>(Arrays.asList(marbles));
 
     }
 }

@@ -1,6 +1,12 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.gameboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import it.polimi.ingsw.exception.NonexistentCardException;
+import it.polimi.ingsw.cards.DevelopmentCard;
+import it.polimi.ingsw.cards.DevelopmentCardType;
+import it.polimi.ingsw.cards.DevelopmentDeck;
+
 
 /*
 * this class represents the Card Market belonging to the GameBoard and containing Development Cards.

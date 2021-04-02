@@ -7,12 +7,12 @@ import java.util.Optional;
  */
 public class Marble {
 
-    Optional<Producible> product;
     MarbleType color;
+    Optional<Producible> product;
 
-    public Marble(MarbleType color, Optional<Producible> product){
+    public Marble(MarbleType color, Producible product){
         this.color = color;
-        this.product = product;
+        this.product = Optional.ofNullable(product);
     }
 
     public MarbleType getColor() {

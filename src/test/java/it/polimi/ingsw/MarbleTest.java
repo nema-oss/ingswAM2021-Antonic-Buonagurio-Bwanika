@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gameboard.*;
 import org.junit.Test;
 
 import java.util.Optional;

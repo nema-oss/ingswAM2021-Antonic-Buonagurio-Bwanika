@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+/* package it.polimi.ingsw;
 
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,8 +7,8 @@ public class FaithPointTest {
 
     private FaithPoint faithPoint;
 
-    @Test
-    public void testUseEffect(){
+   @Test
+   public void testUseEffect(){
        Player p1 = new Player("Pippo");
        Player p2 = new Player("Pluto");
        faithPoint = new FaithPoint();
@@ -18,3 +18,5 @@ public class FaithPointTest {
 
     }
 }
+
+*/

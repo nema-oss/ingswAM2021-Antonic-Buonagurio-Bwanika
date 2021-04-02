@@ -9,7 +9,8 @@ import java.util.*;
 public class CardMarket {
 
     private DevelopmentDeck[][] cardMarket;
-    private int nRow, nCol;
+    private final int nRow;
+    private int nCol;
 
     public CardMarket(DevelopmentDeck deck, int nCol, int nRow){
 

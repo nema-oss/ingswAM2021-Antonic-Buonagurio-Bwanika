@@ -10,7 +10,7 @@ public class AuxiliaryDeposit {
     private ArrayList<Resource> auxiliaryDeposit;
     private ResourceType type;
 
-    AuxiliaryDeposit(ResourceType type){
+    public AuxiliaryDeposit(ResourceType type){
 
         auxiliaryDeposit = new ArrayList<>();
         this.type = type;

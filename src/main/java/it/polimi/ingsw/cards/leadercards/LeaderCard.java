@@ -9,13 +9,11 @@ public class LeaderCard implements Card {
     private Map<Resource, Integer> costResource;
     private Map<Resource, Integer> costDevelopment;
     private int victoryPoints;
-    private EffectStrategy effectStrategy;
 
-    public LeaderCard(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, EffectStrategy effectStrategy) {
+    public LeaderCard(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints) {
         this.costResource = costResource;
         this.costDevelopment = costDevelopment;
         this.victoryPoints = victoryPoints;
-        this.effectStrategy = effectStrategy;
     }
 
     public Map<Resource, Integer> getCostResource() {

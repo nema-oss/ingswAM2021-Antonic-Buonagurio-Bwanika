@@ -4,6 +4,7 @@ import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DevelopmentDeck implements Deck {
 
@@ -21,4 +22,12 @@ public class DevelopmentDeck implements Deck {
          return developmentDeck.remove(0);
      }
 
+     public void shuffle(){
+         Collections.shuffle(developmentDeck);
+     }
+
+    @Override
+    public DevelopmentCard getTop() {
+        return developmentDeck.get(0);
+    }
 }

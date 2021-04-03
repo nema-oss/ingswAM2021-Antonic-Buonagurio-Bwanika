@@ -96,4 +96,7 @@ public class Board {
     }
 
 
+    public DevelopmentCard getDevelopmentCard(int positionIndex) {
+        return developmentCards.get(positionIndex).peek();
+    }
 }

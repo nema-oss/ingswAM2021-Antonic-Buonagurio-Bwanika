@@ -75,4 +75,20 @@ public class CardMarket {
 
         return developmentCard;
     }
+
+    
+    /* 
+        * this method discard a given number of cards of a given type
+        * @param the number of cards to discard, the color of the cards to discard
+     */
+    public void discardCard(int amount, DevelopmentCardType color) {
+    }
+
+    public DevelopmentCard getCard(int x, int y) {
+        return cardMarket[x][y].getTop();
+    }
+
+    public DevelopmentCard buyCard(int x, int y) throws NonexistentCardException {
+        return cardMarket[x][y].drawCard();
+    }
 }

@@ -1,13 +1,17 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cards.ActionTokenDeck;
 import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
+import it.polimi.ingsw.exception.InsufficientPaymentException;
+import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.gameboard.CardMarket;
 import it.polimi.ingsw.gameboard.GameBoard;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Board;
 import it.polimi.ingsw.player.Cell;
 import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
@@ -24,24 +28,18 @@ public class Game {
     private Player winner;
     private Queue<Integer> popeSpaces;
     private PopeRoad lorenzoPopeRoad;
-    private Deck actionDeck;
+    private ActionTokenDeck actionDeck;
     private LeaderDeck leaderDeck;
-    private GameBoard gameBoard;
-    private ConfigFactory configFactory;
     private GameBoard gameBoard;
     private int lorenzoPoints;
     private int lastPopeSpace;
-
+    private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     /*
         *constructor
      */
     Game(){
 
-        configFactory = new ConfigFactory();
-        leaderDeck = configFactory.getLeaderDeck();
-        developmentDeck = configFactory.getDevelopmentDeck();
-        gameBoard = new GameBoard();
-        popeSpaces = configFactory.getPopeSpaces();
+
 
     }
 
@@ -145,7 +143,7 @@ public class Game {
             popeSpaces.remove();
         }
 
-        else if(currentPlayerPositionIndex == lastPopeSpace) return endGame();
+        else if(currentPlayerPositionIndex == lastPopeSpace) endGame();
 
     }
 
@@ -169,9 +167,8 @@ public class Game {
 
     public void LorenzoTurn(){
 
-        ActionToken actionToken = actionDeck.draw();
-
-
+        ActionToken actionToken = actionDeck.drawCard();
+        useActionToken(actionDeck.drawCard());
     }
 
 
@@ -184,7 +181,7 @@ public class Game {
     public void checkLorenzoPosition(int lorenzoPosition){
 
         if(lorenzoPosition > popeSpaces.peek()){
-            int lorenzoVaticanId = lorenzoPopeRoad.getCurrentPosition().vaticanReportSectionId;
+            int lorenzoVaticanId = lorenzoPopeRoad.getCurrentPosition().getVaticanReportSectionId();
             if(currentPlayer.getPosition().getVaticanReportSectionId() >= lorenzoVaticanId)
                 currentPlayer.getPopeRoad().VaticanReport(currentPlayer.getPosition());
             popeSpaces.remove();
@@ -200,8 +197,10 @@ public class Game {
     public void useActionToken(ActionTokenMove actionToken){
 
         lorenzoPopeRoad.move(actionToken.getSteps());
-        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace()) checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
-        if(actionToken.isShuffle()) actionDeck.shuffle();
+        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace())
+            checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
+        if(actionToken.isShuffle())
+            actionDeck.shuffle();
 
     }
 
@@ -212,8 +211,8 @@ public class Game {
 
     public void useActionToken(ActionTokenDiscard actionToken){
 
-        Market market = gameBoard.getMarket();
-        market.discardCard(actionToken.getAmount());
+        CardMarket market = gameBoard.getCardMarket();
+        market.discardCard(actionToken.getAmount(), actionToken.getType());
         //lostGame();
 
     }
@@ -267,37 +266,11 @@ public class Game {
 
     private int checkResourcePoints(Player p) {
 
-       return Math.floorDiv(p.getDeposit().getAll().size() , 5);
+       return Math.floorDiv(p.getDeposit().getAll().size() , RESOURCE_VICTORY_POINTS_RATIO);
 
     }
 
-    /*
-        * this method manage the buying resource request of a player
-        * @param coordinates of the selected space in the market
-     */
 
-    public ArrayList<Resource> buyResource(int x, int y) {
-
-        Market market = gameBoard.getMarket();
-        return market.buy(x,y)
-    }
-
-    /*
-     * this method manage the buying card request of a player
-     * @param coordinates of the selected card in the market
-    */
-
-    public void buyCard(int x, int y) {
-
-        CardMarket cardMarket = gameBoar.getCardMarket();
-        DevelopmentCard selectedCard = cardMarket.getCard(x,y);
-        Map<ResourceType,Integer> cost = selectedCard.getCost();
-        ArrayList<Resource> currentResources:
-        for(ResourceType type: cost.keySet()){
-            if(currentPlayer.getDeposit())
-        }
-
-    }
 }
 
 

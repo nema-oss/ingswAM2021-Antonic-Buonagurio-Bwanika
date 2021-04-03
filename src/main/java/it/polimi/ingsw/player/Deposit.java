@@ -6,6 +6,7 @@ import it.polimi.ingsw.gameboard.ResourceType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /*
@@ -15,7 +16,7 @@ import java.util.HashMap;
 
 public class Deposit {
 
-    private HashMap<ResourceType, ArrayList<Resource>> deposit;
+    private Map<ResourceType, ArrayList<Resource>> deposit;
     private boolean[] floors;
     private static final int NUMBER_OF_FLOORS = 3;
 
@@ -105,6 +106,7 @@ public class Deposit {
 
     }
 
+    /*
     public ArrayList<Resource> getAll() {
 
         ArrayList<Resource> allResources = new ArrayList<Resource>();
@@ -112,6 +114,12 @@ public class Deposit {
             allResources.addAll(deposit.get(type));
         }
         return allResources;
+    }
+
+     */
+
+    public Map<ResourceType,ArrayList<Resource>> getAll(){
+        return deposit;
     }
 }
 

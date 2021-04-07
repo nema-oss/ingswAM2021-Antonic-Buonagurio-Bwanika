@@ -24,12 +24,16 @@ public class Strongbox {
         *@param the list of resources to add
      */
     public void addResource(ArrayList<Resource> resources){
+
         for(Resource res: resources){
+            strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<Resource>());
             strongbox.get(res.getType()).add(res);
         }
     }
 
     public void addResource(Resource resources) {
+
+        strongbox.computeIfAbsent(resources.getType(), k -> new ArrayList<Resource>());
         strongbox.get(resources.getType()).add(resources);
     }
 
@@ -42,9 +46,10 @@ public class Strongbox {
     public ArrayList<Resource> getResource(ResourceType type, int amount) throws Exception{
 
         if(amount > strongbox.get(type).size()) throw new Exception();
-        ArrayList<Resource> result = new ArrayList<Resource>(strongbox.get(type).subList(0,amount));
+        ArrayList<Resource> result = new ArrayList<Resource>();
         while(amount > 0){
-            strongbox.get(type).remove(strongbox.get(type).size()-1);
+            result.add(strongbox.get(type).get(0));
+            strongbox.get(type).remove(0);
             amount--;
         }
         return result;

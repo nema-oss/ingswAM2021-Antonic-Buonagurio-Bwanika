@@ -16,15 +16,13 @@ public class CellFactory {
     }
 
 
-    public Cell[] getCells(int popeRoadSize) {
+    public Cell[] getCells() {
 
 
         try {
-            Reader reader = new FileReader("");
+            Reader reader = new FileReader("src/main/resources/cells.json");
             Gson gson = new Gson();
-
             cells = gson.fromJson(reader, Cell[].class);
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

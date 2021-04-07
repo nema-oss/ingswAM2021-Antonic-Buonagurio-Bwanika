@@ -9,11 +9,14 @@ import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.exception.FullDepositException;
 import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.exception.ProductionRequirementsException;
 import it.polimi.ingsw.gameboard.*;
+import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +37,7 @@ public class Player{
     private Board playerBoard;
 
     public Player(String nickname, GameBoard gameBoard, Game currentGame){
+
         playerBoard = new Board();
         position = playerBoard.getPopeRoad().getCurrentPosition();
         this.nickname = nickname;
@@ -102,7 +106,7 @@ public class Player{
         * @exception player has not enough resources to buy the card or card is not present
      */
 
-    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonexistentCardException, Exception {
+    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonexistentCardException, InsufficientResourcesException {
 
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
@@ -129,9 +133,6 @@ public class Player{
             if(cost.get(type) > availableResources.get(type).size())
                 throw new InsufficientPaymentException();
         }
-
-
-
     }
 
     /*
@@ -139,13 +140,23 @@ public class Player{
      * @param card coordinates
      */
 
-    public void buyResources(int x, int y) {
+    public void buyResources(int x, int y) throws FullDepositException {
 
         MarbleMarket market = gameBoard.getMarket();
         ArrayList<Producible> newResources = market.buy(x,y);
-        getDeposit().addResources(newResources);
+        for(Producible producible: newResources){
+            producible.useEffect(curr
+    }
+
+    /*
+        * this method manage the allocation of the result from market
+     */
+
+    private void handleProducible( ) {
+
 
     }
+
 
 
     /*
@@ -154,7 +165,7 @@ public class Player{
      * @exception player has not enough resources to activate the card or player can't store all resources
      */
 
-    public void activateProduction(int positionIndex) throws Exception {
+    public void activateProduction(int positionIndex) throws FullDepositException, ProductionRequirementsException, InsufficientResourcesException {
 
         DevelopmentCard card = getPlayerBoard().getDevelopmentCard(positionIndex);
         checkCardRequirementsProduction(card);
@@ -243,5 +254,11 @@ public class Player{
 
     }
 
+    /*
+        * this method check if there are active effects and apply them
+     */
 
+    public void checkActiveEffects(){
+        }
+    }
 }

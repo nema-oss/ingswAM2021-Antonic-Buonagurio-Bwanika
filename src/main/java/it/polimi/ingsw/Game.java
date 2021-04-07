@@ -49,7 +49,7 @@ public class Game {
     public void startGame(){
 
         for(Player p: listOfPlayers){
-            ArrayList hand = new ArrayList<LeaderCard>();
+            ArrayList<LeaderCard> hand = new ArrayList<LeaderCard>();
             for(int i = 0; i < 4; i++){
                 hand.add(leaderDeck.drawCard());
 
@@ -57,9 +57,15 @@ public class Game {
             p.setHand(hand);
         }
 
-        int randomNum= ThreadLocalRandom.current().nextInt(0, listOfPlayers.size()-1);
-        currentPlayer = listOfPlayers.get(randomNum);
-        // players should be able to select a resource + give points: this part will be hardcoded
+        Collections.shuffle(listOfPlayers);
+        currentPlayer = listOfPlayers.get(0);
+        // player know choose the resource they want, could be passed to the method as a map Player:ResourceType
+
+        // this is based on the game logic, hardcoded, need a fix
+        for(int i = 0; i < listOfPlayers.size(); i++){
+            //give victory points to third and fourth
+            if(i + 1 == 2 || i + 1 == 4) listOfPlayers.get(i).addVictoryPoints(1);
+        }
 
     }
 
@@ -68,6 +74,7 @@ public class Game {
      */
 
     public Player nextPlayer(){
+
         int i = listOfPlayers.indexOf(currentPlayer);
         Player nextPlayer;
         if(i < listOfPlayers.size()-1)
@@ -168,7 +175,7 @@ public class Game {
     public void LorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
-        useActionToken(actionDeck.drawCard());
+        //useActionToken(actionDeck.drawCard());
     }
 
 

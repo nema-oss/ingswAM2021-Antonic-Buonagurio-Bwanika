@@ -64,19 +64,23 @@ public class CardMarket {
      *@return development card (type: DevelopmentCard)
      */
     public DevelopmentCard buyCard(int row, int column) throws NonexistentCardException{
-        DevelopmentCard developmentCard;
 
         if(row>=nRow || column>=nCol || row < 0 || column<0)
             throw new NonexistentCardException();
 
-        developmentCard = cardMarket[row][column].drawCard();
-
-        return developmentCard;
-    }
-
-    public DevelopmentCard getCard(int row, int column){
         return cardMarket[row][column].drawCard();
+
     }
+
+    public DevelopmentCard getCard(int row, int column) throws NonexistentCardException{
+
+        if(row>=nRow || column>=nCol || row < 0 || column<0)
+            throw new NonexistentCardException();
+
+        return cardMarket[row][column].getTop();
+    }
+
+    public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}
 }
 
 

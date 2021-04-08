@@ -52,7 +52,7 @@ public class MarbleMarket {
             freeMarble = tempFreeMarble;
         }
 
-        else {
+        else{
             //pesca una riga
             marbles = new Marble[nCol];
             if (nCol >= 0) System.arraycopy(marbleMarket[row], 0, marbles, 0, nCol);
@@ -67,5 +67,9 @@ public class MarbleMarket {
 
         return new ArrayList<>(Arrays.asList(marbles));
 
+    }
+
+    public Marble getMarble(int row, int column){
+        return marbleMarket[row][column];
     }
 }

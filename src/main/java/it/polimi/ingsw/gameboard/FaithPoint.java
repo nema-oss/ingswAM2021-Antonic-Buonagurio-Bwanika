@@ -7,13 +7,16 @@ public class FaithPoint implements Producible {
     public FaithPoint() {
     }
 
+    public String getType(){
+        return "FAITH";
+    }
     /*
      *This method applies the effect of a Faith Point, increasing the player's position by one in his PopeRoad
      */
 
     public void useEffect(Player p){
 
-        p.moveOnPopeRoad();
+        p.getPopeRoad().move();
     }
 
 }

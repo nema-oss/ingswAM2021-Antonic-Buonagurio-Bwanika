@@ -23,7 +23,6 @@ public class Resource implements Producible{
         return type;
     }
 
-    public void useEffect(Player p){}
-
+    public void useEffect(Player p){}  //?????
 
 }

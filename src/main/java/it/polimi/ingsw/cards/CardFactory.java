@@ -26,7 +26,7 @@ public class CardFactory {
         try {
             // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-            Reader file = new FileReader("developmentCards");
+            Reader file = new FileReader("src/main/resources/developmentCards.json");
             Gson gson = new Gson();
             // Convert JSON File to Java Object
             developmentCards = gson.fromJson(file, DevelopmentCard[].class);
@@ -42,18 +42,14 @@ public class CardFactory {
 
     public void factoryLeaderCard() {
 
-        // look how to change this try and catch exception: search "file opening exception handling java"
-
-        // look how to change this try and catch exception: search "file opening exception handling java"
         try {
             // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-            Reader file = new FileReader("leaderCards.json");
+            Reader file = new FileReader("src/main/resources/leaderCards.json");
             Gson gson = new Gson();
-            // Convert JSON File to Java Object
             leaderCards = gson.fromJson(file, LeaderCard[].class);
-            file.close();
-        } catch (IOException e){
+
+        } catch (FileNotFoundException e){
             e.printStackTrace();
         }
 

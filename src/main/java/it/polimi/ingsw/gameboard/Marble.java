@@ -23,7 +23,6 @@ public class Marble {
      *This method returns the Producible corresponding to the marble's color.
      */
     public Optional<Producible> getProduct(){
-
         return product;
     }
 

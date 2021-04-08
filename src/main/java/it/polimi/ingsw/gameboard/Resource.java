@@ -4,6 +4,8 @@ package it.polimi.ingsw.gameboard;
  * this class represent the Resources
  */
 
+import it.polimi.ingsw.player.Player;
+
 public class Resource implements Producible{
 
     private ResourceType type;
@@ -20,5 +22,8 @@ public class Resource implements Producible{
     public ResourceType getType() {
         return type;
     }
+
+    public void useEffect(Player p){}
+
 
 }

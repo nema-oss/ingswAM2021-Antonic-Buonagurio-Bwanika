@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.player;
 
 import it.polimi.ingsw.player.Cell;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class CellTest {
     void getVaticanReportSectionId() {
 
         int vaticanReportSectionId = 5;
-        cell = new Cell(1,Boolean.TRUE,2);
+        cell = new Cell(1,Boolean.TRUE,5);
         assertEquals(vaticanReportSectionId, cell.getVaticanReportSectionId(), "Cell should return the vatican report //" +
                 " section id");
     }

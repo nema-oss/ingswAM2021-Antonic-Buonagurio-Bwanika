@@ -21,9 +21,9 @@ public class PopeRoad {
     private Cell currentPosition;
     private int currentPositionIndex;
 
-    public PopeRoad(Cell[] cells){
+    public PopeRoad(List<Cell> cells){
 
-        popeRoad = Arrays.asList(cells);
+        popeRoad = cells;
         currentPositionIndex = 0;
         currentPosition = popeRoad.get(0);
     }
@@ -62,8 +62,14 @@ public class PopeRoad {
 
     public void move(int steps){
 
-        currentPositionIndex += steps;
+        if(currentPositionIndex + steps >= popeRoad.size() - 1) {
+            currentPositionIndex = popeRoad.size()-1;
+        }
+        else{
+            currentPositionIndex += steps;
+        }
         currentPosition = popeRoad.get(currentPositionIndex);
+
 
 
     }
@@ -73,7 +79,13 @@ public class PopeRoad {
 
     public void move(){
 
-        currentPositionIndex += 1;
+        if(currentPositionIndex + 1 >= popeRoad.size()-1) {
+            currentPositionIndex = popeRoad.size() - 1;
+        }
+        else{
+            currentPositionIndex += 1;
+        }
+
         currentPosition = popeRoad.get(currentPositionIndex);
 
     }

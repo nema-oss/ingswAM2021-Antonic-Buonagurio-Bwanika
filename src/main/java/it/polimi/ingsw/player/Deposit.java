@@ -1,11 +1,16 @@
 package it.polimi.ingsw.player;
 
+import it.polimi.ingsw.exception.FullDepositException;
+import it.polimi.ingsw.exception.InsufficientPaymentException;
+import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /*
@@ -15,7 +20,7 @@ import java.util.HashMap;
 
 public class Deposit {
 
-    private HashMap<ResourceType, ArrayList<Resource>> deposit;
+    private Map<ResourceType, ArrayList<Resource>> deposit;
     private boolean[] floors;
     private static final int NUMBER_OF_FLOORS = 3;
 
@@ -29,14 +34,15 @@ public class Deposit {
      * @return set of resources (type:ArrayList<Resource)
      */
 
-    public ArrayList<Resource> getResources(ResourceType type, int amount) throws Exception {
+    public ArrayList<Resource> getResources(ResourceType type, int amount) throws InsufficientResourcesException {
 
-        ArrayList<Resource> result = null;
+        ArrayList<Resource> result;
 
-        if (amount > deposit.get(type).size()) throw new Exception();
-        result = new ArrayList<Resource>(deposit.get(type).subList(0, amount - 1));
+        if (amount > deposit.get(type).size()) throw new InsufficientResourcesException();
+        result = new ArrayList<Resource>();
         while (amount > 0) {
-            deposit.get(type).remove(deposit.get(type).size() - 1);
+            result.add(deposit.get(type).get(0));
+            deposit.get(type).remove(0);
             amount--;
         }
 
@@ -74,7 +80,7 @@ public class Deposit {
      *
      */
 
-    public void addResources(ArrayList<Resource> resources) throws Exception {
+    public void addResources(ArrayList<Resource> resources) throws FullDepositException {
 
 
         for (Resource res : resources) {
@@ -89,7 +95,7 @@ public class Deposit {
             for (Resource res : resources) {
                 deposit.get(res.getType()).remove(res);
             }
-            throw new Exception();
+            throw new FullDepositException();
         }
     }
 
@@ -105,6 +111,7 @@ public class Deposit {
 
     }
 
+    /*
     public ArrayList<Resource> getAll() {
 
         ArrayList<Resource> allResources = new ArrayList<Resource>();
@@ -112,6 +119,12 @@ public class Deposit {
             allResources.addAll(deposit.get(type));
         }
         return allResources;
+    }
+
+     */
+
+    public Map<ResourceType,ArrayList<Resource>> getAll(){
+        return deposit;
     }
 }
 

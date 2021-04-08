@@ -10,9 +10,7 @@ import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 public class Board {
 
@@ -27,16 +25,31 @@ public class Board {
 
 
     public Board(){
+
         cellFactory = new CellFactory();
-        Cell[] cells = cellFactory.getCells(popeRoadSize);
+        List<Cell> cells = Arrays.asList(cellFactory.getCells());
         popeRoad = new PopeRoad(cells);
         deposit = new Deposit();
         strongbox = new Strongbox();
         developmentCards = new ArrayList<Stack<DevelopmentCard>>(3);
     }
 
+    /*
+        * this method returns all the DevelopmentCards in the board
+        * @return all the cards
+     */
+
     public ArrayList<Stack<DevelopmentCard>> getDevelopmentCards() {
         return developmentCards;
+    }
+
+    /*
+        * this method returns the card at the given index
+        * @return the selected card
+     */
+
+    public DevelopmentCard getDevelopmentCard(int positionIndex) {
+        return developmentCards.get(positionIndex).peek();
     }
 
     /*
@@ -65,6 +78,11 @@ public class Board {
         return strongbox;
     }
 
+    /*
+        *this method add a new DevelopmentCard to the board
+        *@param the card to add
+     */
+
     public void addDevelopmentCard(DevelopmentCard card){
 
         for (Stack<DevelopmentCard> developmentCard : developmentCards) {
@@ -84,7 +102,8 @@ public class Board {
     /*
         * this method activate the production power of the personal player's game board
         * @param the resources to transform (type: ArrayList<resource>) and the requested type of th
-        * result (type:ResourceType) @exception if the number of resources to transform is not enough
+        * result (type:ResourceType)
+        *  @exception if the number of resources to transform is not enough
      */
 
     public void useProductionPower(ArrayList<Resource> toGive, ResourceType request) throws Exception{

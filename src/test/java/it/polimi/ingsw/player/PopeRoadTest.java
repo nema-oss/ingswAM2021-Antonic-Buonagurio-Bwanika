@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.player;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,13 +8,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 class PopeRoadTest {
 
         private PopeRoad popeRoad;
+        private List<Cell> cells;
+        private CellFactory cellFactory;
 
         @BeforeEach
         public void setUp() throws Exception {
-            popeRoad = new PopeRoad(6);
+            cellFactory = new CellFactory();
+            cells = Arrays.asList(cellFactory.getCells());
+            popeRoad = new PopeRoad(cells);
         }
 
         @Test
@@ -22,21 +30,19 @@ class PopeRoadTest {
 
             int prev_position = popeRoad.getCurrentPositionIndex();
             popeRoad.move();
-            assertEquals(prev_position + 1, popeRoad.getCurrentPositionIndex(),
-                    "Regular multiplication should work");
+            assertEquals(prev_position + 1, popeRoad.getCurrentPositionIndex());
         }
 
         @Test
         @DisplayName("Test movement by a given number of steps on popeRoad")
         public void testMoveGivenSteps() {
 
-            int[] testSteps = {3,4,7,8,0};
+            int[] testSteps = {3,4,7,6,0};
             int prevPosition;
-            popeRoad.move();
             for (int testStep : testSteps) {
                 prevPosition = popeRoad.getCurrentPositionIndex();
-                assertEquals(prevPosition + testStep, popeRoad.getCurrentPositionIndex(),
-                        "Regular multiplication should work");
+                popeRoad.move(testStep);
+                assertEquals(prevPosition + testStep, popeRoad.getCurrentPositionIndex());
             }
         }
 

@@ -1,10 +1,17 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cards.ActionTokenDeck;
 import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
-import it.polimi.ingsw.gameboard.*;
+import it.polimi.ingsw.exception.InsufficientPaymentException;
+import it.polimi.ingsw.exception.NonexistentCardException;
+import it.polimi.ingsw.gameboard.CardMarket;
+import it.polimi.ingsw.gameboard.GameBoard;
+import it.polimi.ingsw.gameboard.Resource;
+import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Board;
 import it.polimi.ingsw.player.Cell;
 import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
@@ -21,24 +28,18 @@ public class Game {
     private Player winner;
     private Queue<Integer> popeSpaces;
     private PopeRoad lorenzoPopeRoad;
-    private Deck actionDeck;
+    private ActionTokenDeck actionDeck;
     private LeaderDeck leaderDeck;
-    private GameBoard gameBoard;
-    private ConfigFactory configFactory;
     private GameBoard gameBoard;
     private int lorenzoPoints;
     private int lastPopeSpace;
-
+    private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     /*
         *constructor
      */
     Game(){
 
-        configFactory = new ConfigFactory();
-        leaderDeck = configFactory.getLeaderDeck();
-        developmentDeck = configFactory.getDevelopmentDeck();
-        gameBoard = new GameBoard();
-        popeSpaces = configFactory.getPopeSpaces();
+
 
     }
 
@@ -48,7 +49,7 @@ public class Game {
     public void startGame(){
 
         for(Player p: listOfPlayers){
-            ArrayList hand = new ArrayList<LeaderCard>();
+            ArrayList<LeaderCard> hand = new ArrayList<LeaderCard>();
             for(int i = 0; i < 4; i++){
                 hand.add(leaderDeck.drawCard());
 
@@ -56,9 +57,15 @@ public class Game {
             p.setHand(hand);
         }
 
-        int randomNum= ThreadLocalRandom.current().nextInt(0, listOfPlayers.size()-1);
-        currentPlayer = listOfPlayers.get(randomNum);
-        // players should be able to select a resource + give points: this part will be hardcoded
+        Collections.shuffle(listOfPlayers);
+        currentPlayer = listOfPlayers.get(0);
+        // player know choose the resource they want, could be passed to the method as a map Player:ResourceType
+
+        // this is based on the game logic, hardcoded, need a fix
+        for(int i = 0; i < listOfPlayers.size(); i++){
+            //give victory points to third and fourth
+            if(i + 1 == 2 || i + 1 == 4) listOfPlayers.get(i).addVictoryPoints(1);
+        }
 
     }
 
@@ -67,6 +74,7 @@ public class Game {
      */
 
     public Player nextPlayer(){
+
         int i = listOfPlayers.indexOf(currentPlayer);
         Player nextPlayer;
         if(i < listOfPlayers.size()-1)
@@ -142,7 +150,7 @@ public class Game {
             popeSpaces.remove();
         }
 
-        else if(currentPlayerPositionIndex == lastPopeSpace) return endGame();
+        else if(currentPlayerPositionIndex == lastPopeSpace) endGame();
 
     }
 
@@ -166,9 +174,8 @@ public class Game {
 
     public void LorenzoTurn(){
 
-        ActionToken actionToken = actionDeck.draw();
-
-
+        ActionToken actionToken = actionDeck.drawCard();
+        //useActionToken(actionDeck.drawCard());
     }
 
 
@@ -181,7 +188,7 @@ public class Game {
     public void checkLorenzoPosition(int lorenzoPosition){
 
         if(lorenzoPosition > popeSpaces.peek()){
-            int lorenzoVaticanId = lorenzoPopeRoad.getCurrentPosition().vaticanReportSectionId;
+            int lorenzoVaticanId = lorenzoPopeRoad.getCurrentPosition().getVaticanReportSectionId();
             if(currentPlayer.getPosition().getVaticanReportSectionId() >= lorenzoVaticanId)
                 currentPlayer.getPopeRoad().VaticanReport(currentPlayer.getPosition());
             popeSpaces.remove();
@@ -197,8 +204,10 @@ public class Game {
     public void useActionToken(ActionTokenMove actionToken){
 
         lorenzoPopeRoad.move(actionToken.getSteps());
-        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace()) checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
-        if(actionToken.isShuffle()) actionDeck.shuffle();
+        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace())
+            checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
+        if(actionToken.isShuffle())
+            actionDeck.shuffle();
 
     }
 
@@ -209,8 +218,8 @@ public class Game {
 
     public void useActionToken(ActionTokenDiscard actionToken){
 
-        MarbleMarket market = gameBoard.getMarket();
-        market.discardCard(actionToken.getAmount());
+        CardMarket market = gameBoard.getCardMarket();
+        market.discardCard(actionToken.getAmount(), actionToken.getType());
         //lostGame();
 
     }
@@ -264,37 +273,11 @@ public class Game {
 
     private int checkResourcePoints(Player p) {
 
-       return Math.floorDiv(p.getDeposit().getAll().size() , 5);
+       return Math.floorDiv(p.getDeposit().getAll().size() , RESOURCE_VICTORY_POINTS_RATIO);
 
     }
 
-    /*
-        * this method manage the buying resource request of a player
-        * @param coordinates of the selected space in the market
-     */
 
-    public ArrayList<Marble> buyResource(int x, int y) {
-
-        MarbleMarket market = gameBoard.getMarket();
-        return market.buy(x,y);
-    }
-
-    /*
-     * this method manage the buying card request of a player
-     * @param coordinates of the selected card in the market
-    */
-
-    public void buyCard(int x, int y) {
-
-        CardMarket cardMarket = gameBoard.getCardMarket();
-        DevelopmentCard selectedCard = cardMarket.getCard(x,y);
-        Map<ResourceType,Integer> cost = selectedCard.getCost();
-        ArrayList<Resource> currentResources;
-        for(ResourceType type: cost.keySet()){
-            //if(currentPlayer.getDeposit());
-        }
-
-    }
 }
 
 

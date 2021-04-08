@@ -4,20 +4,30 @@ import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class LeaderDeck implements Deck {
 
-    private ArrayList<LeaderCard> leaderDeck;
+    private ArrayList<LeaderCard> listOfLeaderCard;
 
     public LeaderDeck(ArrayList<LeaderCard> cardsList) {
-        leaderDeck = cardsList;
+        listOfLeaderCard = cardsList;
     }
 
     public ArrayList<LeaderCard> getListOfCards(){
-        return leaderDeck;
+        return listOfLeaderCard;
     }
 
     public LeaderCard drawCard(){
-        return leaderDeck.remove(0);
+        return listOfLeaderCard.remove(0);
+    }
+
+    public void shuffle(){
+        Collections.shuffle(listOfLeaderCard);
+    }
+
+    @Override
+    public LeaderCard getTop() {
+        return listOfLeaderCard.get(0);
     }
 }

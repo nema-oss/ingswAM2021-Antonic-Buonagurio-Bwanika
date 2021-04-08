@@ -11,10 +11,7 @@ import it.polimi.ingsw.gameboard.CardMarket;
 import it.polimi.ingsw.gameboard.GameBoard;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
-import it.polimi.ingsw.player.Board;
-import it.polimi.ingsw.player.Cell;
-import it.polimi.ingsw.player.Player;
-import it.polimi.ingsw.player.PopeRoad;
+import it.polimi.ingsw.player.*;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -158,15 +155,17 @@ public class Game {
         * this method prepare the settings to start a single player match
      */
 
-    /*public void setSinglePlayerCPU(){
+    public void setSinglePlayerCPU(){
 
-        lorenzoPopeRoad = new PopeRoad();
-        actionDeck = new ActionDeck();
+        CellFactory cellFactory = new CellFactory();
+        ActionTokenFactory actionTokenFactory = new ActionTokenFactory();
+        List<Cell> cells = Arrays.asList(cellFactory.getCells());
+        lorenzoPopeRoad = new PopeRoad(cells);
+        ArrayList<ActionToken> actionTokenList = actionTokenFactory.getTokens();
+        actionDeck = new ActionTokenDeck(actionTokenList);
 
 
     }
-
-     */
 
     /*
         * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
@@ -175,7 +174,7 @@ public class Game {
     public void LorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
-        //useActionToken(actionDeck.drawCard());
+        //useActionToken(actionToken.getService);
     }
 
 
@@ -277,6 +276,24 @@ public class Game {
 
     }
 
+    /*
+        * this method move the other players after current player discard resources
+        * and distributes the faith points
+        * @param the number of steps forward for each player
+     */
+
+    public void movePlayersDiscard(int steps){
+
+        listOfPlayers.stream()
+                        .filter(p -> !p.equals(currentPlayer))
+                        .forEach(p-> p.moveOnPopeRoadDiscard(steps));
+
+        listOfPlayers
+                .stream()
+                .filter(p -> p.getPosition().isPopeSpace())
+                .forEach(p -> checkPlayersPosition(p.getPositionIndex()));
+
+    }
 
 }
 

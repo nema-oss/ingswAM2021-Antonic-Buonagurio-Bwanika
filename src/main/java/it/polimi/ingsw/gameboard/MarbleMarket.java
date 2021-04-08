@@ -30,7 +30,7 @@ public class MarbleMarket {
         return freeMarble;
     }
 
-    public ArrayList<Producible> buy(int row, int column) {
+    public List<Marble> buy(int row, int column) {
 
         Marble[] marbles;
         ArrayList<Producible> results = new ArrayList<>();
@@ -65,12 +65,12 @@ public class MarbleMarket {
         }
 
 
-        for (Marble marble : marbles) {
+        /*for (Marble marble : marbles) {
             if (marble.getProduct().isPresent())
                 results.add(marble.getProduct().get());
-        }
+        }*/
 
-        return results;
+        return Arrays.asList(marbles);
 
     }
 }

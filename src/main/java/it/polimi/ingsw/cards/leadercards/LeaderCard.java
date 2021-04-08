@@ -5,7 +5,8 @@ import it.polimi.ingsw.cards.Card;
 
 import java.util.Map;
 
-public class LeaderCard implements Card {
+public abstract class LeaderCard implements Card {
+
     private Map<Resource, Integer> costResource;
     private Map<Resource, Integer> costDevelopment;
     private int victoryPoints;
@@ -32,4 +33,6 @@ public class LeaderCard implements Card {
     public void useLeaderAction(){
 
     }
+
+    public abstract LeaderCardType getLeaderType();
 }

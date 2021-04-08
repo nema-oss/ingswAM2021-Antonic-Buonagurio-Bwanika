@@ -1,7 +1,13 @@
 package it.polimi.ingsw.player;
 
 /*
-       * sketch of the Player class, most methods are unfinished
+    * this class represent the player
+    * @ author René
+ */
+
+/*
+    *TODO: how to handle effects
+    *TODO: how to manage the faith point
  */
 
 import it.polimi.ingsw.Game;
@@ -9,25 +15,18 @@ import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.exception.FullDepositException;
-import it.polimi.ingsw.exception.InsufficientPaymentException;
-import it.polimi.ingsw.exception.NonexistentCardException;
-import it.polimi.ingsw.exception.ProductionRequirementsException;
+import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.gameboard.*;
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
-
 import javax.naming.InsufficientResourcesException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Player{
 
     private GameBoard gameBoard;
     private Game currentGame;
     private String nickname;
-    private ArrayList<LeaderCard> hand;
-    private ArrayList<LeaderCard> activeLeaderCards;
+    private List<LeaderCard> hand;
+    private List<LeaderCard> activeLeaderCards;
     private int victoryPoints;
     private Optional<AuxiliaryDeposit> auxiliaryDeposit;
     private int positionIndex;
@@ -47,7 +46,7 @@ public class Player{
     }
 
 
-    public ArrayList<LeaderCard> getHand() {
+    public List<LeaderCard> getHand() {
         return hand;
     }
 
@@ -55,7 +54,7 @@ public class Player{
         return playerBoard;
     }
 
-    public ArrayList<LeaderCard> getActiveLeaderCards() {
+    public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
     }
 
@@ -110,12 +109,11 @@ public class Player{
 
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
-        checkCardRequirementsBuy(newCard);
+        checkCardRequirementsBuy(newCard); // also check if a discount is applicable
         Map<ResourceType,Integer> cost = newCard.getCost();
         for(ResourceType type: cost.keySet())
             getPlayerBoard().getDeposit().getResources(type,cost.get(type));
         getPlayerBoard().addDevelopmentCard(newCard);
-
 
     }
 
@@ -128,11 +126,22 @@ public class Player{
     private void checkCardRequirementsBuy(DevelopmentCard newCard) throws InsufficientPaymentException {
 
         Map<ResourceType,Integer> cost = newCard.getCost();
-        Map<ResourceType,ArrayList<Resource>> availableResources = getDeposit().getAll();
+        checkActiveDiscount(cost);
+        Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
         for(ResourceType type: cost.keySet()){
             if(cost.get(type) > availableResources.get(type).size())
                 throw new InsufficientPaymentException();
         }
+    }
+
+    /*
+        * this method check if there is an active leader card with discount effect
+        * @param the cost that has to be discounted
+     */
+
+    private void checkActiveDiscount(Map<ResourceType, Integer> cost) {
+
+        // if discount is doable, reduce the cost by the discount amount
     }
 
     /*
@@ -143,16 +152,25 @@ public class Player{
     public void buyResources(int x, int y) throws FullDepositException {
 
         MarbleMarket market = gameBoard.getMarket();
-        ArrayList<Producible> newResources = market.buy(x,y);
-        for(Producible producible: newResources){
-            producible.useEffect(curr
-    }
+        List<Marble> marbles = market.buy(x, y);
+        List<Producible> result = new ArrayList<Producible>();
+        for (Marble marble : marbles) {
+            if (marble.getProduct().isPresent()) {
+                //if false it means that the marble can't produce a new resource without special effects
+                result.add(marble.getProduct().get());
+            } else {
+                // need to check if in list of active cards, there's a card that can transform the marble
+                //if not present, move on with the payment
+                //checkActiveToResourceEffect(marble);
+            }
+        }
 
-    /*
-        * this method manage the allocation of the result from market
-     */
-
-    private void handleProducible( ) {
+        // we have to take the result List<Producible> and make a list of resource, maybe we can solve the casting
+        result.removeIf(producible -> producible.useEffect(getPopeRoad()));
+        List<Resource> newResources = new ArrayList<Resource>();
+        for (Producible producible : result) {
+            newResources.add((Resource) producible);
+        }
 
 
     }
@@ -172,7 +190,16 @@ public class Player{
         Map<ResourceType,Integer>  requirements = card.getProductionRequirements();
         for(ResourceType type: requirements.keySet())
             getPlayerBoard().getDeposit().getResources(type,requirements.get(type));
-        getDeposit().addResources(card.getProductionResults());
+        getStrongbox().addResource(card.getProductionResults());
+
+    }
+
+    /*
+        * this method use the production effect of a leader card
+     */
+
+    public void activateProductionLeader(LeaderCard card) {
+
 
     }
 
@@ -185,7 +212,7 @@ public class Player{
     private void checkCardRequirementsProduction(DevelopmentCard newCard) throws ProductionRequirementsException {
 
         Map<ResourceType,Integer> requirements = newCard.getProductionRequirements();
-        Map<ResourceType,ArrayList<Resource>> availableResources = getDeposit().getAll();
+        Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
         for(ResourceType type: requirements.keySet()){
             if(requirements.get(type) > availableResources.get(type).size())
                 throw new ProductionRequirementsException();
@@ -214,6 +241,18 @@ public class Player{
         Cell position = getPosition();
         addVictoryPoints(position.getPoints());
         if(position.isPopeSpace()) currentGame.checkPlayersPosition(getPositionIndex());
+
+    }
+
+    /*
+        * this method moves the player if a resource is discarded, in this case it doesn't called the vatican Report
+     */
+
+    public void moveOnPopeRoadDiscard(int steps){
+
+        getPopeRoad().move(steps);
+        Cell position = getPosition();
+        addVictoryPoints(position.getPoints());
 
     }
 
@@ -255,10 +294,34 @@ public class Player{
     }
 
     /*
-        * this method check if there are active effects and apply them
+        * this method allows the player to move the deposit's floor before adding new resources
+    */
+
+    public void swapDepositFloors(int x, int y) throws WrongDepositSwapException {
+
+        getDeposit().swapFloors(x,y);
+
+    }
+
+    /*
+        * this method allows the player to add the resource on a floor
      */
 
-    public void checkActiveEffects(){
-        }
+    public void addResourceToDeposit(int floor, Resource resource) throws FullDepositException, Exception {
+
+        getDeposit().addResource(floor,resource);
     }
+
+    /*
+       * this method add a resource to the extra deposit
+     */
+
+    public void addResourceToExtraDeposit(Resource resource){
+
+    }
+
+    /*
+        * this method allows to discard the resources.
+     */
+    public void discardResources(){}
 }

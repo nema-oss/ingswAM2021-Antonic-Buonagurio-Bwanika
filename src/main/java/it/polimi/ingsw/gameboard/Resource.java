@@ -5,6 +5,7 @@ package it.polimi.ingsw.gameboard;
  */
 
 import it.polimi.ingsw.player.Player;
+import it.polimi.ingsw.player.PopeRoad;
 
 public class Resource implements Producible{
 
@@ -23,7 +24,8 @@ public class Resource implements Producible{
         return type;
     }
 
-    public void useEffect(Player p){}
-
+    public boolean useEffect(PopeRoad popeRoad){
+        return false;
+    }
 
 }

@@ -15,6 +15,7 @@ public class ExtraProduction extends LeaderCard {
     private Map<Resource, Integer> costResource;
     private Map<Resource, Integer> productionRequirement;
     private int victoryPoints;
+    private LeaderCardType leaderCardType;
 
     public ExtraProduction(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ArrayList<Producible> productionResult, Map<Resource, Integer> costResource1, Map<Resource, Integer> productionRequirement, int victoryPoints1) {
         super(costResource, costDevelopment, victoryPoints);
@@ -35,10 +36,6 @@ public class ExtraProduction extends LeaderCard {
         return productionResult;
     }
 
-
-
-
-
     public ArrayList<Producible> getProductionResult() {
         return productionResult;
     }
@@ -55,5 +52,10 @@ public class ExtraProduction extends LeaderCard {
     @Override
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    @Override
+    public LeaderCardType getLeaderType(){
+        return leaderCardType;
     }
 }

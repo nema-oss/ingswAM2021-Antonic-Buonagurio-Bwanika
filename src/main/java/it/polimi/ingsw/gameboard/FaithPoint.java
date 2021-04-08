@@ -1,8 +1,11 @@
 package it.polimi.ingsw.gameboard;
 
 import it.polimi.ingsw.player.Player;
+import it.polimi.ingsw.player.PopeRoad;
 
 public class FaithPoint implements Producible {
+
+    public static final int STEPS = 1;
 
     public FaithPoint() {
     }
@@ -11,9 +14,10 @@ public class FaithPoint implements Producible {
      *This method applies the effect of a Faith Point, increasing the player's position by one in his PopeRoad
      */
 
-    public void useEffect(Player p){
+    public boolean useEffect(PopeRoad popeRoad){
 
-        p.moveOnPopeRoad();
+        popeRoad.move();
+        return true;
     }
 
 }

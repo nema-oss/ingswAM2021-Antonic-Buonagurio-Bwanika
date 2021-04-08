@@ -1,5 +1,6 @@
 package it.polimi.ingsw.player;
 
+import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.player.Cell;
 
 import java.util.ArrayList;
@@ -108,4 +109,6 @@ public class PopeRoad {
 
         return vaticanReportSectionsId.get(currentPositionIndex);
     }
+
+
 }

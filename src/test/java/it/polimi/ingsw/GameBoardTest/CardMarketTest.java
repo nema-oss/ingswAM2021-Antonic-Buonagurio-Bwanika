@@ -1,7 +1,12 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.GameBoardTest;
 
 import it.polimi.ingsw.cards.Deck;
+import it.polimi.ingsw.cards.DevelopmentCard;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 public class CardMarketTest {
 
@@ -25,6 +30,18 @@ public class CardMarketTest {
         assertEquals()
 
         */
+
+    }
+
+    @Test
+    @DisplayName("tests purchase of a card at a given index")
+    DevelopmentCard buyCard(){
+
+    }
+
+    @Test
+    @DisplayName("tests return of the card at a given index")
+    DevelopmentCard getCard(){
 
     }
 }

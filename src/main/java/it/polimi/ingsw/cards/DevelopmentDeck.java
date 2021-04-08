@@ -21,4 +21,6 @@ public class DevelopmentDeck implements Deck {
          return developmentDeck.remove(0);
      }
 
+     public void shuffle(){}
+
 }

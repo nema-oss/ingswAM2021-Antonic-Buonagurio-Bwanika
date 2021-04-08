@@ -4,10 +4,7 @@ import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
-import it.polimi.ingsw.gameboard.CardMarket;
-import it.polimi.ingsw.gameboard.GameBoard;
-import it.polimi.ingsw.gameboard.Resource;
-import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.gameboard.*;
 import it.polimi.ingsw.player.Cell;
 import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
@@ -212,7 +209,7 @@ public class Game {
 
     public void useActionToken(ActionTokenDiscard actionToken){
 
-        Market market = gameBoard.getMarket();
+        MarbleMarket market = gameBoard.getMarket();
         market.discardCard(actionToken.getAmount());
         //lostGame();
 
@@ -276,10 +273,10 @@ public class Game {
         * @param coordinates of the selected space in the market
      */
 
-    public ArrayList<Resource> buyResource(int x, int y) {
+    public ArrayList<Marble> buyResource(int x, int y) {
 
-        Market market = gameBoard.getMarket();
-        return market.buy(x,y)
+        MarbleMarket market = gameBoard.getMarket();
+        return market.buy(x,y);
     }
 
     /*
@@ -289,12 +286,12 @@ public class Game {
 
     public void buyCard(int x, int y) {
 
-        CardMarket cardMarket = gameBoar.getCardMarket();
+        CardMarket cardMarket = gameBoard.getCardMarket();
         DevelopmentCard selectedCard = cardMarket.getCard(x,y);
         Map<ResourceType,Integer> cost = selectedCard.getCost();
-        ArrayList<Resource> currentResources:
+        ArrayList<Resource> currentResources;
         for(ResourceType type: cost.keySet()){
-            if(currentPlayer.getDeposit())
+            //if(currentPlayer.getDeposit());
         }
 
     }

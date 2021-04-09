@@ -5,6 +5,7 @@ import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
+import it.polimi.ingsw.exception.FullDepositException;
 import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.gameboard.CardMarket;
@@ -19,6 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Game {
 
 
+    private static final int STARTING_VICTORY_POINTS = 1;
     private ArrayList<Player> listOfPlayers;
     private Player currentPlayer;
     private ArrayList<Player> leaderboard;
@@ -43,8 +45,9 @@ public class Game {
     /*
        * this method start a match and allocate the resources and turn for each player
      */
-    public void startGame(){
+    public void startGame(Map<String, List<LeaderCard>> playerCardChoices, Map<String,ResourceType> playerResourceChoices) throws Exception, FullDepositException {
 
+        /* this part should go outside the model in the player creation part
         for(Player p: listOfPlayers){
             ArrayList<LeaderCard> hand = new ArrayList<LeaderCard>();
             for(int i = 0; i < 4; i++){
@@ -52,19 +55,40 @@ public class Game {
 
             }
             p.setHand(hand);
+
+            Collections.shuffle(listOfPlayers);
+            currentPlayer = listOfPlayers.get(0);
         }
 
-        Collections.shuffle(listOfPlayers);
-        currentPlayer = listOfPlayers.get(0);
-        // player know choose the resource they want, could be passed to the method as a map Player:ResourceType
+         */
 
-        // this is based on the game logic, hardcoded, need a fix
-        for(int i = 0; i < listOfPlayers.size(); i++){
-            //give victory points to third and fourth
-            if(i + 1 == 2 || i + 1 == 4) listOfPlayers.get(i).addVictoryPoints(1);
+        for(String nickname: playerCardChoices.keySet()){
+            getPlayerByNickname(nickname).getHand().removeAll(playerCardChoices.get(nickname));
+        }
+
+        // not exactly correct since a player could choose two different resources
+
+        for(String nickname: playerResourceChoices.keySet()){
+            Player p = getPlayerByNickname(nickname);
+            int playerIndex = listOfPlayers.indexOf(p);
+            if(playerIndex + 1 == 3){
+                p.addResourceToDeposit(1, new Resource(playerResourceChoices.get(nickname)));
+                p.addVictoryPoints(STARTING_VICTORY_POINTS);
+            }
+            else if(playerIndex + 1 == 4){
+                p.addResourceToDeposit(1, new Resource(playerResourceChoices.get(nickname)));
+                p.addResourceToDeposit(2, new Resource(playerResourceChoices.get(nickname)));
+                p.addVictoryPoints(STARTING_VICTORY_POINTS);
+
+            }
+
         }
 
     }
+
+    /*
+
+     */
 
     /*
         * this method return the next player

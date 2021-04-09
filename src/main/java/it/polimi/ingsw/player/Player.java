@@ -6,8 +6,10 @@ package it.polimi.ingsw.player;
  */
 
 /*
-    *TODO: how to handle effects
-    *TODO: how to manage the faith point
+    *TODO: how to handle effects -- Nema
+    * buyResource should check if there is a WhiteToResource effect active and apply it -- Nema
+    * buyDevelopmentCard check if there is a Discount effect active and apply it -- Nema
+    *TODO: how to manage the faith point -- René
  */
 
 import it.polimi.ingsw.Game;
@@ -15,6 +17,7 @@ import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.gameboard.*;
 import javax.naming.InsufficientResourcesException;
@@ -109,6 +112,7 @@ public class Player{
 
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
+        // here I want to check if there is an active card with a discount effect
         checkCardRequirementsBuy(newCard); // also check if a discount is applicable
         Map<ResourceType,Integer> cost = newCard.getCost();
         for(ResourceType type: cost.keySet())
@@ -149,8 +153,9 @@ public class Player{
      * @param card coordinates
      */
 
-    public void buyResources(int x, int y) throws FullDepositException {
+    public List<Resource> buyResources(int x, int y) throws FullDepositException {
 
+        // here I want to check if there is an card with an usable effect
         MarbleMarket market = gameBoard.getMarket();
         List<Marble> marbles = market.buy(x, y);
         List<Producible> result = new ArrayList<Producible>();
@@ -172,6 +177,7 @@ public class Player{
             newResources.add((Resource) producible);
         }
 
+        return newResources;
 
     }
 
@@ -198,10 +204,23 @@ public class Player{
         * this method use the production effect of a leader card
      */
 
-    public void activateProductionLeader(LeaderCard card) {
+    public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException {
 
+        LeaderCard card = activeLeaderCards.get(positionIndex);
+        if(card.getLeaderType() == LeaderCardType.EXTRA_PRODUCTION){
+            Map<Resource,Integer> cost = card.getCostResource(); // here I prefer ResourceType not Resource
+            Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
+            for(Resource resource: cost.keySet()){
+                ResourceType type = resource.getType();
+                if(cost.get(type) > availableResources.get(type).size()) throw new ProductionRequirementsException();
+            }
+
+            //List<Resource> result = card.useLeaderAction(); // here I want the result of leader card production
+            //getStrongbox().addResource(result);
+        }
 
     }
+
 
     /*
      * this method check if the player has the requirements to buy the selected card
@@ -279,17 +298,13 @@ public class Player{
         * @param the leader card
      */
 
-    public void activateLeaderCard(LeaderCard leaderCard) throws Exception{
+    public void activateLeaderCard(int positionIndex) throws Exception{
 
-        if(!hand.contains(leaderCard)) throw new Exception();
+        if(hand.get(positionIndex) == null) throw new Exception(); // this can be fixed in the controller
 
-        for(int i = 0; i < hand.size(); i++){
-            if(hand.get(i).equals(leaderCard)){
-                LeaderCard toPlay = hand.remove(i);
-                toPlay.useLeaderAction();
-                activeLeaderCards.add(toPlay);
-            }
-        }
+        LeaderCard card = hand.get(positionIndex);
+        //card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
+        activeLeaderCards.add(hand.remove(positionIndex));
 
     }
 
@@ -318,6 +333,10 @@ public class Player{
 
     public void addResourceToExtraDeposit(Resource resource){
 
+        // I don't like the optional here, better to implement a isEmpty() method
+        //if(auxiliaryDeposit.isPresent()){
+            //auxiliaryDeposit.addResource(resource);
+        //}
     }
 
     /*

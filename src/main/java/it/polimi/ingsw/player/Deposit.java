@@ -17,15 +17,15 @@ import java.util.*;
 
 public class Deposit {
 
-    private ArrayList<ArrayList<Resource>> warehouse;
-    private Map<ResourceType, ArrayList<Resource>> deposit;
+    private List<List<Resource>> warehouse;
+    //private Map<ResourceType, ArrayList<Resource>> deposit;
     private boolean[] floors;
     private static final int NUMBER_OF_FLOORS = 3;
 
     public Deposit() {
 
-        deposit = new HashMap<ResourceType, ArrayList<Resource>>();
-        warehouse = new ArrayList<ArrayList<Resource>>();
+        //deposit = new HashMap<ResourceType, ArrayList<Resource>>();
+        warehouse = new ArrayList<List<Resource>>(3);
         warehouse.add(new ArrayList<Resource>());
         warehouse.add(new ArrayList<Resource>());
         warehouse.add(new ArrayList<Resource>());
@@ -41,11 +41,11 @@ public class Deposit {
 
         ArrayList<Resource> result = new ArrayList<Resource>();
 
-        for(int i = 0; i < warehouse.size(); i++){
-            if(warehouse.get(i).get(0).getType() == type){
-                if(amount > warehouse.get(i).size()) throw new InsufficientResourcesException();
-                while( amount > 0){
-                    result.add(warehouse.get(i).remove(0));
+        for (List<Resource> resources : warehouse) {
+            if (resources.get(0).getType() == type) {
+                if (amount > resources.size()) throw new InsufficientResourcesException();
+                while (amount > 0) {
+                    result.add(resources.remove(0));
                     amount--;
                 }
             }
@@ -96,7 +96,7 @@ public class Deposit {
             if (warehouse.get(i).size() > i + 1) return false;
             if (warehouse.get(i).stream().map(Resource::getType).distinct().limit(2).count() > 1) return false;
         }
-        return warehouse.stream().flatMap(ArrayList<Resource>::stream).map(Resource::getType).distinct().limit(4).count() <= 3;
+        return warehouse.stream().flatMap(List<Resource>::stream).map(Resource::getType).distinct().limit(4).count() <= 3;
 
     }
 
@@ -105,7 +105,7 @@ public class Deposit {
      *
      */
 
-    public void addResources(ArrayList<Resource> resources) throws FullDepositException {
+    /*public void addResources(ArrayList<Resource> resources) throws FullDepositException {
 
 
         for (Resource res : resources) {
@@ -124,7 +124,9 @@ public class Deposit {
         }
     }
 
-    public void addResources(Resource singleResource) throws Exception {
+     */
+
+    /*public void addResources(Resource singleResource) throws Exception {
 
 
         deposit.get(singleResource.getType()).add(singleResource);
@@ -135,6 +137,8 @@ public class Deposit {
         }
 
     }
+
+     */
 
     /*
     public ArrayList<Resource> getAll() {
@@ -155,7 +159,7 @@ public class Deposit {
     public Map<ResourceType,List<Resource>> getAll(){
 
         Map<ResourceType,List<Resource>> result = new HashMap<ResourceType,List<Resource>>();
-        for(ArrayList<Resource> floor: warehouse){
+        for(List<Resource> floor: warehouse){
             if(floor.size() > 0)
                 result.put(floor.get(0).getType(), new ArrayList<>(floor));
         }
@@ -194,6 +198,12 @@ public class Deposit {
             throw new FullDepositException();
         }
     }
+
+    /*
+        * this method return a resource based on a floor
+        * @param the floor
+        * @return the resource in the given floor
+     */
 
     public Resource get(int floor) {
 

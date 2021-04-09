@@ -60,7 +60,7 @@ public class MarbleMarket {
             //riordina riga
             tempFreeMarble = marbleMarket[row][0];
             if (nCol - 1 >= 0) System.arraycopy(marbleMarket[row], 1, marbleMarket[row], 0, nCol - 1);
-            marbleMarket[nCol-1][row]=freeMarble;
+            marbleMarket[row][nCol-1]=freeMarble;
             freeMarble= tempFreeMarble;
         }
 

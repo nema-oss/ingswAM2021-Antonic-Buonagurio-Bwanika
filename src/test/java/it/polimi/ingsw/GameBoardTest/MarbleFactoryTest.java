@@ -4,34 +4,43 @@ import it.polimi.ingsw.gameboard.*;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarbleFactoryTest {
-    private MarbleFactory marbleFactory;
 
-    @BeforeEach
-    void setUp(){
 
-        marbleFactory = new MarbleFactory();
+    @Test
+    public void setUp(){
 
+        ArrayList<Marble> marbles;
+        MarbleFactory marbleFactory = new MarbleFactory();
+        marbles = marbleFactory.getMarbles();
+        assertEquals(13, marbles.size());
     }
 
     @Test
-    void getMarblesTest(){
+    public void getMarblesTest(){
 
-        ArrayList<Marble> marbles = new ArrayList<>();
-        ArrayList<Marble> oneColor = new ArrayList<>();
-
+        ArrayList<Marble> marbles;
+        MarbleFactory marbleFactory = new MarbleFactory();
         marbles = marbleFactory.getMarbles();
 
-        for(MarbleType color : MarbleType.values()) {
+        ArrayList<Marble> oneColor = new ArrayList<>();
 
-            for (Marble marble : marbles)
+        for(MarbleType color : MarbleType.values()) {
+            System.out.println(color);
+            oneColor.clear();
+
+            for (Marble marble : marbles) {
                 if (marble.getColor().equals(color))
                     oneColor.add(marble);
+            }
+
+
 
             if (color.equals(MarbleType.WHITE)) {
                 assertEquals(4, oneColor.size());
@@ -71,7 +80,7 @@ public class MarbleFactoryTest {
                 assertEquals(1, oneColor.size());
                 for (Marble m : oneColor)
                     if(m.getProduct().isPresent())
-                        assertEquals("FAITH", m.getProduct().get().getType());
+                        assertEquals(FaithType.FAITH, m.getProduct().get().getType());
             }
         }
 

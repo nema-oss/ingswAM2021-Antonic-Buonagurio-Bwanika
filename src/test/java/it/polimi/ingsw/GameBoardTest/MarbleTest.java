@@ -20,9 +20,9 @@ public class MarbleTest {
             assertEquals(ResourceType.SHIELD, marble.getProduct().get().getType());
         assertEquals(MarbleType.BLUE, marble.getColor());
 
-        marble = new Marble(MarbleType.RED, new FaithPoint());
+        marble = new Marble(MarbleType.RED, new FaithPoint(FaithType.FAITH));
         if(marble.getProduct().isPresent())
-            assertEquals("FAITH", marble.getProduct().get().getType());
+            assertEquals(FaithType.FAITH, marble.getProduct().get().getType());
         assertEquals(MarbleType.RED, marble.getColor());
     }
 }

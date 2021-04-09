@@ -6,9 +6,9 @@ package it.polimi.ingsw.gameboard;
 
 public enum MarbleType {
     WHITE,
-    RED,
     BLUE,
     PURPLE,
     GREY,
-    YELLOW
+    YELLOW,
+    RED
 }

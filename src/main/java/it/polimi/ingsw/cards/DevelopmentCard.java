@@ -1,5 +1,6 @@
 package it.polimi.ingsw.cards;
 
+import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
@@ -17,10 +18,10 @@ public class DevelopmentCard implements Card {
     private DevelopmentCardType type;
     private Map<ResourceType, Integer> cost;
     private Map<ResourceType, Integer> productionRequirements;
-    private ArrayList<Resource> productionResults;
+    private ArrayList<Producible> productionResults;
     private int victoryPoints;
 
-    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Resource> productionResults, int victoryPoints) {
+    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
         this.level = level;
         this.type = type;
         this.cost = cost;
@@ -61,7 +62,7 @@ public class DevelopmentCard implements Card {
      * this method returns the resulting resources of the production of the developmentCard
      * @return productionResults(type: Map<Resource, Integer>) of DevelopmentCard
      */
-    public ArrayList<Resource> getProductionResults() {
+    public ArrayList<Producible> getProductionResults() {
         return productionResults;
     }
     /*
@@ -73,7 +74,7 @@ public class DevelopmentCard implements Card {
         return victoryPoints;
     }
 
-    public ArrayList<Resource> activateProduction(ArrayList<Resource> resources) throws Exception {
+    public ArrayList<Producible> activateProduction(ArrayList<Resource> resources) throws Exception {
 
         Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
 

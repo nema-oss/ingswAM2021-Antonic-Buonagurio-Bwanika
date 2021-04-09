@@ -13,13 +13,12 @@ import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 import it.polimi.ingsw.player.Board;
 import it.polimi.ingsw.player.Cell;
-import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Game {
+ /*public class Game {
 
 
     private ArrayList<Player> listOfPlayers;
@@ -34,18 +33,14 @@ public class Game {
     private int lorenzoPoints;
     private int lastPopeSpace;
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
-    /*
-        *constructor
-     */
+
     Game(){
 
 
 
     }
 
-    /*
-       * this method start a match and allocate the resources and turn for each player
-     */
+
     public void startGame(){
 
         for(Player p: listOfPlayers){
@@ -69,9 +64,6 @@ public class Game {
 
     }
 
-    /*
-        * this method return the next player
-     */
 
     public Player nextPlayer(){
 
@@ -86,9 +78,7 @@ public class Game {
         return nextPlayer;
     }
 
-    /*
-        * this method receive a nickname and return the correspondent player
-     */
+
     public Player getPlayerByNickname(String nickname) throws Exception {
 
 
@@ -101,39 +91,21 @@ public class Game {
 
     }
 
-    /*
-        * this method add a new player to the match
-     */
 
-    public void addPlayer(Player p){
-        listOfPlayers.add(p);
-    }
 
-    /*
-        * this method return the winner of the match
-     */
     public Player getWinner() {
         return winner;
     }
 
 
-    /*
-       * this method return the list of players in the current match
-     */
 
     public ArrayList<Player> getListOfPlayers() {
         return listOfPlayers;
     }
 
-    /*
-        * this method return the current player
-     */
+
     public Player getCurrentPlayer(){ return currentPlayer;}
 
-    /*
-        * this method is called each time a player arrives to a pope Space and
-        * check the position of all the players in the popeRoad and allocates the victory points
-     */
 
     public void checkPlayersPosition(int currentPlayerPositionIndex) {
 
@@ -154,23 +126,6 @@ public class Game {
 
     }
 
-    /*
-        * this method prepare the settings to start a single player match
-     */
-
-    /*public void setSinglePlayerCPU(){
-
-        lorenzoPopeRoad = new PopeRoad();
-        actionDeck = new ActionDeck();
-
-
-    }
-
-     */
-
-    /*
-        * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
-    */
 
     public void LorenzoTurn(){
 
@@ -180,11 +135,6 @@ public class Game {
 
 
 
-    /*
-     * this method is called each time a player arrives to a pope Space and
-     * check the position of all the players in the popeRoad and allocates the victory points.
-     * (single player mode)
-     */
     public void checkLorenzoPosition(int lorenzoPosition){
 
         if(lorenzoPosition > popeSpaces.peek()){
@@ -196,10 +146,7 @@ public class Game {
         else if(lorenzoPosition == lastPopeSpace) lostGame();
     }
 
-    /*
-     * this method use the selected action Token in a single player match
-     * @param the action token (type: ActionTokenMove)
-    */
+
 
     public void useActionToken(ActionTokenMove actionToken){
 
@@ -211,10 +158,7 @@ public class Game {
 
     }
 
-    /*
-     * this method use the selected action Token in a single player match
-     * @param the action token (type: ActionTokenDiscard)
-    */
+
 
     public void useActionToken(ActionTokenDiscard actionToken){
 
@@ -224,15 +168,9 @@ public class Game {
 
     }
 
-    /*
-        * this method manage the loss in a single player match
-     */
+
     private void lostGame() {
     }
-
-    /*
-        * this method manage the end of match and assign the winner
-     */
 
     public void endGame(){
 
@@ -246,10 +184,6 @@ public class Game {
 
     }
 
-    /*
-        * this method add the victory points to the player based on player's card
-        * @param the player
-     */
 
     private int checkCardsPoints(Player p) {
 
@@ -266,10 +200,6 @@ public class Game {
         return points;
     }
 
-    /*
-     * this method add the victory points to the player based on player's resources
-     * @param the player
-     */
 
     private int checkResourcePoints(Player p) {
 
@@ -278,6 +208,6 @@ public class Game {
     }
 
 
-}
+} */
 
 

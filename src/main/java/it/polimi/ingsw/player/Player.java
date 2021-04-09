@@ -4,7 +4,7 @@ package it.polimi.ingsw.player;
        * sketch of the Player class, most methods are unfinished
  */
 
-import it.polimi.ingsw.Game;
+
 import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
@@ -14,15 +14,15 @@ import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.exception.ProductionRequirementsException;
 import it.polimi.ingsw.gameboard.*;
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class Player{
+ public class Player{}
 
+/*
     private GameBoard gameBoard;
     private Game currentGame;
     private String nickname;
@@ -100,11 +100,7 @@ public class Player{
         this.nickname = nickname;
     }
 
-    /*
-        * this method let the player buy a DevelopmentCard from the market
-        * @param card coordinates
-        * @exception player has not enough resources to buy the card or card is not present
-     */
+
 
     public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonexistentCardException, InsufficientResourcesException {
 
@@ -119,11 +115,7 @@ public class Player{
 
     }
 
-    /*
-        * this method check if the player has the requirements to buy the selected card
-        * @param the selected card
-        * @exception player has not enough resources to buy the card or card is not present
-     */
+
 
     private void checkCardRequirementsBuy(DevelopmentCard newCard) throws InsufficientPaymentException {
 
@@ -135,22 +127,17 @@ public class Player{
         }
     }
 
-    /*
-     * this method let the player buy a resources from the market
-     * @param card coordinates
-     */
+
 
     public void buyResources(int x, int y) throws FullDepositException {
 
         MarbleMarket market = gameBoard.getMarket();
         ArrayList<Producible> newResources = market.buy(x,y);
         for(Producible producible: newResources){
-            producible.useEffect(curr
+           // producible.useEffect(curr
     }
 
-    /*
-        * this method manage the allocation of the result from market
-     */
+
 
     private void handleProducible( ) {
 
@@ -159,11 +146,6 @@ public class Player{
 
 
 
-    /*
-     * this method let the player activate the production effect of his cards
-     * @param card coordinates
-     * @exception player has not enough resources to activate the card or player can't store all resources
-     */
 
     public void activateProduction(int positionIndex) throws FullDepositException, ProductionRequirementsException, InsufficientResourcesException {
 
@@ -176,11 +158,6 @@ public class Player{
 
     }
 
-    /*
-     * this method check if the player has the requirements to buy the selected card
-     * @param the selected card
-     * @exception player has not enough resources to buy the card or card is not present
-     */
 
     private void checkCardRequirementsProduction(DevelopmentCard newCard) throws ProductionRequirementsException {
 
@@ -193,10 +170,6 @@ public class Player{
 
     }
 
-    /*
-        *this method move the player on the popeRoad of the given steps
-        *@param amount of steps
-     */
 
     public void moveOnPopeRoad(int steps){
 
@@ -204,10 +177,6 @@ public class Player{
         if(getPosition().isPopeSpace()) currentGame.checkPlayersPosition(getPositionIndex());
         ;
     }
-
-    /*
-     *this method move the player on the popeRoad of one single step
-     */
 
     public void moveOnPopeRoad(){
         getPopeRoad().move();
@@ -217,10 +186,7 @@ public class Player{
 
     }
 
-    /*
-        * this method discard a Leader card from hand and move the player on poperoad
-        * @param the card to discard (type: LeaderCard)
-     */
+
     public void discardLeader(LeaderCard leaderCard) throws Exception {
 
         if(!hand.contains(leaderCard)) throw new Exception();
@@ -230,15 +196,7 @@ public class Player{
 
     }
 
-    /*
-        * this method activate the effect of a Leader Card
-        * @param the leader Card selected
-     */
 
-    /*
-        *this method allows the player to use a leaderCard from his hand
-        * @param the leader card
-     */
 
     public void activateLeaderCard(LeaderCard leaderCard) throws Exception{
 
@@ -254,11 +212,8 @@ public class Player{
 
     }
 
-    /*
-        * this method check if there are active effects and apply them
-     */
 
     public void checkActiveEffects(){
         }
     }
-}
+*/

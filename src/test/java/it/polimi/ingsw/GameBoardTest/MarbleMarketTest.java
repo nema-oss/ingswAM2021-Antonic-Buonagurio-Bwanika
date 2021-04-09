@@ -8,47 +8,54 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MarbleMarketTest {
 
-    private MarbleMarket marbleMarket;
-    private Marble freeMarble;
-
-    @BeforeEach
+    @Test
     public void setUp(){
 
         MarbleFactory marbleFactory = new MarbleFactory();
-        ArrayList<Marble> marbles = marbleFactory.getMarbles();
-        marbleMarket = new MarbleMarket(3,4, marbles);
+        ArrayList<Marble> marbles = (marbleFactory.getMarbles());
+        MarbleMarket marbleMarket = new MarbleMarket(3,4, marbles);
 
         assertEquals(1, marbles.size());
 
-        freeMarble = marbles.get(0);
+        Marble freeMarble = marbles.get(0);
     }
 
     @Test
     public void getFreeMarbleTest(){
+        MarbleFactory marbleFactory = new MarbleFactory();
+        ArrayList<Marble> marbles = (marbleFactory.getMarbles());
+        MarbleMarket marbleMarket = new MarbleMarket(3,4, marbles);
+        Marble freeMarble = marbles.get(0);
+
         assertEquals(freeMarble, marbleMarket.getFreeMarble());
     }
 
     @Test
     public void buyTest(){
+        MarbleFactory marbleFactory = new MarbleFactory();
+        ArrayList<Marble> marbles = (marbleFactory.getMarbles());
+        MarbleMarket marbleMarket = new MarbleMarket(3,4, marbles);
+        Marble freeMarble = marbles.get(0);
 
         //row==-1: pesca colonna
-        for(int i=0; i<4; i++) {
-            ArrayList<Marble> marbles = new ArrayList<>();
-            for(int j=0; j<3; j++)
-                marbles.add(marbleMarket.getMarble(j,i));
-            assertEquals(marbles, marbleMarket.buy(-1,i));
+        for(int j=0; j<4; j++) {
+            ArrayList<Marble> marbles2 = new ArrayList<>();
+            for(int i=0; i<3; i++)
+                marbles2.add(marbleMarket.getMarble(i,j));
+            assertEquals(marbles2, marbleMarket.buy(-1,j));
         }
 
 
         //column==-1 pesca riga
         for(int i=0; i<3; i++) {
-            ArrayList<Marble> marbles = new ArrayList<>();
+            ArrayList<Marble> marbles3 = new ArrayList<>();
             for(int j=0; j<4; j++)
-                marbles.add(marbleMarket.getMarble(i,j));
-            assertEquals(marbles, marbleMarket.buy(i, -1));
+                marbles3.add(marbleMarket.getMarble(i,j));
+            assertEquals(marbles3, marbleMarket.buy(i, -1));
         }
 
     }

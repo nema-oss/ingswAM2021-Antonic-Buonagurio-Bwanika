@@ -4,13 +4,13 @@ package it.polimi.ingsw.gameboard;
  * this class represent the Resources
  */
 
-import it.polimi.ingsw.player.Player;
-
 public class Resource implements Producible{
 
-    private ResourceType type;
+    private final ResourceType type;
+    private String className;
 
     public Resource(ResourceType type){
+        this.className = getClass().getName();
         this.type = type;
     }
 
@@ -23,6 +23,11 @@ public class Resource implements Producible{
         return type;
     }
 
-    public void useEffect(Player p){}  //?????
+    @Override
+    public String getClassName() {
+        return className;
+    }
+
+    //public void useEffect(Player p){}  //?????
 
 }

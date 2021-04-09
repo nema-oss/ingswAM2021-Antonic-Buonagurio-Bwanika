@@ -2,42 +2,36 @@ package it.polimi.ingsw.gameboard;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-import it.polimi.ingsw.cards.DevelopmentCard;
-
+import com.google.gson.GsonBuilder;
 
 public class MarbleFactory {
 
     private Marble[] marbles;
 
-    public void factoryMarbles() {
+    public MarbleFactory() { }
+
+    public ArrayList<Marble> getMarbles() {
         try {
-            Reader reader = new FileReader("marbles.json");
+            Reader reader = new FileReader("src/main/resources/marbles.json");
 
-            Gson gson = new Gson();
+            final GsonBuilder builder = new GsonBuilder();
 
-            // Convert JSON File to Java Object
+            builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
+            Gson gson = builder.create();
+
             marbles = gson.fromJson(reader, Marble[].class);
 
-            reader.close();
-
-        } catch (IOException e){
+        } catch (FileNotFoundException e){
             e.printStackTrace();
         }
 
-
-    }
-
-    public ArrayList<Marble> getMarbles() {
-
         return new ArrayList<>(Arrays.asList(marbles));
+
+
     }
 }

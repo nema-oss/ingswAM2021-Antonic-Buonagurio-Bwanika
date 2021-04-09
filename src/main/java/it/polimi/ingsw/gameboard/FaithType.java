@@ -1,5 +1,5 @@
 package it.polimi.ingsw.gameboard;
 
-public enum FaithType {
+public enum FaithType implements ProducibleType{
     FAITH
 }

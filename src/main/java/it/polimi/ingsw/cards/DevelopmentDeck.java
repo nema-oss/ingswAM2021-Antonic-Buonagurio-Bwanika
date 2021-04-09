@@ -8,13 +8,13 @@ import java.util.Collections;
 
 public class DevelopmentDeck implements Deck {
 
-     private final ArrayList<DevelopmentCard> developmentDeck;
+     private ArrayList<DevelopmentCard> developmentDeck;
 
-     public DevelopmentDeck(ArrayList<DevelopmentCard> cardsList){
-         developmentDeck = cardsList;
-     }
+    public DevelopmentDeck(ArrayList<DevelopmentCard> cardList) {
+        developmentDeck=cardList;
+    }
 
-     public ArrayList<DevelopmentCard> getListOfCards(){
+    public ArrayList<DevelopmentCard> getListOfCards(){
         return developmentDeck;
     }
 

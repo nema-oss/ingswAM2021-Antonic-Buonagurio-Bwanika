@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MarbleMarketTest {
 
@@ -43,7 +44,7 @@ public class MarbleMarketTest {
 
         //row==-1: pesca colonna
         for(int j=0; j<4; j++) {
-            ArrayList<Marble> marbles2 = new ArrayList<>();
+            List<Marble> marbles2 = new ArrayList<>();
             for(int i=0; i<3; i++)
                 marbles2.add(marbleMarket.getMarble(i,j));
             assertEquals(marbles2, marbleMarket.buy(-1,j));
@@ -52,7 +53,7 @@ public class MarbleMarketTest {
 
         //column==-1 pesca riga
         for(int i=0; i<3; i++) {
-            ArrayList<Marble> marbles3 = new ArrayList<>();
+            List<Marble> marbles3 = new ArrayList<>();
             for(int j=0; j<4; j++)
                 marbles3.add(marbleMarket.getMarble(i,j));
             assertEquals(marbles3, marbleMarket.buy(i, -1));

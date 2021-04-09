@@ -1,6 +1,7 @@
 package it.polimi.ingsw.cards.leadercards;
 
 
+import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.exception.LeaderCardException;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
@@ -15,17 +16,11 @@ import java.util.Map;
 public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
 
     private final ResourceType storageType;
-    private Map<ResourceType, Integer> costResource;
-    private Map<ResourceType, Integer> costDevelopment;
-    private int victoryPoints;
     private LeaderCardType leaderCardType;
 
-    public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ResourceType storageType, Map<ResourceType, Integer> costResource1, Map<ResourceType, Integer> costDevelopment1, int victoryPoints1, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints, isActive);
+    public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType storageType, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints);
         this.storageType = storageType;
-        this.costResource = costResource1;
-        this.costDevelopment = costDevelopment1;
-        this.victoryPoints = victoryPoints1;
         this.leaderCardType = leaderCardType;
     }
 

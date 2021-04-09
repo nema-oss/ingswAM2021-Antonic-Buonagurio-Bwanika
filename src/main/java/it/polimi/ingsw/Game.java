@@ -239,13 +239,13 @@ public class Game {
      * @param the action token (type: ActionTokenDiscard)
     */
 
-    public void useActionToken(ActionTokenDiscard actionToken){
+  /*  public void useActionToken(ActionTokenDiscard actionToken){
 
         CardMarket market = gameBoard.getCardMarket();
         market.discardCard(actionToken.getAmount(), actionToken.getType());
         //lostGame();
 
-    }
+    } */
 
     /*
         * this method manage the loss in a single player match

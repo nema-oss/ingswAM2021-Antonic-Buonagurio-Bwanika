@@ -31,7 +31,7 @@ public class MarbleMarket {
         return freeMarble;
     }
 
-    public ArrayList<Marble> buy(int row, int column) {
+    public List<Marble> buy(int row, int column) {
 
         Marble[] marbles;
         Marble tempFreeMarble;
@@ -65,7 +65,7 @@ public class MarbleMarket {
         }
 
 
-        return new ArrayList<>(Arrays.asList(marbles));
+        return Arrays.asList(marbles);
 
     }
 

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.gameboard;
 
+import it.polimi.ingsw.player.PopeRoad;
+
 public class FaithPoint implements Producible {
 
     FaithType type;
     private String className;
+    public static final int STEPS = 1;
 
     public FaithPoint(FaithType type) {
         this.className = getClass().getName();
@@ -18,13 +21,15 @@ public class FaithPoint implements Producible {
     public String getClassName() {
         return className;
     }
+
     /*
      *This method applies the effect of a Faith Point, increasing the player's position by one in his PopeRoad
      */
 
-   /* public void useEffect(Player p){
+   public boolean useEffect(PopeRoad popeRoad){
 
-        p.getPopeRoad().move();
-    } */
+        popeRoad.move();
+        return true;
+    }
 
 }

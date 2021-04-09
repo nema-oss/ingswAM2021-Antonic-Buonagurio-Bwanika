@@ -23,7 +23,9 @@ public class CardMarket {
         this.nCol = nCol;
         this.nRow = nRow;
 
+        cardMarket = new DevelopmentDeck[nRow][nCol];
         ArrayList<DevelopmentCard> cards = deck.getListOfCards();
+
         HashMap<DevelopmentCardType, ArrayList<DevelopmentCard>> mapByColor = new HashMap<>();
 
 
@@ -34,24 +36,25 @@ public class CardMarket {
             mapByColor.get(card.getType()).add(card);
         }
 
-
         int col =0;
 
-        for(DevelopmentCardType color: mapByColor.keySet()){
+        for(DevelopmentCardType color : mapByColor.keySet()){
             ArrayList<DevelopmentCard> column = mapByColor.get(color);
             column.sort((o1, o2) -> -1 * Integer.compare(o1.getLevel(), o2.getLevel()));
 
             int i,row;
-            ArrayList<DevelopmentCard> miniDeck = new ArrayList<>();
+            int length = column.size();
+
             for(row=0; row<nRow; row++) {
+                ArrayList<DevelopmentCard> miniDeck = new ArrayList<>();
 
-                for (i = 0; i < column.size() - 1 && column.get(i).getLevel() == column.get(i + 1).getLevel(); i++)
-                    miniDeck.add(column.get(i));
-                if (i < column.size())
-                    miniDeck.add(column.get(i));
+                for(i=0; i < length/nRow; i++)
+                    miniDeck.add(column.remove(0));
 
-                cardMarket[row][col] = new DevelopmentDeck(miniDeck);
+                DevelopmentDeck cell = new DevelopmentDeck(miniDeck);
+                cardMarket[row][col] = cell;
                 cardMarket[row][col].shuffle();
+
             }
 
             col++;

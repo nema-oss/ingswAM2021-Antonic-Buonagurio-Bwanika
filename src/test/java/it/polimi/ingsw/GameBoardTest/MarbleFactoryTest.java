@@ -32,7 +32,6 @@ public class MarbleFactoryTest {
         ArrayList<Marble> oneColor = new ArrayList<>();
 
         for(MarbleType color : MarbleType.values()) {
-            System.out.println(color);
             oneColor.clear();
 
             for (Marble marble : marbles) {

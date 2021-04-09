@@ -1,5 +1,6 @@
 package it.polimi.ingsw.cards.leadercards;
 
+import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
@@ -12,17 +13,13 @@ import java.util.stream.Collectors;
 public class ExtraProduction extends LeaderCard<ArrayList<Producible>> {
 
     private ArrayList<Producible> productionResult;
-    private Map<ResourceType, Integer> costResource;
     private Map<ResourceType, Integer> productionRequirement;
-    private int victoryPoints;
     private LeaderCardType leaderCardType;
 
-    public ExtraProduction(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ArrayList<Producible> productionResult, Map<ResourceType, Integer> costResource1, Map<ResourceType, Integer> productionRequirement, int victoryPoints1, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints, isActive);
+    public ExtraProduction(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ArrayList<Producible> productionResult, Map<ResourceType, Integer> productionRequirement, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints);
         this.productionResult = productionResult;
-        this.costResource = costResource1;
         this.productionRequirement = productionRequirement;
-        this.victoryPoints = victoryPoints1;
         this.leaderCardType = leaderCardType;
     }
 

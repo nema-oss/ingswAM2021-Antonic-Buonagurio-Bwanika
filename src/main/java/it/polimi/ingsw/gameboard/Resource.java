@@ -4,10 +4,12 @@ package it.polimi.ingsw.gameboard;
  * this class represent the Resources
  */
 
+import it.polimi.ingsw.player.PopeRoad;
+
 public class Resource implements Producible{
 
     private final ResourceType type;
-    private String className;
+    private final String className;
 
     public Resource(ResourceType type){
         this.className = getClass().getName();
@@ -19,8 +21,9 @@ public class Resource implements Producible{
      * @return resource's type (type:ResourceType)
     */
 
+    @Override
     public ResourceType getType() {
-        return type;
+        return type ;
     }
 
     @Override
@@ -28,6 +31,8 @@ public class Resource implements Producible{
         return className;
     }
 
-    //public void useEffect(Player p){}  //?????
+    public boolean useEffect(PopeRoad popeRoad){
+        return false;
+    }
 
 }

@@ -11,13 +11,11 @@ public abstract class LeaderCard <T> implements Card {
     private Map<ResourceType, Integer> costResource;
     private Map<Map<ResourceType, Integer> , Integer> costDevelopment;
     private int victoryPoints;
-    private Boolean isActive;
 
-    public LeaderCard(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive) {
+    public LeaderCard(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints) {
         this.costResource = costResource;
         this.costDevelopment = costDevelopment;
         this.victoryPoints = victoryPoints;
-        this.isActive = isActive;
     }
 
     public Map<ResourceType, Integer> getCostResource() {
@@ -41,11 +39,4 @@ public abstract class LeaderCard <T> implements Card {
 
     public abstract T useEffect() ;
 
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void activateEffect(){
-        isActive = true;
-    }
 }

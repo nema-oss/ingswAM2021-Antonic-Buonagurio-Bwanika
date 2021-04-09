@@ -8,7 +8,6 @@ import java.util.Map;
 public class WhiteToResource extends LeaderCard<Resource>{
 
     private ResourceType result;
-    private Map<ResourceType, Integer> costResource;
     private int victoryPoints;
     private LeaderCardType leaderCardType;
 
@@ -16,11 +15,9 @@ public class WhiteToResource extends LeaderCard<Resource>{
         return result;
     }
 
-    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ResourceType result, Map<ResourceType, Integer> costResource1, int victoryPoints1, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints, isActive);
+    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints);
         this.result = result;
-        this.costResource = costResource1;
-        this.victoryPoints = victoryPoints1;
         this.leaderCardType = leaderCardType;
     }
 
@@ -29,10 +26,6 @@ public class WhiteToResource extends LeaderCard<Resource>{
         return new Resource(result);
     }
 
-    @Override
-    public Map<ResourceType, Integer> getCostResource() {
-        return costResource;
-    }
 
     @Override
     public int getVictoryPoints() {

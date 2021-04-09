@@ -15,9 +15,7 @@ package it.polimi.ingsw.player;
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
-import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
-import it.polimi.ingsw.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.cards.leadercards.LeaderCardType;
+import it.polimi.ingsw.cards.leadercards.*;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.gameboard.*;
 import javax.naming.InsufficientResourcesException;
@@ -146,6 +144,15 @@ public class Player{
     private void checkActiveDiscount(Map<ResourceType, Integer> cost) {
 
         // if discount is doable, reduce the cost by the discount amount
+        for(LeaderCard leaderCard: activeLeaderCards){
+            if(leaderCard instanceof Discount){
+                for(ResourceType type : cost.keySet()){
+                    if(type.equals(((Discount) leaderCard).getDiscountType()) && cost.get(type)>0){
+                       cost.put(type, cost.get(type) - ((Discount) leaderCard).getDiscountAmount());
+                    }
+                }
+            }
+        }
     }
 
     /*
@@ -167,7 +174,12 @@ public class Player{
                 // need to check if in list of active cards, there's a card that can transform the marble
                 //if not present, move on with the payment
                 //checkActiveToResourceEffect(marble);
-
+                for(LeaderCard leaderCard : activeLeaderCards){
+                    if(leaderCard instanceof WhiteToResource){
+                        result.add(((WhiteToResource) leaderCard).useEffect());
+                    }
+                    break; //ugly but for now it's the only way to use just 1 effect out of 2 possible WhiteToResource LeaderCards; Player needs to be asked which to use
+                }
             }
         }
 
@@ -303,7 +315,7 @@ public class Player{
         if(hand.get(positionIndex) == null) throw new Exception(); // this can be fixed in the controller
 
         LeaderCard card = hand.get(positionIndex);
-        card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
+        //card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
         activeLeaderCards.add(hand.remove(positionIndex));
 
     }

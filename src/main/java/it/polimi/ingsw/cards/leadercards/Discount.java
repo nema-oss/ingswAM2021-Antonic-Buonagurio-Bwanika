@@ -7,18 +7,16 @@ import it.polimi.ingsw.gameboard.ResourceType;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Discount extends LeaderCard<ArrayList<Resource>>{
+public class Discount extends LeaderCard<Integer>{
 
     private ResourceType discountType;
     private int discountAmount;
-    private ArrayList<Resource> result;
     private LeaderCardType leaderCardType;
 
-    public Discount(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ResourceType discountType, int discountAmount, ArrayList<Resource> result, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints, isActive);
+    public Discount(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, ResourceType discountType, int discountAmount, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints);
         this.discountType = discountType;
         this.discountAmount = discountAmount;
-        this.result = result;
         this.leaderCardType = leaderCardType;
     }
 
@@ -31,12 +29,8 @@ public class Discount extends LeaderCard<ArrayList<Resource>>{
     }
 
     @Override
-    public ArrayList<Resource> useEffect(){
-
-        result = new ArrayList<Resource>();
-        for(int i = 0; i < discountAmount; i++)
-            result.add(new Resource(discountType));
-        return result;
+    public Integer useEffect(){ //useless as well
+        return discountAmount;
     }
 
     public LeaderCardType getLeaderType(){

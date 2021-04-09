@@ -18,6 +18,7 @@ public class ExtraDeposit extends LeaderCard {
     private Map<Resource, Integer> costResource;
     private Map<Resource, Integer> costDevelopment;
     private int victoryPoints;
+    private LeaderCardType leaderCardType;
 
     public ExtraDeposit(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ResourceType storageType, Map<Resource, Integer> costResource1, Map<Resource, Integer> costDevelopment1, int victoryPoints1) {
         super(costResource, costDevelopment, victoryPoints);
@@ -50,5 +51,10 @@ public class ExtraDeposit extends LeaderCard {
     @Override
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    @Override
+    public LeaderCardType getLeaderType(){
+        return leaderCardType;
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.gameboard.ResourceType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /*
     *this class represent the strongbox in the player's game board
@@ -23,7 +24,7 @@ public class Strongbox {
         *this method add resources to the strongbox
         *@param the list of resources to add
      */
-    public void addResource(ArrayList<Resource> resources){
+    public void addResource(List<Resource> resources){
 
         for(Resource res: resources){
             strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<Resource>());

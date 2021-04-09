@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ class DepositTest {
         resources = new ArrayList<Resource>();
         Resource gold = new Resource(ResourceType.COIN);
         Resource servant1 = new Resource(ResourceType.SERVANT);
-        Resource servant2 = new Resource(ResourceType.SERVANT);
+        Resource servant2 = new Resource(ResourceType.STONE);
         resources.add(gold);
         resources.add(servant1);
         resources.add(servant2);
@@ -34,8 +35,9 @@ class DepositTest {
 
     @Test
     @DisplayName("Testing adding and getting resources from the deposit")
-    void getResources() throws FullDepositException, InsufficientResourcesException {
+    void getResources() throws FullDepositException, Exception {
 
+        /*
         deposit = new Deposit();
         Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e->1)));
         deposit.addResources(resources);
@@ -49,12 +51,26 @@ class DepositTest {
         for(ResourceType type: freq.keySet()){
             assertThrows(InsufficientResourcesException.class, () -> deposit.getResources(type,freq.get(type)));
         }
+
+         */
+
+        deposit = new Deposit();
+        deposit.addResource(0,singleResource);
+        assertEquals(deposit.get(0), singleResource);
+        for(int i = 0; i < resources.size(); i++){
+            deposit.addResource(i+1,resources.get(i));
+
+        }
+        for(int i = 0; i < resources.size(); i++){
+            assertEquals(resources.get(i),deposit.get(i+1));
+        }
     }
 
     @Test
     @DisplayName("Testing the full deposit case")
-    void checkDepositRules() throws FullDepositException {
+    void checkDepositRules() throws FullDepositException, Exception {
 
+        /*
         ArrayList<Resource> testResources = new ArrayList<Resource>();
         deposit = new Deposit();
         testResources.add(new Resource(ResourceType.STONE));
@@ -62,13 +78,25 @@ class DepositTest {
         testResources.add(new Resource(ResourceType.SHIELD));
         testResources.add(new Resource(ResourceType.SHIELD));
         assertThrows(FullDepositException.class, ()->deposit.addResources(testResources));
+
+         */
+
+        deposit = new Deposit();
+        deposit.addResource(1, new Resource(ResourceType.STONE));
+        assertThrows(FullDepositException.class, () -> deposit.addResource(1, new Resource(ResourceType.STONE)));
+        assertThrows(FullDepositException.class, () -> deposit.addResource(2, new Resource(ResourceType.STONE)));
+        deposit.addResource(2, new Resource(ResourceType.SHIELD));
+        deposit.addResource(2, new Resource(ResourceType.SHIELD));
+        assertThrows(FullDepositException.class, ()-> deposit.addResource(2, new Resource(ResourceType.SHIELD)));
+
     }
 
 
     @Test
     @DisplayName("Testing the getting all functionality of the deposit")
-    void getAll() throws FullDepositException {
+    void getAll() throws FullDepositException, Exception {
 
+        /*
         deposit = new Deposit();
         Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e -> 1)));
         deposit.addResources(resources);
@@ -76,5 +104,24 @@ class DepositTest {
         for(ResourceType type: freq.keySet()){
             assertEquals(freq.get(type), resourcesFromDeposit.get(type).size());
         }
+
+         */
+
+        deposit = new Deposit();
+        List<Resource> resources = new ArrayList<Resource>();
+        resources.add( new Resource(ResourceType.SHIELD));
+        resources.add( new Resource(ResourceType.COIN));
+        resources.add( new Resource(ResourceType.COIN));
+        deposit.addResource(1,resources.get(0));
+        deposit.addResource(2, resources.get(1));
+        deposit.addResource(2, resources.get(1));
+        Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e -> 1)));
+        Map<ResourceType,List<Resource>> resourcesFromDeposit = deposit.getAll();
+        for(ResourceType type: freq.keySet()){
+            assertEquals(freq.get(type), resourcesFromDeposit.get(type).size());
+        }
+
     }
+
+
 }

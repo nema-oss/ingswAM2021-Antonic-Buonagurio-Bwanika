@@ -9,9 +9,10 @@ import java.util.Map;
 
 public class Discount extends LeaderCard{
 
-    ResourceType discountType;
-    int discountAmount;
-    ArrayList<Resource> result;
+    private ResourceType discountType;
+    private int discountAmount;
+    private ArrayList<Resource> result;
+    private LeaderCardType leaderCardType;
 
     public Discount(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ResourceType discountType, int discountAmount, ArrayList<Resource> result) {
         super(costResource, costDevelopment, victoryPoints);
@@ -34,6 +35,10 @@ public class Discount extends LeaderCard{
         for(int i = 0; i < discountAmount; i++)
             result.add(new Resource(discountType));
         return result;
+    }
+
+    public LeaderCardType getLeaderType(){
+        return leaderCardType;
     }
 
 

@@ -10,6 +10,7 @@ public class WhiteToResource extends LeaderCard{
     private ResourceType result;
     private Map<Resource, Integer> costResource;
     private int victoryPoints;
+    private LeaderCardType leaderCardType;
 
     public ResourceType getResult() {
         return result;
@@ -34,5 +35,10 @@ public class WhiteToResource extends LeaderCard{
     @Override
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    @Override
+    public LeaderCardType getLeaderType(){
+        return leaderCardType;
     }
 }

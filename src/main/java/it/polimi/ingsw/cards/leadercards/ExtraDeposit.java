@@ -12,22 +12,24 @@ import java.util.Map;
 *@author Nemanja
  */
 
-public class ExtraDeposit extends LeaderCard {
+public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
 
     private final ResourceType storageType;
-    private Map<Resource, Integer> costResource;
-    private Map<Resource, Integer> costDevelopment;
+    private Map<ResourceType, Integer> costResource;
+    private Map<ResourceType, Integer> costDevelopment;
     private int victoryPoints;
     private LeaderCardType leaderCardType;
 
-    public ExtraDeposit(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ResourceType storageType, Map<Resource, Integer> costResource1, Map<Resource, Integer> costDevelopment1, int victoryPoints1) {
-        super(costResource, costDevelopment, victoryPoints);
+    public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ResourceType storageType, Map<ResourceType, Integer> costResource1, Map<ResourceType, Integer> costDevelopment1, int victoryPoints1, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints, isActive);
         this.storageType = storageType;
         this.costResource = costResource1;
         this.costDevelopment = costDevelopment1;
         this.victoryPoints = victoryPoints1;
+        this.leaderCardType = leaderCardType;
     }
 
+    @Override
     public AuxiliaryDeposit useEffect(){
 
         return new AuxiliaryDeposit(storageType);
@@ -39,22 +41,7 @@ public class ExtraDeposit extends LeaderCard {
     }
 
     @Override
-    public Map<Resource, Integer> getCostResource() {
-        return costResource;
-    }
-
-    @Override
-    public Map<Resource, Integer> getCostDevelopment() {
-        return costDevelopment;
-    }
-
-    @Override
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
-    @Override
-    public LeaderCardType getLeaderType(){
-        return leaderCardType;
+    public LeaderCardType getLeaderType() {
+        return null;
     }
 }

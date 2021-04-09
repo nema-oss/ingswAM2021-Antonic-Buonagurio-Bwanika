@@ -167,6 +167,7 @@ public class Player{
                 // need to check if in list of active cards, there's a card that can transform the marble
                 //if not present, move on with the payment
                 //checkActiveToResourceEffect(marble);
+
             }
         }
 
@@ -208,15 +209,14 @@ public class Player{
 
         LeaderCard card = activeLeaderCards.get(positionIndex);
         if(card.getLeaderType() == LeaderCardType.EXTRA_PRODUCTION){
-            Map<Resource,Integer> cost = card.getCostResource(); // here I prefer ResourceType not Resource
+            Map<ResourceType,Integer> cost = card.getCostResource(); // here I prefer ResourceType not Resource
             Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
-            for(Resource resource: cost.keySet()){
-                ResourceType type = resource.getType();
-                if(cost.get(type) > availableResources.get(type).size()) throw new ProductionRequirementsException();
+            for(ResourceType resource: cost.keySet()){
+                if(cost.get(resource) > availableResources.get(resource).size()) throw new ProductionRequirementsException();
             }
 
-            //List<Resource> result = card.useLeaderAction(); // here I want the result of leader card production
-            //getStrongbox().addResource(result);
+            List<Resource> result = (List<Resource>) card.useEffect(); // here I want the result of leader card production
+            getStrongbox().addResource(result);
         }
 
     }
@@ -303,7 +303,7 @@ public class Player{
         if(hand.get(positionIndex) == null) throw new Exception(); // this can be fixed in the controller
 
         LeaderCard card = hand.get(positionIndex);
-        //card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
+        card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
         activeLeaderCards.add(hand.remove(positionIndex));
 
     }

@@ -9,53 +9,40 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ExtraProduction extends LeaderCard {
+public class ExtraProduction extends LeaderCard<ArrayList<Producible>> {
 
     private ArrayList<Producible> productionResult;
-    private Map<Resource, Integer> costResource;
-    private Map<Resource, Integer> productionRequirement;
+    private Map<ResourceType, Integer> costResource;
+    private Map<ResourceType, Integer> productionRequirement;
     private int victoryPoints;
     private LeaderCardType leaderCardType;
 
-    public ExtraProduction(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ArrayList<Producible> productionResult, Map<Resource, Integer> costResource1, Map<Resource, Integer> productionRequirement, int victoryPoints1) {
-        super(costResource, costDevelopment, victoryPoints);
+    public ExtraProduction(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ArrayList<Producible> productionResult, Map<ResourceType, Integer> costResource1, Map<ResourceType, Integer> productionRequirement, int victoryPoints1, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints, isActive);
         this.productionResult = productionResult;
         this.costResource = costResource1;
         this.productionRequirement = productionRequirement;
         this.victoryPoints = victoryPoints1;
+        this.leaderCardType = leaderCardType;
     }
 
-    public ArrayList<Producible> useEffect(ArrayList<Resource> resources) throws InsufficientPaymentException {
-
-        Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
-
-        for (ResourceType type : frequencyMap.keySet()) {
-            if (frequencyMap.get(type).intValue() != (productionRequirement.get(type))) throw new InsufficientPaymentException();
-        }
+    @Override
+    public ArrayList<Producible> useEffect() { //note: Player has to check for the available resources
 
         return productionResult;
     }
+
 
     public ArrayList<Producible> getProductionResult() {
         return productionResult;
     }
 
-    @Override
-    public Map<Resource, Integer> getCostResource() {
-        return costResource;
-    }
-
-    public Map<Resource, Integer> getProductionRequirement() {
+    public Map<ResourceType, Integer> getProductionRequirement() {
         return productionRequirement;
     }
 
     @Override
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
-    @Override
-    public LeaderCardType getLeaderType(){
-        return leaderCardType;
+    public LeaderCardType getLeaderType() {
+        return null;
     }
 }

@@ -5,10 +5,10 @@ import it.polimi.ingsw.gameboard.ResourceType;
 
 import java.util.Map;
 
-public class WhiteToResource extends LeaderCard{
+public class WhiteToResource extends LeaderCard<Resource>{
 
     private ResourceType result;
-    private Map<Resource, Integer> costResource;
+    private Map<ResourceType, Integer> costResource;
     private int victoryPoints;
     private LeaderCardType leaderCardType;
 
@@ -16,19 +16,21 @@ public class WhiteToResource extends LeaderCard{
         return result;
     }
 
-    public WhiteToResource(Map<Resource, Integer> costResource, Map<Resource, Integer> costDevelopment, int victoryPoints, ResourceType result, Map<Resource, Integer> costResource1, int victoryPoints1) {
-        super(costResource, costDevelopment, victoryPoints);
+    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, Boolean isActive, ResourceType result, Map<ResourceType, Integer> costResource1, int victoryPoints1, LeaderCardType leaderCardType) {
+        super(costResource, costDevelopment, victoryPoints, isActive);
         this.result = result;
         this.costResource = costResource1;
         this.victoryPoints = victoryPoints1;
+        this.leaderCardType = leaderCardType;
     }
 
+    @Override
     public Resource useEffect() {
         return new Resource(result);
     }
 
     @Override
-    public Map<Resource, Integer> getCostResource() {
+    public Map<ResourceType, Integer> getCostResource() {
         return costResource;
     }
 

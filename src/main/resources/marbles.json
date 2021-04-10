@@ -1,54 +1,51 @@
 [
+
   {
-    "color":"WHITE",
-    "product": {}
+    "color":"WHITE"
   },
   {
-    "color": "WHITE",
-    "product": {}
+    "color": "WHITE"
   },
   {
-    "color": "WHITE",
-    "product": {}
+    "color": "WHITE"
   },
   {
-    "color": "WHITE",
-    "product": {}
+    "color": "WHITE"
   },
   {
     "color": "BLUE",
-    "product": {"value": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource" }}
+    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource" }
   },
   {
     "color": "BLUE",
-    "product": {"value": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "GREY",
-    "product": {"value": {"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product":  {"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "GREY",
-    "product": {"value": {"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product":{"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "YELLOW",
-    "product": {"value": {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "YELLOW",
-    "product": {"value": {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "PURPLE",
-    "product": {"value": {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product":  {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "PURPLE",
-    "product": {"value": {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}}
+    "product": {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}
   },
   {
     "color": "RED",
-    "product": {"value": {"type": "FAITH", "className":"it.polimi.ingsw.gameboard.FaithPoint"}}
+    "product":  {"type": "FAITH", "className":"it.polimi.ingsw.gameboard.FaithPoint"}
   }
 ]

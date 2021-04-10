@@ -1,5 +1,6 @@
 package it.polimi.ingsw.cards.leadercards;
 
+import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.gameboard.ResourceType;
@@ -10,10 +11,10 @@ import java.util.Map;
 public abstract class LeaderCard implements Card {
 
     private Map<ResourceType, Integer> costResource;
-    private Map<Map<ResourceType, Integer> , Integer> costDevelopment;
+    private Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
     private int victoryPoints;
 
-    public LeaderCard(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints) {
+    public LeaderCard(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints) {
         this.costResource = costResource;
         this.costDevelopment = costDevelopment;
         this.victoryPoints = victoryPoints;

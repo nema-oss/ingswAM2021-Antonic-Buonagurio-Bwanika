@@ -1,5 +1,6 @@
 package it.polimi.ingsw.cards.leadercards;
 
+import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 import it.polimi.ingsw.player.Effects;
@@ -16,7 +17,7 @@ public class WhiteToResource extends LeaderCard{
         return result;
     }
 
-    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
+    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
         super(costResource, costDevelopment, victoryPoints);
         this.result = result;
         this.leaderCardType = leaderCardType;

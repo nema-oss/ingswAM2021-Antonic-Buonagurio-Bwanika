@@ -13,7 +13,6 @@ package it.polimi.ingsw.player;
  */
 
 import it.polimi.ingsw.Game;
-import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.*;
 import it.polimi.ingsw.exception.*;
@@ -32,9 +31,8 @@ public class Player{
     private Optional<AuxiliaryDeposit> auxiliaryDeposit;
     private int positionIndex;
     private Cell position;
-
-
     private Board playerBoard;
+    private Effects activeEffects;
 
     public Player(String nickname, GameBoard gameBoard, Game currentGame){
 
@@ -44,6 +42,7 @@ public class Player{
         this.gameBoard = gameBoard;
         this.currentGame = currentGame;
         victoryPoints = 0;
+        activeEffects = new Effects();
     }
 
 
@@ -106,7 +105,7 @@ public class Player{
         * @exception player has not enough resources to buy the card or card is not present
      */
 
-    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonexistentCardException, InsufficientResourcesException {
+    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonExistentCardException, InsufficientResourcesException {
 
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
@@ -115,6 +114,7 @@ public class Player{
         Map<ResourceType,Integer> cost = newCard.getCost();
         for(ResourceType type: cost.keySet())
             getPlayerBoard().getDeposit().getResources(type,cost.get(type));
+        newCard = market.buyCard(x,y);
         getPlayerBoard().addDevelopmentCard(newCard);
 
     }
@@ -128,7 +128,9 @@ public class Player{
     private void checkCardRequirementsBuy(DevelopmentCard newCard) throws InsufficientPaymentException {
 
         Map<ResourceType,Integer> cost = newCard.getCost();
-        checkActiveDiscount(cost);
+        if(activeEffects.isDiscount())
+            activeEffects.useDiscountEffect(cost);
+        //checkActiveDiscount(cost);
         Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
         for(ResourceType type: cost.keySet()){
             if(cost.get(type) > availableResources.get(type).size())
@@ -162,15 +164,19 @@ public class Player{
 
     public List<Resource> buyResources(int x, int y) throws FullDepositException {
 
-        // here I want to check if there is an card with an usable effect
         MarbleMarket market = gameBoard.getMarket();
-        List<Marble> marbles = market.buy(x, y);
-        List<Producible> result = new ArrayList<Producible>();
+        List<Marble> marbles = market.buy(x,y);
+        List<Producible> result = new ArrayList<>();
         for (Marble marble : marbles) {
             if (marble.getProduct().isPresent()) {
                 //if false it means that the marble can't produce a new resource without special effects
                 result.add(marble.getProduct().get());
-            } else {
+            } else{
+                if(activeEffects.isWhiteToResource()){
+                    Producible extraResource = activeEffects.useWhiteToResourceEffect(0);// workaround to fix
+                    result.add(extraResource);
+                }
+                /*
                 // need to check if in list of active cards, there's a card that can transform the marble
                 //if not present, move on with the payment
                 //checkActiveToResourceEffect(marble);
@@ -180,7 +186,11 @@ public class Player{
                     }
                     break; //ugly but for now it's the only way to use just 1 effect out of 2 possible WhiteToResource LeaderCards; Player needs to be asked which to use
                 }
+
+                 */
             }
+
+
         }
 
         // we have to take the result List<Producible> and make a list of resource, maybe we can solve the casting
@@ -219,6 +229,11 @@ public class Player{
 
     public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException {
 
+        if(activeEffects.isExtraProduction()){
+            activeEffects.useExtraProductionEffect(this);
+
+        }
+        /*
         LeaderCard card = activeLeaderCards.get(positionIndex);
         if(card.getLeaderType() == LeaderCardType.EXTRA_PRODUCTION){
             Map<ResourceType,Integer> cost = card.getCostResource(); // here I prefer ResourceType not Resource
@@ -227,9 +242,11 @@ public class Player{
                 if(cost.get(resource) > availableResources.get(resource).size()) throw new ProductionRequirementsException();
             }
 
-            List<Resource> result = (List<Resource>) card.useEffect(); // here I want the result of leader card production
-            getStrongbox().addResource(result);
+            //List<Resource> result = (List<Resource>) card.useEffect(); // here I want the result of leader card production
+            //getStrongbox().addResource(result);
         }
+
+         */
 
     }
 
@@ -310,12 +327,11 @@ public class Player{
         * @param the leader card
      */
 
-    public void activateLeaderCard(int positionIndex) throws Exception{
+    public void activateLeaderCard(int positionIndex) throws NonExistentCardException{
 
-        if(hand.get(positionIndex) == null) throw new Exception(); // this can be fixed in the controller
+        if(hand.get(positionIndex) == null) throw new NonExistentCardException(); // this can be fixed in the controller
 
-        LeaderCard card = hand.get(positionIndex);
-        //card.activateEffect(); // this method should just activate the effects, adding it in the list of active effects
+        hand.get(positionIndex).useEffect(activeEffects);
         activeLeaderCards.add(hand.remove(positionIndex));
 
     }

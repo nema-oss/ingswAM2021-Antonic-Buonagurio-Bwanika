@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameboard;
 
-import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
 
 public class FaithPoint implements Producible {

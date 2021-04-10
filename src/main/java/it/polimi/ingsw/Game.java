@@ -1,13 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.cards.ActionTokenDeck;
-import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.exception.FullDepositException;
-import it.polimi.ingsw.exception.InsufficientPaymentException;
-import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.gameboard.CardMarket;
 import it.polimi.ingsw.gameboard.GameBoard;
 import it.polimi.ingsw.gameboard.Resource;
@@ -15,7 +12,6 @@ import it.polimi.ingsw.gameboard.ResourceType;
 import it.polimi.ingsw.player.*;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 

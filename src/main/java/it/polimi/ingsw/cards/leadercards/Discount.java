@@ -3,11 +3,12 @@ package it.polimi.ingsw.cards.leadercards;
 import it.polimi.ingsw.exception.LeaderCardException;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Effects;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Discount extends LeaderCard<Integer>{
+public class Discount extends LeaderCard{
 
     private ResourceType discountType;
     private int discountAmount;
@@ -20,6 +21,16 @@ public class Discount extends LeaderCard<Integer>{
         this.leaderCardType = leaderCardType;
     }
 
+    @Override
+    public void useEffect(Effects activeEffects){ //useless as well
+        activeEffects.activateDiscount(discountType, discountAmount);
+    }
+
+    @Override
+    public LeaderCardType getLeaderType(){
+        return LeaderCardType.DISCOUNT;
+    }
+
     public ResourceType getDiscountType() {
         return discountType;
     }
@@ -27,15 +38,5 @@ public class Discount extends LeaderCard<Integer>{
     public int getDiscountAmount() {
         return discountAmount;
     }
-
-    @Override
-    public Integer useEffect(){ //useless as well
-        return discountAmount;
-    }
-
-    public LeaderCardType getLeaderType(){
-        return leaderCardType;
-    }
-
 
 }

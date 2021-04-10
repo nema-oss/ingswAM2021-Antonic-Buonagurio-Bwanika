@@ -4,27 +4,31 @@ import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AuxiliaryDeposit {
 
-    private ArrayList<Resource> auxiliaryDeposit;
+    private List<Resource> auxiliaryDeposit;
     private ResourceType type;
+    private static final int AUXILIARY_DEPOSIT_SIZE = 2;
+
 
     public AuxiliaryDeposit(ResourceType type){
 
-        auxiliaryDeposit = new ArrayList<>();
+        auxiliaryDeposit = new ArrayList<Resource>();
         this.type = type;
 
     }
 
-    public void addResource(Resource res) throws Exception {
-        if(auxiliaryDeposit.size() >= 2) throw new Exception();
+    public boolean addResource(Resource res){
+        if(auxiliaryDeposit.size() >= AUXILIARY_DEPOSIT_SIZE || res.getType() != type) return false;
         auxiliaryDeposit.add(res);
+        return true;
     }
 
-    public ArrayList<Resource> getResources(int amount) throws Exception{
+    public List<Resource> getResources(int amount) throws Exception{
 
-        ArrayList<Resource> result = new ArrayList<Resource>();
+        List<Resource> result = new ArrayList<Resource>();
 
         if(amount > auxiliaryDeposit.size()) throw new Exception();
         while(amount > 0){

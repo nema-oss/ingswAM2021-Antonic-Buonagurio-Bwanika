@@ -3,10 +3,11 @@ package it.polimi.ingsw.cards.leadercards;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Effects;
 
 import java.util.Map;
 
-public abstract class LeaderCard <T> implements Card {
+public abstract class LeaderCard implements Card {
 
     private Map<ResourceType, Integer> costResource;
     private Map<Map<ResourceType, Integer> , Integer> costDevelopment;
@@ -18,6 +19,11 @@ public abstract class LeaderCard <T> implements Card {
         this.victoryPoints = victoryPoints;
     }
 
+    @Override
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
+
     public Map<ResourceType, Integer> getCostResource() {
         return costResource;
     }
@@ -26,17 +32,8 @@ public abstract class LeaderCard <T> implements Card {
         return costDevelopment;
     }
 
-    @Override
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
-    public void useLeaderAction(){
-
-    }
-
     public abstract LeaderCardType getLeaderType();
 
-    public abstract T useEffect() ;
+    public abstract void useEffect(Effects activeEffects);
 
 }

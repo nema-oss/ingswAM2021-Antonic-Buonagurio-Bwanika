@@ -4,7 +4,6 @@ package it.polimi.ingsw.gameboard;
  * this class represent the Resources
  */
 
-import it.polimi.ingsw.player.Player;
 import it.polimi.ingsw.player.PopeRoad;
 
 public class Resource implements Producible{

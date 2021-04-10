@@ -1,4 +1,4 @@
 package it.polimi.ingsw.exception;
 
-public class NonexistentProduct extends Throwable {
+public class NonExistentProduct extends Throwable {
 }

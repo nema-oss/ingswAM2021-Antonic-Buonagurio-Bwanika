@@ -4,7 +4,7 @@ import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.cards.DevelopmentDeck;
 import it.polimi.ingsw.exception.InsufficientPaymentException;
-import it.polimi.ingsw.exception.NonexistentCardException;
+import it.polimi.ingsw.exception.NonExistentCardException;
 
 import java.util.*;
 
@@ -62,11 +62,11 @@ public class CardMarket {
      *this method returns the developmentCard chosen by the Player
      *@return development card (type: DevelopmentCard)
      */
-    public DevelopmentCard buyCard(int row, int column, Map<ResourceType,Integer> payment) throws NonexistentCardException, InsufficientPaymentException {
+    public DevelopmentCard buyCard(int row, int column, Map<ResourceType,Integer> payment) throws NonExistentCardException, InsufficientPaymentException {
         DevelopmentCard developmentCard;
 
         if(row>=nRow || column>=nCol || row < 0 || column<0)
-            throw new NonexistentCardException();
+            throw new NonExistentCardException();
 
         developmentCard = cardMarket[row][column].drawCard();
 
@@ -88,7 +88,7 @@ public class CardMarket {
         return cardMarket[x][y].getTop();
     }
 
-    public DevelopmentCard buyCard(int x, int y) throws NonexistentCardException {
+    public DevelopmentCard buyCard(int x, int y) throws NonExistentCardException {
         return cardMarket[x][y].drawCard();
     }
 }

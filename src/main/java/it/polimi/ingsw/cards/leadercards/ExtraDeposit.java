@@ -37,6 +37,6 @@ public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
 
     @Override
     public LeaderCardType getLeaderType() {
-        return LeaderCardType.EXTRA_DEPOSIT;
+        return leaderCardType;
     }
 }

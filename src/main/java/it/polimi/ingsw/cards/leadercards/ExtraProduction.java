@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class ExtraProduction extends LeaderCard<ArrayList<Producible>> {
 
-    private ArrayList<Producible> productionResult;
-    private Map<ResourceType, Integer> productionRequirement;
-    private LeaderCardType leaderCardType;
+    private final ArrayList<Producible> productionResult;
+    private final Map<ResourceType, Integer> productionRequirement;
+    private final LeaderCardType leaderCardType;
 
     public ExtraProduction(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ArrayList<Producible> productionResult, Map<ResourceType, Integer> productionRequirement, LeaderCardType leaderCardType) {
         super(costResource, costDevelopment, victoryPoints);
@@ -40,6 +40,6 @@ public class ExtraProduction extends LeaderCard<ArrayList<Producible>> {
 
     @Override
     public LeaderCardType getLeaderType() {
-        return leaderCardType.EXTRA_PRODUCTION;
+        return leaderCardType;
     }
 }

@@ -9,7 +9,8 @@ import it.polimi.ingsw.cards.DevelopmentDeck;
 
 
 /*
-* this class represents the Card Market belonging to the GameBoard and containing Development Cards.
+* this class represents the Card Market containing Development Cards ordered by color and level
+* @author Chiara Buonagurio
 */
 
 public class CardMarket {
@@ -17,6 +18,12 @@ public class CardMarket {
     private final DevelopmentDeck[][] cardMarket;
     private final int nRow;
     private final int nCol;
+
+    /*
+     * this method is the class constructor
+     * @param deck : the set od developmentCards to put in the cardMarket
+     * @param nRow, nCol : number of rows and columns of the cardMarket
+     */
 
     public CardMarket(DevelopmentDeck deck, int nRow, int nCol){
 
@@ -63,8 +70,9 @@ public class CardMarket {
 
 
     /*
-     *this method returns the developmentCard chosen by the Player
-     *@return development card (type: DevelopmentCard)
+     *this method returns the developmentCard chosen by the Player and removes it from the cardMarket
+     * @param row, column : indexes of the cardMarket's cell which the player wants to  buy from
+     * @return development card (type: DevelopmentCard)
      */
     public DevelopmentCard buyCard(int row, int column) throws NonexistentCardException{
         
@@ -76,6 +84,12 @@ public class CardMarket {
         
     }
 
+    /*
+     * this method returns the developmentCard chosen by the player without removing it from the Market
+     * @param row,column : indexes of the selected card in the cardMarket
+     * @return development card (type: DevelopmentCard)
+     */
+
     public DevelopmentCard getCard(int row, int column) throws NonexistentCardException{
 
         if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
@@ -84,6 +98,11 @@ public class CardMarket {
         else return cardMarket[row][column].getTop();
     }
 
+    /*
+     * this method returns the developmentDeck at a given position in the cardMarket
+     * @param row,column : indexes of the selected deck in the cardMarket
+     * @return development cards deck (type: DevelopmentDeck)
+     */
     public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}
 }
 

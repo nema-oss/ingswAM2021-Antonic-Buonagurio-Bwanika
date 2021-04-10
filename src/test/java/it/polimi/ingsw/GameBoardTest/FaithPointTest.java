@@ -6,6 +6,7 @@ import it.polimi.ingsw.player.CellFactory;
 import it.polimi.ingsw.player.PopeRoad;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.Arrays;
 
@@ -22,6 +23,7 @@ public class FaithPointTest {
     }
 
     @Test
+    @DisplayName("tests effect of a faithpoint on a player's poperoad")
     public void useEffectTest() {
         faithPoint = new FaithPoint(FaithType.FAITH);
         PopeRoad popeRoad = new PopeRoad(Arrays.asList(new CellFactory().getCells().clone()));

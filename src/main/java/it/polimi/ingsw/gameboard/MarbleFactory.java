@@ -8,12 +8,20 @@ import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+/*
+ * this class is used to create the marbles by parsing the json file marbles.json
+ * @autor Chiara Buonagurio
+ */
 public class MarbleFactory {
 
     private Marble[] marbles;
 
     public MarbleFactory() { }
+
+    /*
+     *This method returns the marbles created by this factory
+     * @return ArrayList<Marble> : list of all marbles
+     */
 
     public ArrayList<Marble> getMarbles() {
         try {

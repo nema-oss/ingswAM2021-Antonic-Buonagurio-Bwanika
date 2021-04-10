@@ -9,6 +9,10 @@ import com.google.gson.JsonPrimitive;
 
 import java.lang.reflect.Type;
 
+/*
+ *This class is an interface adapter for interface Producible and it is used for deserializing json objects.
+ */
+
 public class InterfaceAdapter<T extends Producible> implements JsonDeserializer<T> {
 
     private static final String CLASSNAME = "className";

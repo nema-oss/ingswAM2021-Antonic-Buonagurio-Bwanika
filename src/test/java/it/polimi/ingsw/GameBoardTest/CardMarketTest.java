@@ -22,6 +22,7 @@ public class CardMarketTest {
 
     @BeforeEach
     @Test
+    @DisplayName("construction of the  cardMarket through cardFactory")
     public void testCardMarket(){
 
         CardFactory cardFactory = new CardFactory();

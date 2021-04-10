@@ -36,7 +36,7 @@ public class Game {
     /*
         *constructor
      */
-    Game(){
+    public Game(){
 
 
 

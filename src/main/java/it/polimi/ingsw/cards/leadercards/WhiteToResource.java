@@ -9,7 +9,6 @@ import java.util.Map;
 public class WhiteToResource extends LeaderCard<Resource>{
 
     private ResourceType result;
-    private int victoryPoints;
     private LeaderCardType leaderCardType;
 
     public ResourceType getResult() {

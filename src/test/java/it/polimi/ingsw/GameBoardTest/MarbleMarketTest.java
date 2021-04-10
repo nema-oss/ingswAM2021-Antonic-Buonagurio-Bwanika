@@ -5,6 +5,8 @@ import it.polimi.ingsw.gameboard.MarbleFactory;
 import it.polimi.ingsw.gameboard.MarbleMarket;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class MarbleMarketTest {
     }
 
     @Test
+    @DisplayName("tests methos that returns freeMarble")
     public void getFreeMarbleTest(){
         MarbleFactory marbleFactory = new MarbleFactory();
         ArrayList<Marble> marbles = (marbleFactory.getMarbles());
@@ -36,6 +39,7 @@ public class MarbleMarketTest {
     }
 
     @Test
+    @DisplayName("tests purchase from marble market")
     public void buyTest(){
         MarbleFactory marbleFactory = new MarbleFactory();
         ArrayList<Marble> marbles = (marbleFactory.getMarbles());

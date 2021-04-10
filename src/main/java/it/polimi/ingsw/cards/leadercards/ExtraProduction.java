@@ -40,6 +40,6 @@ public class ExtraProduction extends LeaderCard<ArrayList<Producible>> {
 
     @Override
     public LeaderCardType getLeaderType() {
-        return null;
+        return leaderCardType.EXTRA_PRODUCTION;
     }
 }

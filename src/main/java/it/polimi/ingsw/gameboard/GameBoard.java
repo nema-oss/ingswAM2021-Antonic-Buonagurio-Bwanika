@@ -5,6 +5,11 @@ import it.polimi.ingsw.cards.DevelopmentDeck;
 
 import java.util.ArrayList;
 
+/*
+ * this class represents the general game board, containing the card market and the marble market.
+ * @author Chiara Buonagurio
+*/
+
 public class GameBoard {
     private final CardMarket cardMarket;
     private final MarbleMarket market;

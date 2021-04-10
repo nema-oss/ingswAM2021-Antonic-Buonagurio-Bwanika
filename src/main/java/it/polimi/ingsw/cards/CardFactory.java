@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.cards.leadercards.LeaderCardDeserializer;
 import it.polimi.ingsw.gameboard.InterfaceAdapter;
 import it.polimi.ingsw.gameboard.Producible;
 
@@ -56,9 +57,11 @@ public class CardFactory {
             Reader file = new FileReader("src/main/resources/leaderCards.json");
             final GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
+            builder.registerTypeAdapter(LeaderCard.class ,new LeaderCardDeserializer());
 
             Gson gson = builder.create();
             leaderCards = gson.fromJson(file, LeaderCard[].class);
+
 
         } catch (FileNotFoundException e){
             e.printStackTrace();

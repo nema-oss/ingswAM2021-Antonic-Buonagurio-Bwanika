@@ -4,6 +4,7 @@ import java.util.Optional;
 
 /*
  *This class represents marbles
+ * @author Chiara Buonagurio
  */
 public class Marble {
 
@@ -20,7 +21,8 @@ public class Marble {
     }
 
     /*
-     *This method returns the Producible corresponding to the marble's color.
+     *This method returns the Optional<Producible> corresponding to the marble's color.
+     * @return Optional<Producible>
      */
     public Optional<Producible> getProduct(){
         return Optional.ofNullable(product);

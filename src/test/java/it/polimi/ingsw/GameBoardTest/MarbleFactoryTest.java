@@ -3,6 +3,7 @@ package it.polimi.ingsw.GameBoardTest;
 import it.polimi.ingsw.gameboard.*;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class MarbleFactoryTest {
 
 
     @Test
+
     public void setUp(){
 
         ArrayList<Marble> marbles;
@@ -23,6 +25,7 @@ public class MarbleFactoryTest {
     }
 
     @Test
+    @DisplayName("tests creation of marbles")
     public void getMarblesTest(){
 
         ArrayList<Marble> marbles;

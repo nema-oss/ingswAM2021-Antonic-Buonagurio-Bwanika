@@ -16,7 +16,6 @@ import java.util.Map;
 public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
 
     private final ResourceType storageType;
-    private Map<ResourceType, Integer> costDevelopment;
     private LeaderCardType leaderCardType;
 
     public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType storageType, LeaderCardType leaderCardType) {
@@ -38,6 +37,6 @@ public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
 
     @Override
     public LeaderCardType getLeaderType() {
-        return null;
+        return LeaderCardType.EXTRA_DEPOSIT;
     }
 }

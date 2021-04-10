@@ -1,6 +1,7 @@
 package it.polimi.ingsw.player;
 
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.exception.ProductionRequirementsException;
 import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
@@ -25,6 +26,7 @@ public class Effects {
 
     private boolean isExtraProduction;
     private List<Producible> productionResult;
+    private Map<ResourceType, Integer> productionRequirements;
 
     public Effects(){
 
@@ -49,9 +51,10 @@ public class Effects {
         auxiliaryDeposit = new AuxiliaryDeposit(resourceType);
     }
 
-    public void activateExtraProduction(List<Producible> productionResult){
+    public void activateExtraProduction(Map<ResourceType,Integer> productionRequirements, List<Producible> productionResult){
         isExtraProduction = true;
         this.productionResult = productionResult;
+        this.productionRequirements = productionRequirements;
     }
 
 
@@ -77,15 +80,15 @@ public class Effects {
 
     public void useExtraProductionEffect(Player player){
 
+        player.checkCardRequirementsProduction(productionRequirements);
         List<Resource> result = new ArrayList<>();
         for(Producible producible: productionResult){
-            if(!producible.useEffect(player.getPopeRoad())) return;
-                //result.add(new Resource(producibl()));
+            if(!producible.useEffect(player.getPopeRoad())) {
+                result.add(new Resource((ResourceType) producible.getType()));
+            }
         }
 
         player.getStrongbox().addResource(result);
-
-
 
     }
 

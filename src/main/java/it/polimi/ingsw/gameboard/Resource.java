@@ -8,9 +8,11 @@ import it.polimi.ingsw.player.PopeRoad;
 
 public class Resource implements Producible{
 
-    private ResourceType type;
+    private final ResourceType type;
+    private final String className;
 
     public Resource(ResourceType type){
+        this.className = getClass().getName();
         this.type = type;
     }
 
@@ -19,8 +21,14 @@ public class Resource implements Producible{
      * @return resource's type (type:ResourceType)
     */
 
+    @Override
     public ResourceType getType() {
-        return type;
+        return type ;
+    }
+
+    @Override
+    public String getClassName() {
+        return className;
     }
 
     public boolean useEffect(PopeRoad popeRoad){

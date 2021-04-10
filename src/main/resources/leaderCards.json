@@ -1,0 +1,169 @@
+[
+
+
+
+  {
+    "discountType" : "SERVANT",
+    "discountAmount" : 1,
+    "leaderCardType" : "DISCOUNT",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"YELLOW" : 1, "GREEN" : 1}},
+    "victoryPoints"  : 2
+  },
+
+  {
+    "discountType" : "SHIELD",
+    "discountAmount" : 1,
+    "leaderCardType" : "DISCOUNT",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"BLUE" : 1, "PURPLE" : 1}},
+    "victoryPoints"  : 2
+  },
+
+  {
+    "discountType" : "STONE",
+    "discountAmount" : 1,
+    "leaderCardType" : "DISCOUNT",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"GREEN" : 1, "BLUE" : 1}},
+    "victoryPoints"  : 2
+  },
+
+  {
+    "discountType" : "COIN",
+    "discountAmount" : 1,
+    "leaderCardType" : "DISCOUNT",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"YELLOW" : 1, "PURPLE" : 1}},
+    "victoryPoints"  : 2
+  },
+
+
+
+
+  {
+    "storageType" : "STONE",
+    "leaderCardType" : "EXTRA_DEPOSIT",
+    "costResource" : {"COIN" : 5},
+    "costDevelopment" : {},
+    "victoryPoints"  : 3
+  },
+
+  {
+    "storageType" : "SERVANT",
+    "leaderCardType" : "EXTRA_DEPOSIT",
+    "costResource" : {"STONE" : 5},
+    "costDevelopment" : {},
+    "victoryPoints"  : 3
+  },
+
+  {
+    "storageType" : "SHIELD",
+    "leaderCardType" : "EXTRA_DEPOSIT",
+    "costResource" : {"SERVANT" : 5},
+    "costDevelopment" : {},
+    "victoryPoints"  : 3
+  },
+
+  {
+    "storageType" : "COIN",
+    "leaderCardType" : "EXTRA_DEPOSIT",
+    "costResource" : {"SHIELD" : 5},
+    "costDevelopment" : {},
+    "victoryPoints"  : 3
+  },
+
+
+
+
+  {
+    "result" : "SERVANT",
+    "leaderCardType" : "WHITE_TO_RESOURCE",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"YELLOW" : 2, "BLUE" : 1}},
+    "victoryPoints"  : 5
+  },
+
+  {
+    "result" : "SHIELD",
+    "leaderCardType" : "WHITE_TO_RESOURCE",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"GREEN" : 2, "PURPLE" : 1}},
+    "victoryPoints"  : 5
+  },
+
+  {
+    "result" : "STONE",
+    "leaderCardType" : "WHITE_TO_RESOURCE",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"BLUE" : 2, "YELLOW" : 1}},
+    "victoryPoints"  : 5
+  },
+
+  {
+    "result" : "COIN",
+    "leaderCardType" : "WHITE_TO_RESOURCE",
+    "costResource" : {},
+    "costDevelopment" : {"0" : {"PURPLE" : 2, "GREEN" : 1}},
+    "victoryPoints"  : 5
+  },
+
+
+
+
+  {
+    "productionResult"  : [
+      {"type" : "",
+        "className" : "it.polimi.ingsw.gameboard.Resource" },
+      {"type" : "FaithPoint",
+        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+    ],
+    "productionRequirement" : {"SHIELD" : 1},
+    "leaderCardType" : "EXTRA_PRODUCTION",
+    "costResource" : {},
+    "costDevelopment" : {"2" : {"YELLOW" : 1}},
+    "victoryPoints"  : 4
+  },
+
+  {
+    "productionResult"  : [
+      {"type" : "",
+        "className" : "it.polimi.ingsw.gameboard.Resource" },
+      {"type" : "FaithPoint",
+        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+    ],
+    "productionRequirement" : {"SERVANT" : 1},
+    "leaderCardType" : "EXTRA_PRODUCTION",
+    "costResource" : {},
+    "costDevelopment" : {"2" : {"BLUE" : 1}},
+    "victoryPoints"  : 4
+  },
+
+  {
+    "productionResult"  : [
+      {"type" : "",
+        "className" : "it.polimi.ingsw.gameboard.Resource" },
+      {"type" : "FaithPoint",
+        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+    ],
+    "productionRequirement" : {"STONE" : 1},
+    "leaderCardType" : "EXTRA_PRODUCTION",
+    "costResource" : {},
+    "costDevelopment" : {"2" : {"PURPLE" : 1}},
+    "victoryPoints"  : 4
+  },
+
+  {
+    "productionResult"  : [
+      {"type" : "",
+        "className" : "it.polimi.ingsw.gameboard.Resource" },
+      {"type" : "FaithPoint",
+        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+    ],
+    "productionRequirement" : {"COIN" : 1},
+    "leaderCardType" : "EXTRA_PRODUCTION",
+    "costResource" : {},
+    "costDevelopment" : {"2" : {"GREEN" : 1}},
+    "victoryPoints"  : 4
+  }
+  ]

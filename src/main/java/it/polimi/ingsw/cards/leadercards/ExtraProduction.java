@@ -26,7 +26,7 @@ public class ExtraProduction extends LeaderCard{
 
     @Override
     public void useEffect(Effects activeEffects) {
-        activeEffects.activateExtraProduction(productionResult);
+        activeEffects.activateExtraProduction(productionRequirement, productionResult);
     }
 
     @Override

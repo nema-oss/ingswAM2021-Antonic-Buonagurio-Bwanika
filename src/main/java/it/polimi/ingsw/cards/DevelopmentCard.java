@@ -1,5 +1,6 @@
 package it.polimi.ingsw.cards;
 
+import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
@@ -18,10 +19,10 @@ public class DevelopmentCard implements Card {
     private DevelopmentCardType type;
     private Map<ResourceType, Integer> cost;
     private Map<ResourceType, Integer> productionRequirements;
-    private ArrayList<Resource> productionResults;
+    private List<Producible> productionResults;
     private int victoryPoints;
 
-    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Resource> productionResults, int victoryPoints) {
+    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
         this.level = level;
         this.type = type;
         this.cost = cost;
@@ -62,14 +63,11 @@ public class DevelopmentCard implements Card {
      * this method returns the resulting resources of the production of the developmentCard
      * @return productionResults(type: Map<Resource, Integer>) of DevelopmentCard
      */
-    public List<Resource> getProductionResults() {
 
-        List<Resource> resources = new ArrayList<>();
-        for(Resource resource: productionResults){
-            resources.add(new Resource(resource.getType()));
-        }
-        return resources;
+    public List<Producible> getProductionResults() {
+        return productionResults;
     }
+
     /*
      * this method returns the victory points of the developmentCard
      * @return victoryPoints(type:int) of DevelopmentCard
@@ -79,7 +77,7 @@ public class DevelopmentCard implements Card {
         return victoryPoints;
     }
 
-    public ArrayList<Resource> activateProduction(ArrayList<Resource> resources) throws Exception {
+    public List<Producible> activateProduction(List<Resource> resources) throws Exception {
 
         Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
 

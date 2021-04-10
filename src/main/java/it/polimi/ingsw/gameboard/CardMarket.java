@@ -1,12 +1,13 @@
 package it.polimi.ingsw.gameboard;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.cards.DevelopmentDeck;
 import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.exception.NonExistentCardException;
 
-import java.util.*;
 
 /*
 * this class represents the Card Market belonging to the GameBoard and containing Development Cards.
@@ -14,15 +15,18 @@ import java.util.*;
 
 public class CardMarket {
 
-    private DevelopmentDeck[][] cardMarket;
-    private int nRow, nCol;
+    private final DevelopmentDeck[][] cardMarket;
+    private final int nRow;
+    private final int nCol;
 
-    public CardMarket(DevelopmentDeck deck, int nCol, int nRow){
+    public CardMarket(DevelopmentDeck deck, int nRow, int nCol){
 
         this.nCol = nCol;
         this.nRow = nRow;
 
+        cardMarket = new DevelopmentDeck[nRow][nCol];
         ArrayList<DevelopmentCard> cards = deck.getListOfCards();
+
         HashMap<DevelopmentCardType, ArrayList<DevelopmentCard>> mapByColor = new HashMap<>();
 
 
@@ -33,24 +37,25 @@ public class CardMarket {
             mapByColor.get(card.getType()).add(card);
         }
 
-
         int col =0;
 
-        for(DevelopmentCardType color: mapByColor.keySet()){
+        for(DevelopmentCardType color : mapByColor.keySet()){
             ArrayList<DevelopmentCard> column = mapByColor.get(color);
             column.sort((o1, o2) -> -1 * Integer.compare(o1.getLevel(), o2.getLevel()));
 
             int i,row;
-            ArrayList<DevelopmentCard> miniDeck = new ArrayList<>();
+            int length = column.size();
+
             for(row=0; row<nRow; row++) {
+                ArrayList<DevelopmentCard> miniDeck = new ArrayList<>();
 
-                for (i = 0; i < column.size() - 1 && column.get(i).getLevel() == column.get(i + 1).getLevel(); i++)
-                    miniDeck.add(column.get(i));
-                if (i < column.size())
-                    miniDeck.add(column.get(i));
+                for(i=0; i < length/nRow; i++)
+                    miniDeck.add(column.remove(0));
 
-                cardMarket[row][col] = new DevelopmentDeck(miniDeck);
+                DevelopmentDeck cell = new DevelopmentDeck(miniDeck);
+                cardMarket[row][col] = cell;
                 cardMarket[row][col].shuffle();
+
             }
 
             col++;
@@ -62,33 +67,25 @@ public class CardMarket {
      *this method returns the developmentCard chosen by the Player
      *@return development card (type: DevelopmentCard)
      */
-    public DevelopmentCard buyCard(int row, int column, Map<ResourceType,Integer> payment) throws NonExistentCardException, InsufficientPaymentException {
-        DevelopmentCard developmentCard;
 
-        if(row>=nRow || column>=nCol || row < 0 || column<0)
+    public DevelopmentCard buyCard(int row, int column) throws NonExistentCardException{
+        
+        if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
             throw new NonExistentCardException();
 
-        developmentCard = cardMarket[row][column].drawCard();
+       else return cardMarket[row][column].drawCard();
 
-        if(!(developmentCard.getCost().equals(payment)))
-            throw new InsufficientPaymentException();
-
-        return developmentCard;
+        
     }
 
-    
-    /* 
-        * this method discard a given number of cards of a given type
-        * @param the number of cards to discard, the color of the cards to discard
-     */
-    public void discardCard(int amount, DevelopmentCardType color) {
+    public DevelopmentCard getCard(int row, int column) throws NonExistentCardException{
+
+        if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
+            throw new NonExistentCardException();
+        else return cardMarket[row][column].getTop();
     }
 
-    public DevelopmentCard getCard(int x, int y) {
-        return cardMarket[x][y].getTop();
-    }
-
-    public DevelopmentCard buyCard(int x, int y) throws NonExistentCardException {
-        return cardMarket[x][y].drawCard();
-    }
+    public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}
 }
+
+

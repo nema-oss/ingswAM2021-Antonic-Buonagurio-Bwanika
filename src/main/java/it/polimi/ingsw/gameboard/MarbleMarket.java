@@ -4,9 +4,10 @@ import java.util.*;
 
 public class MarbleMarket {
 
-    private Marble[][] marbleMarket;
+    private final Marble[][] marbleMarket;
     private Marble freeMarble;
-    private int nRow, nCol;
+    private final int nRow;
+    private final int nCol;
 
     public MarbleMarket(int nRow, int nCol, ArrayList<Marble> marbles ){
         marbleMarket = new Marble[nRow][nCol];
@@ -33,7 +34,6 @@ public class MarbleMarket {
     public List<Marble> buy(int row, int column) {
 
         Marble[] marbles;
-        ArrayList<Producible> results = new ArrayList<>();
         Marble tempFreeMarble;
 
 
@@ -52,7 +52,7 @@ public class MarbleMarket {
             freeMarble = tempFreeMarble;
         }
 
-        else {
+        else{
             //pesca una riga
             marbles = new Marble[nCol];
             if (nCol >= 0) System.arraycopy(marbleMarket[row], 0, marbles, 0, nCol);
@@ -60,17 +60,16 @@ public class MarbleMarket {
             //riordina riga
             tempFreeMarble = marbleMarket[row][0];
             if (nCol - 1 >= 0) System.arraycopy(marbleMarket[row], 1, marbleMarket[row], 0, nCol - 1);
-            marbleMarket[nCol-1][row]=freeMarble;
+            marbleMarket[row][nCol-1]=freeMarble;
             freeMarble= tempFreeMarble;
         }
 
 
-        /*for (Marble marble : marbles) {
-            if (marble.getProduct().isPresent())
-                results.add(marble.getProduct().get());
-        }*/
-
         return Arrays.asList(marbles);
 
+    }
+
+    public Marble getMarble(int row, int column){
+        return marbleMarket[row][column];
     }
 }

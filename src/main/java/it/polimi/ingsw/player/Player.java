@@ -117,6 +117,7 @@ public class Player{
         newCard = market.buyCard(x,y);
         getPlayerBoard().addDevelopmentCard(newCard);
 
+
     }
 
     /*
@@ -215,11 +216,20 @@ public class Player{
     public void activateProduction(int positionIndex) throws FullDepositException, ProductionRequirementsException, InsufficientResourcesException {
 
         DevelopmentCard card = getPlayerBoard().getDevelopmentCard(positionIndex);
-        checkCardRequirementsProduction(card);
+        checkCardRequirementsProduction(card.getProductionRequirements());
         Map<ResourceType,Integer>  requirements = card.getProductionRequirements();
         for(ResourceType type: requirements.keySet())
             getPlayerBoard().getDeposit().getResources(type,requirements.get(type));
-        getStrongbox().addResource(card.getProductionResults());
+
+        List<Resource> result = new ArrayList<>();
+        List<Producible> productionResult = card.getProductionResults();
+        for(Producible producible: productionResult){
+            if(!producible.useEffect(getPopeRoad())) {
+                result.add(new Resource((ResourceType) producible.getType()));
+            }
+        }
+
+        getStrongbox().addResource(result);
 
     }
 
@@ -257,14 +267,15 @@ public class Player{
      * @exception player has not enough resources to buy the card or card is not present
      */
 
-    private void checkCardRequirementsProduction(DevelopmentCard newCard) throws ProductionRequirementsException {
+    public void checkCardRequirementsProduction(Map<ResourceType, Integer> requirements) {
 
-        Map<ResourceType,Integer> requirements = newCard.getProductionRequirements();
-        Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
-        for(ResourceType type: requirements.keySet()){
-            if(requirements.get(type) > availableResources.get(type).size())
-                throw new ProductionRequirementsException();
-        }
+        try {
+            Map<ResourceType, List<Resource>> availableResources = getDeposit().getAll();
+            for (ResourceType type : requirements.keySet()) {
+                if (requirements.get(type) > availableResources.get(type).size())
+                    throw new ProductionRequirementsException();
+            }
+        }catch(ProductionRequirementsException e){e.printStackTrace();}
 
     }
 
@@ -276,7 +287,7 @@ public class Player{
     public void moveOnPopeRoad(int steps){
 
         getPopeRoad().move();
-        if(getPosition().isPopeSpace()) currentGame.checkPlayersPosition(getPositionIndex());
+        if(getPosition().isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
         ;
     }
 
@@ -288,7 +299,7 @@ public class Player{
         getPopeRoad().move();
         Cell position = getPosition();
         addVictoryPoints(position.getPoints());
-        if(position.isPopeSpace()) currentGame.checkPlayersPosition(getPositionIndex());
+        if(position.isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
 
     }
 

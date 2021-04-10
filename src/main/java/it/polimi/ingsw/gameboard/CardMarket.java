@@ -14,11 +14,11 @@ import it.polimi.ingsw.cards.DevelopmentDeck;
 
 public class CardMarket {
 
-    private DevelopmentDeck[][] cardMarket;
+    private final DevelopmentDeck[][] cardMarket;
     private final int nRow;
-    private int nCol;
+    private final int nCol;
 
-    public CardMarket(DevelopmentDeck deck, int nCol, int nRow){
+    public CardMarket(DevelopmentDeck deck, int nRow, int nCol){
 
         this.nCol = nCol;
         this.nRow = nRow;
@@ -67,20 +67,21 @@ public class CardMarket {
      *@return development card (type: DevelopmentCard)
      */
     public DevelopmentCard buyCard(int row, int column) throws NonexistentCardException{
-
-        if(row>=nRow || column>=nCol || row < 0 || column<0)
+        
+        if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
             throw new NonexistentCardException();
 
-        return cardMarket[row][column].drawCard();
+       else return cardMarket[row][column].drawCard();
 
+        
     }
 
     public DevelopmentCard getCard(int row, int column) throws NonexistentCardException{
 
-        if(row>=nRow || column>=nCol || row < 0 || column<0)
+        if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
             throw new NonexistentCardException();
 
-        return cardMarket[row][column].getTop();
+        else return cardMarket[row][column].getTop();
     }
 
     public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}

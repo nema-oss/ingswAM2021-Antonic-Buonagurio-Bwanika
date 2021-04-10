@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.gameboard.CardMarket;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
@@ -19,6 +20,7 @@ public class CardMarketTest {
 
     private CardMarket cardMarket;
 
+    @BeforeEach
     @Test
     public void testCardMarket(){
 
@@ -26,7 +28,7 @@ public class CardMarketTest {
         ArrayList<DevelopmentCard> cards = cardFactory.getDevelopmentCards();
         DevelopmentDeck developmentDeck = new DevelopmentDeck(cards);
 
-        cardMarket = new CardMarket(developmentDeck,4,3);
+        cardMarket = new CardMarket(developmentDeck,3,4);
 
         //controls that every miniDeck of the cardMarket contains cards of  the same color and level
         for (int i=0; i<3; i++)
@@ -67,7 +69,7 @@ public class CardMarketTest {
         CardFactory cardFactory = new CardFactory();
         ArrayList<DevelopmentCard> cards = cardFactory.getDevelopmentCards();
         DevelopmentDeck developmentDeck = new DevelopmentDeck(cards);
-        cardMarket = new CardMarket(developmentDeck,4,3);
+        cardMarket = new CardMarket(developmentDeck,3,4);
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++){
@@ -98,7 +100,7 @@ public class CardMarketTest {
         ArrayList<DevelopmentCard> cards2 = cardFactory2.getDevelopmentCards();
 
         DevelopmentDeck developmentDeck = new DevelopmentDeck(cards1);
-        cardMarket = new CardMarket(developmentDeck,4,3);
+        cardMarket = new CardMarket(developmentDeck,3,4);
 
         for(int j=0; j<4; j++){
             try {

@@ -111,13 +111,17 @@ public class Player{
     public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonexistentCardException, InsufficientResourcesException {
 
         CardMarket market = gameBoard.getCardMarket();
-        DevelopmentCard newCard = market.getCard(x,y);
-        // here I want to check if there is an active card with a discount effect
-        checkCardRequirementsBuy(newCard); // also check if a discount is applicable
-        Map<ResourceType,Integer> cost = newCard.getCost();
-        for(ResourceType type: cost.keySet())
-            getPlayerBoard().getDeposit().getResources(type,cost.get(type));
-        getPlayerBoard().addDevelopmentCard(newCard);
+
+        try {
+            DevelopmentCard newCard = market.getCard(x, y);
+            // here I want to check if there is an active card with a discount effect
+            checkCardRequirementsBuy(newCard); // also check if a discount is applicable
+            Map<ResourceType, Integer> cost = newCard.getCost();
+            for (ResourceType type : cost.keySet())
+                getPlayerBoard().getDeposit().getResources(type, cost.get(type));
+            getPlayerBoard().addDevelopmentCard(market.buyCard(x, y));
+
+        }catch(NonexistentCardException e){e.printStackTrace();}
 
     }
 

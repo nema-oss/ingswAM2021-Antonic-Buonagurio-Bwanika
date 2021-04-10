@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.cards.ActionTokenDeck;
+import it.polimi.ingsw.cards.CardFactory;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
@@ -27,12 +28,16 @@ public class Game {
     private GameBoard gameBoard;
     private int lorenzoPoints;
     private int lastPopeSpace;
+
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     /*
         *constructor
      */
-    Game(){
+    public Game(){
 
+        gameBoard = new GameBoard();
+        CardFactory cardFactory = new CardFactory();
+        //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
 
 
     }
@@ -299,6 +304,9 @@ public class Game {
 
     }
 
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
 }
 
 

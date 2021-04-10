@@ -58,7 +58,7 @@ public class Player{
         return activeLeaderCards;
     }
 
-    public void setHand(ArrayList<LeaderCard> hand) {
+    public void setHand(List<LeaderCard> hand) {
         this.hand = hand;
     }
 
@@ -319,11 +319,9 @@ public class Player{
         * this method discard a Leader card from hand and move the player on poperoad
         * @param the card to discard (type: LeaderCard)
      */
-    public void discardLeader(LeaderCard leaderCard) throws Exception {
+    public void discardLeader(int positionIndex){
 
-        if(!hand.contains(leaderCard)) throw new Exception();
-
-        hand.remove(leaderCard);
+        hand.remove(positionIndex);
         moveOnPopeRoad();
 
     }
@@ -382,4 +380,8 @@ public class Player{
         * this method allows to discard the resources.
      */
     public void discardResources(){}
+
+    public Effects getActiveEffects() {
+        return activeEffects;
+    }
 }

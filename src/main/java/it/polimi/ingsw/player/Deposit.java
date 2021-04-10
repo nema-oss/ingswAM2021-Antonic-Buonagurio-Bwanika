@@ -188,15 +188,17 @@ public class Deposit {
         * @exception the deposit is full or the floor is not present
      */
 
-    public void addResource(int floor, Resource resource) throws Exception, FullDepositException {
+    public void addResource(int floor, Resource resource){
 
-        floor--; // workaround to fix
-        if(floor > warehouse.size()) throw new Exception();
-        warehouse.get(floor).add(resource);
-        if(!checkDepositRules()) {
-            warehouse.get(floor).remove(resource);
-            throw new FullDepositException();
-        }
+        try {
+            floor--; // workaround to fix
+            if (floor > warehouse.size()) throw new FullDepositException();
+            warehouse.get(floor).add(resource);
+            if (!checkDepositRules()) {
+                warehouse.get(floor).remove(resource);
+                throw new FullDepositException();
+            }
+        }catch (FullDepositException e) {e.printStackTrace();}
     }
 
     /*

@@ -48,6 +48,8 @@ public class MarbleMarketTest {
             for(int i=0; i<3; i++)
                 marbles2.add(marbleMarket.getMarble(i,j));
             assertEquals(marbles2, marbleMarket.buy(-1,j));
+            assertNotEquals(freeMarble, marbleMarket.getFreeMarble());
+            freeMarble = marbleMarket.getFreeMarble();
         }
 
 
@@ -57,6 +59,8 @@ public class MarbleMarketTest {
             for(int j=0; j<4; j++)
                 marbles3.add(marbleMarket.getMarble(i,j));
             assertEquals(marbles3, marbleMarket.buy(i, -1));
+            assertNotEquals(freeMarble, marbleMarket.getFreeMarble());
+            freeMarble = marbleMarket.getFreeMarble();
         }
 
     }

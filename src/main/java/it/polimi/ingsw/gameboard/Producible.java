@@ -4,6 +4,7 @@ import it.polimi.ingsw.player.PopeRoad;
 
 public interface Producible {
 
+
         //void useEffect(Player p);
 
         ProducibleType getType();

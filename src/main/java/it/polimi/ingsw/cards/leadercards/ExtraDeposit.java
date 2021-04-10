@@ -5,6 +5,7 @@ import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.exception.LeaderCardException;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Effects;
 
 import java.util.Map;
 
@@ -13,9 +14,10 @@ import java.util.Map;
 *@author Nemanja
  */
 
-public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
+public class ExtraDeposit extends LeaderCard{
 
     private final ResourceType storageType;
+    private Map<ResourceType, Integer> costDevelopment;
     private LeaderCardType leaderCardType;
 
     public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType storageType, LeaderCardType leaderCardType) {
@@ -25,18 +27,17 @@ public class ExtraDeposit extends LeaderCard<AuxiliaryDeposit> {
     }
 
     @Override
-    public AuxiliaryDeposit useEffect(){
+    public void useEffect(Effects activeEffects){
+        activeEffects.activateExtraDeposit(storageType);
+    }
 
-        return new AuxiliaryDeposit(storageType);
-
+    @Override
+    public LeaderCardType getLeaderType() {
+        return LeaderCardType.EXTRA_DEPOSIT;
     }
 
     public ResourceType getStorageType() {
         return storageType;
     }
 
-    @Override
-    public LeaderCardType getLeaderType() {
-        return leaderCardType;
-    }
 }

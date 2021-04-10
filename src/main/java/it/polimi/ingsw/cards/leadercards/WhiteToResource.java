@@ -3,10 +3,11 @@ package it.polimi.ingsw.cards.leadercards;
 import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.player.Effects;
 
 import java.util.Map;
 
-public class WhiteToResource extends LeaderCard<Resource>{
+public class WhiteToResource extends LeaderCard{
 
     private final ResourceType result;
     private final LeaderCardType leaderCardType;
@@ -22,8 +23,9 @@ public class WhiteToResource extends LeaderCard<Resource>{
     }
 
     @Override
-    public Resource useEffect() {
-        return new Resource(result);
+    public void useEffect(Effects activeEffects) {
+
+        activeEffects.activateWhiteToResource(result);
     }
 
 

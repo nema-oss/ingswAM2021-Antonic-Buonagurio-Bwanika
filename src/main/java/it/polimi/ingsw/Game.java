@@ -1,21 +1,17 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.cards.ActionTokenDeck;
-import it.polimi.ingsw.cards.Deck;
+import it.polimi.ingsw.cards.CardFactory;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.exception.FullDepositException;
-import it.polimi.ingsw.exception.InsufficientPaymentException;
-import it.polimi.ingsw.exception.NonexistentCardException;
-import it.polimi.ingsw.gameboard.CardMarket;
 import it.polimi.ingsw.gameboard.GameBoard;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 import it.polimi.ingsw.player.*;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
@@ -32,12 +28,16 @@ public class Game {
     private GameBoard gameBoard;
     private int lorenzoPoints;
     private int lastPopeSpace;
+
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     /*
         *constructor
      */
     public Game(){
 
+        gameBoard = new GameBoard();
+        CardFactory cardFactory = new CardFactory();
+        //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
 
 
     }
@@ -87,10 +87,6 @@ public class Game {
     }
 
     /*
-
-     */
-
-    /*
         * this method return the next player
      */
 
@@ -106,20 +102,21 @@ public class Game {
         }
         return nextPlayer;
     }
-
     /*
-        * this method receive a nickname and return the correspondent player
+        * this method receive a nickname and return the correspondent player TODO fix null
      */
-    public Player getPlayerByNickname(String nickname) throws Exception {
+    public Player getPlayerByNickname(String nickname) {
 
-
-        for (Player p : listOfPlayers) {
-            if (p.getNickname().equals(nickname)) {
-                return p;
+        try {
+            for (Player p : listOfPlayers) {
+                if (p.getNickname().equals(nickname)) {
+                    return p;
+                }
             }
-        }
-        throw new Exception();
+            throw new Exception();
+        } catch (Exception e){e.printStackTrace();}
 
+        return null;
     }
 
     /*
@@ -129,14 +126,6 @@ public class Game {
     public void addPlayer(Player p){
         listOfPlayers.add(p);
     }
-
-    /*
-        * this method return the winner of the match
-     */
-    public Player getWinner() {
-        return winner;
-    }
-
 
     /*
        * this method return the list of players in the current match
@@ -156,7 +145,7 @@ public class Game {
         * check the position of all the players in the popeRoad and allocates the victory points
      */
 
-    public void checkPlayersPosition(int currentPlayerPositionIndex) {
+    public void vaticanReport(int currentPlayerPositionIndex) {
 
         Cell currentPlayerPosition = currentPlayer.getPosition();
         int currentPlayerVaticanId = currentPlayerPosition.getVaticanReportSectionId();
@@ -188,7 +177,6 @@ public class Game {
         ArrayList<ActionToken> actionTokenList = actionTokenFactory.getTokens();
         actionDeck = new ActionTokenDeck(actionTokenList);
 
-
     }
 
     /*
@@ -198,7 +186,7 @@ public class Game {
     public void LorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
-        //useActionToken(actionToken.getService);
+        //useActionToken(actionToken.getType());
     }
 
 
@@ -251,22 +239,21 @@ public class Game {
         * this method manage the loss in a single player match
      */
     private void lostGame() {
+
     }
 
     /*
         * this method manage the end of match and assign the winner
      */
 
-    public void endGame(){
+    public Player endGame(){
 
         for(Player p: listOfPlayers){
-
             p.addVictoryPoints(checkCardsPoints(p));
             p.addVictoryPoints(checkResourcePoints(p));
         }
-
         winner = listOfPlayers.stream().max(Comparator.comparing(Player::getVictoryPoints)).get();
-
+        return winner;
     }
 
     /*
@@ -282,7 +269,6 @@ public class Game {
                 points += card.getVictoryPoints();
             }
         }
-
         for(LeaderCard card: p.getActiveLeaderCards()){
             points += card.getVictoryPoints();
         }
@@ -311,14 +297,16 @@ public class Game {
         listOfPlayers.stream()
                         .filter(p -> !p.equals(currentPlayer))
                         .forEach(p-> p.moveOnPopeRoadDiscard(steps));
-
         listOfPlayers
                 .stream()
                 .filter(p -> p.getPosition().isPopeSpace())
-                .forEach(p -> checkPlayersPosition(p.getPositionIndex()));
+                .forEach(p -> vaticanReport(p.getPositionIndex()));
 
     }
 
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
 }
 
 

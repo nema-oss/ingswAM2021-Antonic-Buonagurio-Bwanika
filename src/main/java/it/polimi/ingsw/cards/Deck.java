@@ -4,11 +4,11 @@ package it.polimi.ingsw.cards;
 *sketch of class Deck - unfinished
  */
 
-import it.polimi.ingsw.exception.NonexistentCardException;
+import it.polimi.ingsw.exception.NonExistentCardException;
 
 public interface Deck <T>{
 
-    T drawCard() throws NonexistentCardException;
+    T drawCard() throws NonExistentCardException;
 
     void shuffle();
 

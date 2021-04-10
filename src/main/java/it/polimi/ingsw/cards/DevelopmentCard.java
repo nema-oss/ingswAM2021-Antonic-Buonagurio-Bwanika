@@ -5,6 +5,7 @@ import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class DevelopmentCard implements Card {
     private DevelopmentCardType type;
     private Map<ResourceType, Integer> cost;
     private Map<ResourceType, Integer> productionRequirements;
-    private ArrayList<Producible> productionResults;
+    private List<Producible> productionResults;
     private int victoryPoints;
 
     public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
@@ -62,9 +63,11 @@ public class DevelopmentCard implements Card {
      * this method returns the resulting resources of the production of the developmentCard
      * @return productionResults(type: Map<Resource, Integer>) of DevelopmentCard
      */
-    public ArrayList<Producible> getProductionResults() {
+
+    public List<Producible> getProductionResults() {
         return productionResults;
     }
+
     /*
      * this method returns the victory points of the developmentCard
      * @return victoryPoints(type:int) of DevelopmentCard
@@ -74,7 +77,7 @@ public class DevelopmentCard implements Card {
         return victoryPoints;
     }
 
-    public ArrayList<Producible> activateProduction(ArrayList<Resource> resources) throws Exception {
+    public List<Producible> activateProduction(List<Resource> resources) throws Exception {
 
         Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
 

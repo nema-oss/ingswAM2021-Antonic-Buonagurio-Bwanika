@@ -2,8 +2,7 @@ package it.polimi.ingsw.cards;
 
 import it.polimi.ingsw.cards.Deck;
 import it.polimi.ingsw.cards.DevelopmentCard;
-import it.polimi.ingsw.exception.NonexistentCardException;
-
+import it.polimi.ingsw.exception.NonExistentCardException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,9 +18,9 @@ public class DevelopmentDeck implements Deck {
         return developmentDeck;
     }
 
-     public DevelopmentCard drawCard() throws NonexistentCardException {
+     public DevelopmentCard drawCard() throws NonExistentCardException {
         if (developmentDeck.size()==0)
-            throw new NonexistentCardException();
+            throw new NonExistentCardException();
         else
             return developmentDeck.remove(0);
      }

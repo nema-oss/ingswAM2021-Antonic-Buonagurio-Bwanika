@@ -4,7 +4,7 @@ import it.polimi.ingsw.cards.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exception.NonexistentCardException;
+import it.polimi.ingsw.exception.NonExistentCardException;
 import it.polimi.ingsw.gameboard.CardMarket;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,7 +42,7 @@ public class CardMarketTest {
                         assertEquals(color, card.getType());
                         assertEquals(level, card.getLevel());
                     }
-                }catch(NonexistentCardException e){e.printStackTrace();}
+                }catch(NonExistentCardException e){e.printStackTrace();}
             }
 
         //controls that all the cards in a certain row are of the correct level
@@ -51,14 +51,14 @@ public class CardMarketTest {
                     try {
                         assertEquals(3 - i, cardMarket.getCard(i, j).getLevel());
                     }
-                    catch(NonexistentCardException e){e.printStackTrace();}
+                    catch(NonExistentCardException e){e.printStackTrace();}
             }
 
         //controls that all the cards in a certain column are of the same color.
         for (int i=1; i<3; i++)
             for(int j=0; j<4; j++) {
                     try{assertEquals(cardMarket.getCard(i-1,j).getType(), cardMarket.getCard(i,j).getType());}
-                    catch(NonexistentCardException e){e.printStackTrace();}
+                    catch(NonExistentCardException e){e.printStackTrace();}
             }
 
     }
@@ -76,14 +76,14 @@ public class CardMarketTest {
             for(int j=0; j<4; j++){
                 DevelopmentDeck miniDeck = cardMarket.getMiniDeck(i,j);
                 try{assertEquals(miniDeck.getTop(), cardMarket.buyCard(i,j));}
-                catch(NonexistentCardException e){e.printStackTrace();}
+                catch(NonExistentCardException e){e.printStackTrace();}
             }
 
         int size = cardMarket.getMiniDeck(2,3).getListOfCards().size();
             for(int i=0; i<size; i++) {
                 try {
                     DevelopmentCard bought = cardMarket.buyCard(2, 3);
-                } catch(NonexistentCardException e){e.printStackTrace();}
+                } catch(NonExistentCardException e){e.printStackTrace();}
             }
 
             assertEquals(0, cardMarket.getMiniDeck(2,3).getListOfCards().size());
@@ -132,7 +132,7 @@ public class CardMarketTest {
                     oneType.clear();
                 }
 
-            }catch(NonexistentCardException e){e.printStackTrace();}
+            }catch(NonExistentCardException e){e.printStackTrace();}
         }
     }
 }

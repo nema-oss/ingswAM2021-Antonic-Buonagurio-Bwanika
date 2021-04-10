@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /*
-    *this class represent the strongbox in the player's game board
-    *@author René
+ *this class represent the strongbox in the player's game board
+ *@author René
  */
 
 public class Strongbox {
@@ -21,8 +21,8 @@ public class Strongbox {
     }
 
     /*
-        *this method add resources to the strongbox
-        *@param the list of resources to add
+     *this method add resources to the strongbox
+     *@param the list of resources to add
      */
     public void addResource(List<Resource> resources){
 
@@ -42,7 +42,7 @@ public class Strongbox {
     /*
      * this method returns a given number of resources from the deposit if available
      * @return set of resources (type:ArrayList<Resource)
-    */
+     */
 
     public ArrayList<Resource> getResource(ResourceType type, int amount) throws Exception{
 

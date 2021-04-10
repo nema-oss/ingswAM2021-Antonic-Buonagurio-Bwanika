@@ -1,6 +1,5 @@
 package it.polimi.ingsw.cards.leadercards;
 
-import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
@@ -9,13 +8,14 @@ import java.util.Map;
 public class WhiteToResource extends LeaderCard<Resource>{
 
     private ResourceType result;
+    private int victoryPoints;
     private LeaderCardType leaderCardType;
 
     public ResourceType getResult() {
         return result;
     }
 
-    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
+    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Map<ResourceType, Integer>, Integer> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
         super(costResource, costDevelopment, victoryPoints);
         this.result = result;
         this.leaderCardType = leaderCardType;
@@ -26,10 +26,6 @@ public class WhiteToResource extends LeaderCard<Resource>{
         return new Resource(result);
     }
 
-    @Override
-    public Map<ResourceType, Integer> getCostResource() {
-        return costResource;
-    }
 
     @Override
     public int getVictoryPoints() {

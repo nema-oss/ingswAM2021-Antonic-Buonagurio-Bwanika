@@ -2,10 +2,10 @@ package it.polimi.ingsw.gameboard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import it.polimi.ingsw.exception.NonexistentCardException;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.cards.DevelopmentDeck;
+import it.polimi.ingsw.exception.NonExistentCardException;
 
 
 /*
@@ -74,10 +74,10 @@ public class CardMarket {
      * @param row, column : indexes of the cardMarket's cell which the player wants to  buy from
      * @return development card (type: DevelopmentCard)
      */
-    public DevelopmentCard buyCard(int row, int column) throws NonexistentCardException{
+    public DevelopmentCard buyCard(int row, int column) throws NonExistentCardException{
         
         if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
-            throw new NonexistentCardException();
+            throw new NonExistentCardException();
 
        else return cardMarket[row][column].drawCard();
 
@@ -90,10 +90,10 @@ public class CardMarket {
      * @return development card (type: DevelopmentCard)
      */
 
-    public DevelopmentCard getCard(int row, int column) throws NonexistentCardException{
+    public DevelopmentCard getCard(int row, int column) throws NonExistentCardException{
 
         if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
-            throw new NonexistentCardException();
+            throw new NonExistentCardException();
 
         else return cardMarket[row][column].getTop();
     }

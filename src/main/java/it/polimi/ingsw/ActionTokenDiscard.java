@@ -16,7 +16,7 @@ public class ActionTokenDiscard {
 
     public void useActionToken(PopeRoad popeRoad, CardMarket cardMarket){
 
-        cardMarket.
+
     }
 
     public int getAmount() {

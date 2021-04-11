@@ -38,7 +38,10 @@ public class Game {
         gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
         //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
-
+        popeSpaces = new ArrayDeque<>();
+        popeSpaces.add(7);
+        popeSpaces.add(15);
+        popeSpaces.add(22);
 
     }
 

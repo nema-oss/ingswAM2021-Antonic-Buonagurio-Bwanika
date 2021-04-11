@@ -29,7 +29,7 @@ public class Player{
     private List<LeaderCard> hand;
     private List<LeaderCard> activeLeaderCards;
     private int victoryPoints;
-    private Optional<AuxiliaryDeposit> auxiliaryDeposit;
+    private AuxiliaryDeposit auxiliaryDeposit;
     private int positionIndex;
     private Cell position;
     private Board playerBoard;
@@ -106,15 +106,33 @@ public class Player{
         * @exception player has not enough resources to buy the card or card is not present
      */
 
-    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonExistentCardException, InsufficientResourcesException {
+    public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonExistentCardException, Exception {
 
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
-        // here I want to check if there is an active card with a discount effect
+
         checkCardRequirementsBuy(newCard); // also check if a discount is applicable
         Map<ResourceType,Integer> cost = newCard.getCost();
-        for(ResourceType type: cost.keySet())
-            getPlayerBoard().getDeposit().getResources(type,cost.get(type));
+        Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
+        Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
+
+        // default mode: first deposit the strongbox
+        for(ResourceType type: cost.keySet()) {
+            if(availableResourcesDeposit.containsKey(type)) {
+                if (cost.get(type) <= availableResourcesDeposit.get(type).size())
+                    getDeposit().getResources(type, cost.get(type));
+                else {
+                    int g = availableResourcesDeposit.get(type).size();
+                    getDeposit().getResources(type, g);
+                    int diff = cost.size() - g;
+                    getStrongbox().getResource(type, diff);
+                }
+            }
+            else{
+                getStrongbox().getResource(type, cost.get(type));
+            }
+        }
+
         newCard = market.buyCard(x,y);
         getPlayerBoard().addDevelopmentCard(newCard);
 
@@ -132,30 +150,22 @@ public class Player{
         Map<ResourceType,Integer> cost = newCard.getCost();
         if(activeEffects.isDiscount())
             activeEffects.useDiscountEffect(cost);
-        //checkActiveDiscount(cost);
-        Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
+        Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
+        Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
+        int fromStrongbox;
+        int fromDeposit;
+
         for(ResourceType type: cost.keySet()){
-            if(cost.get(type) > availableResources.get(type).size())
+
+            fromStrongbox = 0;
+            fromDeposit = 0;
+            if(availableResourcesStrongbox.containsKey(type))
+                fromStrongbox = availableResourcesStrongbox.get(type).size();
+            if(availableResourcesDeposit.containsKey(type))
+                fromDeposit = availableResourcesDeposit.get(type).size();
+
+            if(cost.get(type) > fromStrongbox + fromDeposit )
                 throw new InsufficientPaymentException();
-        }
-    }
-
-    /*
-        * this method check if there is an active leader card with discount effect
-        * @param the cost that has to be discounted
-     */
-
-    private void checkActiveDiscount(Map<ResourceType, Integer> cost) {
-
-        // if discount is doable, reduce the cost by the discount amount
-        for(LeaderCard leaderCard: activeLeaderCards){
-            if(leaderCard instanceof Discount){
-                for(ResourceType type : cost.keySet()){
-                    if(type.equals(((Discount) leaderCard).getDiscountType()) && cost.get(type)>0){
-                       cost.put(type, cost.get(type) - ((Discount) leaderCard).getDiscountAmount());
-                    }
-                }
-            }
         }
     }
 
@@ -178,25 +188,12 @@ public class Player{
                     Producible extraResource = activeEffects.useWhiteToResourceEffect(0);// workaround to fix
                     result.add(extraResource);
                 }
-                /*
-                // need to check if in list of active cards, there's a card that can transform the marble
-                //if not present, move on with the payment
-                //checkActiveToResourceEffect(marble);
-                for(LeaderCard leaderCard : activeLeaderCards){
-                    if(leaderCard instanceof WhiteToResource){
-                        result.add(((WhiteToResource) leaderCard).useEffect());
-                    }
-                    break; //ugly but for now it's the only way to use just 1 effect out of 2 possible WhiteToResource LeaderCards; Player needs to be asked which to use
-                }
-
-                 */
             }
 
 
         }
 
-        // we have to take the result List<Producible> and make a list of resource, maybe we can solve the casting
-        result.removeIf(producible -> producible.useEffect(getPopeRoad()));
+        result.removeIf(producible -> producible.useEffect(getPopeRoad())); // using faith points
         List<Resource> newResources = new ArrayList<Resource>();
         for (Producible producible : result) {
             newResources.add((Resource) producible);
@@ -288,6 +285,8 @@ public class Player{
     public void moveOnPopeRoad(int steps){
 
         getPopeRoad().move();
+        Cell position = getPosition();
+        addVictoryPoints(position.getPoints());
         if(getPosition().isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
         ;
     }
@@ -396,15 +395,14 @@ public class Player{
     }
 
     /*
-       * this method add a resource to the extra deposit
+       * this method add resources to the extra deposit
      */
 
-    public void addResourceToExtraDeposit(Resource resource){
+    public void addResourceToExtraDeposit(List<Resource> resources){
 
-        // I don't like the optional here, better to implement a isEmpty() method
-        //if(auxiliaryDeposit.isPresent()){
-            //auxiliaryDeposit.addResource(resource);
-        //}
+        if(activeEffects.isExtraDeposit()){
+            activeEffects.useExtraDepositEffect(resources);
+        }
     }
 
     /*
@@ -414,5 +412,9 @@ public class Player{
 
     public Effects getActiveEffects() {
         return activeEffects;
+    }
+
+    public AuxiliaryDeposit getAuxiliaryDeposit() {
+        return auxiliaryDeposit;
     }
 }

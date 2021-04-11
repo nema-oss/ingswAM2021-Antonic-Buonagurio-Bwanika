@@ -37,49 +37,19 @@ class DepositTest {
     @DisplayName("Testing adding and getting resources from the deposit")
     void getResources() throws FullDepositException, Exception {
 
-        /*
         deposit = new Deposit();
-        Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e->1)));
-        deposit.addResources(resources);
-        for (ResourceType type : freq.keySet()) {
-            ArrayList<Resource> getResource = deposit.getResources(type, freq.get(type));
-            assertEquals(freq.get(type).intValue(), getResource.size());
-            for (Resource res : getResource)
-                assertEquals(type, res.getType());
+        deposit.addResource(1,singleResource);
+        assertEquals(deposit.get(1), singleResource);
+       deposit.addResource(2, resources.get(0));
+       deposit.addResource(3, resources.get(1));
+       assertEquals(resources.get(0),deposit.get(2));
+       assertEquals(resources.get(1),deposit.get(3));
 
-        }
-        for(ResourceType type: freq.keySet()){
-            assertThrows(InsufficientResourcesException.class, () -> deposit.getResources(type,freq.get(type)));
-        }
-
-         */
-
-        deposit = new Deposit();
-        deposit.addResource(0,singleResource);
-        assertEquals(deposit.get(0), singleResource);
-        for(int i = 0; i < resources.size(); i++){
-            deposit.addResource(i+1,resources.get(i));
-
-        }
-        for(int i = 0; i < resources.size(); i++){
-            assertEquals(resources.get(i),deposit.get(i+1));
-        }
     }
 
     @Test
     @DisplayName("Testing the full deposit case")
     void checkDepositRules() throws FullDepositException, Exception {
-
-        /*
-        ArrayList<Resource> testResources = new ArrayList<Resource>();
-        deposit = new Deposit();
-        testResources.add(new Resource(ResourceType.STONE));
-        testResources.add(new Resource(ResourceType.STONE));
-        testResources.add(new Resource(ResourceType.SHIELD));
-        testResources.add(new Resource(ResourceType.SHIELD));
-        assertThrows(FullDepositException.class, ()->deposit.addResources(testResources));
-
-         */
 
         deposit = new Deposit();
         deposit.addResource(1, new Resource(ResourceType.STONE));
@@ -95,17 +65,6 @@ class DepositTest {
     @Test
     @DisplayName("Testing the getting all functionality of the deposit")
     void getAll() throws FullDepositException, Exception {
-
-        /*
-        deposit = new Deposit();
-        Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e -> 1)));
-        deposit.addResources(resources);
-        Map<ResourceType,ArrayList<Resource>> resourcesFromDeposit = deposit.getAll();
-        for(ResourceType type: freq.keySet()){
-            assertEquals(freq.get(type), resourcesFromDeposit.get(type).size());
-        }
-
-         */
 
         deposit = new Deposit();
         List<Resource> resources = new ArrayList<Resource>();

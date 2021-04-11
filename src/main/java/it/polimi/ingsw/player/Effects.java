@@ -6,10 +6,7 @@ import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Effects {
 
@@ -31,9 +28,12 @@ public class Effects {
     public Effects(){
 
         isDiscount = false;
+        discountAmounts = new HashMap<>();
         isWhiteToResource = false;
+        toResources = new ArrayList<>();
         isExtraProduction = false;
         isExtraDeposit = false;
+
     }
 
     public void activateWhiteToResource(ResourceType resourcetype){
@@ -101,6 +101,10 @@ public class Effects {
 
     public void useExtraDepositEffect(List<Resource> resources){
         resources.removeIf(resource -> auxiliaryDeposit.addResource(resource));
+    }
+
+    public AuxiliaryDeposit getAuxiliaryDeposit(){
+        return auxiliaryDeposit;
     }
 
 }

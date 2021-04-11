@@ -28,7 +28,7 @@ public class MarbleMarketTest {
     }
 
     @Test
-    @DisplayName("tests methos that returns freeMarble")
+    @DisplayName("tests method that returns freeMarble")
     public void getFreeMarbleTest(){
         MarbleFactory marbleFactory = new MarbleFactory();
         ArrayList<Marble> marbles = (marbleFactory.getMarbles());

@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    private static final int FIRST_POPE_SPACE = 5;
+    private static final int FIRST_POPE_SPACE = 8;
     private static final int FIRST_POPE_SPACE_POINTS = 2;
-    private static final int SECOND_POPE_SPACE = 10;
-    private static final int SECOND_POPE_SPACE_POINTS = 3;
+    private static final int SECOND_POPE_SPACE = 16;
+    private static final int SECOND_POPE_SPACE_POINTS = 5;
     private Game game;
     private Player player1;
     private Player player2;
@@ -40,6 +40,7 @@ class GameTest {
     @Test
     @DisplayName("Testing the single game Lorenzo action")
     void lorenzoTurn() {
+
     }
 
     @Test
@@ -53,9 +54,14 @@ class GameTest {
 
         int previousPointsPlayer1 = player1.getVictoryPoints();
         int previousPointsPlayer2 = player1.getVictoryPoints();
-        IntStream.range(0, FIRST_POPE_SPACE).forEach(i -> player1.moveOnPopeRoad());
-        assertEquals(player1.getVictoryPoints(), previousPointsPlayer1 + FIRST_POPE_SPACE_POINTS);
-        assertEquals(player2.getVictoryPoints(), previousPointsPlayer2);
+
+        for(int i = 0; i < 8; i++) {
+            previousPointsPlayer1 = player1.getVictoryPoints();
+            previousPointsPlayer2 = player1.getVictoryPoints();
+            System.out.println(player1.getPosition().getPoints());
+            assertEquals(player1.getVictoryPoints(), previousPointsPlayer1 + FIRST_POPE_SPACE_POINTS);
+            assertEquals(player2.getVictoryPoints(), previousPointsPlayer2);
+        }
 
         previousPointsPlayer1 = player1.getVictoryPoints();
         previousPointsPlayer2 = player1.getVictoryPoints();

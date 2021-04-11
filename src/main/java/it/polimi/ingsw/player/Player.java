@@ -14,6 +14,7 @@ package it.polimi.ingsw.player;
 
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.cards.DevelopmentCard;
+import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.cards.leadercards.*;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.gameboard.*;
@@ -336,9 +337,39 @@ public class Player{
         * @param the leader card
      */
 
-    public void activateLeaderCard(int positionIndex) throws NonExistentCardException{
+    public void activateLeaderCard(int positionIndex) throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException{
 
         if(hand.get(positionIndex) == null) throw new NonExistentCardException(); // this can be fixed in the controller
+
+        int resourceCounter = 0;
+        if(!hand.get(positionIndex).getCostResource().isEmpty()){ //this means the resource requirement for the LeaderCard needs to be satisfied
+            //need to check player's deposit, auxiliary deposit (if present) and strongbox
+            for(ResourceType resourceType : hand.get(positionIndex).getCostResource().keySet()) { // for every resource needed count how many resources the player has
+                resourceCounter = 0;
+                resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
+                if(auxiliaryDeposit.isPresent()){//checking the aux deposit
+                    resourceCounter += auxiliaryDeposit.get().checkAuxiliaryDeposit().size();
+                }
+                resourceCounter += playerBoard.getStrongbox().getStrongbox().get(resourceType).size();
+                if(resourceCounter < hand.get(positionIndex).getCostResource().get(resourceType)) throw new InsufficientResourcesException();
+            }
+        }
+        int numberOfCards = 0;
+        if(!hand.get(positionIndex).getCostDevelopment().isEmpty()){ //this means the development card requirements need to be satisfied
+            //need to check the playerBoard
+            for(Integer integer : hand.get(positionIndex).getCostDevelopment().keySet()){ //maybe there's a more elegant way to do this
+                for(DevelopmentCardType developmentCardType : hand.get(positionIndex).getCostDevelopment().get(integer).keySet()){
+                    for(Stack<DevelopmentCard> developmentCards : playerBoard.getDevelopmentCards()){
+                        for(DevelopmentCard developmentCard : developmentCards){
+                            if(developmentCard.getType() == developmentCardType)
+                                numberOfCards++;
+                        }
+                    }
+                }
+                if(numberOfCards < integer) throw new InsufficientDevelopmentCardsException();
+            }
+        }
+
 
         hand.get(positionIndex).useEffect(activeEffects);
         activeLeaderCards.add(hand.remove(positionIndex));

@@ -56,5 +56,7 @@ public class Strongbox {
         return result;
     }
 
-
+    public HashMap<ResourceType, ArrayList<Resource>> getStrongbox() {
+        return strongbox;
+    }
 }

@@ -38,4 +38,7 @@ public class AuxiliaryDeposit {
         return result;
     }
 
+    public List<Resource> checkAuxiliaryDeposit (){
+        return auxiliaryDeposit;
+    }
 }

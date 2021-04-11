@@ -346,10 +346,10 @@ public class Player{
             for(ResourceType resourceType : hand.get(positionIndex).getCostResource().keySet()) { // for every resource needed count how many resources the player has
                 resourceCounter = 0;
                 resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
-                if(auxiliaryDeposit.isPresent()){//checking the aux deposit
-                    resourceCounter += auxiliaryDeposit.get().checkAuxiliaryDeposit().size();
-                }
-                resourceCounter += playerBoard.getStrongbox().getStrongbox().get(resourceType).size();
+
+                resourceCounter += auxiliaryDeposit.getAuxiliaryDeposit().size();
+
+                resourceCounter += playerBoard.getStrongbox().getAll().get(resourceType).size();
                 if(resourceCounter < hand.get(positionIndex).getCostResource().get(resourceType)) throw new InsufficientResourcesException();
             }
         }

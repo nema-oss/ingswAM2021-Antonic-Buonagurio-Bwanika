@@ -32,7 +32,7 @@ public class ExtraProduction extends LeaderCard{
 
     @Override
     public LeaderCardType getLeaderType() {
-        return LeaderCardType.EXTRA_PRODUCTION;
+        return leaderCardType;
     }
 
     public Map<ResourceType, Integer> getProductionRequirement() {

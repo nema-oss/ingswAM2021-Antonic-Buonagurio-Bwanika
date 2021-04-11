@@ -30,9 +30,9 @@ public abstract class LeaderCard implements Card {
         return costResource;
     }
 
-    public  Map<Map<ResourceType, Integer> , Integer> getCostDevelopment() {
-        return null;
-        //return costDevelopment;
+
+    public  Map<Integer, Map<DevelopmentCardType, Integer>> getCostDevelopment() {
+        return costDevelopment;
     }
 
     public abstract LeaderCardType getLeaderType();

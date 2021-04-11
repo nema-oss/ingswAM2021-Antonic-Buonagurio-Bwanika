@@ -1,7 +1,6 @@
 package it.polimi.ingsw.cards.leadercards;
 
 import it.polimi.ingsw.cards.DevelopmentCardType;
-import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
 import it.polimi.ingsw.player.Effects;
 

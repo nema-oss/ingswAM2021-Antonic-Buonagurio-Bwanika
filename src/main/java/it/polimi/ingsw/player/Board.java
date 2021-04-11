@@ -18,7 +18,7 @@ public class Board {
     private PopeRoad popeRoad;
     private Deposit deposit;
     private Strongbox strongbox;
-    private ArrayList<Stack<DevelopmentCard>> developmentCards;
+    private List<Stack<DevelopmentCard>> developmentCards;
     private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
     private static int popeRoadSize = 20;
     private CellFactory cellFactory;
@@ -31,7 +31,10 @@ public class Board {
         popeRoad = new PopeRoad(cells);
         deposit = new Deposit();
         strongbox = new Strongbox();
-        developmentCards = new ArrayList<Stack<DevelopmentCard>>(3);
+        developmentCards = new ArrayList<Stack<DevelopmentCard>>();
+        developmentCards.add(new Stack<DevelopmentCard>());
+        developmentCards.add(new Stack<DevelopmentCard>());
+        developmentCards.add(new Stack<DevelopmentCard>());
     }
 
     /*
@@ -39,7 +42,7 @@ public class Board {
         * @return all the cards
      */
 
-    public ArrayList<Stack<DevelopmentCard>> getDevelopmentCards() {
+    public List<Stack<DevelopmentCard>> getDevelopmentCards() {
         return developmentCards;
     }
 
@@ -85,6 +88,7 @@ public class Board {
 
     public void addDevelopmentCard(DevelopmentCard card){
 
+
         for (Stack<DevelopmentCard> developmentCard : developmentCards) {
             if (developmentCard.empty()) {
                 developmentCard.push(card);
@@ -106,7 +110,7 @@ public class Board {
         *  @exception if the number of resources to transform is not enough
      */
 
-    public void useProductionPower(ArrayList<Resource> toGive, ResourceType request) throws Exception{
+    public void useProductionPower(List<Resource> toGive, ResourceType request) throws Exception{
 
         if(toGive.size() != 2) throw new Exception();
 

@@ -18,14 +18,11 @@ import java.util.*;
 public class Deposit {
 
     private List<List<Resource>> warehouse;
-    //private Map<ResourceType, ArrayList<Resource>> deposit;
-    private boolean[] floors;
     private static final int NUMBER_OF_FLOORS = 3;
 
     public Deposit() {
 
-        //deposit = new HashMap<ResourceType, ArrayList<Resource>>();
-        warehouse = new ArrayList<List<Resource>>(3);
+        warehouse = new ArrayList<List<Resource>>(NUMBER_OF_FLOORS);
         warehouse.add(new ArrayList<Resource>());
         warehouse.add(new ArrayList<Resource>());
         warehouse.add(new ArrayList<Resource>());
@@ -37,31 +34,23 @@ public class Deposit {
      */
 
 
-    public ArrayList<Resource> getResources(ResourceType type, int amount) throws InsufficientResourcesException {
+    public List<Resource> getResources(ResourceType type, int amount) throws InsufficientResourcesException {
 
         ArrayList<Resource> result = new ArrayList<Resource>();
+        Map<ResourceType, List<Resource>> availableResources = getAll();
+        if(!availableResources.containsKey(type) || availableResources.get(type).size() < amount) throw new InsufficientResourcesException();
 
         for (List<Resource> resources : warehouse) {
-            if (resources.get(0).getType() == type) {
-                if (amount > resources.size()) throw new InsufficientResourcesException();
-                while (amount > 0) {
-                    result.add(resources.remove(0));
-                    amount--;
+            if(resources.size() > 0) {
+                if (resources.get(0).getType() == type){
+                    while (amount > 0) {
+                        result.add(resources.remove(0));
+                        amount--;
+                    }
                 }
             }
         }
 
-
-        /*
-
-        if (amount > deposit.get(type).size()) throw new InsufficientResourcesException();
-        result = new ArrayList<Resource>();
-        while (amount > 0) {
-            result.add(deposit.get(type).get(0));
-            deposit.get(type).remove(0);
-            amount--;
-        }
-        */
         return result;
 
     }
@@ -75,23 +64,6 @@ public class Deposit {
 
     public boolean checkDepositRules() {
 
-        /*
-        int numberOfDifferentResources = 0;
-        floors = new boolean[NUMBER_OF_FLOORS];
-        Arrays.fill(floors, Boolean.FALSE);
-
-        for (ArrayList<Resource> levels : deposit.values()) {
-            if (levels.size() > 0) numberOfDifferentResources++;
-            if (numberOfDifferentResources > NUMBER_OF_FLOORS) return Boolean.FALSE;
-            if (levels.size() > floors.length) return Boolean.FALSE;
-            if (floors[levels.size()]) return Boolean.FALSE;
-            floors[levels.size()] = true;
-        }
-
-        return Boolean.TRUE;
-
-         */
-
         for (int i = 0; i < warehouse.size(); i++) {
             if (warehouse.get(i).size() > i + 1) return false;
             if (warehouse.get(i).stream().map(Resource::getType).distinct().limit(2).count() > 1) return false;
@@ -99,62 +71,6 @@ public class Deposit {
         return warehouse.stream().flatMap(List<Resource>::stream).map(Resource::getType).distinct().limit(4).count() <= 3;
 
     }
-
-        /*
-     * this method add resources to the deposit if possible, else raise an error
-     *
-     */
-
-    /*public void addResources(ArrayList<Resource> resources) throws FullDepositException {
-
-
-        for (Resource res : resources) {
-            if (deposit.get(res.getType()) == null) {
-                ArrayList<Resource> newResources = new ArrayList<Resource>();
-                deposit.put(res.getType(), newResources);
-            }
-            deposit.get(res.getType()).add(res);
-        }
-
-        if (!checkDepositRules()) {
-            for (Resource res : resources) {
-                deposit.get(res.getType()).remove(res);
-            }
-            throw new FullDepositException();
-        }
-    }
-
-     */
-
-    /*public void addResources(Resource singleResource) throws Exception {
-
-
-        deposit.get(singleResource.getType()).add(singleResource);
-
-        if (!checkDepositRules()) {
-            deposit.get(singleResource.getType()).remove(singleResource);
-            throw new Exception();
-        }
-
-    }
-
-     */
-
-    /*
-    public ArrayList<Resource> getAll() {
-
-        ArrayList<Resource> allResources = new ArrayList<Resource>();
-        for(ResourceType type: deposit.keySet()){
-            allResources.addAll(deposit.get(type));
-        }
-        return allResources;
-    }
-
-     */
-
-    /*
-        * this method returns all the resources in the deposit
-     */
 
     public Map<ResourceType,List<Resource>> getAll(){
 
@@ -209,7 +125,8 @@ public class Deposit {
 
     public Resource get(int floor) {
 
-        return warehouse.get(floor).remove(0);
+        floor--;
+        return warehouse.get(floor).get(0);
     }
 }
 

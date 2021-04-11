@@ -38,4 +38,8 @@ public class AuxiliaryDeposit {
         return result;
     }
 
+    public int getSize(){
+        return auxiliaryDeposit.size();
+    }
+
 }

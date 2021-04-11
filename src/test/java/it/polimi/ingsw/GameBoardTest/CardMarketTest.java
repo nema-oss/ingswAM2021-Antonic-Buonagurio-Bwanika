@@ -88,7 +88,7 @@ public class CardMarketTest {
             assertEquals(0, cardMarket.getMiniDeck(2,3).getListOfCards().size());
 
             try{cardMarket.buyCard(2,3);}
-            catch(NonexistentCardException e){e.printStackTrace(); System.out.println("errore!");}
+            catch(NonExistentCardException e){e.printStackTrace(); System.out.println("errore!");}
 
     }
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.gameboard.ResourceType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  *this class represent the strongbox in the player's game board
@@ -14,10 +15,10 @@ import java.util.List;
 
 public class Strongbox {
 
-    private HashMap<ResourceType,ArrayList<Resource>> strongbox;
+    private HashMap<ResourceType,List<Resource>> strongbox;
 
     public Strongbox(){
-        strongbox = new HashMap<ResourceType,ArrayList<Resource>>();
+        strongbox = new HashMap<ResourceType,List<Resource>>();
     }
 
     /*
@@ -57,4 +58,8 @@ public class Strongbox {
     }
 
 
+    public Map<ResourceType, List<Resource>> getAll() {
+
+        return strongbox;
+    }
 }

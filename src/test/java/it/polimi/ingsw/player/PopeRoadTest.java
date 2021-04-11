@@ -39,11 +39,15 @@ class PopeRoadTest {
 
             int[] testSteps = {3,4,7,6,0};
             int prevPosition;
-            for (int testStep : testSteps) {
+            int p = 0;
+            for (int i = 0; i < popeRoad.getSize(); i++) {
                 prevPosition = popeRoad.getCurrentPositionIndex();
-                popeRoad.move(testStep);
-                assertEquals(prevPosition + testStep, popeRoad.getCurrentPositionIndex());
+                System.out.println(popeRoad.getCurrentPosition().getPoints());
+                p += popeRoad.getCurrentPosition().getPoints();
+                popeRoad.move();
+                //assertEquals(prevPosition + i, popeRoad.getCurrentPositionIndex());
             }
+            System.out.println(p);
         }
 
         @Test

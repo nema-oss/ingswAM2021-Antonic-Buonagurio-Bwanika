@@ -10,9 +10,10 @@ import java.util.Map;
 
 public abstract class LeaderCard implements Card {
 
-    private Map<ResourceType, Integer> costResource;
-    private Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
-    private int victoryPoints;
+    public Map<ResourceType, Integer> costResource;
+    public Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
+    public int victoryPoints;
+
 
     public LeaderCard(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints) {
         this.costResource = costResource;

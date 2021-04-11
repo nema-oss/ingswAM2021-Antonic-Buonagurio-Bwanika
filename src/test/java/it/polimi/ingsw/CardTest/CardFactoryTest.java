@@ -4,6 +4,7 @@ import it.polimi.ingsw.cards.CardFactory;
 import it.polimi.ingsw.cards.DevelopmentCard;
 import it.polimi.ingsw.cards.DevelopmentCardType;
 import it.polimi.ingsw.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.gameboard.FaithPoint;
 import it.polimi.ingsw.gameboard.FaithType;
 import it.polimi.ingsw.gameboard.Producible;
@@ -30,6 +31,7 @@ public class CardFactoryTest {
     void setUp(){
         cardFactory = new CardFactory();
         developmentCards = cardFactory.getDevelopmentCards();
+        leaderCards = cardFactory.getLeaderCards();
     }
 
     @Test
@@ -49,9 +51,16 @@ public class CardFactoryTest {
         assertEquals(FaithType.FAITH, developmentCards.get(3).getProductionResults().get(0).getType());
         assertEquals(cost, developmentCards.get(3).getCost());
 
+    }
 
-
-
+    @Test
+    void getLeaderCardsTest(){
+        assertEquals(16, leaderCards.size());
+        System.out.println(leaderCards);
+        for(LeaderCard c : leaderCards)
+            System.out.println(c.getLeaderType()+", ");
+        assertEquals(LeaderCardType.DISCOUNT, leaderCards.get(3).getLeaderType());
+        assertEquals(3, leaderCards.get(4).getVictoryPoints());
     }
 
 }

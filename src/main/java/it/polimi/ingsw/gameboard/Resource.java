@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gameboard;
 
 /*
- * this class represent the Resources
+ * this class represents the Resources
  */
 
 import it.polimi.ingsw.player.PopeRoad;

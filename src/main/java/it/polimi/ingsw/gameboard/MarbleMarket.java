@@ -2,12 +2,23 @@ package it.polimi.ingsw.gameboard;
 
 import java.util.*;
 
+/*
+ * this class represents the MarbleMarket containing all marbles.
+ * @author Chiara Buonagurio
+ */
+
 public class MarbleMarket {
 
     private final Marble[][] marbleMarket;
     private Marble freeMarble;
     private final int nRow;
     private final int nCol;
+
+    /*
+     *This method is the class constructor
+     * @param nRow, nCol number of rows and columns of the marble market;
+     * @param marbles : list of marbles to put in the market
+     */
 
     public MarbleMarket(int nRow, int nCol, ArrayList<Marble> marbles ){
         marbleMarket = new Marble[nRow][nCol];
@@ -27,10 +38,21 @@ public class MarbleMarket {
     }
 
 
+    /*
+     *This method returns the free marble, which is the one that is not in the grid and has to be inserted after purchase
+     * @return free marble (Type: Marble)
+     */
     public Marble getFreeMarble(){
         return freeMarble;
     }
 
+    /*
+    * this method returns the list of marbles selected to the player; they cabn correspond to a row or a column of the market.
+    * this method also rearranges the marble market after purchase
+    * @param row : if the player wants to buy a row, it is the index of that row. if the player wants to buy a column it's -1;
+    * @param column : it is the column index if the player wants to buy a column, otherwise it is -1;
+    * @return list of marbles selected (Type : List<Marble>)
+    */
     public List<Marble> buy(int row, int column) {
 
         Marble[] marbles;
@@ -68,6 +90,7 @@ public class MarbleMarket {
         return Arrays.asList(marbles);
 
     }
+
 
     public Marble getMarble(int row, int column){
         return marbleMarket[row][column];

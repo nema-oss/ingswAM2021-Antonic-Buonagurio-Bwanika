@@ -2,6 +2,11 @@ package it.polimi.ingsw.gameboard;
 
 import it.polimi.ingsw.player.PopeRoad;
 
+/*
+* this class represents a FaithPoint (red cross)
+* @author Chiara Buonagurio
+ */
+
 public class FaithPoint implements Producible {
 
     FaithType type;
@@ -13,10 +18,17 @@ public class FaithPoint implements Producible {
         this.type = type;
     }
 
+    /*
+     *This method returns the faithPoint's type
+     * @return type (Type: FaithType)
+     */
     public FaithType getType(){
         return type;
     }
 
+    /*
+     *This method returns this class' name and it is used to build FaithPoints
+     */
     @Override
     public String getClassName() {
         return className;
@@ -25,9 +37,7 @@ public class FaithPoint implements Producible {
     /*
      *This method applies the effect of a Faith Point, increasing the player's position by one in his PopeRoad
      */
-
-   public boolean useEffect(PopeRoad popeRoad){
-
+    public boolean useEffect(PopeRoad popeRoad){
         popeRoad.move();
         return true;
     }

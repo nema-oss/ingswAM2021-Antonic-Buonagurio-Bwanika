@@ -2,6 +2,8 @@ package it.polimi.ingsw.GameBoardTest;
 
 import it.polimi.ingsw.gameboard.*;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
@@ -9,6 +11,7 @@ import java.util.Optional;
 public class MarbleTest {
 
     @Test
+    @DisplayName("tests creation of marbles and correspondence between color and product")
     public void marbleTest(){
 
         Marble marble =  new Marble(MarbleType.WHITE, null);

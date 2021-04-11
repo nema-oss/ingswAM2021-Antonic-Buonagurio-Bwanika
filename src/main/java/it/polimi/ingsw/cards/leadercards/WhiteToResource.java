@@ -9,9 +9,8 @@ import java.util.Map;
 
 public class WhiteToResource extends LeaderCard{
 
-    private ResourceType result;
-    private int victoryPoints;
-    private LeaderCardType leaderCardType;
+    private final ResourceType result;
+    private final LeaderCardType leaderCardType;
 
     public ResourceType getResult() {
         return result;

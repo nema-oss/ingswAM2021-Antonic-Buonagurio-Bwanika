@@ -104,6 +104,36 @@ public class CardMarket {
      * @return development cards deck (type: DevelopmentDeck)
      */
     public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}
+
+    /*
+        *this method discard a given number of cards from the market
+        * @param number of cards to discard, type of cards
+     */
+    public boolean discardCard(DevelopmentCardType type, int amount){
+
+        try {
+            for (int i = nRow - 1; i >= 0 && amount > 0; i--) {
+                for (int j = nCol - 1; j >= 0 && amount > 0; j--) {
+                    if (!cardMarket[i][j].getListOfCards().isEmpty()){
+                        if (cardMarket[i][j].getTop().getType() == type) {
+                            while (amount > 0 && !cardMarket[i][j].getListOfCards().isEmpty()) {
+                                cardMarket[i][j].drawCard();
+                                amount--;
+                            }
+                        }
+                    }
+                }
+            }
+            int i = 0;
+            while(i < nRow){
+                if(!cardMarket[i][0].getListOfCards().isEmpty())
+                    return true;
+                i++;
+            }
+        }catch (NonExistentCardException e){e.printStackTrace();}
+
+        return false;
+    }
 }
 
 

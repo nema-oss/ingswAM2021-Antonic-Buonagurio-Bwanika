@@ -16,14 +16,14 @@ public class Effects {
 
     private boolean isExtraDeposit;
     private ResourceType depositType;
-    private AuxiliaryDeposit auxiliaryDeposit;
+    private List<AuxiliaryDeposit> auxiliaryDeposits;
 
     private boolean isDiscount;
     private Map<ResourceType, Integer> discountAmounts;
 
     private boolean isExtraProduction;
-    private List<Producible> productionResult;
-    private Map<ResourceType, Integer> productionRequirements;
+    private List<List<Producible>> productionResultList;
+    private List<Map<ResourceType, Integer>> productionRequirementsList;
 
     public Effects(){
 
@@ -32,6 +32,8 @@ public class Effects {
         isWhiteToResource = false;
         toResources = new ArrayList<>();
         isExtraProduction = false;
+        productionResultList = new ArrayList<>();
+        productionRequirementsList = new ArrayList<>();
         isExtraDeposit = false;
 
     }
@@ -48,13 +50,14 @@ public class Effects {
 
     public void activateExtraDeposit(ResourceType resourceType){
         isExtraDeposit = true;
-        auxiliaryDeposit = new AuxiliaryDeposit(resourceType);
+        AuxiliaryDeposit auxiliaryDeposit = new AuxiliaryDeposit(resourceType);
+        auxiliaryDeposits.add(auxiliaryDeposit);
     }
 
     public void activateExtraProduction(Map<ResourceType,Integer> productionRequirements, List<Producible> productionResult){
         isExtraProduction = true;
-        this.productionResult = productionResult;
-        this.productionRequirements = productionRequirements;
+        productionResultList.add(productionResult);
+        productionRequirementsList.add(productionRequirements);
     }
 
 
@@ -78,17 +81,17 @@ public class Effects {
         return toResources.get(position);
     }
 
-    public void useExtraProductionEffect(Player player){
+    public void useExtraProductionEffect(Player player, int positionIndex){
 
-        player.checkCardRequirementsProduction(productionRequirements);
+        player.checkCardRequirementsProduction(productionRequirementsList.get(positionIndex));
         List<Resource> result = new ArrayList<>();
-        for(Producible producible: productionResult){
+        for(Producible producible: productionResultList.get(positionIndex)){
             if(!producible.useEffect(player.getPopeRoad())) {
                 result.add(new Resource((ResourceType) producible.getType()));
             }
         }
 
-        player.getStrongbox().addResource(result);
+        player.getStrongbox().addResourceTemporary(result);
 
     }
 
@@ -99,12 +102,12 @@ public class Effects {
             }
     }
 
-    public void useExtraDepositEffect(List<Resource> resources){
-        resources.removeIf(resource -> auxiliaryDeposit.addResource(resource));
+    public void useExtraDepositEffect(List<Resource> resources, int positionIndex){
+        resources.removeIf(resource -> auxiliaryDeposits.get(positionIndex).addResource(resource));
     }
 
-    public AuxiliaryDeposit getAuxiliaryDeposit(){
-        return auxiliaryDeposit;
+    public AuxiliaryDeposit getAuxiliaryDeposit(int positionIndex){
+        return auxiliaryDeposits.get(positionIndex);
     }
 
 }

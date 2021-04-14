@@ -2,15 +2,10 @@ package it.polimi.ingsw.player;
 
 /*
     * this class represent the player
-    * @ author René
+    * @ author René Nema
  */
 
-/*
-    *TODO: how to handle effects -- Nema
-    * buyResource should check if there is a WhiteToResource effect active and apply it -- Nema
-    * buyDevelopmentCard check if there is a Discount effect active and apply it -- Nema
-    *TODO: how to manage the faith point -- René
- */
+
 
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.cards.DevelopmentCard;
@@ -43,6 +38,7 @@ public class Player{
         this.currentGame = currentGame;
         victoryPoints = 0;
         activeEffects = new Effects();
+        activeLeaderCards = new ArrayList<>();
     }
 
 
@@ -110,21 +106,22 @@ public class Player{
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
 
+
         checkCardRequirementsBuy(newCard); // also check if a discount is applicable
         Map<ResourceType,Integer> cost = newCard.getCost();
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
 
-        // default mode: first deposit the strongbox
+        // default mode: first deposit then strongbox
         for(ResourceType type: cost.keySet()) {
             if(availableResourcesDeposit.containsKey(type)) {
                 if (cost.get(type) <= availableResourcesDeposit.get(type).size())
                     getDeposit().getResources(type, cost.get(type));
                 else {
-                    int g = availableResourcesDeposit.get(type).size();
-                    getDeposit().getResources(type, g);
-                    int diff = cost.size() - g;
-                    getStrongbox().getResource(type, diff);
+                    int maxFromDeposit = availableResourcesDeposit.get(type).size();
+                    getDeposit().getResources(type, maxFromDeposit);
+                    int minFromStrongbox = cost.size() - maxFromDeposit;
+                    getStrongbox().getResource(type, minFromStrongbox);
                 }
             }
             else{
@@ -145,6 +142,15 @@ public class Player{
      */
 
     private void checkCardRequirementsBuy(DevelopmentCard newCard) throws InsufficientPaymentException {
+
+        int cardLevel = newCard.getLevel();
+        boolean levelRequirements = false;
+        List<Stack<DevelopmentCard>> developmentCards = getPlayerBoard().getDevelopmentCards();
+        for(Stack<DevelopmentCard> cards: developmentCards){
+            if(cards.empty() || cards.peek().getLevel() == cardLevel - 1)
+                levelRequirements = true;
+        }
+        if(!levelRequirements) throw new InsufficientPaymentException();
 
         Map<ResourceType,Integer> cost = newCard.getCost();
         if(activeEffects.isDiscount())
@@ -237,7 +243,7 @@ public class Player{
     public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException {
 
         if(activeEffects.isExtraProduction()){
-            activeEffects.useExtraProductionEffect(this);
+            activeEffects.useExtraProductionEffect(this, positionIndex);
 
         }
         /*
@@ -283,11 +289,10 @@ public class Player{
 
     public void moveOnPopeRoad(int steps){
 
-        getPopeRoad().move();
-        Cell position = getPosition();
-        addVictoryPoints(position.getPoints());
-        if(getPosition().isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
-        ;
+        while(steps > 0){
+            moveOnPopeRoad();
+            steps--;
+        }
     }
 
     /*
@@ -308,9 +313,13 @@ public class Player{
 
     public void moveOnPopeRoadDiscard(int steps){
 
-        getPopeRoad().move(steps);
-        Cell position = getPosition();
-        addVictoryPoints(position.getPoints());
+        while(steps > 0) {
+            getPopeRoad().move();
+            Cell position = getPosition();
+            addVictoryPoints(position.getPoints());
+            steps--;
+        }
+
 
     }
 
@@ -367,10 +376,10 @@ public class Player{
        * this method add resources to the extra deposit
      */
 
-    public void addResourceToExtraDeposit(List<Resource> resources){
+    public void addResourceToExtraDeposit(List<Resource> resources, int positionIndex){
 
         if(activeEffects.isExtraDeposit()){
-            activeEffects.useExtraDepositEffect(resources);
+            activeEffects.useExtraDepositEffect(resources, positionIndex);
         }
     }
 

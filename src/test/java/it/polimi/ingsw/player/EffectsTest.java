@@ -90,8 +90,8 @@ class EffectsTest {
         Resource firstToAdd = newResources.get(0);
         Resource secondToAdd = newResources.get(1);
 
-        player.addResourceToExtraDeposit(newResources);
-        AuxiliaryDeposit auxiliaryDeposit = effects.getAuxiliaryDeposit();
+        player.addResourceToExtraDeposit(newResources, 0);
+        AuxiliaryDeposit auxiliaryDeposit = effects.getAuxiliaryDeposit(0);
 
         assertEquals(auxiliaryDeposit.getResources(1).get(0), firstToAdd);
         //assertEquals(auxiliaryDeposit.getResources(2).get(1), secondToAdd);

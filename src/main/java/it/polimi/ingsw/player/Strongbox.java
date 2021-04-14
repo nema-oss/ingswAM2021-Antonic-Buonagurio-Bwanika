@@ -16,9 +16,11 @@ import java.util.Map;
 public class Strongbox {
 
     private HashMap<ResourceType,List<Resource>> strongbox;
+    private List<Resource> temporaryResourceStorage;
 
     public Strongbox(){
         strongbox = new HashMap<ResourceType,List<Resource>>();
+        temporaryResourceStorage = new ArrayList<>();
     }
 
     /*
@@ -39,6 +41,23 @@ public class Strongbox {
         strongbox.get(resources.getType()).add(resources);
     }
 
+    /*
+        * this method add production results to the temporary storage
+     */
+
+    public void addResourceTemporary(List<Resource> resources){
+
+        temporaryResourceStorage.addAll(resources);
+    }
+
+    /*
+        * this method add resources at the end of the production action
+     */
+
+    public void moveFromTemporary(){
+        addResource(temporaryResourceStorage);
+        temporaryResourceStorage = new ArrayList<>();
+    }
 
     /*
      * this method returns a given number of resources from the deposit if available

@@ -17,9 +17,10 @@ public class Game {
 
 
     private static final int STARTING_VICTORY_POINTS = 1;
-    private ArrayList<Player> listOfPlayers;
+    private int lastPopeSectionID;
+    private List<Player> listOfPlayers;
     private Player currentPlayer;
-    private ArrayList<Player> leaderboard;
+    private List<Player> leaderboard;
     private Player winner;
     private Queue<Integer> popeSpaces;
     private PopeRoad lorenzoPopeRoad;
@@ -27,7 +28,10 @@ public class Game {
     private LeaderDeck leaderDeck;
     private GameBoard gameBoard;
     private int lorenzoPoints;
-    private int lastPopeSpace;
+    private static final int LAST_POPE_SPACE = 24;
+    private List<PopeSection> popeSectionList;
+    private PopeSection lastPopeSection;
+
 
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     /*
@@ -37,8 +41,12 @@ public class Game {
 
         gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
-        //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        listOfPlayers = new ArrayList<>();
         popeSpaces = new ArrayDeque<>();
+        PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
+        popeSectionList = popeSectionFactory.getPopeSections();
+        lastPopeSection = popeSectionList.remove(0);
         popeSpaces.add(7);
         popeSpaces.add(15);
         popeSpaces.add(22);
@@ -93,7 +101,7 @@ public class Game {
         * this method return the next player
      */
 
-    public Player nextPlayer(){
+    public void nextPlayer(){
 
         int i = listOfPlayers.indexOf(currentPlayer);
         Player nextPlayer;
@@ -103,7 +111,7 @@ public class Game {
             i = 0;
             nextPlayer = listOfPlayers.get(i);
         }
-        return nextPlayer;
+        currentPlayer = nextPlayer;
     }
     /*
         * this method receive a nickname and return the correspondent player TODO fix null
@@ -134,7 +142,7 @@ public class Game {
        * this method return the list of players in the current match
      */
 
-    public ArrayList<Player> getListOfPlayers() {
+    public List<Player> getListOfPlayers() {
         return listOfPlayers;
     }
 
@@ -153,18 +161,21 @@ public class Game {
         Cell currentPlayerPosition = currentPlayer.getPosition();
         int currentPlayerVaticanId = currentPlayerPosition.getVaticanReportSectionId();
 
-        if(currentPlayerPositionIndex > popeSpaces.peek()){
-            int victoryPoints = currentPlayer.getPopeRoad().VaticanReport(currentPlayerPosition);
-            currentPlayer.addVictoryPoints(victoryPoints);
+        if(currentPlayerVaticanId == lastPopeSection.getID()){
             for(Player p: listOfPlayers){
-                if(p.getPosition().getVaticanReportSectionId() >= currentPlayerVaticanId)
-                    p.getPopeRoad().VaticanReport(p.getPosition());
+                if(p.getPosition().getVaticanReportSectionId() == lastPopeSection.getID())
+                    p.addVictoryPoints(lastPopeSection.getPoints());
             }
-            popeSpaces.remove();
+            lastPopeSection = popeSectionList.remove(0);
         }
 
-        else if(currentPlayerPositionIndex == lastPopeSpace) endGame();
+        else if(currentPlayerPositionIndex == LAST_POPE_SPACE) endGame();
 
+    }
+
+
+    public ActionTokenDeck getActionDeck() {
+        return actionDeck;
     }
 
     /*
@@ -177,7 +188,7 @@ public class Game {
         ActionTokenFactory actionTokenFactory = new ActionTokenFactory();
         List<Cell> cells = Arrays.asList(cellFactory.getCells());
         lorenzoPopeRoad = new PopeRoad(cells);
-        ArrayList<ActionToken> actionTokenList = actionTokenFactory.getTokens();
+        List<ActionToken> actionTokenList = actionTokenFactory.getTokens();
         actionDeck = new ActionTokenDeck(actionTokenList);
 
     }
@@ -189,7 +200,9 @@ public class Game {
     public void LorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
-        //useActionToken(actionToken.getType());
+        if(actionToken.useEffect(lorenzoPopeRoad, gameBoard.getCardMarket(), actionDeck)) lostGame();
+        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace())
+            checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
     }
 
 
@@ -201,13 +214,16 @@ public class Game {
      */
     public void checkLorenzoPosition(int lorenzoPosition){
 
-        if(lorenzoPosition > popeSpaces.peek()){
-            int lorenzoVaticanId = lorenzoPopeRoad.getCurrentPosition().getVaticanReportSectionId();
-            if(currentPlayer.getPosition().getVaticanReportSectionId() >= lorenzoVaticanId)
-                currentPlayer.getPopeRoad().VaticanReport(currentPlayer.getPosition());
-            popeSpaces.remove();
+        if(lorenzoPopeRoad.getCurrentPosition().getVaticanReportSectionId() == lastPopeSection.getID()){
+            for(Player p: listOfPlayers){
+                if(p.getPosition().getVaticanReportSectionId() == lastPopeSection.getID())
+                    p.addVictoryPoints(lastPopeSection.getPoints());
+            }
+            lastPopeSection = popeSectionList.remove(0);
         }
-        else if(lorenzoPosition == lastPopeSpace) lostGame();
+
+        else if(lorenzoPosition == LAST_POPE_SPACE) lostGame();
+
     }
 
     /*

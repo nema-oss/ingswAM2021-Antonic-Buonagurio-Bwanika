@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cards.ActionTokenDeck;
+import it.polimi.ingsw.cards.DevelopmentCardType;
+import it.polimi.ingsw.gameboard.CardMarket;
 import it.polimi.ingsw.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +27,8 @@ class GameTest {
         game = new Game();
         player1 = new Player("Player1", game.getGameBoard(), game);
         player2 = new Player("Player2", game.getGameBoard(), game);
+        game.addPlayer(player1);
+        game.addPlayer(player2);
 
     }
 
@@ -35,12 +40,12 @@ class GameTest {
     @Test
     @DisplayName("Testing the turn")
     void nextPlayer() {
-    }
-
-    @Test
-    @DisplayName("Testing the single game Lorenzo action")
-    void lorenzoTurn() {
-
+        // can't use it now because it need the startGame() method
+        Player firstPlayer = game.getCurrentPlayer();
+        game.nextPlayer();
+        assertNotEquals(game.getCurrentPlayer(), firstPlayer);
+        game.nextPlayer();
+        assertEquals(firstPlayer, game.getCurrentPlayer());
     }
 
     @Test

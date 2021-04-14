@@ -1,15 +1,17 @@
 package it.polimi.ingsw.cards;
 
 import it.polimi.ingsw.ActionToken;
+import it.polimi.ingsw.cards.leadercards.LeaderDeck;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ActionTokenDeck implements Deck{
 
-    private ArrayList<ActionToken> listOfActionToken;
+    private List<ActionToken> listOfActionToken;
 
-    public ActionTokenDeck(ArrayList<ActionToken> tokenList){
+    public ActionTokenDeck(List<ActionToken> tokenList){
         this.listOfActionToken = tokenList;
     }
     public ActionToken drawCard(){
@@ -20,7 +22,7 @@ public class ActionTokenDeck implements Deck{
         Collections.shuffle(listOfActionToken);
     }
 
-    public ArrayList<ActionToken> getListOfActionToken() {
+    public List<ActionToken> getListOfActionToken() {
         return listOfActionToken;
     }
 

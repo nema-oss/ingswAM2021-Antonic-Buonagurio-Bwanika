@@ -1,6 +1,4 @@
 package it.polimi.ingsw.player;
-
-import it.polimi.ingsw.player.Cell;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,35 +1,35 @@
-package it.polimi.ingsw.GameBoardTest;
+package it.polimi.ingsw.gameboard;
 
-import it.polimi.ingsw.cards.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import it.polimi.ingsw.exception.NonExistentCardException;
-import it.polimi.ingsw.gameboard.CardMarket;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.List;
+
+import it.polimi.ingsw.cards.*;
+import static org.junit.jupiter.api.Assertions.*;
+import it.polimi.ingsw.exception.NonExistentCardException;
+
+import java.util.ArrayList;
 
 
-public class CardMarketTest {
+class CardMarketTest {
 
     private CardMarket cardMarket;
 
     @BeforeEach
-    @Test
-    @DisplayName("construction of the  cardMarket through cardFactory")
-    public void testCardMarket(){
-
+    void setUp(){
         CardFactory cardFactory = new CardFactory();
         ArrayList<DevelopmentCard> cards = cardFactory.getDevelopmentCards();
         DevelopmentDeck developmentDeck = new DevelopmentDeck(cards);
-
         cardMarket = new CardMarket(developmentDeck,3,4);
+    }
+    @Test
+    @DisplayName("construction of the  cardMarket through cardFactory")
+    void testCardMarket(){
+
 
         //controls that every miniDeck of the cardMarket contains cards of  the same color and level
         for (int i=0; i<3; i++)
@@ -65,7 +65,7 @@ public class CardMarketTest {
 
     @Test
     @DisplayName("tests purchase of a card at a given index")
-    public void buyCardTest(){
+    void buyCardTest(){
 
         CardFactory cardFactory = new CardFactory();
         ArrayList<DevelopmentCard> cards = cardFactory.getDevelopmentCards();
@@ -134,5 +134,22 @@ public class CardMarketTest {
 
             }catch(NonExistentCardException e){e.printStackTrace();}
         }
+    }
+
+    @Test
+    @DisplayName("Testing discard card market")
+    void discardCard(){
+
+        int previousSize = cardMarket.getMiniDeck(2,3).getListOfCards().size();
+        int previousSizeUpper = cardMarket.getMiniDeck(1,3).getListOfCards().size();
+        DevelopmentCardType developmentCardType = cardMarket.getMiniDeck(2,3).getListOfCards().get(0).getType();
+        cardMarket.discardCard(developmentCardType, previousSize+1);
+        int actualSize = cardMarket.getMiniDeck(2,3).getListOfCards().size();
+        assertEquals(1, actualSize + 1);
+        int actualSizeUpper = cardMarket.getMiniDeck(1,3).getListOfCards().size();
+        assertEquals(actualSizeUpper, previousSizeUpper - 1);
+
+
+
     }
 }

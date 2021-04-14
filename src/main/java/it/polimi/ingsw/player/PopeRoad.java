@@ -17,8 +17,7 @@ import java.util.List;
 public class PopeRoad {
 
     private List<Cell> popeRoad;
-    private ArrayList<Cell> popeSpaces;
-    private HashMap<Integer, Integer> vaticanReportSectionsId;
+    private List<Cell> popeSpaces;
     private Cell currentPosition;
     private int currentPositionIndex;
 
@@ -27,6 +26,7 @@ public class PopeRoad {
         popeRoad = cells;
         currentPositionIndex = 0;
         currentPosition = popeRoad.get(0);
+
     }
 
     /*
@@ -99,16 +99,5 @@ public class PopeRoad {
     public int getPoints(){
         return currentPosition.getPoints();
     }
-
-
-    /*
-        * this method returns the points awarded after a successful vatican report
-    */
-
-    public int VaticanReport(Cell currentPlayerPosition) {
-
-        return vaticanReportSectionsId.get(currentPositionIndex);
-    }
-
 
 }

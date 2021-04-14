@@ -138,7 +138,7 @@ class PlayerTest {
 
     @Test
     @DisplayName("Testing the activate a Leader Card action")
-    void activateLeaderCard() throws NonExistentCardException {
+    void activateLeaderCard() throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException {
 
         LeaderCardType leaderCardType = player.getHand().get(0).getLeaderType();
         player.activateLeaderCard(0);

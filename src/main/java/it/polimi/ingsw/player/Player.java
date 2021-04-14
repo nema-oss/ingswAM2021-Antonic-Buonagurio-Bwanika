@@ -24,7 +24,6 @@ public class Player{
     private List<LeaderCard> hand;
     private List<LeaderCard> activeLeaderCards;
     private int victoryPoints;
-    private AuxiliaryDeposit auxiliaryDeposit;
     private int positionIndex;
     private Cell position;
     private Board playerBoard;
@@ -356,7 +355,9 @@ public class Player{
                 resourceCounter = 0;
                 resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
 
-                resourceCounter += auxiliaryDeposit.getAuxiliaryDeposit().size();
+                if(activeEffects.isExtraDeposit()){
+                    resourceCounter += activeEffects.getAuxiliaryDeposit(0).getAuxiliaryDeposit().stream().filter(r -> r.getType() == resourceType).count();
+                }
 
                 resourceCounter += playerBoard.getStrongbox().getAll().get(resourceType).size();
                 if(resourceCounter < hand.get(positionIndex).getCostResource().get(resourceType)) throw new InsufficientResourcesException();
@@ -423,7 +424,4 @@ public class Player{
         return activeEffects;
     }
 
-    public AuxiliaryDeposit getAuxiliaryDeposit() {
-        return auxiliaryDeposit;
-    }
 }

@@ -107,7 +107,9 @@ public class Effects {
     }
 
     public AuxiliaryDeposit getAuxiliaryDeposit(int positionIndex){
-        return auxiliaryDeposits.get(positionIndex);
+        if(positionIndex >= 0 && positionIndex < auxiliaryDeposits.size() - 1)
+            return auxiliaryDeposits.get(positionIndex);
+        return null;
     }
 
 }

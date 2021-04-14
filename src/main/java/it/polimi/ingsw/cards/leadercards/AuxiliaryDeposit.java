@@ -42,4 +42,7 @@ public class AuxiliaryDeposit {
         return auxiliaryDeposit.size();
     }
 
+    public List<Resource> getAuxiliaryDeposit() {
+        return auxiliaryDeposit;
+    }
 }

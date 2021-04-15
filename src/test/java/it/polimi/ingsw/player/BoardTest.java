@@ -36,28 +36,17 @@ class BoardTest {
 
     }
 
-    @Test
-    void getDevelopmentCards() throws NonExistentCardException {
-        board.addDevelopmentCard(developmentDeck.drawCard());
-        board.getDevelopmentCards().get(0);
-    }
-
-    @Test
-    void getDevelopmentCard() {
-    }
-
-    @Test
-    void addDevelopmentCard() {
-    }
 
     @Test
     void useProductionPower() throws Exception {
 
         List<Resource> toGive = new ArrayList<>();
+        Strongbox strongbox = player.getStrongbox();
         toGive.add(new Resource(ResourceType.COIN));
         toGive.add(new Resource(ResourceType.SERVANT));
         board.useProductionPower(toGive, ResourceType.STONE);
-        Map<ResourceType,List<Resource>> availableResources = player.getStrongbox().getAll();
+        Map<ResourceType,List<Resource>> availableResources = strongbox.getAll();
+        assertEquals(1, availableResources.get(ResourceType.STONE).size());
 
     }
 }

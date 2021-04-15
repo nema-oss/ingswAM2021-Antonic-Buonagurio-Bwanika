@@ -16,40 +16,34 @@ import java.util.*;
 public class Game {
 
 
-    private static final int STARTING_VICTORY_POINTS = 1;
-    private int lastPopeSectionID;
     private List<Player> listOfPlayers;
     private Player currentPlayer;
-    private List<Player> leaderboard;
     private Player winner;
-    private Queue<Integer> popeSpaces;
-    private PopeRoad lorenzoPopeRoad;
-    private ActionTokenDeck actionDeck;
     private LeaderDeck leaderDeck;
     private GameBoard gameBoard;
     private int lorenzoPoints;
-    private static final int LAST_POPE_SPACE = 24;
     private List<PopeSection> popeSectionList;
     private PopeSection lastPopeSection;
 
+    // single player mode
+    private PopeRoad lorenzoPopeRoad;
+    private ActionTokenDeck actionDeck;
 
+    // constants
+    private static final int LAST_POPE_SPACE = 24;
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
-    /*
-        *constructor
-     */
+    private static final int STARTING_VICTORY_POINTS = 1;
+
+
     public Game(){
 
         gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
         leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
         listOfPlayers = new ArrayList<>();
-        popeSpaces = new ArrayDeque<>();
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();
         lastPopeSection = popeSectionList.remove(0);
-        popeSpaces.add(7);
-        popeSpaces.add(15);
-        popeSpaces.add(22);
 
     }
 
@@ -104,6 +98,11 @@ public class Game {
     public void nextPlayer(){
 
         int i = listOfPlayers.indexOf(currentPlayer);
+
+        if(i == -1){ // only for testing since we don't have startGame yet
+            currentPlayer = listOfPlayers.get(0);
+            return;
+        }
         Player nextPlayer;
         if(i < listOfPlayers.size()-1)
              nextPlayer = listOfPlayers.get(i+1);
@@ -152,10 +151,23 @@ public class Game {
     public Player getCurrentPlayer(){ return currentPlayer;}
 
     /*
+        * this method return the action token deck
+     */
+    public ActionTokenDeck getActionDeck() {
+        return actionDeck;
+    }
+
+    /*
+        * this method return the gameBoard
+     */
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    /*
         * this method is called each time a player arrives to a pope Space and
         * check the position of all the players in the popeRoad and allocates the victory points
      */
-
     public void vaticanReport(int currentPlayerPositionIndex) {
 
         Cell currentPlayerPosition = currentPlayer.getPosition();
@@ -167,21 +179,16 @@ public class Game {
                     p.addVictoryPoints(lastPopeSection.getPoints());
             }
             lastPopeSection = popeSectionList.remove(0);
+
         }
 
         else if(currentPlayerPositionIndex == LAST_POPE_SPACE) endGame();
 
     }
 
-
-    public ActionTokenDeck getActionDeck() {
-        return actionDeck;
-    }
-
     /*
         * this method prepare the settings to start a single player match
      */
-
     public void setSinglePlayerCPU(){
 
         CellFactory cellFactory = new CellFactory();
@@ -190,14 +197,12 @@ public class Game {
         lorenzoPopeRoad = new PopeRoad(cells);
         List<ActionToken> actionTokenList = actionTokenFactory.getTokens();
         actionDeck = new ActionTokenDeck(actionTokenList);
-
     }
 
     /*
         * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
     */
-
-    public void LorenzoTurn(){
+    public void lorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
         if(actionToken.useEffect(lorenzoPopeRoad, gameBoard.getCardMarket(), actionDeck)) lostGame();
@@ -205,10 +210,8 @@ public class Game {
             checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
     }
 
-
-
     /*
-     * this method is called each time a player arrives to a pope Space and
+     * this method is called each time a Lorenzo arrives to a pope Space and
      * check the position of all the players in the popeRoad and allocates the victory points.
      * (single player mode)
      */
@@ -227,39 +230,9 @@ public class Game {
     }
 
     /*
-     * this method use the selected action Token in a single player match
-     * @param the action token (type: ActionTokenMove)
-    */
-
-    public void useActionToken(ActionTokenMove actionToken){
-
-        lorenzoPopeRoad.move(actionToken.getSteps());
-        if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace())
-            checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
-        if(actionToken.isShuffle())
-            actionDeck.shuffle();
-
-    }
-
-    /*
-     * this method use the selected action Token in a single player match
-     * @param the action token (type: ActionTokenDiscard)
-    */
-
-  /*  public void useActionToken(ActionTokenDiscard actionToken){
-
-        CardMarket market = gameBoard.getCardMarket();
-        market.discardCard(actionToken.getAmount(), actionToken.getType());
-        //lostGame();
-
-    } */
-
-    /*
         * this method manage the loss in a single player match
      */
-    private void lostGame() {
-
-    }
+    private void lostGame(){}
 
     /*
         * this method manage the end of match and assign the winner
@@ -279,7 +252,6 @@ public class Game {
         * this method add the victory points to the player based on player's card
         * @param the player
      */
-
     private int checkCardsPoints(Player p) {
 
         int points = 0;
@@ -298,10 +270,22 @@ public class Game {
      * this method add the victory points to the player based on player's resources
      * @param the player
      */
-
     private int checkResourcePoints(Player p) {
 
-       return Math.floorDiv(p.getDeposit().getAll().size() , RESOURCE_VICTORY_POINTS_RATIO);
+        int amount = 0;
+        Map<ResourceType,List<Resource>> deposit = p.getDeposit().getAll();
+        Map<ResourceType,List<Resource>> strongbox = p.getStrongbox().getAll();
+        for(ResourceType resourceType: deposit.keySet()){
+            amount += deposit.get(resourceType).size();
+        }
+        for(ResourceType resourceType: strongbox.keySet()){
+            amount += strongbox.get(resourceType).size();
+        }
+        Effects effects = p.getActiveEffects();
+        if(effects.isExtraDeposit()){
+            amount += effects.getAuxiliaryDeposit(0).getSize();
+        }
+       return Math.floorDiv(amount , RESOURCE_VICTORY_POINTS_RATIO);
 
     }
 
@@ -310,7 +294,6 @@ public class Game {
         * and distributes the faith points
         * @param the number of steps forward for each player
      */
-
     public void movePlayersDiscard(int steps){
 
         listOfPlayers.stream()
@@ -323,9 +306,6 @@ public class Game {
 
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
 }
 
 

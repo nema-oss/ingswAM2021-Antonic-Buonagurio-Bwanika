@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ class StrongboxTest {
         Map<ResourceType, Integer> freq = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.summingInt(e -> 1)));
         strongbox.addResource(resources);
         for (ResourceType type : freq.keySet()) {
-            ArrayList<Resource> getResource = strongbox.getResource(type, freq.get(type));
+            List<Resource> getResource = strongbox.getResource(type, freq.get(type));
             assertEquals(freq.get(type), getResource.size());
             for (Resource res : getResource)
                 assertEquals(type, res.getType());
@@ -52,7 +53,7 @@ class StrongboxTest {
 
         strongbox = new Strongbox();
         strongbox.addResource(singleResource);
-        ArrayList<Resource> resourcesFromStrongbox = strongbox.getResource(singleResource.getType(),1);
+        List<Resource> resourcesFromStrongbox = strongbox.getResource(singleResource.getType(),1);
         assertEquals(resourcesFromStrongbox.get(0).getType(),singleResource.getType());
         assertEquals(resourcesFromStrongbox.size(),1);
 

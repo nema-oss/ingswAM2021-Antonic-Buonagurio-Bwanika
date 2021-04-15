@@ -18,7 +18,7 @@ class CellFactoryTest {
     @BeforeEach
     void setUp(){
         cellFactory = new CellFactory();
-        cellList = Arrays.asList(cellFactory.getCells());
+        cellList = new ArrayList<>(Arrays.asList(cellFactory.getCells()));
     }
 
     @Test

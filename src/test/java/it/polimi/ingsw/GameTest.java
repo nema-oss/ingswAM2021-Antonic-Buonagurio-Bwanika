@@ -29,54 +29,43 @@ class GameTest {
         player2 = new Player("Player2", game.getGameBoard(), game);
         game.addPlayer(player1);
         game.addPlayer(player2);
+        game.nextPlayer();
 
     }
 
     @Test
     @DisplayName("Testing the starting configuration of the match")
-    void startGame() {
-    }
+    void startGame(){}
 
-    @Test
-    @DisplayName("Testing the turn")
-    void nextPlayer() {
-        // can't use it now because it need the startGame() method
-        Player firstPlayer = game.getCurrentPlayer();
-        game.nextPlayer();
-        assertNotEquals(game.getCurrentPlayer(), firstPlayer);
-        game.nextPlayer();
-        assertEquals(firstPlayer, game.getCurrentPlayer());
-    }
 
     @Test
     @DisplayName("Testing the end of the game")
-    void endGame() {
-    }
+    void endGame(){}
 
     @Test
     @DisplayName("Testing the vatican report action")
     void vaticanReport() {
 
-        int previousPointsPlayer1 = player1.getVictoryPoints();
-        int previousPointsPlayer2 = player1.getVictoryPoints();
+        assertEquals(player1, game.getCurrentPlayer());
+        player1.moveOnPopeRoad(FIRST_POPE_SPACE);
+        assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
+        assertEquals(0, player2.getVictoryPoints());
 
-        for(int i = 0; i < 8; i++) {
-            previousPointsPlayer1 = player1.getVictoryPoints();
-            previousPointsPlayer2 = player1.getVictoryPoints();
-            System.out.println(player1.getPosition().getPoints());
-            assertEquals(player1.getVictoryPoints(), previousPointsPlayer1 + FIRST_POPE_SPACE_POINTS);
-            assertEquals(player2.getVictoryPoints(), previousPointsPlayer2);
-        }
+        game.nextPlayer();
+        assertEquals(game.getCurrentPlayer(),player2);
+        player2.moveOnPopeRoad(FIRST_POPE_SPACE);
+        assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
+        assertEquals(3, player2.getVictoryPoints());
 
-        previousPointsPlayer1 = player1.getVictoryPoints();
-        previousPointsPlayer2 = player1.getVictoryPoints();
+    }
 
-        IntStream.range(previousPointsPlayer2, SECOND_POPE_SPACE).forEach(i -> player1.moveOnPopeRoad());
-        assertEquals(player2.getVictoryPoints(), previousPointsPlayer2 + SECOND_POPE_SPACE_POINTS);
-        assertEquals(previousPointsPlayer1, player1.getVictoryPoints());
-        assertEquals(player1.getVictoryPoints(), FIRST_POPE_SPACE_POINTS);
-        assertEquals(player2.getVictoryPoints(), SECOND_POPE_SPACE_POINTS);
+    @Test
+    @DisplayName("Testing Lorenzo's Turn")
+    void lorenzoTurn(){
 
+
+        game.setSinglePlayerCPU();
+        game.lorenzoTurn();
 
     }
 }

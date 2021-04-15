@@ -28,9 +28,11 @@ class PopeRoadTest {
         @DisplayName("Test movement by one step on popeRoad")
         public void testMoveOneStep() {
 
+
             int prev_position = popeRoad.getCurrentPositionIndex();
-            popeRoad.move();
-            assertEquals(prev_position + 1, popeRoad.getCurrentPositionIndex());
+            popeRoad.move(8);
+            assertEquals(prev_position + 8, popeRoad.getCurrentPositionIndex());
+            assertEquals(true, popeRoad.getCurrentPosition().isPopeSpace());
         }
 
         @Test

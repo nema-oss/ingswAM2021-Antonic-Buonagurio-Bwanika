@@ -24,7 +24,6 @@ public class Player{
     private List<LeaderCard> hand;
     private List<LeaderCard> activeLeaderCards;
     private int victoryPoints;
-    private int positionIndex;
     private Cell position;
     private Board playerBoard;
     private Effects activeEffects;
@@ -63,7 +62,7 @@ public class Player{
     }
 
     public Cell getPosition() {
-        return position;
+        return getPopeRoad().getCurrentPosition();
     }
 
     public Deposit getDeposit(){
@@ -82,8 +81,11 @@ public class Player{
         return nickname;
     }
 
-    public void addVictoryPoints(int victoryPoints) {
+    public Effects getActiveEffects(){
+        return activeEffects;
+    }
 
+    public void addVictoryPoints(int victoryPoints) {
         this.victoryPoints += victoryPoints;
     }
 
@@ -106,9 +108,28 @@ public class Player{
         CardMarket market = gameBoard.getCardMarket();
         DevelopmentCard newCard = market.getCard(x,y);
 
+        int cardLevel = newCard.getLevel();
+        boolean levelRequirements = false;
+        List<Stack<DevelopmentCard>> developmentCards = getPlayerBoard().getDevelopmentCards();
+        for(Stack<DevelopmentCard> cards: developmentCards){
+            if(cards.empty() || cards.peek().getLevel() == cardLevel - 1)
+                levelRequirements = true;
+        }
+        if(!levelRequirements) throw new InsufficientPaymentException();
 
-        checkCardRequirementsBuy(newCard); // also check if a discount is applicable
+        if(activeEffects.isDiscount())
+            activeEffects.useDiscountEffect(newCard.getCost());
+        checkCardRequirements(newCard.getCost());
         Map<ResourceType,Integer> cost = newCard.getCost();
+        takeResourceForAction(cost);
+        newCard = market.buyCard(x,y);
+        getPlayerBoard().addDevelopmentCard(newCard);
+
+
+    }
+
+    private void takeResourceForAction(Map<ResourceType, Integer> cost) throws Exception {
+
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
 
@@ -128,48 +149,42 @@ public class Player{
                 getStrongbox().getResource(type, cost.get(type));
             }
         }
-
-        newCard = market.buyCard(x,y);
-        getPlayerBoard().addDevelopmentCard(newCard);
-
-
     }
 
     /*
-        * this method check if the player has the requirements to buy the selected card
-        * @param the selected card
+        * this method check if the player has enough resources to pay the given cost
+        * @param the cost
         * @exception player has not enough resources to buy the card or card is not present
      */
 
-    private void checkCardRequirementsBuy(DevelopmentCard newCard) throws InsufficientPaymentException {
+    public void checkCardRequirements(Map<ResourceType, Integer> cost) throws InsufficientPaymentException {
 
-        int cardLevel = newCard.getLevel();
-        boolean levelRequirements = false;
-        List<Stack<DevelopmentCard>> developmentCards = getPlayerBoard().getDevelopmentCards();
-        for(Stack<DevelopmentCard> cards: developmentCards){
-            if(cards.empty() || cards.peek().getLevel() == cardLevel - 1)
-                levelRequirements = true;
-        }
-        if(!levelRequirements) throw new InsufficientPaymentException();
 
-        Map<ResourceType,Integer> cost = newCard.getCost();
-        if(activeEffects.isDiscount())
-            activeEffects.useDiscountEffect(cost);
+
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
+        if(activeEffects.isExtraDeposit()){
+            AuxiliaryDeposit auxiliaryDeposit =  activeEffects.getAuxiliaryDeposit(0);
+        }
         int fromStrongbox;
         int fromDeposit;
+        int fromExtraDeposit;
 
         for(ResourceType type: cost.keySet()){
 
             fromStrongbox = 0;
             fromDeposit = 0;
+            fromExtraDeposit = 0;
+
             if(availableResourcesStrongbox.containsKey(type))
                 fromStrongbox = availableResourcesStrongbox.get(type).size();
             if(availableResourcesDeposit.containsKey(type))
                 fromDeposit = availableResourcesDeposit.get(type).size();
-
-            if(cost.get(type) > fromStrongbox + fromDeposit )
+            if(activeEffects.isExtraDeposit()){
+                AuxiliaryDeposit auxiliaryDeposit =  activeEffects.getAuxiliaryDeposit(0);
+                fromExtraDeposit += auxiliaryDeposit.getAuxiliaryDeposit().stream().filter(r -> r.getType() == type).count();
+            }
+            if(cost.get(type) > fromStrongbox + fromDeposit + fromExtraDeposit )
                 throw new InsufficientPaymentException();
         }
     }
@@ -186,7 +201,6 @@ public class Player{
         List<Producible> result = new ArrayList<>();
         for (Marble marble : marbles) {
             if (marble.getProduct().isPresent()) {
-                //if false it means that the marble can't produce a new resource without special effects
                 result.add(marble.getProduct().get());
             } else{
                 if(activeEffects.isWhiteToResource()){
@@ -194,8 +208,6 @@ public class Player{
                     result.add(extraResource);
                 }
             }
-
-
         }
 
         result.removeIf(producible -> producible.useEffect(getPopeRoad())); // using faith points
@@ -203,9 +215,7 @@ public class Player{
         for (Producible producible : result) {
             newResources.add((Resource) producible);
         }
-
         return newResources;
-
     }
 
 
@@ -216,13 +226,12 @@ public class Player{
      * @exception player has not enough resources to activate the card or player can't store all resources
      */
 
-    public void activateProduction(int positionIndex) throws FullDepositException, ProductionRequirementsException, InsufficientResourcesException {
+    public void activateProduction(int positionIndex) throws FullDepositException, Exception, InsufficientPaymentException {
 
         DevelopmentCard card = getPlayerBoard().getDevelopmentCard(positionIndex);
-        checkCardRequirementsProduction(card.getProductionRequirements());
+        checkCardRequirements(card.getProductionRequirements());
         Map<ResourceType,Integer>  requirements = card.getProductionRequirements();
-        for(ResourceType type: requirements.keySet())
-            getPlayerBoard().getDeposit().getResources(type,requirements.get(type));
+        takeResourceForAction(requirements);
 
         List<Resource> result = new ArrayList<>();
         List<Producible> productionResult = card.getProductionResults();
@@ -240,45 +249,12 @@ public class Player{
         * this method use the production effect of a leader card
      */
 
-    public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException {
+    public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException, InsufficientPaymentException {
 
         if(activeEffects.isExtraProduction()){
             activeEffects.useExtraProductionEffect(this, positionIndex);
 
         }
-        /*
-        LeaderCard card = activeLeaderCards.get(positionIndex);
-        if(card.getLeaderType() == LeaderCardType.EXTRA_PRODUCTION){
-            Map<ResourceType,Integer> cost = card.getCostResource(); // here I prefer ResourceType not Resource
-            Map<ResourceType,List<Resource>> availableResources = getDeposit().getAll();
-            for(ResourceType resource: cost.keySet()){
-                if(cost.get(resource) > availableResources.get(resource).size()) throw new ProductionRequirementsException();
-            }
-
-            //List<Resource> result = (List<Resource>) card.useEffect(); // here I want the result of leader card production
-            //getStrongbox().addResource(result);
-        }
-
-         */
-
-    }
-
-
-    /*
-     * this method check if the player has the requirements to buy the selected card
-     * @param the selected card
-     * @exception player has not enough resources to buy the card or card is not present
-     */
-
-    public void checkCardRequirementsProduction(Map<ResourceType, Integer> requirements) {
-
-        try {
-            Map<ResourceType, List<Resource>> availableResources = getDeposit().getAll();
-            for (ResourceType type : requirements.keySet()) {
-                if (requirements.get(type) > availableResources.get(type).size())
-                    throw new ProductionRequirementsException();
-            }
-        }catch(ProductionRequirementsException e){e.printStackTrace();}
 
     }
 
@@ -286,7 +262,6 @@ public class Player{
         *this method move the player on the popeRoad of the given steps
         *@param amount of steps
      */
-
     public void moveOnPopeRoad(int steps){
 
         while(steps > 0){
@@ -301,7 +276,7 @@ public class Player{
 
     public void moveOnPopeRoad(){
         getPopeRoad().move();
-        Cell position = getPosition();
+        Cell position = getPopeRoad().getCurrentPosition();
         addVictoryPoints(position.getPoints());
         if(position.isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
 
@@ -315,7 +290,7 @@ public class Player{
 
         while(steps > 0) {
             getPopeRoad().move();
-            Cell position = getPosition();
+            Cell position = getPopeRoad().getCurrentPosition();
             addVictoryPoints(position.getPoints());
             steps--;
         }
@@ -335,13 +310,8 @@ public class Player{
     }
 
     /*
-        * this method activate the effect of a Leader Card
-        * @param the leader Card selected
-     */
-
-    /*
         *this method allows the player to use a leaderCard from his hand
-        * @param the leader card
+        * @param the leader card index
      */
 
     public void activateLeaderCard(int positionIndex) throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException{
@@ -419,9 +389,5 @@ public class Player{
         * this method allows to discard the resources.
      */
     public void discardResources(){}
-
-    public Effects getActiveEffects() {
-        return activeEffects;
-    }
 
 }

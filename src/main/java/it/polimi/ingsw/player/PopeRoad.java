@@ -26,7 +26,6 @@ public class PopeRoad {
         popeRoad = cells;
         currentPositionIndex = 0;
         currentPosition = popeRoad.get(0);
-
     }
 
     /*
@@ -42,7 +41,6 @@ public class PopeRoad {
         * this method return the current Cell occupied by the player
         * @return current player position (type:Cell)
      */
-
     public Cell getCurrentPosition(){
         return currentPosition;
     }
@@ -51,7 +49,6 @@ public class PopeRoad {
      * this method return the current index position occupied by the player
      * @return current player position (type:int)
      */
-
     public int getCurrentPositionIndex() {
         return currentPositionIndex;
     }
@@ -60,7 +57,6 @@ public class PopeRoad {
      * this method move the player by a given number of steps
      * @param steps(type:int) number of steps forward
     */
-
     public void move(int steps){
 
         if(currentPositionIndex + steps >= popeRoad.size() - 1) {
@@ -70,14 +66,11 @@ public class PopeRoad {
             currentPositionIndex += steps;
         }
         currentPosition = popeRoad.get(currentPositionIndex);
-
-
-
     }
+
     /*
      * this method move the player by a one step
     */
-
     public void move(){
 
         if(currentPositionIndex + 1 >= popeRoad.size()-1) {
@@ -95,7 +88,6 @@ public class PopeRoad {
      * this method give the points to the player based on the position
      * @return number of points in the occupied Cell
      */
-
     public int getPoints(){
         return currentPosition.getPoints();
     }

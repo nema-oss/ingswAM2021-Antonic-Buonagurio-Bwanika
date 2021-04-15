@@ -85,28 +85,36 @@ class PlayerTest {
         deposit.addResource(1, newResources.get(0));
         deposit.addResource(2, newResources.get(1));
         deposit.swapFloors(1,2);
+        deposit.swapFloors(2,3);
 
 
     }
 
     @Test
     @DisplayName("Testing the activate production action")
-    void activateProduction() throws FullDepositException, Exception, NonExistentCardException {
+    void activateProduction() throws FullDepositException, Exception, NonExistentCardException, InsufficientPaymentException {
 
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
         developmentCard.getProductionResults().forEach(p -> System.out.println(p.getType()));
+        Map<ResourceType, Integer> productionRequirements = developmentCard.getProductionRequirements();
         List<Resource> resources = new ArrayList<>();
+        for(ResourceType resourceType: productionRequirements.keySet()){
+            int amount = productionRequirements.get(resourceType);
+            while(amount > 0){
+                resources.add(new Resource(resourceType));
+                amount--;
+            }
+        }
+
         player.getStrongbox().addResource(resources);
         int previousPosition = player.getPositionIndex();
-
         Map<ResourceType, List<Resource>> previousResources = player.getStrongbox().getAll();
         player.getPlayerBoard().addDevelopmentCard(developmentCard);
         player.activateProduction(0);
-        assertEquals(9, player.getStrongbox().getResource(ResourceType.SHIELD, 3).size());
-        assertEquals(1, player.getStrongbox().getResource(ResourceType.STONE, 3).size());
-        assertEquals(previousPosition + 1, player.getPositionIndex());
-        assertThrows(Exception.class, ()-> player.getStrongbox().getResource(ResourceType.COIN, 2));
-        assertThrows(Exception.class, ()-> player.getStrongbox().getResource(ResourceType.SHIELD, 6));
+        for(ResourceType resourceType: productionRequirements.keySet()) {
+            assertThrows(Exception.class, () -> player.getStrongbox().getResource(resourceType, productionRequirements.get(resourceType)));
+        }
+
 
 
     }
@@ -118,6 +126,8 @@ class PlayerTest {
         int previousPosition = player.getPositionIndex();
         player.moveOnPopeRoad();
         assertEquals(previousPosition + 1, player.getPositionIndex());
+        player.moveOnPopeRoad(5);
+        assertEquals( previousPosition + 6, player.getPositionIndex());
         System.out.println(player.getVictoryPoints());
     }
 
@@ -158,4 +168,5 @@ class PlayerTest {
                 break;
         }
     }
+
 }

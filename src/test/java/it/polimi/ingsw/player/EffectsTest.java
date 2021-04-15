@@ -85,7 +85,10 @@ class EffectsTest {
     @DisplayName("Testing the extra deposit effect")
     void useExtraDepositEffect() throws FullDepositException, Exception {
 
-        List<Resource> newResources = player.buyResources(1,2);
+
+        List<Resource> newResources = new ArrayList<>();
+        newResources.add(new Resource(ResourceType.STONE));
+        newResources.add(new Resource(ResourceType.COIN));
         effects.activateExtraDeposit(newResources.get(0).getType());
         Resource firstToAdd = newResources.get(0);
         Resource secondToAdd = newResources.get(1);
@@ -94,7 +97,6 @@ class EffectsTest {
         AuxiliaryDeposit auxiliaryDeposit = effects.getAuxiliaryDeposit(0);
 
         assertEquals(auxiliaryDeposit.getResources(1).get(0), firstToAdd);
-        //assertEquals(auxiliaryDeposit.getResources(2).get(1), secondToAdd);
 
 
     }

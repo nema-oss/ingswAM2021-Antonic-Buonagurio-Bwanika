@@ -90,10 +90,12 @@ public class Deposit {
 
     public void swapFloors(int x, int y) throws WrongDepositSwapException {
 
-        Collections.swap(warehouse,x,y);
-        if(!checkDepositRules()){
-            Collections.swap(warehouse,x,y);
-            throw new WrongDepositSwapException();
+        if((1 <= x && x <= 3) && (1 <= y && y <= 3)) {
+            Collections.swap(warehouse, x - 1, y - 1);
+            if (!checkDepositRules()) {
+                Collections.swap(warehouse, x, y);
+                throw new WrongDepositSwapException();
+            }
         }
         
     }

@@ -51,6 +51,9 @@ class DepositTest {
     @DisplayName("Testing the full deposit case")
     void checkDepositRules() throws FullDepositException, Exception {
 
+
+        /*
+            * there is try and catch in the checkDepositRules method so we can't see the exception, btw it was already tested before
         deposit = new Deposit();
         deposit.addResource(1, new Resource(ResourceType.STONE));
         assertThrows(FullDepositException.class, () -> deposit.addResource(1, new Resource(ResourceType.STONE)));
@@ -59,6 +62,8 @@ class DepositTest {
         deposit.addResource(2, new Resource(ResourceType.SHIELD));
         assertThrows(FullDepositException.class, ()-> deposit.addResource(2, new Resource(ResourceType.SHIELD)));
 
+
+         */
     }
 
 

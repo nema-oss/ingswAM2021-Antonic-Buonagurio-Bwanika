@@ -64,7 +64,7 @@ public class Strongbox {
      * @return set of resources (type:ArrayList<Resource)
      */
 
-    public ArrayList<Resource> getResource(ResourceType type, int amount) throws Exception{
+    public List<Resource> getResource(ResourceType type, int amount) throws Exception{
 
         if(amount > strongbox.get(type).size()) throw new Exception();
         ArrayList<Resource> result = new ArrayList<Resource>();

@@ -27,7 +27,7 @@ public class Board {
     public Board(){
 
         cellFactory = new CellFactory();
-        List<Cell> cells = Arrays.asList(cellFactory.getCells());
+        List<Cell> cells = new ArrayList<>(Arrays.asList(cellFactory.getCells()));
         popeRoad = new PopeRoad(cells);
         deposit = new Deposit();
         strongbox = new Strongbox();

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.player;
 
 import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.exception.InsufficientPaymentException;
 import it.polimi.ingsw.exception.ProductionRequirementsException;
 import it.polimi.ingsw.gameboard.Producible;
 import it.polimi.ingsw.gameboard.Resource;
 import it.polimi.ingsw.gameboard.ResourceType;
-
 import java.util.*;
 
 public class Effects {
@@ -35,25 +35,42 @@ public class Effects {
         productionResultList = new ArrayList<>();
         productionRequirementsList = new ArrayList<>();
         isExtraDeposit = false;
+        auxiliaryDeposits = new ArrayList<>();
 
     }
 
+    /*
+        * this method activate the White to Resource effect
+        * @param the resource type that will match the white marble
+     */
     public void activateWhiteToResource(ResourceType resourcetype){
         isWhiteToResource = true;
         toResources.add(new Resource(resourcetype));
     }
 
+    /*
+     * this method activate the Discount effect
+     * @param the resource type to discount, the discount amount
+     */
     public void activateDiscount(ResourceType discountType, int discountAmount){
         isDiscount = true;
         discountAmounts.put(discountType, discountAmount);
     }
 
+    /*
+     * this method activate the Extra Deposit effect
+     * @param the storage type
+     */
     public void activateExtraDeposit(ResourceType resourceType){
         isExtraDeposit = true;
         AuxiliaryDeposit auxiliaryDeposit = new AuxiliaryDeposit(resourceType);
         auxiliaryDeposits.add(auxiliaryDeposit);
     }
 
+    /*
+     * this method activate the ExtraProduction effect
+     * @param the production requirements and the results of production
+     */
     public void activateExtraProduction(Map<ResourceType,Integer> productionRequirements, List<Producible> productionResult){
         isExtraProduction = true;
         productionResultList.add(productionResult);
@@ -77,13 +94,21 @@ public class Effects {
         return isExtraProduction;
     }
 
+    /*
+     * this method use the White to Resource effect
+     * @param the index of the selected effect
+     */
     public Resource useWhiteToResourceEffect(int position){
         return toResources.get(position);
     }
 
-    public void useExtraProductionEffect(Player player, int positionIndex){
+    /*
+     * this method use the ExtraProduction effect
+     * @param the current player, the index of the selected effect
+     */
+    public void useExtraProductionEffect(Player player, int positionIndex) throws InsufficientPaymentException {
 
-        player.checkCardRequirementsProduction(productionRequirementsList.get(positionIndex));
+        player.checkCardRequirements(productionRequirementsList.get(positionIndex));
         List<Resource> result = new ArrayList<>();
         for(Producible producible: productionResultList.get(positionIndex)){
             if(!producible.useEffect(player.getPopeRoad())) {
@@ -95,6 +120,10 @@ public class Effects {
 
     }
 
+    /*
+     * this method use the Discount effect
+     * @param the cost to discount
+     */
     public void useDiscountEffect(Map<ResourceType,Integer> cost){
         for(ResourceType discountType: discountAmounts.keySet())
             if(cost.containsKey(discountType)){
@@ -102,12 +131,20 @@ public class Effects {
             }
     }
 
+    /*
+     * this method use the ExtraDeposit effect
+     * @param the resources obtained, the index of the selected effect
+     */
     public void useExtraDepositEffect(List<Resource> resources, int positionIndex){
         resources.removeIf(resource -> auxiliaryDeposits.get(positionIndex).addResource(resource));
     }
 
+    /*
+        * this method returns the chosen auxiliary deposit
+        * @param the index of the selected auxiliary deposit
+     */
     public AuxiliaryDeposit getAuxiliaryDeposit(int positionIndex){
-        if(positionIndex >= 0 && positionIndex < auxiliaryDeposits.size() - 1)
+        if(positionIndex >= 0 && positionIndex <= auxiliaryDeposits.size() - 1)
             return auxiliaryDeposits.get(positionIndex);
         return null;
     }

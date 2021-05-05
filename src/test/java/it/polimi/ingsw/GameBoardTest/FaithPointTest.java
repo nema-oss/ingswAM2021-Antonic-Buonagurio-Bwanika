@@ -1,11 +1,10 @@
 package it.polimi.ingsw.GameBoardTest;
 
-import it.polimi.ingsw.gameboard.FaithPoint;
-import it.polimi.ingsw.gameboard.FaithType;
-import it.polimi.ingsw.player.CellFactory;
-import it.polimi.ingsw.player.PopeRoad;
+import it.polimi.ingsw.model.gameboard.FaithPoint;
+import it.polimi.ingsw.model.gameboard.FaithType;
+import it.polimi.ingsw.model.player.CellFactory;
+import it.polimi.ingsw.model.player.PopeRoad;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.Arrays;

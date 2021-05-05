@@ -1,16 +1,14 @@
 package it.polimi.ingsw.GameBoardTest;
 
-import it.polimi.ingsw.gameboard.Marble;
-import it.polimi.ingsw.gameboard.MarbleFactory;
-import it.polimi.ingsw.gameboard.MarbleMarket;
+import it.polimi.ingsw.model.gameboard.Marble;
+import it.polimi.ingsw.model.gameboard.MarbleFactory;
+import it.polimi.ingsw.model.gameboard.MarbleMarket;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MarbleMarketTest {

@@ -1,11 +1,9 @@
 package it.polimi.ingsw.GameBoardTest;
 
-import it.polimi.ingsw.gameboard.*;
+import it.polimi.ingsw.model.gameboard.*;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Optional;
 

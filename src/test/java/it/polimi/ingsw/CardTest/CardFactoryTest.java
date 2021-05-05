@@ -1,20 +1,16 @@
 package it.polimi.ingsw.CardTest;
 
-import it.polimi.ingsw.cards.CardFactory;
-import it.polimi.ingsw.cards.DevelopmentCard;
-import it.polimi.ingsw.cards.DevelopmentCardType;
-import it.polimi.ingsw.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.cards.leadercards.LeaderCardType;
-import it.polimi.ingsw.gameboard.FaithPoint;
-import it.polimi.ingsw.gameboard.FaithType;
-import it.polimi.ingsw.gameboard.Producible;
-import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.model.cards.CardFactory;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentCardType;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
+import it.polimi.ingsw.model.gameboard.FaithType;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

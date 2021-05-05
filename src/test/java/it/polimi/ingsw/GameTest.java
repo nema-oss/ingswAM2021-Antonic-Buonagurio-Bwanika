@@ -1,14 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.cards.ActionTokenDeck;
-import it.polimi.ingsw.cards.DevelopmentCardType;
-import it.polimi.ingsw.gameboard.CardMarket;
-import it.polimi.ingsw.player.Player;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 

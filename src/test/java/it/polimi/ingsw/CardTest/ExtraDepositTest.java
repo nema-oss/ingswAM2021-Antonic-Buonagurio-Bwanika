@@ -1,9 +1,6 @@
 package it.polimi.ingsw.CardTest;
 
-import it.polimi.ingsw.cards.leadercards.AuxiliaryDeposit;
-import it.polimi.ingsw.cards.leadercards.ExtraDeposit;
-import it.polimi.ingsw.exception.LeaderCardException;
-import it.polimi.ingsw.gameboard.ResourceType;
+import it.polimi.ingsw.model.cards.leadercards.ExtraDeposit;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

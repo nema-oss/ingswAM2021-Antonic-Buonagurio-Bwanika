@@ -1,13 +1,13 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.messagges.LoginMessage;
-import it.polimi.ingsw.messagges.LoginRequest;
-import it.polimi.ingsw.messagges.Message;
+import it.polimi.ingsw.messagges.*;
+import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.View;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
 
@@ -20,28 +20,31 @@ public class EchoClient {
 
     //attributes
 
-    private static final String SERVER_IP = "127.0.0.1";
-    private static final int SERVER_PORT = 1234;
+    private String ip;
+    private int serverPort;
     private Socket server;
     private View view;
-    private ObjectInputStream inputStream;
+    private ObjectInputStream input;
     private ObjectOutputStream outputStream;
 
-    public EchoClient(){
+    public EchoClient(String ip, int port, View view){
+        this.serverPort = port;
+        this.ip = ip;
+        this.view = view;
 
     }
 
     public static void main(String[] args) {
 
-        EchoClient echoClient = new EchoClient();
+        EchoClient echoClient = new EchoClient("127.0.0.1",1234, new Cli()); // this should be read from cmd line
         echoClient.start();
     }
 
     //methods
 
     /**
-     * This method allows to receive an XML from connection with server and to start the message process.
-     * The communication go down when server send a "disconnection" message.
+     * This method allows to receive a message from connection with server and to start the message process.
+     * The communication go down when server send a disconnection message.
      */
 
     public void start(){
@@ -49,61 +52,103 @@ public class EchoClient {
         initializeClientConnection();
         System.out.println("Client connected to" + server.getInetAddress());
 
-        if(server != null) {
-            try {
-
-
-                inputStream = new ObjectInputStream(server.getInputStream());
-                outputStream = new ObjectOutputStream(server.getOutputStream());
-
-                while (!server.isClosed()) {
-
-                    Message message = (Message) inputStream.readObject();
-                    processMsg(message);
-                }
-
-            } catch (IOException | ClassNotFoundException e) {
-                //Server disconnection manager
-                e.printStackTrace();
-            }
-            try{
-                server.close();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+        // if there's no ping response from server after 3 seconds, connection is ended
+        try{
+            server.setSoTimeout(3000);
+        }catch (SocketException e){
+            e.printStackTrace();
         }
 
+        new Thread(this::pingServer).start();
+
+        if(server != null) {
+            try {
+                input = new ObjectInputStream(server.getInputStream());
+            } catch (IOException e) {
+                // System.out.println("could not open connection to " + client.getInetAddress());
+                return;
+            }
+
+            try {
+                handleServerConnection();
+            } catch (IOException e) {
+                System.out.println("client " + server.getInetAddress() + " connection dropped");
+            }
+
+            try {
+                server.close();
+            } catch (IOException e) {
+                serverDisconnection();
+            }
+
+        }
 
     }
 
+
+    public void serverDisconnection(){
+        try{
+            server.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        //close the view
+    }
+
     /**
-     * This method initializes a Socket connection on hostName-port.
+     * this method handle the sending, parsing and creation of messages between client and server
+     * @throws IOException ...
+     */
+    public void handleServerConnection() throws IOException{
+
+        try{
+            while (true) {
+
+                Object next = input.readObject();
+                Message message = (Message) next;
+                if(message instanceof DisconnectionMessage) break;
+                if(!(message instanceof PingMessage))
+                    processMessage(message); // from this method we also send the message back to the server
+            }
+            input.close();
+        } catch (ClassNotFoundException | ClassCastException e) {
+            if(!server.isClosed()) serverDisconnection();
+        }
+    }
+
+    /**
+     * This method process messages using the Message manager
+     * @param message
+     */
+    public synchronized void processMessage(Message message) {
+        new MessageManager().parseMessageFromServer(server,message,view);
+    }
+
+    /**
+     * This method send a ping message to the server
+     */
+    public void pingServer() {
+        do{
+            try {
+                Thread.sleep(1500);
+                new MessageSender(server, MessageType.PING).sendMsg();
+            } catch (InterruptedException ignored) {
+            }
+        }while(!server.isClosed());
+
+        Thread.currentThread().interrupt();
+    }
+
+    /**
+     * This method initializes a socket connection on ip-serverPort.
      */
 
     public void initializeClientConnection(){
         try{
-            server = new Socket(SERVER_IP, SERVER_PORT);
+            server = new Socket(ip, serverPort);
         }catch (IOException e){
-            System.out.println("Can't connect to server on port: " + SERVER_PORT);
+            System.out.println("Can't connect to server on port: " + serverPort);
         }
     }
-
-
-    private synchronized void processMsg(Message message) throws IOException{
-
-        if(message instanceof LoginMessage) {
-            String output = "";
-            output += "Insert your username (must be at least 3 characters long and no more than 10, valid characters: A-Z, a-z, 1-9, _)";
-            System.out.println(output);
-            Scanner scanner = new Scanner(System.in);
-            String nickname = scanner.nextLine();
-            outputStream.writeObject(new LoginRequest(nickname));
-        }
-        else if(message instanceof OkMsg){
-            System.out.println("Nickname is okay");
-        }
-
-    }
-
 
 }

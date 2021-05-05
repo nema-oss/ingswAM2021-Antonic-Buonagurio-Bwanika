@@ -6,4 +6,5 @@ package it.polimi.ingsw.messagges;
  * this interface represent the message sent between client and server
  */
 public interface Message {
+    MessageType getType();
 }

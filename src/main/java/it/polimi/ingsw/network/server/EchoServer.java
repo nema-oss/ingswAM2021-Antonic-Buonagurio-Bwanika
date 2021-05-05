@@ -1,15 +1,7 @@
 package it.polimi.ingsw.network.server;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import it.polimi.ingsw.controller.MatchController;
 import it.polimi.ingsw.view.server.VirtualView;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -29,22 +21,24 @@ public class EchoServer {
 
     //attributes
 
-    private static final int SERVER_PORT = 1234;
-    private static final String SERVER_IP = "127.0.0.1";
+    private static final int SERVER_PORT = 1234; // this should be read from command line args
     private ServerSocket server;
     private ExecutorService executor;
+    private static int serverPort;
 
     private final List<VirtualView> lobbies;
 
     //constructors
 
-    public EchoServer(){
+    public EchoServer(int port){
+
+        serverPort = port;
         lobbies = new ArrayList<>();
-        lobbies.add(new VirtualView());
+        lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1));
     }
 
     public static void main(String[] args) {
-        EchoServer echoServer = new EchoServer();
+        EchoServer echoServer = new EchoServer(SERVER_PORT);
         echoServer.start();
     }
 
@@ -60,8 +54,6 @@ public class EchoServer {
         executor = Executors.newCachedThreadPool();
         initializeServer();
 
-        //The server listens for a new connection and searches for a lobby where the new client can enter (if there isn't
-        //server provides to create a new lobby and enters the client into this)
         while (true) {
             try {
                 Socket client = server.accept();
@@ -82,13 +74,13 @@ public class EchoServer {
 
     public void initializeServer(){
         try{
-            server = new ServerSocket(SERVER_PORT);
+            server = new ServerSocket(serverPort);
         }catch (IOException e){
             System.err.println(e.getMessage());
             return;
         }
 
-        System.out.println("Server socket ready on port: " + SERVER_PORT);
+        System.out.println("[SERVER] ready on port: " + SERVER_PORT);
     }
 
     /**
@@ -102,7 +94,7 @@ public class EchoServer {
 
         boolean found = false;
         for (VirtualView match : lobbies){
-            if(match.getLobbySize() < 4){
+            if(match.getLobbySize() < 4 && !match.isActive()){
                 executor.submit(new ClientHandler(client,match,lobbies.indexOf(match) + 1));
                 found = true;
                 break;
@@ -111,32 +103,21 @@ public class EchoServer {
 
         //The server have to create a new lobby because there isn't a free one.
         if(!found){
-            System.out.println("Server creates a new lobby...");
-            VirtualView match = new VirtualView();
+            System.out.println("[SERVER] creates a new lobby...");
+            VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1);
             lobbies.add(match);
             executor.submit(new ClientHandler(client,match,lobbies.indexOf(match) + 1));
         }
     }
 
-    /**
-     * This method is called when a client connection go down, it provides to remove the lobby where this client was
-     * @param match is the virtual view represents a lobby/match
-     */
-
-    public void onClientDown(Match match) {
-        System.out.println("Lobby number " + (lobbies.indexOf(match) + 1) + " deleted!");
-
-        lobbies.remove(match);
-    }
 
     /**
-     * This method is called when the match have to finish. It provides to visualize a message on the server and to
-     * delete the lobby where the match was evolving.
+     * This method is called when the match is finished.
      * @param match is the lobby's virtualView
      */
 
-    public void onMatchFinish(Match match){
-        System.out.println("\nLobby number " + (lobbies.indexOf(match) + 1) + " deleted!");
+    public void onEndOfMatch(VirtualView match){
+        System.out.println("\nMatch in lobby " + (lobbies.indexOf(match) + 1) + " ended!");
 
         lobbies.remove(match);
     }

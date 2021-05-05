@@ -1,7 +1,10 @@
 package it.polimi.ingsw.view.server;
 
-import it.polimi.ingsw.messagges.Message;
+import it.polimi.ingsw.controller.ControllerInterface;
+import it.polimi.ingsw.controller.MatchController;
+import it.polimi.ingsw.messagges.*;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
@@ -13,19 +16,42 @@ import java.util.List;
  */
 public class VirtualView {
 
+    private final int lobbyID;
+    private final ControllerInterface matchController;
     private List<Socket> clients;
+    private boolean isStarted;
 
-    public int getLobbySize() {
+    public VirtualView(ControllerInterface matchController, int lobbyID) {
+        this.lobbyID = lobbyID;
+        this.matchController = matchController;
+    }
+
+
+    public synchronized int getLobbySize() {
         return clients.size();
     }
 
     public void addInWaitList(Socket client) {
     }
 
-    public void toDoLogin(Socket client, ObjectOutputStream output) {
+    public void toDoLogin(Socket client) {
+
+        LoginMessage loginMessage = new LoginMessage();
+        sendMessage(client, loginMessage.getType());
     }
 
-    public void processMessage(Message command, Socket client, ObjectOutputStream output) {
+
+
+    public synchronized boolean isActive() {
+        return isStarted;
+    }
+
+    public void sendMessage(Socket socket, MessageType messageType){
+        boolean success = new MessageSender(socket,messageType).sendMsg();
+        if(!success) clientDown(socket);
+    }
+
+    public void clientDown(Socket socket) {
     }
 }
 

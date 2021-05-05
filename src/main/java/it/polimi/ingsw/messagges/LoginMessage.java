@@ -9,4 +9,8 @@ import java.io.Serializable;
 public class LoginMessage implements Message, Serializable {
 
 
+    @Override
+    public MessageType getType() {
+        return null;
+    }
 }

@@ -1,4 +1,6 @@
-package it.polimi.ingsw.messagges;
+package it.polimi.ingsw.messages;
+
+import it.polimi.ingsw.view.client.View;
 
 import java.io.Serializable;
 
@@ -7,8 +9,15 @@ import java.io.Serializable;
  */
 
 public class LoginMessage implements Message, Serializable {
+    private final MessageType messageType;
 
+    public LoginMessage() {
+        messageType = MessageType.LOGIN;
+    }
 
+    public void execute(View view){
+        view.showLogin();
+    }
     @Override
     public MessageType getType() {
         return null;

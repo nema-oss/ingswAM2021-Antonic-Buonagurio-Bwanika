@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.messagges.*;
+import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;

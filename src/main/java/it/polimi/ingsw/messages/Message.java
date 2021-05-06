@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messagges;
+package it.polimi.ingsw.messages;
 
 //TODO == each Message should implement this class and Serializable and should contains just the minimum amount of info
 // to complete the required action

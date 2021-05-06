@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messagges;
+package it.polimi.ingsw.messages;
 
 import java.net.Socket;
 

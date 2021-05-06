@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messagges;
+package it.polimi.ingsw.messages;
 
 import java.io.Serializable;
 
@@ -12,13 +12,19 @@ public class LoginRequest implements Message, Serializable {
         this is just an example to test the connection, change it if needed
      */
     private String nickname;
+    private final MessageType messageType;
 
-    public LoginRequest(String nickname){
+    public LoginRequest(String nickname, MessageType messageType){
         this.nickname = nickname;
+        this.messageType = messageType;
     }
 
     public String getNickname() {
         return nickname;
     }
 
+    @Override
+    public MessageType getType() {
+        return messageType;
+    }
 }

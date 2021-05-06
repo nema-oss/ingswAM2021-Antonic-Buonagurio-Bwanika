@@ -1,11 +1,8 @@
 package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
-import it.polimi.ingsw.controller.MatchController;
-import it.polimi.ingsw.messagges.*;
+import it.polimi.ingsw.messages.*;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 

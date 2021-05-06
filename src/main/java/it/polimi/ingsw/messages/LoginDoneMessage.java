@@ -8,7 +8,7 @@ public class LoginDoneMessage implements Serializable, Message {
     private final MessageType messageType;
 
     public LoginDoneMessage() {
-        this.messageType = MessageType.LOGINDONE;
+        this.messageType = MessageType.LOGIN_DONE;
     }
 
     public void execute(View view){

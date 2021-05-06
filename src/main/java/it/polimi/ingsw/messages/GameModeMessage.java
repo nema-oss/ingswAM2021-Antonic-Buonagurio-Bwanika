@@ -2,11 +2,11 @@ package it.polimi.ingsw.messages;
 
 import java.io.Serializable;
 
-public class GameTypeMessage implements Serializable, Message {
+public class GameModeMessage implements Serializable, Message {
     private final MessageType messageType;
 
-    public GameTypeMessage() {
-        this.messageType = MessageType.GAMETYPE;
+    public GameModeMessage() {
+        this.messageType = MessageType.GAME_MODE;
     }
 
     @Override

@@ -7,14 +7,14 @@ import java.io.Serializable;
  * Message to notify the game is finished
  * @author Nemanja Antonic
  */
-public class EndMessage implements Message, Serializable {
+public class EndGameMessage implements Message, Serializable {
     private final MessageType messageType;
 
     /**
      * Server-side constructor to create the message
      */
-    public EndMessage() {
-        this.messageType = MessageType.END;
+    public EndGameMessage() {
+        this.messageType = MessageType.END_GAME;
     }
 
     /**

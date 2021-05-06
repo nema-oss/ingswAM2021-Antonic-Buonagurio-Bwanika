@@ -8,7 +8,7 @@ public class BeginMessage implements Serializable, Message {
     private final MessageType messageType;
 
     public BeginMessage() {
-        this.messageType = MessageType.BEGIN;
+        this.messageType = MessageType.START_GAME;
     }
 
     public void execute(View view){

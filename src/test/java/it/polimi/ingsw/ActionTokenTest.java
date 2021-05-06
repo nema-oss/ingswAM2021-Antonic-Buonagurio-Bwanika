@@ -41,9 +41,6 @@ class ActionTokenTest {
     @Test
     void useEffect(){
 
-        ActionTokenDiscard actionTokenDiscard = new ActionTokenDiscard(DevelopmentCardType.BLUE, 2);
-        ActionTokenMove actionTokenMove = new ActionTokenMove(2, false);
-        ActionTokenMove actionTokenMoveShuffle = new ActionTokenMove(1, true);
 
 
     }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ActivateLeaderCardMessage implements Serializable, Message {
+
     private final MessageType messageType;
     private ArrayList<LeaderCard> hand;
     private LeaderCard choice;
@@ -18,13 +19,14 @@ public class ActivateLeaderCardMessage implements Serializable, Message {
         messageType = MessageType.ACTIVATE_LEADERCARD;
     }
 
-    public void execute(View view){
+    public void execute(View view) {
         //method in view to show the choice
     }
 
-    public void execute(VirtualView virtualView){
+    public void execute(VirtualView virtualView) {
         //method in virtualView
     }
+
     @Override
     public MessageType getType() {
         return messageType;

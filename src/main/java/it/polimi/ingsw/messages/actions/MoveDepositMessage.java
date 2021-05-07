@@ -1,5 +1,6 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -7,7 +8,11 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MoveDepositMessage implements Serializable, Message {
+/**
+ * client may choose to reorganize the deposit at any time
+ */
+
+public class MoveDepositMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
     private ArrayList<Resource> resources; //up to 3 possible resources to move (1 per type)
     private ArrayList<Integer> toShelves; //where i want to move the resources to

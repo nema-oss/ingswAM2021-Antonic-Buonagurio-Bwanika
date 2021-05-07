@@ -1,5 +1,6 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DiscardResourcesMessage implements Serializable, Message {
+public class DiscardResourcesMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
     private ArrayList<Resource> resources;
 

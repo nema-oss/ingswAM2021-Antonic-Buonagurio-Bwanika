@@ -1,5 +1,6 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ActivateProductionMessage implements Serializable, Message {
+public class ActivateProductionMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
     private ArrayList<DevelopmentCard> production;
     private ArrayList<Integer> selected; //selected indexes of productions to activate (0 for the board production)

@@ -1,10 +1,12 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.setup.server;
 
+import it.polimi.ingsw.messages.MessageType;
+import it.polimi.ingsw.messages.setup.SetupMessage;
 import it.polimi.ingsw.view.client.View;
 
 import java.io.Serializable;
 
-public class LoginDoneMessage implements Serializable, Message {
+public class LoginDoneMessage implements Serializable, SetupMessage {
     private final MessageType messageType;
 
     public LoginDoneMessage() {

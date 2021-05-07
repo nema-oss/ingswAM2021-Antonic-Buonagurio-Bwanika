@@ -1,28 +1,30 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
-public class BuyDevelopmentCardMessage implements Serializable, Message {
+public class BuyResourcesMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
-    int x;
-    int y;
+    private int x;
+    private int y;
 
-    public BuyDevelopmentCardMessage(int x, int y) {
+    public BuyResourcesMessage(int x, int y) {
         this.x = x;
         this.y = y;
-        messageType = MessageType.BUY_DEVELOPMENT;
+        messageType = MessageType.BUY_RESOURCES;
     }
 
     public void execute(View view){
-        //method in view to show the change
+        //method in view to show the update
     }
 
     public void execute(VirtualView virtualView){
-        //method in virtualView
+        //method in virtualView to update
     }
+
     @Override
     public MessageType getType() {
         return messageType;

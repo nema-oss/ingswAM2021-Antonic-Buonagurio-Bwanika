@@ -1,12 +1,14 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions.server;
 
+import it.polimi.ingsw.messages.MessageType;
+import it.polimi.ingsw.messages.actions.ActionMessage;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
-public class CardMarketUpdateMessage implements Serializable, Message {
+public class CardMarketUpdateMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
     private CardMarket cardMarket;
 

@@ -1,11 +1,13 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.actions.server;
 
+import it.polimi.ingsw.messages.MessageType;
+import it.polimi.ingsw.messages.actions.ActionMessage;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
-public class MoveOnPopeRoadMessage implements Serializable, Message {
+public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
     private final MessageType messageType;
     int moves;
 

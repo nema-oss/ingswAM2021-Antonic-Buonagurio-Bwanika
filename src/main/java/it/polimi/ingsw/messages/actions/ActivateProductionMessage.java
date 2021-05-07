@@ -9,14 +9,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ActivateProductionMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private ArrayList<DevelopmentCard> production;
     private ArrayList<Integer> selected; //selected indexes of productions to activate (0 for the board production)
 
     public ActivateProductionMessage(ArrayList<DevelopmentCard> production, ArrayList<Integer> selected) {
         this.production = production;
         this.selected = selected;
-        messageType = MessageType.ACTIVATE_PRODUCTION;
+        messageType = ActionMessageType.ACTIVATE_PRODUCTION;
     }
 
     public void execute(View view){
@@ -26,8 +26,8 @@ public class ActivateProductionMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
-    public MessageType getType() {
+
+    public ActionMessageType getType() {
         return messageType;
     }
 }

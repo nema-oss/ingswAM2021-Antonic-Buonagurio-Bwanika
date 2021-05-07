@@ -1,7 +1,9 @@
 package it.polimi.ingsw.messages.setup.client;
 
 import it.polimi.ingsw.messages.MessageType;
+import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.messages.setup.SetupMessage;
+import it.polimi.ingsw.messages.setup.SetupMessageType;
 
 import java.io.Serializable;
 
@@ -15,19 +17,19 @@ public class LoginRequest implements SetupMessage, Serializable {
         this is just an example to test the connection, change it if needed
      */
     private String nickname;
-    private final MessageType messageType;
+    private final SetupMessageType messageType;
 
-    public LoginRequest(String nickname, MessageType messageType){
+    public LoginRequest(String nickname){
         this.nickname = nickname;
-        this.messageType = messageType;
+        this.messageType = SetupMessageType.LOGIN;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    @Override
-    public MessageType getType() {
+
+    public SetupMessageType getType() {
         return messageType;
     }
 }

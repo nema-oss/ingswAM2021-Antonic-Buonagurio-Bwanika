@@ -1,5 +1,7 @@
 package it.polimi.ingsw.messages;
 
+import it.polimi.ingsw.messages.actions.ActionMessageType;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +17,7 @@ public class PingMessage implements Message, Serializable {
 
 
     @Override
-    public MessageType getType() {
+    public ActionMessageType getType() {
         return messageType;
     }
 }

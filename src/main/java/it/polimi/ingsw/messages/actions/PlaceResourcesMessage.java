@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 
 public class PlaceResourcesMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private ArrayList<Resource> resources;
     private ArrayList<Integer> targetShelves; //which shelves does the client want to place the resources in
 
     public PlaceResourcesMessage(ArrayList<Resource> resources, ArrayList<Integer> targetShelves) {
         this.resources = resources;
         this.targetShelves = targetShelves;
-        messageType = MessageType.PLACE_RESOURCES;
+        messageType = ActionMessageType.PLACE_RESOURCES;
     }
 
     public void execute(View view){
@@ -31,8 +31,8 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
-    public MessageType getType() {
+
+    public ActionMessageType getType() {
         return messageType;
     }
 }

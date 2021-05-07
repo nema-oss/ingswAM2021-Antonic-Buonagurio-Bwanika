@@ -9,14 +9,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private ArrayList<LeaderCard> hand;
     private LeaderCard choice;
 
     public DiscardLeaderCardMessage(ArrayList<LeaderCard> hand, LeaderCard choice) {
         this.hand = hand;
         this.choice = choice;
-        messageType = MessageType.DISCARD_LEADERCARD;
+        messageType = ActionMessageType.DISCARD_LEADERCARD;
     }
 
     public void execute(View view){
@@ -26,8 +26,8 @@ public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
-    public MessageType getType() {
+
+    public ActionMessageType getType() {
         return messageType;
     }
 }

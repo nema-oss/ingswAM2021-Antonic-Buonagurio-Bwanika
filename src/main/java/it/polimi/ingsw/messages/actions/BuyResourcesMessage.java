@@ -1,20 +1,19 @@
 package it.polimi.ingsw.messages.actions;
 
-import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
 public class BuyResourcesMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private int x;
     private int y;
 
     public BuyResourcesMessage(int x, int y) {
         this.x = x;
         this.y = y;
-        messageType = MessageType.BUY_RESOURCES;
+        messageType = ActionMessageType.BUY_RESOURCES;
     }
 
     public void execute(View view){
@@ -25,8 +24,7 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
         //method in virtualView to update
     }
 
-    @Override
-    public MessageType getType() {
+    public ActionMessageType getType() {
         return messageType;
     }
 }

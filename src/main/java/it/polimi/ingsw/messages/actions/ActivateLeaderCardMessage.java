@@ -10,14 +10,14 @@ import java.util.ArrayList;
 
 public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
 
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private ArrayList<LeaderCard> hand;
     private LeaderCard choice;
 
     public ActivateLeaderCardMessage(ArrayList<LeaderCard> hand, LeaderCard choice) {
         this.hand = hand;
         this.choice = choice;
-        messageType = MessageType.ACTIVATE_LEADERCARD;
+        messageType = ActionMessageType.ACTIVATE_LEADERCARD;
     }
 
     public void execute(View view) {
@@ -28,8 +28,7 @@ public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
         //method in virtualView
     }
 
-    @Override
-    public MessageType getType() {
+    public ActionMessageType getType() {
         return messageType;
     }
 }

@@ -1,16 +1,17 @@
 package it.polimi.ingsw.messages.setup;
 
 import it.polimi.ingsw.messages.MessageType;
+import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
 public class GameModeMessage implements Serializable, SetupMessage {
-    private final MessageType messageType;
+    private final SetupMessageType messageType;
 
     public GameModeMessage() {
-        this.messageType = MessageType.GAME_MODE;
+        this.messageType = SetupMessageType.GAME_MODE;
     }
 
     public void execute(View view){
@@ -21,8 +22,8 @@ public class GameModeMessage implements Serializable, SetupMessage {
         //method in virtualView
     }
 
-    @Override
-    public MessageType getType() {
+
+    public SetupMessageType getType() {
         return messageType;
     }
 }

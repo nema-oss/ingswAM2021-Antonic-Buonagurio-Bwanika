@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -86,7 +87,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param client the client that must login
      */
     public void toDoLogin(Socket client) {
-        Message message = new MessageWriter(MessageType.LOGIN).getMessage();
+        Message message = new MessageWriter(SetupMessageType.LOGIN).getMessage();
         sendMessage(client, message);
     }
 
@@ -127,7 +128,7 @@ public class VirtualView implements VirtualViewInterface{
                 sendMessage(clients.get(user), loginUpdate);
             }
         }
-        sendMessage(socket, new MessageWriter(MessageType.LOGIN_DONE).getMessage());
+        sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
 
         if(getLobbySize() == MAXIMUM_LOBBY_SIZE) toStartMatch();
     }

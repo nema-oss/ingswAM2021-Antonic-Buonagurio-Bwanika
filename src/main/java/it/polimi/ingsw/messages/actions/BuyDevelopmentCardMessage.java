@@ -7,14 +7,14 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 
 public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     int x;
     int y;
 
     public BuyDevelopmentCardMessage(int x, int y) {
         this.x = x;
         this.y = y;
-        messageType = MessageType.BUY_DEVELOPMENT;
+        messageType = ActionMessageType.BUY_DEVELOPMENT;
     }
 
     public void execute(View view){
@@ -24,8 +24,8 @@ public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
-    public MessageType getType() {
+
+    public ActionMessageType getType() {
         return messageType;
     }
 }

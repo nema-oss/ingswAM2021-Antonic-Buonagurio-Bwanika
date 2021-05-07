@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages;
 
+import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
 
 import java.io.Serializable;
@@ -25,7 +26,6 @@ public class EndGameMessage implements Message, Serializable {
         view.showEnd();
     }
 
-    @Override
     public MessageType getType() {
         return messageType;
     }

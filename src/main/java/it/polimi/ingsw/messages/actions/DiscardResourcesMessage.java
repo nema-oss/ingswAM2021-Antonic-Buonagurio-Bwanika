@@ -9,12 +9,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DiscardResourcesMessage implements Serializable, ActionMessage {
-    private final MessageType messageType;
+    private final ActionMessageType messageType;
     private ArrayList<Resource> resources;
 
     public DiscardResourcesMessage(ArrayList<Resource> resources) {
         this.resources = resources;
-        messageType = MessageType.DISCARD_RESOURCES;
+        messageType = ActionMessageType.DISCARD_RESOURCES;
     }
 
     public void execute(View view){
@@ -24,8 +24,8 @@ public class DiscardResourcesMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
-    public MessageType getType() {
+
+    public ActionMessageType getType() {
         return messageType;
     }
 }

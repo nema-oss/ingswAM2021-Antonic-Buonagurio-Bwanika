@@ -1,0 +1,14 @@
+package it.polimi.ingsw.messages.actions;
+
+public enum ActionMessageType {
+    BUY_RESOURCES,
+    PLACE_RESOURCES,
+    DISCARD_RESOURCES,
+    MOVE_DEPOSIT,
+    BUY_DEVELOPMENT,
+    CARD_MARKET_UPDATE,
+    ACTIVATE_PRODUCTION,
+    ACTIVATE_LEADERCARD,
+    DISCARD_LEADERCARD,
+    MOVE_ON_POPEROAD;
+}

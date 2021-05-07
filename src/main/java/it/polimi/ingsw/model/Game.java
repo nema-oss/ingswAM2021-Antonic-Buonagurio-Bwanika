@@ -306,6 +306,10 @@ public class Game {
 
     }
 
+    public LeaderDeck getLeaderDeck(){
+        return leaderDeck;
+    }
+
 }
 
 

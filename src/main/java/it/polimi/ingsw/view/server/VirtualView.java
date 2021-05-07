@@ -125,6 +125,9 @@ public class VirtualView implements VirtualViewInterface{
         if(getLobbySize() == MAXIMUM_LOBBY_SIZE) toStartMatch();
     }
 
+    private void toStartMatch() {
+    }
+
     /**
      * This method manage the unsuccessful login of a client and alerts the client that it must login again
      * @param nickname the proposed nickname of the new client
@@ -261,91 +264,115 @@ public class VirtualView implements VirtualViewInterface{
 
 
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
+        Message message = new UpdateWriter().buyCardAccepted();
+        for(Socket socket: clients.values())
+            sendMessage(socket, message);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
+        Message message = new ErrorWriter().buyCardRejected();
+        sendMessage(clients.get(user), message);
     }
 
     /**
      * This method manage a buy resources requests from client
      * @param x, y are the coordinates of the card
      */
-    public void buyResources(int x, int y){
+    public void buyResources(String user, int x, int y){
         List<Error> errors = matchController.onBuyResources(x,y);
         if(isActive){
             if(errors.isEmpty()) {
-                onAcceptedBuyResources(x,y);
+                onAcceptedBuyResources(user,x,y);
             } else
-                onRejectedBuyResources(x,y);
+                onRejectedBuyResources(user,x,y);
         }
     }
 
-    private void onAcceptedBuyResources(int x, int y) {
+    private void onAcceptedBuyResources(String user, int x, int y) {
+        Message message = new UpdateWriter().buyResourceAccepted(x,y);
+        sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedBuyResources(int x, int y) {
+    private void onRejectedBuyResources(String user, int x, int y) {
+        Message message = new ErrorWriter().buyResourceRejected(x,y);
+        sendMessage(clients.get(user), message);
+
     }
 
     /**
      * This method manage the activate production development card request from client
      * @param card the card to use
      */
-    public void activateProductionDevelopmentCard(DevelopmentCard card){
+    public void activateProductionDevelopmentCard(String user, DevelopmentCard card){
         List<Error> errors = matchController.onActivateProductionDevelopmentCard(card);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionDevelopmentCard(card);
+                onAcceptedActivateProductionDevelopmentCard(user,card);
             else
-                onRejectedActivateProductionDevelopmentCard(card);
+                onRejectedActivateProductionDevelopmentCard(user,card);
         }
     }
 
-    private void onAcceptedActivateProductionDevelopmentCard(DevelopmentCard card) {
+    private void onAcceptedActivateProductionDevelopmentCard(String user, DevelopmentCard card) {
+        Message message = new UpdateWriter().productionCardAccepted(card);
+        sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedActivateProductionDevelopmentCard(DevelopmentCard card) {
+    private void onRejectedActivateProductionDevelopmentCard(String user, DevelopmentCard card) {
+        Message message = new ErrorWriter().productionCardRejected(card);
+        sendMessage(clients.get(user), message);
     }
 
     /**
      * This method manage the activate production board request from client
      */
-    public void activateProductionBoard(ResourceType resourceType){
+    public void activateProductionBoard(String user, ResourceType resourceType){
         List<Error> errors = matchController.onActivateProductionBoard(resourceType);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionBoard(resourceType);
+                onAcceptedActivateProductionBoard(user,resourceType);
             else
-                onRejectedActivateProductionBoard(resourceType);
+                onRejectedActivateProductionBoard(user,resourceType);
 
         }
     }
 
-    private void onRejectedActivateProductionBoard(ResourceType resourceType) {
+    private void onAcceptedActivateProductionBoard(String user, ResourceType resourceType) {
+        Message message = new UpdateWriter().productionBoardAccepted(resourceType);
+        sendMessage(clients.get(user), message);
     }
 
-    private void onAcceptedActivateProductionBoard(ResourceType resourceType) {
+
+    private void onRejectedActivateProductionBoard(String user, ResourceType resourceType) {
+        Message message = new ErrorWriter().productionBoardRejected(resourceType);
+        sendMessage(clients.get(user), message);
     }
+
 
     /**
      * This method manage the activate production leader card request from client
      * @param card the card to use
      */
-    public void activateProductionLeaderCard(LeaderCard card){
+    public void activateProductionLeaderCard(String user, LeaderCard card){
         List<Error> errors = matchController.onActivateProductionLeaderCard(card);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionLeaderCard(card);
+                onAcceptedActivateProductionLeaderCard(user,card);
             else
-                onRejectedActivateProductionLeaderCard(card);
+                onRejectedActivateProductionLeaderCard(user,card);
 
         }
     }
 
-    private void onAcceptedActivateProductionLeaderCard(LeaderCard card){
+    private void onAcceptedActivateProductionLeaderCard(String user, LeaderCard card){
+        Message message = new UpdateWriter().productionLeaderAccepted(card);
+        sendMessage(clients.get(user), message);
 
     }
 
-    private void onRejectedActivateProductionLeaderCard(LeaderCard card){
+    private void onRejectedActivateProductionLeaderCard(String user, LeaderCard card){
+        Message message = new ErrorWriter().productionLeaderRejected(card);
+        sendMessage(clients.get(user), message);
 
     }
 
@@ -354,44 +381,53 @@ public class VirtualView implements VirtualViewInterface{
      * This method manage the activation of a leader card
      * @param card the card to use
      */
-    public void activateLeaderCard(LeaderCard card){
+    public void activateLeaderCard(String user, LeaderCard card){
         List<Error> errors = matchController.onActivateLeaderCard(card);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateLeaderCard(card);
+                onAcceptedActivateLeaderCard(user,card);
             else
-                onRejectedActivateLeaderCard(card);
+                onRejectedActivateLeaderCard(user,card);
 
         }
     }
 
-    private void onAcceptedActivateLeaderCard(LeaderCard card) {
+    private void onAcceptedActivateLeaderCard(String user, LeaderCard card) {
+        Message message = new UpdateWriter().activateLeaderAccepted(card);
+        sendMessage(clients.get(user), message);
+
     }
 
-    private void onRejectedActivateLeaderCard(LeaderCard card) {
+    private void onRejectedActivateLeaderCard(String user, LeaderCard card) {
+        Message message = new ErrorWriter().activateLeaderRejected(card);
+        sendMessage(clients.get(user), message);
+
     }
 
     /**
      * This method manage the discard of a leader card
      * @param card the card to use
      */
-    public void discardLeaderCard(LeaderCard card){
+    public void discardLeaderCard(String user, LeaderCard card){
         List<Error> errors = matchController.onDiscardLeaderCard(card);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedDiscardLeaderCard(card);
+                onAcceptedDiscardLeaderCard(user,card);
             else
-                onRejectedDiscardLeaderCard(card);
+                onRejectedDiscardLeaderCard(user,card);
 
         }
     }
 
 
-    private void onAcceptedDiscardLeaderCard(LeaderCard card){
-
+    private void onAcceptedDiscardLeaderCard(String user, LeaderCard card){
+        Message message = new UpdateWriter().discardLeaderAccepted(card);
+        sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedDiscardLeaderCard(LeaderCard card) {
+    private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
+        Message message = new UpdateWriter().activateLeaderRejected(card);
+        sendMessage(clients.get(user), message);
     }
 
     public void EndMatch(){

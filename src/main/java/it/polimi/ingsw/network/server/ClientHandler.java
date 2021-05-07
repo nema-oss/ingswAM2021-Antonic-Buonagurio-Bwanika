@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.messagges.*;
+import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class ClientHandler implements Runnable{
 
                 Object next = input.readObject();
                 Message message = (Message) next;
-                if(message instanceof EndMessage) break;
+                if(message instanceof EndGameMessage) break;
                 if(!(message instanceof PingMessage))
                     processMessage(message); // from this method we also send the message back to the client
             }
@@ -124,7 +124,8 @@ public class ClientHandler implements Runnable{
         do{
             try {
                 Thread.sleep(1500);
-                new MessageSender(client, MessageType.PING).sendMsg();
+                Message message = new MessageWriter(MessageType.PING).getMessage();
+                new MessageSender(client, message).sendMsg();
             } catch (InterruptedException ignored) {
             }
         }while(!client.isClosed());

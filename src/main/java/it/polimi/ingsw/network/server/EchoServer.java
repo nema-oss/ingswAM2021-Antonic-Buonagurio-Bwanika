@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.MatchController;
+import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class EchoServer {
 
         serverPort = port;
         lobbies = new ArrayList<>();
-        lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1));
+        lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1,new InGameDisconnectionHandler()));
     }
 
     public static void main(String[] args) {
@@ -104,7 +105,7 @@ public class EchoServer {
         //The server have to create a new lobby because there isn't a free one.
         if(!found){
             System.out.println("[SERVER] creates a new lobby...");
-            VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1);
+            VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1, new InGameDisconnectionHandler());
             lobbies.add(match);
             executor.submit(new ClientHandler(client,match,lobbies.indexOf(match) + 1));
         }

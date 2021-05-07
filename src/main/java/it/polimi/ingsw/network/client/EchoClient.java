@@ -1,19 +1,18 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.messagges.*;
+import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.View;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Scanner;
 
 
 /**
  * the client. It handle the connection on the client side
- *
  */
 
 public class EchoClient {
@@ -27,7 +26,7 @@ public class EchoClient {
     private ObjectInputStream input;
     private ObjectOutputStream outputStream;
 
-    public EchoClient(String ip, int port, View view){
+    public EchoClient(String ip, int port, View view) {
         this.serverPort = port;
         this.ip = ip;
         this.view = view;
@@ -36,7 +35,7 @@ public class EchoClient {
 
     public static void main(String[] args) {
 
-        EchoClient echoClient = new EchoClient("127.0.0.1",1234, new Cli()); // this should be read from cmd line
+        EchoClient echoClient = new EchoClient("127.0.0.1", 1234, new Cli()); // this should be read from cmd line
         echoClient.start();
     }
 
@@ -47,21 +46,21 @@ public class EchoClient {
      * The communication go down when server send a disconnection message.
      */
 
-    public void start(){
+    public void start() {
 
         initializeClientConnection();
         System.out.println("Client connected to" + server.getInetAddress());
 
         // if there's no ping response from server after 3 seconds, connection is ended
-        try{
+        try {
             server.setSoTimeout(3000);
-        }catch (SocketException e){
+        } catch (SocketException e) {
             e.printStackTrace();
         }
 
         new Thread(this::pingServer).start();
 
-        if(server != null) {
+        if (server != null) {
             try {
                 input = new ObjectInputStream(server.getInputStream());
             } catch (IOException e) {
@@ -86,10 +85,10 @@ public class EchoClient {
     }
 
 
-    public void serverDisconnection(){
-        try{
+    public void serverDisconnection() {
+        try {
             server.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         //close the view
@@ -97,44 +96,47 @@ public class EchoClient {
 
     /**
      * this method handle the sending, parsing and creation of messages between client and server
+     *
      * @throws IOException ...
      */
-    public void handleServerConnection() throws IOException{
+    public void handleServerConnection() throws IOException {
 
-        try{
+        try {
             while (true) {
 
                 Object next = input.readObject();
                 Message message = (Message) next;
-                if(message instanceof DisconnectionMessage) break;
-                if(!(message instanceof PingMessage))
+                if (message instanceof DisconnectionMessage) break;
+                if (!(message instanceof PingMessage))
                     processMessage(message); // from this method we also send the message back to the server
             }
             input.close();
         } catch (ClassNotFoundException | ClassCastException e) {
-            if(!server.isClosed()) serverDisconnection();
+            if (!server.isClosed()) serverDisconnection();
         }
     }
 
     /**
      * This method process messages using the Message manager
+     *
      * @param message
      */
     public synchronized void processMessage(Message message) {
-        new MessageManager().parseMessageFromServer(server,message,view);
+        new MessageManager().parseMessageFromServer(server, message, view);
     }
 
     /**
      * This method send a ping message to the server
      */
     public void pingServer() {
-        do{
+        do {
             try {
                 Thread.sleep(1500);
-                new MessageSender(server, MessageType.PING).sendMsg();
+                Message message = new MessageWriter(MessageType.PING).getMessage();
+                new MessageSender(server, message).sendMsg();
             } catch (InterruptedException ignored) {
             }
-        }while(!server.isClosed());
+        } while (!server.isClosed());
 
         Thread.currentThread().interrupt();
     }
@@ -143,10 +145,10 @@ public class EchoClient {
      * This method initializes a socket connection on ip-serverPort.
      */
 
-    public void initializeClientConnection(){
-        try{
+    public void initializeClientConnection() {
+        try {
             server = new Socket(ip, serverPort);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Can't connect to server on port: " + serverPort);
         }
     }

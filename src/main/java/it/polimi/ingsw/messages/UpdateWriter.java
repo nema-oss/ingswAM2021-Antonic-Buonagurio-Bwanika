@@ -50,4 +50,7 @@ public class UpdateWriter {
 
     public Message activateLeaderRejected(LeaderCard card) {
     }
+
+    public Message playerDisconnection(String nickname) {
+    }
 }

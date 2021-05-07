@@ -65,12 +65,19 @@ public class VirtualView implements VirtualViewInterface{
      */
 
     public void clientDown(Socket disconnectedSocket) {
-        if(clients.containsValue(disconnectedSocket)){
-            for(Socket socket: clients.values()){
-                sendMessage(socket, new MessageWriter(MessageType.CLIENT_DISCONNECTION).getMessage());
+
+        if(clients.containsValue(disconnectedSocket)) {
+            String nickname = clients.keySet()
+                    .stream()
+                    .filter(key -> disconnectedSocket.equals(clients.get(key)))
+                    .findAny().get();
+            Message message = new UpdateWriter().playerDisconnection(nickname);
+            for (Socket socket : clients.values()) {
+                if (!socket.isClosed())
+                    sendMessage(socket, message);
             }
+            if (isActive) inGameDisconnectionHandler.onClientDown(this, nickname);
         }
-        if(isActive) inGameDisconnectionHandler.onClientDown(this);
     }
 
 
@@ -430,7 +437,10 @@ public class VirtualView implements VirtualViewInterface{
         sendMessage(clients.get(user), message);
     }
 
-    public void EndMatch(){
+    /**
+     * This method close all the connections after a match is finished
+     */
+    public void endMatch(){
         for(Socket socket: clients.values()){
             if(!socket.isClosed()){
                 try {
@@ -444,5 +454,9 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    public void inGameDisconnection(String disconnectedPlayer) {
+        matchController.onPlayerDisconnection(disconnectedPlayer);
+
+    }
 }
 

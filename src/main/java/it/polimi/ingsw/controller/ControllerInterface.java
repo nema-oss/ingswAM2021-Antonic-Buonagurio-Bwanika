@@ -32,4 +32,6 @@ public interface ControllerInterface {
     List<Error> onDiscardLeaderCard(LeaderCard card);
 
     List<Error> onNewPlayer(String nickname);
+
+    void onPlayerDisconnection(String disconnectedPlayer);
 }

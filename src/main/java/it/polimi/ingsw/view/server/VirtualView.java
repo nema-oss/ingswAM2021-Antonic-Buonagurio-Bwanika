@@ -390,7 +390,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void activateLeaderCard(String user, LeaderCard card){
-        List<Error> errors = matchController.onActivateLeaderCard(card);
+        List<Error> errors = matchController.onActivateLeader(user,card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateLeaderCard(user,card);
@@ -417,7 +417,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void discardLeaderCard(String user, LeaderCard card){
-        List<Error> errors = matchController.onDiscardLeaderCard(card);
+        List<Error> errors = matchController.onDiscardLeader(user,card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedDiscardLeaderCard(user,card);

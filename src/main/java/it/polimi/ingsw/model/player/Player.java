@@ -302,10 +302,13 @@ public class Player{
         * this method discard a Leader card from hand and move the player on poperoad
         * @param the card to discard (type: LeaderCard)
      */
-    public void discardLeader(int positionIndex){
+    public void discardLeader(int positionIndex) throws NonExistentCardException{
 
-        hand.remove(positionIndex);
-        moveOnPopeRoad();
+        if(positionIndex<0 || positionIndex >= hand.size()) throw new NonExistentCardException();
+        else {
+            hand.remove(positionIndex);
+            moveOnPopeRoad();
+        }
 
     }
 

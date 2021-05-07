@@ -11,19 +11,24 @@ import java.util.Map;
 
 public interface ControllerInterface {
 
-    void onNewPlayer(String nickname);
-    void onSTartGame();
-    void onChooseLeaderCards(String nickname);
-    void onLeaderCardsChosen(String nickname, List<LeaderCard> leaderCardList);
-    void onChooseResources (String nickname, ArrayList<ResourceType> resourceTypes);
-    void onResourcesChosen (String nickname, Map<ResourceType, Integer> resourceTypeList);
-    void onActivateProduction(String nickname);
-    void onBuyDevelopmentCards(String nickname, int row, int column);
-    void onBuyResources(String nickname, int row, int column);
-    void onActivateLeader(String nickname, LeaderCard leaderCard);
-    void onDiscardLeader(String nickname, LeaderCard leaderCard);
-    void onEndTurn(String nickname);
+    List<Error> onNewPlayer(String nickname);
+    List<Error> onStartGame();
     void sendChooseLeaderCards();
-    void sendChooseResources();
+    List<Error> onLeaderCardsChosen(String nickname, List<LeaderCard> leaderCardList);
+    void sendChooseResources ();
+    List<Error> onResourcesChosen (String nickname, Map<ResourceType, Integer> resourceTypeList);
+    List<Error> onActivateProduction(String nickname, int cardIndex);
+    List<Error> onBuyDevelopmentCards(String nickname, int row, int column);
+    List<Error> onBuyResources(String nickname, int row, int column);
+    List<Error> onActivateLeader(String nickname, int index);
+    List<Error> onDiscardLeader(String nickname, int index);
     void sendPlayTurn();
+    List<Error> onPlayerDisconnection(String nickname);
+    List<Error> onEndTurn(String nickname);
+    List<Error>
+
+    //mancano: controllo di fine game (vaticano, check dei punti, etc)
+    // controllo possibili azioni (se va qui)
+    // cambio piani del deposito,
+    //activate production leader card
 }

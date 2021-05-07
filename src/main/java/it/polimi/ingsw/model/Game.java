@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.*;
+import it.polimi.ingsw.controller.Error;
 
 import java.util.*;
 
@@ -133,8 +134,15 @@ public class Game {
         * this method add a new player to the match
      */
 
-    public void addPlayer(Player p){
+    public List<Error> addPlayer(Player p){
+        List<Error> errors = new ArrayList<>();
+        if(listOfPlayers.size() >= 4 && !errors.contains(Error.GAME_ALREADY_FULL))
+            errors.add(Error.GAME_ALREADY_FULL);
+        for(Player player : listOfPlayers)
+            if(p.getNickname().equals(player.getNickname()))
+                errors.add(Error.NICKNAME_ALREADY_EXISTS);
         listOfPlayers.add(p);
+        return errors; //loro usano unmodifiable
     }
 
     /*
@@ -308,6 +316,11 @@ public class Game {
 
     public LeaderDeck getLeaderDeck(){
         return leaderDeck;
+    }
+
+    public void setPlayersOrder(){
+        Collections.shuffle(listOfPlayers);
+        currentPlayer = listOfPlayers.get(0);
     }
 
 }

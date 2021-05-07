@@ -9,7 +9,10 @@ import it.polimi.ingsw.model.gameboard.ResourceType;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.ErrorManager;
 
 /**
  * this class represent the virtual view in the server and abstract the network to the controller. It observer the model
@@ -18,9 +21,10 @@ import java.util.List;
  */
 public class VirtualView implements VirtualViewInterface{
 
+    private static final int MAXIMUM_LOBBY_SIZE = 4;
     private final int lobbyID;
     private final ControllerInterface matchController;
-    private List<Socket> clients;
+    private Map<String,Socket> clients;
     private List<Socket> waitList;
     private boolean isActive;
     private InGameDisconnectionHandler inGameDisconnectionHandler;
@@ -28,7 +32,7 @@ public class VirtualView implements VirtualViewInterface{
     public VirtualView(ControllerInterface matchController, int lobbyID, InGameDisconnectionHandler inGameDisconnectionHandler) {
         this.lobbyID = lobbyID;
         this.matchController = matchController;
-        this.clients = new ArrayList<>();
+        this.clients = new HashMap<>();
         this.inGameDisconnectionHandler = inGameDisconnectionHandler;
     }
 
@@ -61,8 +65,8 @@ public class VirtualView implements VirtualViewInterface{
      */
 
     public void clientDown(Socket disconnectedSocket) {
-        if(clients.contains(disconnectedSocket)){
-            for(Socket socket: clients){
+        if(clients.containsValue(disconnectedSocket)){
+            for(Socket socket: clients.values()){
                 sendMessage(socket, new MessageWriter(MessageType.CLIENT_DISCONNECTION).getMessage());
             }
         }
@@ -80,69 +84,164 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
+     * This method handles a login request, turns it over to the controller and, based on the server response, directs
+     * the response. It also assigns a random color to the player.
+     * @param nickname is the player who want to log in username
+     * @param socket is the socket associated with the new player
+     */
+
+    public synchronized void loginRequest(String nickname, Socket socket) {
+
+        List<Error> errors = matchController.onNewPlayer(nickname);
+
+        if(isActive) {
+            if (errors.isEmpty()) {
+                onLoginAcceptedRequest(nickname, socket);
+            } else
+                onLoginRejectedRequest(nickname, errors, socket);
+        }
+    }
+
+    /**
+     * This method manage the successful login of a client, sends an update to the other players and a positive reply to
+     * the new logged client
+     * @param nickname the nickname of the new logged client
+     * @param socket the new client socket
+     */
+    private void onLoginAcceptedRequest(String nickname, Socket socket){
+        waitList.remove(socket);
+
+        clients.put(nickname,socket);
+        System.out.println(nickname + " logged in lobby number " + lobbyID + "\n");
+
+        Message loginUpdate = new UpdateWriter().loginUpdate(nickname);
+        for(String user: clients.keySet()){
+            if(!user.equals(nickname)){
+                sendMessage(clients.get(user), loginUpdate);
+            }
+        }
+        sendMessage(socket, new MessageWriter(MessageType.LOGIN_DONE).getMessage());
+
+        if(getLobbySize() == MAXIMUM_LOBBY_SIZE) toStartMatch();
+    }
+
+    /**
+     * This method manage the unsuccessful login of a client and alerts the client that it must login again
+     * @param nickname the proposed nickname of the new client
+     * @param socket the new client socket
+     */
+    private void onLoginRejectedRequest(String nickname, List<Error> errors, Socket socket){
+        sendMessage(socket, new ErrorWriter().rejectedLogin());
+    }
+
+
+
+    /**
      * This method ask a client to play its turn and send a wait message to the others
      * @param username the nickname of the player that has to play
      */
     public void playTurn(String username){
     }
     /**
-     * This method manage the choose leader request from client
+     * This method manage the choose leaderCard request from client
      * @param leaderCard the chosen card
+     * @param user the user that selects the card
      */
-    public void chooseLeaderCard(LeaderCard leaderCard){
+    public void chooseLeaderCard(String user, LeaderCard leaderCard){
         List<Error> errors = matchController.onChooseLeaderCard(leaderCard);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedChooseLeaderCard(leaderCard);
+                onAcceptedChooseLeaderCard(user,leaderCard);
             else
-                onRejectedChooseLeaderCard(leaderCard);
+                onRejectedChooseLeaderCard(user, leaderCard);
         }
     }
 
-    private void onRejectedChooseLeaderCard(LeaderCard leaderCard) {
+
+    /**
+     * This method send alerts the client that its leaderCard selection has been accepted
+     * @param user the user requesting the card
+     * @param leaderCard the card selected
+     */
+    private void onAcceptedChooseLeaderCard(String user, LeaderCard leaderCard) {
+        Message requestAccepted = new UpdateWriter().cardSelectionAccepted(leaderCard);
+        sendMessage(clients.get(user), requestAccepted);
     }
 
-    private void onAcceptedChooseLeaderCard(LeaderCard leaderCard) {
+    /**
+     * This method send alerts the client that its leaderCard selection has been rejected
+     * @param user the user requesting the card
+     * @param leaderCard the card selected
+     */
+    private void onRejectedChooseLeaderCard(String user, LeaderCard leaderCard) {
+        Message requestRejected = new ErrorWriter().cardSelectionRejected(leaderCard);
+        sendMessage(clients.get(user), requestRejected);
     }
+
 
     /**
      * This method manage the choose resource type request from client
      * @param resourceType the chosen resource type
      */
-    public void chooseResourceType(ResourceType resourceType){
+    public void chooseResourceType(String username, ResourceType resourceType){
         List<Error> errors = matchController.onChooseResourceType(resourceType);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedChooseResourceType(resourceType);
+                onAcceptedChooseResourceType(username, resourceType);
             else
-                onRejectedChooseResourceType(resourceType);
+                onRejectedChooseResourceType(username, resourceType);
         }
     }
 
-    private void onAcceptedChooseResourceType(ResourceType resourceType) {
+    /**
+     * This method send alerts the client that its resourceType selection has been accepted
+     * @param user the user requesting the card
+     * @param resourceType the type selected
+     */
+    private void onAcceptedChooseResourceType(String user,ResourceType resourceType) {
+        Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(resourceType);
+        sendMessage(clients.get(user), resourceTypeSelectionAccepted);
     }
-
-    private void onRejectedChooseResourceType(ResourceType resourceType) {
+    /**
+     * This method send alerts the client that its resourceType selection has been rejected
+     * @param user the user requesting the card
+     * @param resourceType the type selected
+     */
+    private void onRejectedChooseResourceType(String user, ResourceType resourceType) {
+        Message resourceTypeSelectionRejected = new ErrorWriter().resourceTypeSelectionRejected(resourceType);
+        sendMessage(clients.get(user), resourceTypeSelectionRejected);
     }
 
     /**
      * This method manage the swap deposit request from client
      * @param a,b deposit's floor to swap
      */
-    public void moveDeposit(int a, int b){
+    public void moveDeposit(String user, int a, int b){
         List<Error> errors = matchController.onMoveDeposit(a,b);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedMoveDeposit(a,b);
+                onAcceptedMoveDeposit(user);
             else
-                onRejectedMoveDeposit(a,b);
+                onRejectedMoveDeposit(user);
         }
     }
 
-    private void onAcceptedMoveDeposit(int a, int b) {
+    /**
+     * This method alerts the client that its move deposit request has been accepted
+     * @param user the user
+     */
+    private void onAcceptedMoveDeposit(String user) {
+        Message message = new UpdateWriter().moveDepositRequestAccepted();
+        sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedMoveDeposit(int a, int b) {
+    /**
+     * This method alerts the client that its move deposit request has been rejected
+     * @param user the user
+     */
+    private void onRejectedMoveDeposit(String user) {
+        Message message = new UpdateWriter().moveDepositRequestRejected();
+        sendMessage(clients.get(user), message);
     }
 
 
@@ -150,20 +249,21 @@ public class VirtualView implements VirtualViewInterface{
      * This method manage a buy resource requests from client
      * @param x, y are the coordinates of the card
      */
-    public void buyDevelopmentCards(int x, int y){
+    public void buyDevelopmentCards(String user, int x, int y){
         List<Error> errors = matchController.onBuyDevelopmentCards(x,y);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedBuyDevelopmentCards(x,y);
+                onAcceptedBuyDevelopmentCards(user,x,y);
             else
-                onRejectedBuyDevelopmentCards(x,y);
+                onRejectedBuyDevelopmentCards(user,x,y);
         }
     }
 
-    private void onAcceptedBuyDevelopmentCards(int x, int y) {
+
+    private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
     }
 
-    private void onRejectedBuyDevelopmentCards(int x, int y) {
+    private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
     }
 
     /**
@@ -295,7 +395,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void EndMatch(){
-        for(Socket socket: clients){
+        for(Socket socket: clients.values()){
             if(!socket.isClosed()){
                 try {
                     socket.close();

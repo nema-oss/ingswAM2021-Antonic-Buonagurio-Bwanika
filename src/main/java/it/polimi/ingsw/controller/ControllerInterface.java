@@ -30,4 +30,6 @@ public interface ControllerInterface {
     List<Error> onActivateLeaderCard(LeaderCard card);
 
     List<Error> onDiscardLeaderCard(LeaderCard card);
+
+    List<Error> onNewPlayer(String nickname);
 }

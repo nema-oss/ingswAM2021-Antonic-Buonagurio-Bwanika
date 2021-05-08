@@ -114,7 +114,7 @@ public class Board {
 
         if(toGive.size() != 2) throw new Exception();
 
-        strongbox.addResource(new Resource(request));
+        strongbox.addResourceTemporary(new Resource(request));
 
     }
 

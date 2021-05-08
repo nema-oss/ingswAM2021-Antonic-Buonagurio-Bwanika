@@ -5,7 +5,9 @@ import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.controller.Error;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -159,7 +161,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user that selects the card
      */
     public void chooseLeaderCard(String user, LeaderCard leaderCard){
-        List<Error> errors = matchController.onChooseLeaderCard(leaderCard);
+        List<Error> errors = matchController.onLeaderCardsChosen(leaderCard);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseLeaderCard(user,leaderCard);
@@ -195,7 +197,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param resourceType the chosen resource type
      */
     public void chooseResourceType(String username, ResourceType resourceType){
-        List<Error> errors = matchController.onChooseResourceType(resourceType);
+        List<Error> errors = matchController.onResourcesChosen(resourceType);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseResourceType(username, resourceType);
@@ -228,7 +230,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param a,b deposit's floor to swap
      */
     public void moveDeposit(String user, int a, int b){
-        List<Error> errors = matchController.onMoveDeposit(a,b);
+        List<Error> errors = matchController.onMoveDeposit(user, a,b);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedMoveDeposit(user);
@@ -261,7 +263,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param x, y are the coordinates of the card
      */
     public void buyDevelopmentCards(String user, int x, int y){
-        List<Error> errors = matchController.onBuyDevelopmentCards(x,y);
+        List<Error> errors = matchController.onBuyDevelopmentCards(user, x,y);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedBuyDevelopmentCards(user,x,y);
@@ -287,7 +289,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param x, y are the coordinates of the card
      */
     public void buyResources(String user, int x, int y){
-        List<Error> errors = matchController.onBuyResources(x,y);
+        List<Error> errors = matchController.onBuyResources(user, x,y);
         if(isActive){
             if(errors.isEmpty()) {
                 onAcceptedBuyResources(user,x,y);
@@ -312,7 +314,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void activateProductionDevelopmentCard(String user, DevelopmentCard card){
-        List<Error> errors = matchController.onActivateProductionDevelopmentCard(card);
+        List<Error> errors = matchController.onActivateDevelopmentProduction(user, card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionDevelopmentCard(user,card);
@@ -334,8 +336,8 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * This method manage the activate production board request from client
      */
-    public void activateProductionBoard(String user, ResourceType resourceType){
-        List<Error> errors = matchController.onActivateProductionBoard(resourceType);
+    public void activateProductionBoard(String user, ArrayList<Resource> toGive, ResourceType resourceType){
+        List<Error> errors = matchController.onActivateBoardProduction(user, toGive, resourceType);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionBoard(user,resourceType);
@@ -362,7 +364,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void activateProductionLeaderCard(String user, LeaderCard card){
-        List<Error> errors = matchController.onActivateProductionLeaderCard(card);
+        List<Error> errors = matchController.onActivateLeaderProduction(user,card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionLeaderCard(user,card);
@@ -459,5 +461,10 @@ public class VirtualView implements VirtualViewInterface{
         matchController.onPlayerDisconnection(disconnectedPlayer);
 
     }
+
+    public void endTurn(String user){} //dice a un giocatore che il suo turno è finito (si può anche evitare)
+    public void lastRound(){} //dice a tutti che si sta giocando l'ultimo round
+    public void toDoChooseLeaderCards(String user, ArrayList<LeaderCard> leaderCards ){} //manda le leaderCards tra cui scegliere
+    public void toDoChooseResources(String user, int numOfResourcesToChoose){} //manda il numero di risorse tra cui possono scegleire
 }
 

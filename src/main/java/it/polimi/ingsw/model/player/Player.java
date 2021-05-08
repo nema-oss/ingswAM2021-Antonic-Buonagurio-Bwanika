@@ -28,6 +28,9 @@ public class Player{
     private Board playerBoard;
     private Effects activeEffects;
 
+    private boolean standardActionPlayed;
+    private boolean[] leaderActionPlayed;
+
     public Player(String nickname, GameBoard gameBoard, Game currentGame){
 
         playerBoard = new Board();
@@ -38,6 +41,10 @@ public class Player{
         victoryPoints = 0;
         activeEffects = new Effects();
         activeLeaderCards = new ArrayList<>();
+
+        standardActionPlayed = false;
+        leaderActionPlayed = new boolean[2];
+
     }
 
 
@@ -241,7 +248,7 @@ public class Player{
             }
         }
 
-        getStrongbox().addResource(result);
+        getStrongbox().addResourceTemporary(result);
 
     }
 
@@ -393,4 +400,31 @@ public class Player{
      */
     public void discardResources(){}
 
+
+
+    //added methods
+    public boolean hasPlayedStandardAction() {
+        return standardActionPlayed;
+    }
+
+    public boolean hasPlayedLeaderAction() {
+        return leaderActionPlayed[0] && leaderActionPlayed[1];
+    }
+
+    public void setStandardActionPlayed(boolean standardActionPlayed) {
+        this.standardActionPlayed = standardActionPlayed;
+    }
+
+    public void setLeaderActionPlayed(boolean leaderActionPlayed) {
+        if(leaderActionPlayed){
+            if(!this.leaderActionPlayed[0])
+                this.leaderActionPlayed[0]=true;
+            else if(!this.leaderActionPlayed[1])
+                this.leaderActionPlayed[1]=true;
+        }
+        else{
+            this.leaderActionPlayed[0] = false;
+            this.leaderActionPlayed[1] = false;
+        }
+    }
 }

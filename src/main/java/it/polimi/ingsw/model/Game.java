@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.cards.ActionTokenDeck;
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -16,6 +17,7 @@ import java.util.*;
 
 public class Game {
 
+    private GamePhase gamePhase;
 
     private List<Player> listOfPlayers;
     private Player currentPlayer;
@@ -45,6 +47,8 @@ public class Game {
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();
         lastPopeSection = popeSectionList.remove(0);
+
+        gamePhase = GamePhase.LOGIN;
 
     }
 
@@ -323,6 +327,19 @@ public class Game {
         currentPlayer = listOfPlayers.get(0);
     }
 
+    public void removePlayer(String nickname){
+
+        Player p = getPlayerByNickname(nickname);
+        listOfPlayers.remove(p);
+    }
+
+    public void setGamePhase(GamePhase gamePhase){
+        this.gamePhase = gamePhase;
+    }
+
+    public GamePhase getGamePhase() {
+        return gamePhase;
+    }
 }
 
 

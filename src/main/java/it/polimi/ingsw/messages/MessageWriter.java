@@ -51,7 +51,7 @@ public class MessageWriter{
     }
 
     private String askServerDisconnectedNick(){
-
+        return "ciao";
     }
 
     public Message getMessage() {

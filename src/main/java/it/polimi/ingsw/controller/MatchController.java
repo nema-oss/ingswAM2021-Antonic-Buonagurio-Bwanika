@@ -3,10 +3,8 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.exception.FullDepositException;
-import it.polimi.ingsw.model.exception.InsufficientDevelopmentCardsException;
-import it.polimi.ingsw.model.exception.InsufficientPaymentException;
-import it.polimi.ingsw.model.exception.NonExistentCardException;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
+import it.polimi.ingsw.model.exception.*;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Player;
@@ -15,69 +13,123 @@ import it.polimi.ingsw.view.server.VirtualView;
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
 
+
+/**
+ * This class represents the controller
+ */
 public class MatchController implements ControllerInterface{
 
-    // manca la scelta della gamemode: ogni player che si connette dovrebbe scegliere in che modalità vuole giocare.
-    // invece di una lista di errori posso mandare una lista di exceptions?
 
-
-
-    private Game game;
+    // in alcuni casi posso mandare una mappa con tutti gli errori per ogni carta (se voglio mandare indietro un messaggio di errore per ogni carta sbagliata)
+    private final Game game;
     private VirtualView virtualView;
 
+    private boolean developmentProductionActivated;
+    private boolean leaderProductionActivated;
+    private boolean boardProductionActivated;
+
+    private boolean isLastRound;
+
+
+    /**
+     * this is the class constructor
+     */
     public MatchController() {
         game = new Game();
         virtualView = null;
+
+        developmentProductionActivated = false;
+        leaderProductionActivated = false;
+        boardProductionActivated = false;
+
+        isLastRound = false;
     }
 
+
+    /**
+     * this method sets the virtual view for the controller
+     * @param virtualView the game's virtualView
+     */
     public void setVirtualView(VirtualView virtualView){
         this.virtualView = virtualView;
     }
 
 
+    /**
+     * this method adds a player to the game
+     * @param nickname the chosen nickname
+     * @return the list of errors generated
+     */
     @Override
-    //aggiungo giocatore al game
-    public List<Error> onNewPlayer(String nickname) {
+    public List<Error> onNewPlayer(String nickname){
 
-        //manca il controllo sullo stato del gioco
+        List<Error> errors = new ArrayList<>();
+        if(!game.getGamePhase().equals(GamePhase.LOGIN)) {
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
+
         if(nickname == null || nickname.isEmpty()) throw new IllegalArgumentException("Invalid nickname");
         return game.addPlayer(new Player(nickname, game.getGameBoard(), game));
     }
 
+    /**
+     * this method starts the game
+     * @return the list of errors generated
+     */
     @Override
-    // assegnazione turni
     public List<Error> onStartGame() {
 
-        //manca controllo sullo stato del gioco
+        List<Error> errors = new ArrayList<>();
+        if(!game.getGamePhase().equals(GamePhase.LOGIN)){
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
         int numberOfPlayers = game.getListOfPlayers().size();
         if(numberOfPlayers == 1){
             game.setSinglePlayerCPU();
-            //la virtual view manda il messaggio sulla gamemode??
         }
         game.setPlayersOrder();
-        //che errori può ritornare oltre allo stato del gioco?
+
+        //forse bisogna aggiungere metodo della view che comunica il numero di giocatori?
+
+        game.setGamePhase(GamePhase.CHOOSE_LEADERS);
+
+        return errors;
     }
 
+
+    /**
+     * this method calls the virtualView's mwethod to send message "Choose Leader Cards"
+     */
     @Override
-    // mando le 4 carte tra cui scegliere
     public void sendChooseLeaderCards() {
 
-        List<Error> errors = new ArrayList<>();
-        LeaderCard[] leaders = new LeaderCard[4];
+        ArrayList<LeaderCard> leaders = new ArrayList<>();
 
         game.getLeaderDeck().shuffle();
-        for (int i=0; i<4; i++){
-            leaders[i] = game.getLeaderDeck().drawCard();
+        for (int i=0; i<4 && game.getLeaderDeck().getListOfCards().size() > 0; i++){
+            leaders.add(game.getLeaderDeck().drawCard());
         }
         virtualView.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
     }
 
+
+    /**
+     * this method assigns the leaderCards chosen to the player's hand
+     * @param nickname of the player
+     * @param leaderCardsChosen cards chosen by the player
+     * @return the list of errors generated
+     */
     @Override
-    // ricevo le leader scelte e le assegno
     public List<Error> onLeaderCardsChosen(String nickname, List<LeaderCard> leaderCardsChosen){
 
-        //manca il controllo se non è il suo turno
         List<Error> errors = new ArrayList<>();
+
+        if(!game.getGamePhase().equals(GamePhase.CHOOSE_LEADERS)){
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
 
         if(!nickname.equals(game.getCurrentPlayer().getNickname())) {
             errors.add(Error.NOT_YOUR_TURN);
@@ -85,33 +137,59 @@ public class MatchController implements ControllerInterface{
         }
         game.getCurrentPlayer().setHand(leaderCardsChosen);
 
+        game.nextPlayer();
+
+        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
+            game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
+
         return errors;
     }
 
+    /**
+     * ths method calls the virtualView's method to send message "Choose initial Resources" and distributes initial FaithPoints
+     */
     @Override
-    //dico di scegliere le risorse e assegno i punti fede
     public void sendChooseResources() {
 
-        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
-            //manda messaggio che non ha diritto a nulla
-            ;
-        else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(1)) || game.getCurrentPlayer().equals(game.getListOfPlayers().get(2))) {
-            virtualView.toDoChooseResources(game.getCurrentPlayer().getNickname(), 1);
-            if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(2)))
-                game.getCurrentPlayer().moveOnPopeRoad();
+        Player currentPlayer = game.getCurrentPlayer();
+
+        if(currentPlayer.equals(game.getListOfPlayers().get(1)) || currentPlayer.equals(game.getListOfPlayers().get(2))) {
+            virtualView.toDoChooseResources(currentPlayer.getNickname(), 1);
+            if(currentPlayer.equals(game.getListOfPlayers().get(2))) {
+                currentPlayer.moveOnPopeRoad();
+                //BISOGNA AGGIUNGERE ANCHE I VICTORY POINTS INIZIALI?????????
+                if(currentPlayer.getPosition().isPopeSpace())
+                    game.vaticanReport(currentPlayer.getPositionIndex());
+            }
         }
 
-        else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(3))) {
-            virtualView.toDoChooseResources(game.getCurrentPlayer().getNickname(), 0);
-            game.getCurrentPlayer().moveOnPopeRoad(2);
+        else if(currentPlayer.equals(game.getListOfPlayers().get(3))) {
+            virtualView.toDoChooseResources(currentPlayer.getNickname(), 0);
+            game.getCurrentPlayer().moveOnPopeRoad();
+            if(currentPlayer.getPosition().isPopeSpace())
+                game.vaticanReport(currentPlayer.getPositionIndex());
+            currentPlayer.moveOnPopeRoad();
+            //BISOGNA AGGIUNGERE ANCHE I VICTORY POINTS INIZIALI?????????
+            if(currentPlayer.getPosition().isPopeSpace())
+                game.vaticanReport(currentPlayer.getPositionIndex());
         }
     }
 
+    /**
+     * this method gives the initial resources chosen to the player
+     * @param nickname player's nickname
+     * @param resourcesChosen resourceTypes chosen
+     * @return the list of errors generated
+     */
     @Override
-    //ricevo le risorse sclete e gliele do
     public List<Error> onResourcesChosen(String nickname, Map<ResourceType,Integer> resourcesChosen){
 
         List<Error> errors = new ArrayList<>();
+
+        if(!game.getGamePhase().equals(GamePhase.CHOOSE_RESOURCES)){
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
 
         if(!nickname.equals(game.getCurrentPlayer().getNickname())) {
             errors.add(Error.NOT_YOUR_TURN);
@@ -122,161 +200,546 @@ public class MatchController implements ControllerInterface{
             try {
                 game.getCurrentPlayer().addResourceToDeposit(resourcesChosen.get(r), new Resource(r));
             }catch(Exception | FullDepositException e){
-                // manda messaggio : non puoi aggiungere le risorse
+                errors.add(Error.DEPOSIT_IS_FULL);
+            }
+        }
+
+        game.nextPlayer();
+
+        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
+            game.setGamePhase(GamePhase.PLAY_TURN);
+
+        return errors;
+    }
+
+    /**
+     * this method controls if the player canactivate the production
+     * @param nickname player's nickname
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onActivateProduction(String nickname) {
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty())
+            controlStandardAction();
+
+        if(errors.isEmpty())
+            virtualView.playTurn(nickname);
+
+        return errors;
+    }
+
+    /**
+     * this method activates the production on DevelopmentCards
+     * @param nickname the player's nickname
+     * @param developmentCards tha cards chosen for production
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onActivateDevelopmentProduction(String nickname, ArrayList<DevelopmentCard> developmentCards){
+
+        Player currPlayer = game.getCurrentPlayer();
+        List<Error> errors = new ArrayList<>();
+
+
+        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
+
+        if(boardProductionActivated)
+            errors.add(Error.INVALID_ACTION);
+
+        else {
+            for (DevelopmentCard c : developmentCards) {
+                try {
+                    int i = 0;
+
+                    for (Stack<DevelopmentCard> s : currPlayer.getPlayerBoard().getDevelopmentCards()) {
+
+                        if (s.peek().equals(c)) {
+                            currPlayer.activateProduction(i);
+                            game.getCurrentPlayer().setStandardActionPlayed(true);
+                            developmentProductionActivated = true;
+                            if (currPlayer.getPosition().isPopeSpace())
+                                game.vaticanReport(currPlayer.getPositionIndex());
+                        }
+                        i++;
+                    }
+
+                } catch (FullDepositException e) {
+                    errors.add(Error.DEPOSIT_IS_FULL);
+                } catch (InsufficientPaymentException e) {
+                    errors.add(Error.INSUFFICIENT_PAYMENT);
+                } catch (Exception e) {
+                    errors.add(Error.GENERIC);
+                }
+            }
+        }
+
+        return errors;
+
+    }
+
+    /**
+     * this method activates production on active leader cards
+     * @param nickname the player's nickname
+     * @param leaderCards the eaderCards chosen for production
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onActivateLeaderProduction(String nickname, ArrayList<LeaderCard> leaderCards){
+
+        Player currPlayer = game.getCurrentPlayer();
+        List<Error> errors = new ArrayList<>();
+
+        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
+            errors.add(Error.WRONG_GAME_PHASE);
+            return errors;
+        }
+
+        if(leaderProductionActivated)
+            errors.add(Error.INVALID_ACTION);
+        else {
+            int i = 0;
+            for (LeaderCard c : leaderCards) {
+                if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION) && currPlayer.getActiveLeaderCards().contains(c)) {
+                    try {
+                        currPlayer.activateProductionLeader(i);
+                        leaderProductionActivated = true;
+                        game.getCurrentPlayer().setStandardActionPlayed(true);
+                        if (currPlayer.getPosition().isPopeSpace())
+                            game.vaticanReport(currPlayer.getPositionIndex());
+                    } catch (ProductionRequirementsException e) {
+                        errors.add(Error.PRODUCTION_REQUIREMENTS_ERROR);
+                    } catch (InsufficientPaymentException e) {
+                        errors.add(Error.INSUFFICIENT_PAYMENT);
+                    }
+                } else
+                    errors.add(Error.INVALID_ACTION);
+                i++;
             }
         }
 
         return errors;
     }
 
+    /**
+     * this method activates the board production
+     * @param nickname the player's nickname
+     * @param toGive the resources to put in the production
+     * @param toGet the resourceType of the resource to obtain from the production
+     * @return the list of errors generated
+     */
     @Override
-    //attivo la produzione
-    public List<Error> onActivateProduction(String nickname, int cardIndex) {
+    public List<Error> onActivateBoardProduction(String nickname, ArrayList<Resource> toGive, ResourceType toGet){
 
-        //manca controllo sulle azioni possibili
         List<Error> errors = new ArrayList<>();
+        Player currPlayer = game.getCurrentPlayer();
 
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())) {
-            errors.add(Error.NOT_YOUR_TURN);
+        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
+            errors.add(Error.WRONG_GAME_PHASE);
             return errors;
         }
 
-        try{
-            game.getCurrentPlayer().activateProduction(cardIndex);
-        } catch (FullDepositException e){
-            errors.add(Error.DEPOSIT_IS_FULL);
-        } catch(InsufficientPaymentException e){
-            errors.add(Error.INSUFFICIENT_PAYMENT);
-        } catch (Exception e){
-            errors.add(Error.GENERIC);
+        if(boardProductionActivated)
+            errors.add(Error.INVALID_ACTION);
+
+        else if(!toGive.isEmpty() && toGet != null) {
+
+            try {
+                currPlayer.getPlayerBoard().useProductionPower(toGive, toGet);
+                game.getCurrentPlayer().setStandardActionPlayed(true);
+                boardProductionActivated = true;
+                if(currPlayer.getPosition().isPopeSpace())
+                    game.vaticanReport(currPlayer.getPositionIndex());
+            } catch (Exception e) {
+                errors.add(Error.GENERIC);
+            }
         }
+        else
+            errors.add(Error.INVALID_ACTION);
+
+        return errors;
+    }
+
+    /**
+     * this method end a player's production
+     * @param nickname the player's nickname
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onEndProduction(String nickname){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()) {
+            if (developmentProductionActivated || leaderProductionActivated || boardProductionActivated) {
+                game.getCurrentPlayer().getStrongbox().moveFromTemporary();
+                developmentProductionActivated = false;
+                leaderProductionActivated = false;
+                boardProductionActivated = false;
+
+            } else
+                errors.add(Error.INVALID_ACTION);
+        }
+
+        nextTurn();
         return errors;
 
     }
 
+
+    /**
+     * this method calls Player's method buyDevelopmentCard
+     * @param nickname the player's nickname
+     * @param row the row of the cardMarket
+     * @param column the column of the cardMarket
+     * @return the list of errors generated
+     */
     @Override
-    //do le developmentCrads al player
     public List<Error> onBuyDevelopmentCards(String nickname, int row, int column) {
 
-        //manca controllo sulle azioni possibili
-        List<Error> errors = new ArrayList<>();
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())){
-            errors.add(Error.NOT_YOUR_TURN);
-            return errors;
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty())
+            errors.addAll(controlStandardAction());
+
+        if(errors.isEmpty()) {
+            if (game.getCurrentPlayer().hasPlayedStandardAction()) {
+                errors.add(Error.INVALID_ACTION);
+                return errors;
+            }
+
+            try {
+                game.getCurrentPlayer().buyDevelopmentCard(row, column);
+                game.getCurrentPlayer().setStandardActionPlayed(true);
+                controlEndOfGame();
+            } catch (InsufficientPaymentException e) {
+                errors.add(Error.INSUFFICIENT_PAYMENT);
+            } catch (NonExistentCardException e) {
+                errors.add(Error.CARD_DOESNT_EXIST);
+            } catch (Exception e) {
+                errors.add(Error.GENERIC);
+            }
         }
 
-        try {
-            game.getCurrentPlayer().buyDevelopmentCard(row,column);
-        } catch (InsufficientPaymentException e) {
-            errors.add(Error.INSUFFICIENT_PAYMENT);
-        } catch (NonExistentCardException e) {
-            errors.add(Error.CARD_DOESNT_EXIST);
-        } catch (Exception e) {
-            errors.add(Error.GENERIC);
-        }
+        nextTurn();
 
         return errors;
     }
 
+    /**
+     * this method calls the Player's method buyResoources
+     * @param nickname the player's nickname
+     * @param row the row of the marbleMarket
+     * @param column the column of the marbleMarket
+     * @return the list of errors generated
+     */
     @Override
-    //do le risorse al player
     public List<Error> onBuyResources(String nickname, int row, int column) {
 
-        //manca il controllo sulle azioni possibili
-        List<Error> errors = new ArrayList<>();
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())){
-            errors.add(Error.NOT_YOUR_TURN);
-            return errors;
+
+        if(errors.isEmpty()){
+            errors.addAll(controlStandardAction());
         }
 
-        try {
-            game.getCurrentPlayer().buyResources(row, column);
-        } catch (FullDepositException e) {
-            errors.add(Error.DEPOSIT_IS_FULL);
+        if(errors.isEmpty()) {
+
+            try {
+                game.getCurrentPlayer().buyResources(row, column);
+                game.getCurrentPlayer().setStandardActionPlayed(true);
+                if (game.getCurrentPlayer().getPosition().isPopeSpace())
+                    game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
+                controlEndOfGame();
+            } catch (FullDepositException e) {
+                errors.add(Error.DEPOSIT_IS_FULL);
+            }
         }
+
+        nextTurn();
 
         return errors;
     }
 
+    /**
+     * this method activates a player's leaderCard
+     * @param nickname the player's nickname
+     * @param leaderCard the leaderCard to activate
+     * @return the list of errors generated
+     */
     @Override
-    //eseguo l'azione del leader scelto
-    public List<Error> onActivateLeader(String nickname, int index) {
+    public List<Error> onActivateLeader(String nickname, LeaderCard leaderCard) {
 
-        //manca il controllo sulle azioni possibili
-        List<Error> errors = new ArrayList<>();
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())){
-            errors.add(Error.NOT_YOUR_TURN);
-            return errors;
+
+        if(errors.isEmpty())
+            errors.addAll(controlLeaderAction());
+
+        if(errors.isEmpty()) {
+            try {
+                int index = game.getCurrentPlayer().getHand().indexOf(leaderCard);
+                game.getCurrentPlayer().activateLeaderCard(index);
+                game.getCurrentPlayer().setLeaderActionPlayed(true);
+                controlEndOfGame();
+            } catch (NonExistentCardException e) {
+                errors.add(Error.CARD_DOESNT_EXIST);
+            } catch (InsufficientResourcesException | InsufficientDevelopmentCardsException e) {
+                errors.add(Error.INSUFFICIENT_PAYMENT);
+            }
         }
 
-        try {
-            game.getCurrentPlayer().activateLeaderCard(index);
-        } catch (NonExistentCardException e) {
-            errors.add(Error.CARD_DOESNT_EXIST);
-        } catch (InsufficientResourcesException e) {
-            errors.add(Error.INSUFFICIENT_PAYMENT);
-        } catch (InsufficientDevelopmentCardsException e) {
-            errors.add(Error.INSUFFICIENT_PAYMENT);
-        }
+        nextTurn();
 
         return errors;
     }
 
+    /**
+     * this method discards the player's chosen LeaderCard
+     * @param nickname the player's nickname
+     * @param leaderCard the card to discard
+     * @return the list of errors generated
+     */
     @Override
-    //rimuovo il leader dalla hand del player
-    public List<Error> onDiscardLeader(String nickname, int index) {
-        // manca il controllo sulle azioni possibili
+    public List<Error> onDiscardLeader(String nickname, LeaderCard leaderCard) {
 
-        List<Error> errors = new ArrayList<>();
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+        Player curr = game.getCurrentPlayer();
 
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())){
-            errors.add(Error.NOT_YOUR_TURN);
+        if(errors.isEmpty())
+            errors.addAll(controlLeaderAction());
+
+        if(errors.isEmpty()) {
+
+            try {
+                curr.discardLeader(curr.getHand().indexOf(leaderCard));
+                curr.setLeaderActionPlayed(true);
+                if (curr.getPosition().isPopeSpace())
+                    game.vaticanReport(curr.getPositionIndex());
+                controlEndOfGame();
+            } catch (NonExistentCardException e) {
+                errors.add(Error.CARD_DOESNT_EXIST);
+            }
+        }
+
+        nextTurn();
+
+        return errors;
+    }
+
+
+    /**
+     * this method manages the case in which a player decides to end his turn before playing all the possible actions
+     * @param nickname the player's nickname
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onEndTurn(String nickname){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(!game.getCurrentPlayer().hasPlayedStandardAction()) {
+            errors.add(Error.INVALID_ACTION);
             return errors;
         }
 
-        try {
-            game.getCurrentPlayer().discardLeader(index);
-        } catch (NonExistentCardException e) {
-            errors.add(Error.CARD_DOESNT_EXIST);
+        game.getCurrentPlayer().setStandardActionPlayed(false);
+        game.getCurrentPlayer().setLeaderActionPlayed(false);
+
+        controlEndOfGame();
+        game.nextPlayer();
+        if(game.getListOfPlayers().size()==1)
+            game.lorenzoTurn();
+        sendPlayTurn();
+
+        return errors;
+    }
+
+    /**
+     * this method calls player's method swapDepositFloor
+     * @param nickname the player's nickname
+     * @param x first floor
+     * @param y second floor
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onMoveDeposit (String nickname, int x, int y){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()) {
+            try {
+                game.getCurrentPlayer().swapDepositFloors(x, y);
+            } catch (WrongDepositSwapException e) {
+                errors.add(Error.NON_VALID_DEPOSIT_SWAP);
+            }
         }
         return errors;
     }
 
 
+    /**
+     * this method calls the player's method discardResources
+     * @param nickname the player's nickname
+     * @param resourceType the resourceType of the resource to discard
+     * @return the list of errors generated
+     */
     @Override
-    public void sendPlayTurn() {
+    public List<Error> onDiscardResource(String nickname, ResourceType resourceType){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()) {
+            game.getCurrentPlayer().discardResources(); //va rivisto
+            game.movePlayersDiscard(1);
+        }
+
+        return errors;
 
     }
 
+    /**
+     * this method controls if a player has reached one of the conditions to end the game, which means:
+     * if he has drawn the 7th DevelopmentCard, or
+     * if he has reached the last popespace
+     */
+    public void controlEndOfGame(){
+        if(!isLastRound) {
+
+            int numOfCards = 0;
+            for (Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
+                numOfCards = numOfCards + stack.size();
+
+            if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
+
+                virtualView.lastRound();
+                isLastRound=true;
+            }
+        }
+
+    }
+
+    /**
+     * this method controls if the player has played all the possible actions and, if so, it passes the turn to the next player
+     * if it is the last turn, game ends
+     */
+    public void nextTurn(){
+
+        if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
+            sendEndTurn();
+
+            game.nextPlayer();
+            //controllo di non essere arrivato alla fine dell'ultimo giro
+            if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+                Player winner = game.endGame();
+                virtualView.endMatch();
+            }
+
+            else {
+                game.getCurrentPlayer().setStandardActionPlayed(false);
+                game.getCurrentPlayer().setLeaderActionPlayed(false);
+                if (game.getListOfPlayers().size() == 1)
+                    game.lorenzoTurn();
+                sendPlayTurn();
+            }
+
+        }
+    }
+
+    /**
+     * this method controls if the message received matches the Game phase and if it is the player's turn
+     * @param nickname the nickname of the player who has sent the request
+     * @return the list of errors generated
+     */
+    public List<Error> controlTurn(String nickname){
+
+        List<Error> errors = new ArrayList<>();
+
+        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
+            errors.add(Error.WRONG_GAME_PHASE);
+        }
+
+        if(!nickname.equals(game.getCurrentPlayer().getNickname()))
+            errors.add(Error.NOT_YOUR_TURN);
+
+        return errors;
+    }
+
+
+    /**
+     * this method controls if the player has already played a Standard Action in this turn
+     * standardActions are: ActivateProduction, BuyDevelopmentCard, BuyResources
+     * @return the list of errors generated
+     */
+    public List<Error> controlStandardAction(){
+
+        List<Error> errors = new ArrayList<>();
+
+        if(game.getCurrentPlayer().hasPlayedStandardAction())
+            errors.add(Error.INVALID_ACTION);
+
+        return errors;
+    }
+
+
+    /**
+     * this class controls if the player has already played all the Leader Action he could in this turn
+     * leaderActions are: activateLeader, discardLeader
+     * @return the list of errors generated
+     */
+    public List<Error> controlLeaderAction(){
+
+        List<Error> errors = new ArrayList<>();
+
+        if(game.getCurrentPlayer().hasPlayedLeaderAction())
+            errors.add(Error.INVALID_ACTION);
+
+        return errors;
+
+    }
+
+    /**
+     * this method reacts to a disconnection removing the player who has disconnected from the game
+     * @param nickname nickname of the player who has disconnected
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onPlayerDisconnection(String nickname) {
         List<Error> errors = new ArrayList<>();
+
+        if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
+            errors.add(Error.INVALID_ACTION);
+        else
+            game.removePlayer(nickname);
+
         return errors;
     }
 
-    public List<Error> onEndTurn(String nickname){
-
-        List<Error> errors = new ArrayList<>();
-
-        if(!nickname.equals(game.getCurrentPlayer().getNickname())){
-            errors.add(Error.NOT_YOUR_TURN);
-            return errors;
-        }
-
-        //controllo se si è a fine game
-        int numOfCards = 0;
-        for(Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
-            numOfCards = numOfCards + stack.size();
-        if(numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize()-1) {
-            Player winner = game.endGame();
-            //manda messaggio di vittoria
-            return errors;
-        }
-
-        game.nextPlayer();
-        //dopo questo devo fare altro?
-        return errors;
+    /**
+     * this method calls the virtualView's method PlayTurn
+     */
+    @Override
+    public void sendPlayTurn(){
+        virtualView.playTurn(game.getCurrentPlayer().getNickname());
     }
+
+
+    /**
+     * this method calls the virtualView's method endTurn
+     */
+    @Override
+    public void sendEndTurn(){
+        virtualView.endTurn(game.getCurrentPlayer().getNickname());
+    }
+
+    public Game getGame(){
+        return this.game;
+    }
+
+
 }

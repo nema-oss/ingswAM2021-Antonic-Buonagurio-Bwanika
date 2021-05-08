@@ -51,6 +51,14 @@ public class Strongbox {
     }
 
     /*
+        *this method adds a single resource to the temporary storage
+     */
+    public void addResourceTemporary(Resource resource){
+
+        temporaryResourceStorage.add(resource);
+    }
+
+    /*
         * this method add resources at the end of the production action
      */
 

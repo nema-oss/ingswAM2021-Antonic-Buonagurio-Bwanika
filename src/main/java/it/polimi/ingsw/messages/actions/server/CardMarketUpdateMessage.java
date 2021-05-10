@@ -9,6 +9,10 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
+/**
+ * message sent from server to clients to display the change after a player has bought from the market
+ */
+
 public class CardMarketUpdateMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     private CardMarket cardMarket;

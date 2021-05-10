@@ -10,10 +10,12 @@ public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     int x;
     int y;
+    private boolean accepted;
 
-    public BuyDevelopmentCardMessage(int x, int y) {
+    public BuyDevelopmentCardMessage(int x, int y, boolean accepted) {
         this.x = x;
         this.y = y;
+        this.accepted = accepted;
         messageType = ActionMessageType.BUY_DEVELOPMENT;
     }
 

@@ -9,10 +9,12 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     private int x;
     private int y;
+    private boolean accepted;
 
-    public BuyResourcesMessage(int x, int y) {
+    public BuyResourcesMessage(int x, int y, boolean accepted) {
         this.x = x;
         this.y = y;
+        this.accepted = accepted;
         messageType = ActionMessageType.BUY_RESOURCES;
     }
 

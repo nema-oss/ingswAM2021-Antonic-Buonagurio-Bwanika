@@ -21,7 +21,7 @@ public class LoginRequest implements SetupMessage, Serializable {
 
     public LoginRequest(String nickname){
         this.nickname = nickname;
-        this.messageType = SetupMessageType.LOGIN;
+        this.messageType = SetupMessageType.LOGIN_REQUEST;
     }
 
     public String getNickname() {

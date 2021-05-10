@@ -11,10 +11,12 @@ import java.util.ArrayList;
 
 public class ChooseLeadersMessage implements Serializable, SetupMessage{
     private final SetupMessageType messageType;
-    private ArrayList<LeaderCard> choice;
+    private LeaderCard choice;
+    private boolean accepted;
 
-    public ChooseLeadersMessage(ArrayList<LeaderCard> choice) {
+    public ChooseLeadersMessage(LeaderCard choice, boolean accepted) {
         this.choice = choice;
+        this.accepted = accepted;
         messageType = SetupMessageType.CHOOSE_LEADERS;
     }
 

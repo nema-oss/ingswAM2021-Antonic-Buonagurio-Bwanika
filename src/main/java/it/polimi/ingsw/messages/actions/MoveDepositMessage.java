@@ -14,12 +14,14 @@ import java.util.ArrayList;
 
 public class MoveDepositMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
-    private ArrayList<Resource> resources; //up to 3 possible resources to move (1 per type)
-    private ArrayList<Integer> toShelves; //where i want to move the resources to
+    private int resources; //up to 3 possible resources to move (1 per type)
+    private int toShelves; //where i want to move the resources to
+    private boolean accepted;
 
-    public MoveDepositMessage(ArrayList<Resource> resources, ArrayList<Integer> toShelves) {
+    public MoveDepositMessage(int resources, int toShelves, boolean accepted) {
         this.resources = resources;
         this.toShelves = toShelves;
+        this.accepted = accepted;
         messageType = ActionMessageType.MOVE_DEPOSIT;
     }
 
@@ -30,7 +32,6 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    @Override
     public ActionMessageType getType() {
         return messageType;
     }

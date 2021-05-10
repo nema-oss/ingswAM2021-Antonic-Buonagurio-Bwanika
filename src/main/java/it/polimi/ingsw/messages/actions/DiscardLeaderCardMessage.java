@@ -10,11 +10,9 @@ import java.util.ArrayList;
 
 public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
-    private ArrayList<LeaderCard> hand;
     private LeaderCard choice;
 
-    public DiscardLeaderCardMessage(ArrayList<LeaderCard> hand, LeaderCard choice) {
-        this.hand = hand;
+    public DiscardLeaderCardMessage(LeaderCard choice) {
         this.choice = choice;
         messageType = ActionMessageType.DISCARD_LEADERCARD;
     }

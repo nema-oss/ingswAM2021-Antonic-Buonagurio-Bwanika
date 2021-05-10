@@ -36,8 +36,8 @@ public class DisconnectionMessage implements Serializable, Message {
      * Get the message type
      * @return the message type
      */
-    @Override
-    public ActionMessageType getType() {
+
+    public MessageType getType() {
         return messageType;
     }
 }

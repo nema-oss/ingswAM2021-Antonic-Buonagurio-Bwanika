@@ -1,8 +1,16 @@
 package it.polimi.ingsw.messages;
 
-import it.polimi.ingsw.messages.actions.ActionMessage;
-import it.polimi.ingsw.messages.actions.ActionMessageType;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
+import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.messages.actions.server.CardMarketUpdateMessage;
+import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
+import it.polimi.ingsw.messages.setup.*;
+import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.CardMarket;
+import it.polimi.ingsw.model.gameboard.Resource;
+
+import java.util.ArrayList;
 
 /**
  * This class manage the creation of different type of messages
@@ -43,15 +51,65 @@ public class MessageWriter{
     }
 
     private void createMessage(SetupMessageType setupMessageType){
-
+        switch (setupMessageType){
+            case LOGIN_REQUEST:
+                messageOut = new LoginRequest(askClientNick()):
+            case LOGIN:
+                messageOut = new LoginMessage();
+            case LOGIN_DONE:
+                messageOut = new LoginDoneMessage();
+            case GAME_MODE:
+                messageOut = new GameModeMessage(askClientNumPlayers());
+        }
     }
 
     private void createMessage(ActionMessageType actionMessage){
+        switch(actionMessage){
+            case CARD_MARKET_UPDATE:
+                messageOut = new CardMarketUpdateMessage(askServerNewMarket());
+            case MOVE_ON_POPEROAD:
+                messageOut = new MoveOnPopeRoadMessage(askServerMovesPopeRoad());
+            case ACTIVATE_PRODUCTION:
+                messageOut = new ActivateProductionMessage(askClientProductionActivation());
+            case DISCARD_LEADERCARD:
+                messageOut = new DiscardLeaderCardMessage(askClientLeaderDiscardChoice());
+            case PLACE_RESOURCES:
+                messageOut = new PlaceResourcesMessage(askServerBoughtResources(), askClientToShelves());
+        }
+    }
+
+    private ArrayList<Resource> askServerBoughtResources() {
+    }
+
+    private ArrayList<Integer> askClientToShelves() {
+    }
+
+
+    private LeaderCard askClientLeaderDiscardChoice() {
+    }
+
+    private String askClientNick(){
 
     }
 
     private String askServerDisconnectedNick(){
         return "ciao";
+    }
+
+    private int askClientNumPlayers(){
+
+    }
+
+    private CardMarket askServerNewMarket(){
+
+    }
+
+    private int askServerMovesPopeRoad(){
+
+    }
+
+    private ArrayList<Integer> askClientProductionActivation(){
+
     }
 
     public Message getMessage() {

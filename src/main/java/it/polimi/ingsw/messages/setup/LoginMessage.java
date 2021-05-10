@@ -27,6 +27,6 @@ public class LoginMessage implements SetupMessage, Serializable {
     }
 
     public SetupMessageType getType() {
-        return null;
+        return messageType;
     }
 }

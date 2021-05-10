@@ -233,9 +233,9 @@ public class VirtualView implements VirtualViewInterface{
         List<Error> errors = matchController.onMoveDeposit(user, a,b);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedMoveDeposit(user);
+                onAcceptedMoveDeposit(user, a, b);
             else
-                onRejectedMoveDeposit(user);
+                onRejectedMoveDeposit(user, a, b);
         }
     }
 
@@ -243,8 +243,8 @@ public class VirtualView implements VirtualViewInterface{
      * This method alerts the client that its move deposit request has been accepted
      * @param user the user
      */
-    private void onAcceptedMoveDeposit(String user) {
-        Message message = new UpdateWriter().moveDepositRequestAccepted();
+    private void onAcceptedMoveDeposit(String user, int a, int b) {
+        Message message = new UpdateWriter().moveDepositRequestAccepted(a, b);
         sendMessage(clients.get(user), message);
     }
 
@@ -252,8 +252,8 @@ public class VirtualView implements VirtualViewInterface{
      * This method alerts the client that its move deposit request has been rejected
      * @param user the user
      */
-    private void onRejectedMoveDeposit(String user) {
-        Message message = new UpdateWriter().moveDepositRequestRejected();
+    private void onRejectedMoveDeposit(String user, int a, int b) {
+        Message message = new UpdateWriter().moveDepositRequestRejected(a, b);
         sendMessage(clients.get(user), message);
     }
 
@@ -274,13 +274,13 @@ public class VirtualView implements VirtualViewInterface{
 
 
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
-        Message message = new UpdateWriter().buyCardAccepted();
+        Message message = new UpdateWriter().buyCardAccepted(x, y);
         for(Socket socket: clients.values())
             sendMessage(socket, message);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
-        Message message = new ErrorWriter().buyCardRejected();
+        Message message = new ErrorWriter().buyCardRejected(x, y);
         sendMessage(clients.get(user), message);
     }
 

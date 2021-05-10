@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 public class ChooseResourcesMessage implements Serializable, SetupMessage {
     private final SetupMessageType messageType;
-    private ArrayList<Resource> resourcesarrayList;
+    private Resource resource;
+    private boolean accepted;
 
-    public ChooseResourcesMessage(ArrayList<Resource> resourcesarrayList) {
-        this.resourcesarrayList = resourcesarrayList;
+    public ChooseResourcesMessage(Resource resource, boolean accepted) {
+        this.resource = resource;
+        this.accepted = accepted;
         messageType = SetupMessageType.CHOOSE_RESOURCES;
     }
 

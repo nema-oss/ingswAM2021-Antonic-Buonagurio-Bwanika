@@ -9,8 +9,10 @@ import java.io.Serializable;
 
 public class GameModeMessage implements Serializable, SetupMessage {
     private final SetupMessageType messageType;
+    private int numPlayers;
 
-    public GameModeMessage() {
+    public GameModeMessage(int numPlayers) {
+        this.numPlayers = numPlayers;
         this.messageType = SetupMessageType.GAME_MODE;
     }
 

@@ -10,11 +10,9 @@ import java.util.ArrayList;
 
 public class ActivateProductionMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
-    private ArrayList<DevelopmentCard> production;
     private ArrayList<Integer> selected; //selected indexes of productions to activate (0 for the board production)
 
-    public ActivateProductionMessage(ArrayList<DevelopmentCard> production, ArrayList<Integer> selected) {
-        this.production = production;
+    public ActivateProductionMessage(ArrayList<Integer> selected) {
         this.selected = selected;
         messageType = ActionMessageType.ACTIVATE_PRODUCTION;
     }

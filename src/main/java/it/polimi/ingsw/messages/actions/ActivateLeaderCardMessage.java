@@ -11,12 +11,12 @@ import java.util.ArrayList;
 public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
 
     private final ActionMessageType messageType;
-    private ArrayList<LeaderCard> hand;
     private LeaderCard choice;
+    boolean accepted;
 
-    public ActivateLeaderCardMessage(ArrayList<LeaderCard> hand, LeaderCard choice) {
-        this.hand = hand;
+    public ActivateLeaderCardMessage(LeaderCard choice, boolean accepted) {
         this.choice = choice;
+        this.accepted = accepted;
         messageType = ActionMessageType.ACTIVATE_LEADERCARD;
     }
 

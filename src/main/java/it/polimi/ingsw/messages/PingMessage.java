@@ -16,8 +16,8 @@ public class PingMessage implements Message, Serializable {
     }
 
 
-    @Override
-    public ActionMessageType getType() {
+
+    public MessageType getType() {
         return messageType;
     }
 }

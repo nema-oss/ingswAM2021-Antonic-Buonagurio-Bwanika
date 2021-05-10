@@ -3,6 +3,8 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.setup.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.ChooseResourcesMessage;
+import it.polimi.ingsw.messages.setup.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -18,7 +20,7 @@ public class UpdateWriter {
      * @return the update login message
      */
     public Message loginUpdate(String nickname) {
-        return (Message) new Object();
+        return new LoginMessage();
     }
 
     public Message cardSelectionAccepted(LeaderCard leaderCard) {
@@ -46,13 +48,15 @@ public class UpdateWriter {
     }
 
     public Message productionCardAccepted(DevelopmentCard card) {
-
+        return new ActivateCardProductionMessage(card, true);
     }
 
     public Message productionBoardAccepted(ResourceType resourceType) {
+        return new ActivateBoardProductionMessage(resourceType, true);
     }
 
     public Message productionLeaderAccepted(LeaderCard card) {
+        return new ActivateLeaderProductionMessage(card, true);
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {

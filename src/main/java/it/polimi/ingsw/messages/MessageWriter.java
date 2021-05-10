@@ -53,11 +53,9 @@ public class MessageWriter{
     private void createMessage(SetupMessageType setupMessageType){
         switch (setupMessageType){
             case LOGIN_REQUEST:
-                messageOut = new LoginRequest(askClientNick()):
+                messageOut = new LoginRequest(askClientNick());
             case LOGIN:
                 messageOut = new LoginMessage();
-            case LOGIN_DONE:
-                messageOut = new LoginDoneMessage();
             case GAME_MODE:
                 messageOut = new GameModeMessage(askClientNumPlayers());
         }
@@ -70,7 +68,7 @@ public class MessageWriter{
             case MOVE_ON_POPEROAD:
                 messageOut = new MoveOnPopeRoadMessage(askServerMovesPopeRoad());
             case ACTIVATE_PRODUCTION:
-                messageOut = new ActivateProductionMessage(askClientProductionActivation());
+                messageOut = new ActivateProductionMessage();
             case DISCARD_LEADERCARD:
                 messageOut = new DiscardLeaderCardMessage(askClientLeaderDiscardChoice());
             case PLACE_RESOURCES:
@@ -108,9 +106,6 @@ public class MessageWriter{
 
     }
 
-    private ArrayList<Integer> askClientProductionActivation(){
-
-    }
 
     public Message getMessage() {
         return messageOut;

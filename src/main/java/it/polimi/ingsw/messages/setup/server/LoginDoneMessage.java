@@ -10,8 +10,10 @@ import java.io.Serializable;
 
 public class LoginDoneMessage implements Serializable, SetupMessage {
     private final SetupMessageType messageType;
+    boolean accepted;
 
-    public LoginDoneMessage() {
+    public LoginDoneMessage(boolean accepted) {
+        this.accepted = accepted;
         this.messageType = SetupMessageType.LOGIN_DONE;
     }
 

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.messages;
 
-import it.polimi.ingsw.messages.actions.ActivateLeaderCardMessage;
-import it.polimi.ingsw.messages.actions.BuyDevelopmentCardMessage;
-import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.setup.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.ChooseResourcesMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -32,13 +30,13 @@ public class ErrorWriter {
         return new BuyResourcesMessage(x, y, false);
     }
 
-    public Message productionCardRejected(DevelopmentCard card) {
+    public Message productionCardRejected(DevelopmentCard card) { return new ActivateCardProductionMessage(card, false);
     }
 
-    public Message productionBoardRejected(ResourceType resourceType) {
+    public Message productionBoardRejected(ResourceType resourceType) { return new ActivateBoardProductionMessage(resourceType, false);
     }
 
-    public Message productionLeaderRejected(LeaderCard card) {
+    public Message productionLeaderRejected(LeaderCard card) { return new ActivateLeaderProductionMessage(card, false);
     }
 
     public Message activateLeaderRejected(LeaderCard card) {

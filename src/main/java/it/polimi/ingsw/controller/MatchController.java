@@ -135,12 +135,20 @@ public class MatchController implements ControllerInterface{
             errors.add(Error.NOT_YOUR_TURN);
             return errors;
         }
+
+        if(leaderCardsChosen == null || leaderCardsChosen.size() != 2) {
+            errors.add(Error.INVALID_ACTION);
+            return errors;
+        }
+
         game.getCurrentPlayer().setHand(leaderCardsChosen);
 
         game.nextPlayer();
 
         if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
             game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
+        else
+            sendChooseLeaderCards();
 
         return errors;
     }
@@ -208,6 +216,8 @@ public class MatchController implements ControllerInterface{
 
         if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
             game.setGamePhase(GamePhase.PLAY_TURN);
+        else
+            sendChooseResources();
 
         return errors;
     }
@@ -223,7 +233,7 @@ public class MatchController implements ControllerInterface{
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
         if(errors.isEmpty())
-            controlStandardAction();
+            errors = controlStandardAction();
 
         if(errors.isEmpty())
             virtualView.playTurn(nickname);
@@ -244,12 +254,11 @@ public class MatchController implements ControllerInterface{
         List<Error> errors = new ArrayList<>();
 
 
-        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
-            errors.add(Error.WRONG_GAME_PHASE);
+        errors = controlTurn(nickname);
+        if(!errors.isEmpty())
             return errors;
-        }
 
-        if(boardProductionActivated)
+        if(developmentProductionActivated)
             errors.add(Error.INVALID_ACTION);
 
         else {
@@ -293,12 +302,11 @@ public class MatchController implements ControllerInterface{
     public List<Error> onActivateLeaderProduction(String nickname, ArrayList<LeaderCard> leaderCards){
 
         Player currPlayer = game.getCurrentPlayer();
-        List<Error> errors = new ArrayList<>();
+        List<Error> errors;
 
-        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
-            errors.add(Error.WRONG_GAME_PHASE);
+        errors = controlTurn(nickname);
+        if(!errors.isEmpty())
             return errors;
-        }
 
         if(leaderProductionActivated)
             errors.add(Error.INVALID_ACTION);
@@ -336,13 +344,11 @@ public class MatchController implements ControllerInterface{
     @Override
     public List<Error> onActivateBoardProduction(String nickname, ArrayList<Resource> toGive, ResourceType toGet){
 
-        List<Error> errors = new ArrayList<>();
         Player currPlayer = game.getCurrentPlayer();
 
-        if(!game.getGamePhase().equals(GamePhase.PLAY_TURN)){
-            errors.add(Error.WRONG_GAME_PHASE);
+        List<Error> errors = controlTurn(nickname);
+        if(!errors.isEmpty())
             return errors;
-        }
 
         if(boardProductionActivated)
             errors.add(Error.INVALID_ACTION);

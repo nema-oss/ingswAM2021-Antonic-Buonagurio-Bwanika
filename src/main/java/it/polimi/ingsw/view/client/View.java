@@ -242,4 +242,6 @@ public abstract class View {
     public int getPlayerNumber(){
         return players.size() + 1;
     }
+
+    public abstract void showLoginFailed();
 }

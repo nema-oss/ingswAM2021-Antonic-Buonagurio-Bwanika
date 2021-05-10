@@ -3,6 +3,7 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.setup.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.ChooseResourcesMessage;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -12,6 +13,7 @@ public class ErrorWriter {
 
 
     public Message rejectedLogin() {
+        return new LoginDoneMessage(false);
     }
 
     public Message cardSelectionRejected(LeaderCard leaderCard) {

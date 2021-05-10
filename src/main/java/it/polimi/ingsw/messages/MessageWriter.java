@@ -56,6 +56,8 @@ public class MessageWriter{
                 messageOut = new LoginRequest(askClientNick());
             case LOGIN:
                 messageOut = new LoginMessage();
+            case LOGIN_DONE:
+                messageOut = new LoginDoneMessage(true);
             case GAME_MODE:
                 messageOut = new GameModeMessage(askClientNumPlayers());
         }

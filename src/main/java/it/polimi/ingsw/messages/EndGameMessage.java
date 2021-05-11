@@ -25,7 +25,10 @@ public class EndGameMessage implements Message, Serializable {
     public void execute(View view){
         view.showEnd();
     }
-
+    /**
+     * Get the message type
+     * @return the message type
+     */
     public MessageType getType() {
         return messageType;
     }

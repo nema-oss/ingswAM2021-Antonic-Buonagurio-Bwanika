@@ -8,23 +8,40 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
+/**
+ * Message sent from server to clients to display the updated PopeRoad of a player after he has advanced
+ * @author Nemanja Antonic
+ */
 public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     int moves;
 
+    /**
+     * Server-side constructor to create the message
+     * @param moves: number of moves to advance on the PopeRoad
+     */
     public MoveOnPopeRoadMessage(int moves) {
         this.moves = moves;
         messageType = ActionMessageType.MOVE_ON_POPEROAD;
     }
-
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     public void execute(View view){
         //method in view to show the choice
     }
-
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-
+    /**
+     * Get the message type
+     * @return the message type
+     */
     public ActionMessageType getType() {
         return messageType;
     }

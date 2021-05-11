@@ -11,12 +11,18 @@ import java.io.Serializable;
 public class PingMessage implements Message, Serializable {
     private final MessageType messageType;
 
+    /**
+     * Server-side constructor to create the message
+     */
     public PingMessage() {
         this.messageType = MessageType.PING;
     }
 
 
-
+    /**
+     * Get the message type
+     * @return the message type
+     */
     public MessageType getType() {
         return messageType;
     }

@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +29,9 @@ public class EchoServer {
     private ExecutorService executor;
     private static int serverPort;
 
+
     private final List<VirtualView> lobbies;
+    private final Map<String,Integer> disconnectedPlayers;
 
     //constructors
 
@@ -35,7 +39,9 @@ public class EchoServer {
 
         serverPort = port;
         lobbies = new ArrayList<>();
+        disconnectedPlayers = new HashMap<>();
         lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1,new InGameDisconnectionHandler()));
+
     }
 
     public static void main(String[] args) {
@@ -95,8 +101,12 @@ public class EchoServer {
 
         boolean found = false;
         for (VirtualView match : lobbies){
-            if(match.getLobbySize() < 4 && !match.isActive()){
-                executor.submit(new ClientHandler(client,match,lobbies.indexOf(match) + 1));
+            if(match.isRequiredNumberOfPlayers() && !match.isActive()){
+                if(match.getLobbySize() == 0) {
+                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match) + 1, true));
+                }else {
+                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match), false));
+                }
                 found = true;
                 break;
             }

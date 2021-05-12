@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UpdateWriter {
 
@@ -23,11 +25,11 @@ public class UpdateWriter {
         return new LoginMessage();
     }
 
-    public Message cardSelectionAccepted(LeaderCard leaderCard) {
-        return new ChooseLeadersMessage(leaderCard, true);
+    public Message cardSelectionAccepted(List<LeaderCard> leaderCards) {
+        return new ChooseLeadersMessage(leaderCards, true);
     }
 
-    public Message resourceTypeSelectionAccepted(ResourceType resourceType) {
+    public Message resourceTypeSelectionAccepted(Map<ResourceType,Integer> resourceTypeChoice) {
         return new ChooseResourcesMessage(new Resource(resourceType), true);
     }
 

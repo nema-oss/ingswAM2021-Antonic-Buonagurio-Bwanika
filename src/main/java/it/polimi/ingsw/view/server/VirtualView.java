@@ -88,7 +88,7 @@ public class VirtualView implements VirtualViewInterface{
      * This method send a login request to a client
      * @param client the client that must login
      */
-    public void toDoLogin(Socket client) {
+    public void toDoLogin(Socket client, boolean isFirstPlayer) {
         Message message = new MessageWriter(SetupMessageType.LOGIN).getMessage();
         sendMessage(client, message);
     }
@@ -157,16 +157,16 @@ public class VirtualView implements VirtualViewInterface{
     }
     /**
      * This method manage the choose leaderCard request from client
-     * @param leaderCard the chosen card
+     * @param leaderCards the chosen card
      * @param user the user that selects the card
      */
-    public void chooseLeaderCard(String user, LeaderCard leaderCard){
-        List<Error> errors = matchController.onLeaderCardsChosen(leaderCard);
+    public void chooseLeaderCard(String user, List<LeaderCard> leaderCards){
+        List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedChooseLeaderCard(user,leaderCard);
+                onAcceptedChooseLeaderCard(user,leaderCards);
             else
-                onRejectedChooseLeaderCard(user, leaderCard);
+                onRejectedChooseLeaderCard(user, leaderCards);
         }
     }
 
@@ -174,10 +174,10 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * This method send alerts the client that its leaderCard selection has been accepted
      * @param user the user requesting the card
-     * @param leaderCard the card selected
+     * @param leaderCards the card selected
      */
-    private void onAcceptedChooseLeaderCard(String user, LeaderCard leaderCard) {
-        Message requestAccepted = new UpdateWriter().cardSelectionAccepted(leaderCard);
+    private void onAcceptedChooseLeaderCard(String user, List<LeaderCard> leaderCards) {
+        Message requestAccepted = new UpdateWriter().cardSelectionAccepted(leaderCards);
         sendMessage(clients.get(user), requestAccepted);
     }
 
@@ -186,7 +186,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user requesting the card
      * @param leaderCard the card selected
      */
-    private void onRejectedChooseLeaderCard(String user, LeaderCard leaderCard) {
+    private void onRejectedChooseLeaderCard(String user, List<LeaderCard> leaderCard) {
         Message requestRejected = new ErrorWriter().cardSelectionRejected(leaderCard);
         sendMessage(clients.get(user), requestRejected);
     }
@@ -196,8 +196,8 @@ public class VirtualView implements VirtualViewInterface{
      * This method manage the choose resource type request from client
      * @param resourceType the chosen resource type
      */
-    public void chooseResourceType(String username, ResourceType resourceType){
-        List<Error> errors = matchController.onResourcesChosen(resourceType);
+    public void chooseResourceType(String username, Map<ResourceType,Integer> resourceType){
+        List<Error> errors = matchController.onResourcesChosen(username,resourceType);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseResourceType(username, resourceType);
@@ -211,7 +211,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user requesting the card
      * @param resourceType the type selected
      */
-    private void onAcceptedChooseResourceType(String user,ResourceType resourceType) {
+    private void onAcceptedChooseResourceType(String user, Map<ResourceType, Integer> resourceType) {
         Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
     }
@@ -220,7 +220,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user requesting the card
      * @param resourceType the type selected
      */
-    private void onRejectedChooseResourceType(String user, ResourceType resourceType) {
+    private void onRejectedChooseResourceType(String user, Map<ResourceType, Integer> resourceType) {
         Message resourceTypeSelectionRejected = new ErrorWriter().resourceTypeSelectionRejected(resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionRejected);
     }
@@ -311,24 +311,25 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method manage the activate production development card request from client
-     * @param card the card to use
+     * @param developmentCards the card to use
+     * @param user the current user
      */
-    public void activateProductionDevelopmentCard(String user, DevelopmentCard card){
-        List<Error> errors = matchController.onActivateDevelopmentProduction(user, card);
+    public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards){
+        List<Error> errors = matchController.onActivateDevelopmentProduction(user, developmentCards);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionDevelopmentCard(user,card);
+                onAcceptedActivateProductionDevelopmentCard(user,developmentCards);
             else
-                onRejectedActivateProductionDevelopmentCard(user,card);
+                onRejectedActivateProductionDevelopmentCard(user,developmentCards);
         }
     }
 
-    private void onAcceptedActivateProductionDevelopmentCard(String user, DevelopmentCard card) {
+    private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> card) {
         Message message = new UpdateWriter().productionCardAccepted(card);
         sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedActivateProductionDevelopmentCard(String user, DevelopmentCard card) {
+    private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> card) {
         Message message = new ErrorWriter().productionCardRejected(card);
         sendMessage(clients.get(user), message);
     }
@@ -361,26 +362,27 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method manage the activate production leader card request from client
-     * @param card the card to use
+     * @param leaderCards the selected cards
+     * @param user the current user
      */
-    public void activateProductionLeaderCard(String user, LeaderCard card){
-        List<Error> errors = matchController.onActivateLeaderProduction(user,card);
+    public void activateProductionLeaderCard(String user, List<LeaderCard> leaderCards){
+        List<Error> errors = matchController.onActivateLeaderProduction(user,leaderCards);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionLeaderCard(user,card);
+                onAcceptedActivateProductionLeaderCard(user,leaderCards);
             else
-                onRejectedActivateProductionLeaderCard(user,card);
+                onRejectedActivateProductionLeaderCard(user,leaderCards);
 
         }
     }
 
-    private void onAcceptedActivateProductionLeaderCard(String user, LeaderCard card){
+    private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> card){
         Message message = new UpdateWriter().productionLeaderAccepted(card);
         sendMessage(clients.get(user), message);
 
     }
 
-    private void onRejectedActivateProductionLeaderCard(String user, LeaderCard card){
+    private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> card){
         Message message = new ErrorWriter().productionLeaderRejected(card);
         sendMessage(clients.get(user), message);
 
@@ -466,5 +468,9 @@ public class VirtualView implements VirtualViewInterface{
     public void lastRound(){} //dice a tutti che si sta giocando l'ultimo round
     public void toDoChooseLeaderCards(String user, ArrayList<LeaderCard> leaderCards ){} //manda le leaderCards tra cui scegliere
     public void toDoChooseResources(String user, int numOfResourcesToChoose){} //manda il numero di risorse tra cui possono scegleire
+
+    public boolean isRequiredNumberOfPlayers() {
+
+    }
 }
 

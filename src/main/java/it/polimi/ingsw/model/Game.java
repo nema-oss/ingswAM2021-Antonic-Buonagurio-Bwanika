@@ -96,10 +96,9 @@ public class Game {
 
     }
 
-    /*
-        * this method return the next player
+    /**
+     * this method return the next player
      */
-
     public void nextPlayer(){
 
         int i = listOfPlayers.indexOf(currentPlayer);
@@ -117,8 +116,8 @@ public class Game {
         }
         currentPlayer = nextPlayer;
     }
-    /*
-        * this method receive a nickname and return the correspondent player TODO fix null
+    /**
+     * this method receive a nickname and return the correspondent player TODO fix null
      */
     public Player getPlayerByNickname(String nickname) {
 
@@ -134,10 +133,9 @@ public class Game {
         return null;
     }
 
-    /*
-        * this method add a new player to the match
+    /**
+     * this method add a new player to the match
      */
-
     public List<Error> addPlayer(Player p){
         List<Error> errors = new ArrayList<>();
         if(listOfPlayers.size() >= 4 && !errors.contains(Error.GAME_ALREADY_FULL))
@@ -149,36 +147,35 @@ public class Game {
         return errors; //loro usano unmodifiable
     }
 
-    /*
-       * this method return the list of players in the current match
+    /**
+     * this method return the list of players in the current match
      */
-
     public List<Player> getListOfPlayers() {
         return listOfPlayers;
     }
 
-    /*
-        * this method return the current player
+    /**
+     * this method return the current player
      */
     public Player getCurrentPlayer(){ return currentPlayer;}
 
-    /*
-        * this method return the action token deck
+    /**
+     * this method return the action token deck
      */
     public ActionTokenDeck getActionDeck() {
         return actionDeck;
     }
 
-    /*
-        * this method return the gameBoard
+    /**
+     * this method return the gameBoard
      */
     public GameBoard getGameBoard() {
         return gameBoard;
     }
 
-    /*
-        * this method is called each time a player arrives to a pope Space and
-        * check the position of all the players in the popeRoad and allocates the victory points
+    /**
+     * this method is called each time a player arrives to a pope Space and
+     * check the position of all the players in the popeRoad and allocates the victory points
      */
     public void vaticanReport(int currentPlayerPositionIndex) {
 
@@ -198,8 +195,8 @@ public class Game {
 
     }
 
-    /*
-        * this method prepare the settings to start a single player match
+    /**
+     * this method prepare the settings to start a single player match
      */
     public void setSinglePlayerCPU(){
 
@@ -211,8 +208,8 @@ public class Game {
         actionDeck = new ActionTokenDeck(actionTokenList);
     }
 
-    /*
-        * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
+    /**
+     * * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
     */
     public void lorenzoTurn(){
 
@@ -222,7 +219,7 @@ public class Game {
             checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
     }
 
-    /*
+    /**
      * this method is called each time a Lorenzo arrives to a pope Space and
      * check the position of all the players in the popeRoad and allocates the victory points.
      * (single player mode)
@@ -241,15 +238,14 @@ public class Game {
 
     }
 
-    /*
-        * this method manage the loss in a single player match
+    /**
+     * this method manage the loss in a single player match
      */
     private void lostGame(){}
 
-    /*
-        * this method manage the end of match and assign the winner
+    /**
+     * this method manage the end of match and assign the winner
      */
-
     public Player endGame(){
 
         for(Player p: listOfPlayers){
@@ -260,9 +256,9 @@ public class Game {
         return winner;
     }
 
-    /*
-        * this method add the victory points to the player based on player's card
-        * @param the player
+    /**
+     * this method add the victory points to the player based on player's card
+     * @param p the player
      */
     private int checkCardsPoints(Player p) {
 
@@ -278,9 +274,9 @@ public class Game {
         return points;
     }
 
-    /*
+    /**
      * this method add the victory points to the player based on player's resources
-     * @param the player
+     * @param p the player
      */
     private int checkResourcePoints(Player p) {
 
@@ -301,10 +297,10 @@ public class Game {
 
     }
 
-    /*
-        * this method move the other players after current player discard resources
-        * and distributes the faith points
-        * @param the number of steps forward for each player
+    /**
+     * this method move the other players after current player discard resources
+     * and distributes the faith points
+     * @param steps the number of steps forward for each player
      */
     public void movePlayersDiscard(int steps){
 

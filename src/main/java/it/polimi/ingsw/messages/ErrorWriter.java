@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import java.util.List;
+
 public class ErrorWriter {
 
 
@@ -16,8 +18,8 @@ public class ErrorWriter {
         return new LoginDoneMessage(false);
     }
 
-    public Message cardSelectionRejected(LeaderCard leaderCard) {
-        return new ChooseLeadersMessage(leaderCard, false);
+    public Message cardSelectionRejected(List<LeaderCard> leaderCards) {
+        return new ChooseLeadersMessage(leaderCards, false);
     }
 
     public Message resourceTypeSelectionRejected(ResourceType resourceType) {

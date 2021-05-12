@@ -19,14 +19,14 @@ public class ClientHandler implements Runnable{
     private final int lobbyNumber;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private boolean isConnect;
+    private boolean isFirstPLayer;
 
 
-    public ClientHandler(Socket socket, VirtualView virtualView, int lobbyNumber) {
+    public ClientHandler(Socket socket, VirtualView virtualView, int lobbyNumber, boolean isFirstPLayer) {
         this.client = socket;
         this.virtualView = virtualView;
         this.lobbyNumber = lobbyNumber;
-        isConnect = false;
+        this.isFirstPLayer = isFirstPLayer;
     }
 
     /**
@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable{
         }
 
         virtualView.addInWaitList(client);
-        virtualView.toDoLogin(client); // asks the client to login
+        virtualView.toDoLogin(client, isFirstPLayer); // asks the client to login
 
         try {
             handleClientConnection();

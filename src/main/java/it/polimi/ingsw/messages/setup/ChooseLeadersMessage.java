@@ -8,13 +8,15 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseLeadersMessage implements Serializable, SetupMessage{
+
     private final SetupMessageType messageType;
-    private LeaderCard choice;
+    private List<LeaderCard> choice;
     private boolean accepted;
 
-    public ChooseLeadersMessage(LeaderCard choice, boolean accepted) {
+    public ChooseLeadersMessage(List<LeaderCard> choice, boolean accepted) {
         this.choice = choice;
         this.accepted = accepted;
         messageType = SetupMessageType.CHOOSE_LEADERS;

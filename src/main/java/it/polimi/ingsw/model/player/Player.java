@@ -227,10 +227,9 @@ public class Player{
 
 
 
-    /*
+    /**
      * this method let the player activate the production effect of his cards
-     * @param card coordinates
-     * @exception player has not enough resources to activate the card or player can't store all resources
+     * @param positionIndex coordinates
      */
 
     public void activateProduction(int positionIndex) throws FullDepositException, Exception, InsufficientPaymentException {
@@ -252,14 +251,14 @@ public class Player{
 
     }
 
-    /*
-        * this method use the production effect of a leader card
+    /**
+     * this method use the production effect of a leader card
      */
 
-    public void activateProductionLeader(int positionIndex) throws ProductionRequirementsException, InsufficientPaymentException {
+    public void activateProductionLeader(int position) throws ProductionRequirementsException, InsufficientPaymentException {
 
         if(activeEffects.isExtraProduction()){
-            activeEffects.useExtraProductionEffect(this, positionIndex);
+            activeEffects.useExtraProductionEffect(this, position);
 
         }
 
@@ -345,8 +344,8 @@ public class Player{
         }
         int numberOfCards = 0;
         if(!hand.get(positionIndex).getCostDevelopment().isEmpty()){ //this means the development card requirements need to be satisfied
-            //need to check the playerBoard
-            for(Integer integer : hand.get(positionIndex).getCostDevelopment().keySet()){ //maybe there's a more elegant way to do this
+
+            for(Integer integer : hand.get(positionIndex).getCostDevelopment().keySet()){
                 for(DevelopmentCardType developmentCardType : hand.get(positionIndex).getCostDevelopment().get(integer).keySet()){
                     for(Stack<DevelopmentCard> developmentCards : playerBoard.getDevelopmentCards()){
                         for(DevelopmentCard developmentCard : developmentCards){
@@ -365,8 +364,9 @@ public class Player{
 
     }
 
-    /*
-        * this method allows the player to move the deposit's floor before adding new resources
+    /**
+     * this method allows the player to move the deposit's floor before adding new resources
+     * @param x,y the floors coordinates
     */
 
     public void swapDepositFloors(int x, int y) throws WrongDepositSwapException {
@@ -375,8 +375,10 @@ public class Player{
 
     }
 
-    /*
-        * this method allows the player to add the resource on a floor
+    /**
+     * this method allows the player to add the resource on a floor
+     * @param resource the resource to add
+     * @param floor the selected floor
      */
 
     public void addResourceToDeposit(int floor, Resource resource) throws FullDepositException, Exception {
@@ -384,10 +386,9 @@ public class Player{
         getDeposit().addResource(floor,resource);
     }
 
-    /*
-       * this method add resources to the extra deposit
+    /**
+     * this method add resources to the extra deposit
      */
-
     public void addResourceToExtraDeposit(List<Resource> resources, int positionIndex){
 
         if(activeEffects.isExtraDeposit()){
@@ -395,8 +396,8 @@ public class Player{
         }
     }
 
-    /*
-        * this method allows to discard the resources.
+    /**
+     * this method allows to discard the resources.
      */
     public void discardResources(){}
 

@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ChooseResourcesMessage implements Serializable, SetupMessage {
+
     private final SetupMessageType messageType;
     private Resource resource;
     private boolean accepted;

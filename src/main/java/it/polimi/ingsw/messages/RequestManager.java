@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.client.View;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * this class manage the creation, the sending of messages request from client to the server
@@ -86,8 +87,8 @@ public class RequestManager {
         messageSender.sendMsg();
     }
 
-    public void sendChooseLeaders(LeaderCard leaderCard){
-        messageSender = new MessageSender(socket, new ChooseLeadersMessage(leaderCard, true));
+    public void sendChooseLeaders(List<LeaderCard> leaderCards){
+        messageSender = new MessageSender(socket, new ChooseLeadersMessage(leaderCards, true));
         messageSender.sendMsg();
     }
 

@@ -248,7 +248,7 @@ public class MatchController implements ControllerInterface{
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateDevelopmentProduction(String nickname, ArrayList<DevelopmentCard> developmentCards){
+    public List<Error> onActivateDevelopmentProduction(String nickname, List<DevelopmentCard> developmentCards){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors = new ArrayList<>();
@@ -299,7 +299,7 @@ public class MatchController implements ControllerInterface{
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateLeaderProduction(String nickname, ArrayList<LeaderCard> leaderCards){
+    public List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors;
@@ -342,7 +342,7 @@ public class MatchController implements ControllerInterface{
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateBoardProduction(String nickname, ArrayList<Resource> toGive, ResourceType toGet){
+    public List<Error> onActivateBoardProduction(String nickname, List<Resource> toGive, ResourceType toGet){
 
         Player currPlayer = game.getCurrentPlayer();
 

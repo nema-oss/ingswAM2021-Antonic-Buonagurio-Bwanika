@@ -44,27 +44,27 @@ public class MessageWriter{
             case PING:
                 messageOut = new PingMessage();
             case DISCONNECTION:
-                String disconnectedNick = askServerDisconnectedNick();
-                messageOut = new DisconnectionMessage(disconnectedNick);
+               // String disconnectedNick = askServerDisconnectedNick();
+                //messageOut = new DisconnectionMessage(disconnectedNick);
         }
 
     }
 
     private void createMessage(SetupMessageType setupMessageType){
         switch (setupMessageType){
-            case LOGIN_REQUEST:
-                messageOut = new LoginRequest(askClientNick());
+            //case LOGIN_REQUEST:
+              //  messageOut = new LoginRequest(askClientNick());
             case LOGIN:
                 messageOut = new LoginMessage();
             case LOGIN_DONE:
                 messageOut = new LoginDoneMessage(true);
-            case GAME_MODE:
-                messageOut = new GameModeMessage(askClientNumPlayers());
+            //case GAME_MODE:
+              //  messageOut = new GameModeMessage(askClientNumPlayers());
         }
     }
 
     private void createMessage(ActionMessageType actionMessage){
-        switch(actionMessage){
+        /*switch(actionMessage){
             case CARD_MARKET_UPDATE:
                 messageOut = new CardMarketUpdateMessage(askServerNewMarket());
             case MOVE_ON_POPEROAD:
@@ -75,9 +75,13 @@ public class MessageWriter{
                 messageOut = new DiscardLeaderCardMessage(askClientLeaderDiscardChoice());
             case PLACE_RESOURCES:
                 messageOut = new PlaceResourcesMessage(askServerBoughtResources(), askClientToShelves());
-        }
+        }*/
     }
 
+    public Message getMessage() {
+        return messageOut;
+    }
+    /*
     private ArrayList<Resource> askServerBoughtResources() {
     }
 
@@ -111,5 +115,5 @@ public class MessageWriter{
 
     public Message getMessage() {
         return messageOut;
-    }
+    }*/
 }

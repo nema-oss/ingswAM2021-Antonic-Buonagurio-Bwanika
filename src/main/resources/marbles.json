@@ -14,38 +14,38 @@
   },
   {
     "color": "BLUE",
-    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource" }
+    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.model.gameboard.Resource" }
   },
   {
     "color": "BLUE",
-    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product": {"type" : "SHIELD", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "GREY",
-    "product":  {"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product":  {"type" : "STONE", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "GREY",
-    "product":{"type" : "STONE", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product":{"type" : "STONE", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "YELLOW",
-    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "YELLOW",
-    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product":  {"type" : "COIN", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "PURPLE",
-    "product":  {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product":  {"type" : "SERVANT", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "PURPLE",
-    "product": {"type" : "SERVANT", "className" : "it.polimi.ingsw.gameboard.Resource"}
+    "product": {"type" : "SERVANT", "className" : "it.polimi.ingsw.model.gameboard.Resource"}
   },
   {
     "color": "RED",
-    "product":  {"type": "FAITH", "className":"it.polimi.ingsw.gameboard.FaithPoint"}
+    "product":  {"type": "FAITH", "className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
   }
 ]

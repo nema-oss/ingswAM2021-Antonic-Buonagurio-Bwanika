@@ -161,13 +161,13 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user that selects the card
      */
     public void chooseLeaderCard(String user, LeaderCard leaderCard){
-        List<Error> errors = matchController.onLeaderCardsChosen(leaderCard);
+        /*List<Error> errors = matchController.onLeaderCardsChosen(leaderCard);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseLeaderCard(user,leaderCard);
             else
                 onRejectedChooseLeaderCard(user, leaderCard);
-        }
+        }*/
     }
 
 
@@ -197,13 +197,13 @@ public class VirtualView implements VirtualViewInterface{
      * @param resourceType the chosen resource type
      */
     public void chooseResourceType(String username, ResourceType resourceType){
-        List<Error> errors = matchController.onResourcesChosen(resourceType);
+        /*List<Error> errors = matchController.onResourcesChosen(resourceType);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseResourceType(username, resourceType);
             else
                 onRejectedChooseResourceType(username, resourceType);
-        }
+        }*/
     }
 
     /**
@@ -314,13 +314,13 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void activateProductionDevelopmentCard(String user, DevelopmentCard card){
-        List<Error> errors = matchController.onActivateDevelopmentProduction(user, card);
+        /*List<Error> errors = matchController.onActivateDevelopmentProduction(user, card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionDevelopmentCard(user,card);
             else
                 onRejectedActivateProductionDevelopmentCard(user,card);
-        }
+        }*/
     }
 
     private void onAcceptedActivateProductionDevelopmentCard(String user, DevelopmentCard card) {
@@ -364,14 +364,14 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card to use
      */
     public void activateProductionLeaderCard(String user, LeaderCard card){
-        List<Error> errors = matchController.onActivateLeaderProduction(user,card);
+        /*List<Error> errors = matchController.onActivateLeaderProduction(user,card);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionLeaderCard(user,card);
             else
                 onRejectedActivateProductionLeaderCard(user,card);
 
-        }
+        }*/
     }
 
     private void onAcceptedActivateProductionLeaderCard(String user, LeaderCard card){

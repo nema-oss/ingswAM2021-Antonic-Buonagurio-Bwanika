@@ -129,7 +129,7 @@ class PlayerTest {
     }
 
 
-    @Test
+/*    @Test
     @DisplayName("Testing the discard a Leader Card action")
     void discardLeader() {
 
@@ -142,7 +142,7 @@ class PlayerTest {
         assertEquals(player.getHand().size(), 0);
 
     }
-
+*/
     @Test
     @DisplayName("Testing the activate a Leader Card action")
     void activateLeaderCard() throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException {

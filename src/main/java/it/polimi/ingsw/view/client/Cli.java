@@ -105,5 +105,10 @@ public class Cli extends View {
 
     }
 
+    @Override
+    public void showLoginFailed() {
+
+    }
+
 
 }

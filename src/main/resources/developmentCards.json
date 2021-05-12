@@ -5,7 +5,7 @@
       "cost": {"SHIELD": 2},
       "productionRequirements": {"COIN": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 1
     },
@@ -17,7 +17,7 @@
       "cost": {"SERVANT": 2},
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 1
     },
@@ -29,7 +29,7 @@
       "cost": {"COIN": 2},
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints":  1
     },
@@ -41,7 +41,7 @@
       "cost": {"STONE": 2},
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 1
     },
@@ -57,7 +57,7 @@
       },
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 2
     },
@@ -73,7 +73,7 @@
       },
       "productionRequirements": {"COIN": 1},
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 2
     },
@@ -89,7 +89,7 @@
       },
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 2
     },
@@ -105,7 +105,7 @@
       },
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 2
     },
@@ -117,9 +117,9 @@
       "cost": {"SHIELD": 3},
       "productionRequirements": {"SERVANT": 2},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 3
     },
@@ -131,9 +131,9 @@
       "cost": {"SERVANT": 3},
       "productionRequirements": {"COIN": 2},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 3
     },
@@ -145,9 +145,9 @@
       "cost": {"COIN": 3},
       "productionRequirements": {"STONE": 2},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 3
     },
@@ -160,9 +160,9 @@
       "cost": {"STONE": 3},
       "productionRequirements": {"SHIELD": 2},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 3
     },
@@ -180,9 +180,9 @@
           "SERVANT": 1
       },
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 4
     },
@@ -200,9 +200,9 @@
           "SHIELD": 1
       },
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 4
     },
@@ -220,9 +220,9 @@
           "STONE": 1
       },
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 4
     },
@@ -240,9 +240,9 @@
         "SERVANT": 1
       },
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 4
     },
@@ -254,8 +254,8 @@
       "cost": {"SHIELD": 4},
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 5
     },
@@ -267,8 +267,8 @@
       "cost": {"SERVANT": 4},
       "productionRequirements": {"COIN": 2},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 5
     },
@@ -280,8 +280,8 @@
       "cost": {"COIN": 4},
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 5
     },
@@ -293,8 +293,8 @@
       "cost": {"STONE": 4},
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 5
     },
@@ -312,9 +312,9 @@
         "SERVANT": 1
       },
       "productionResults":[
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 6
     },
@@ -332,9 +332,9 @@
         "SERVANT": 1
       },
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 6
     },
@@ -352,9 +352,9 @@
         "STONE": 1
       },
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints":  6
     },
@@ -372,9 +372,9 @@
         "SHIELD": 1
       },
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints":  6
     },
@@ -386,10 +386,10 @@
       "cost": {"SHIELD": 5},
       "productionRequirements": {"COIN": 2},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 7
     },
@@ -401,10 +401,10 @@
       "cost": {"SERVANT": 5},
       "productionRequirements": {"STONE": 2},
       "productionResults":[
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 7
     },
@@ -416,10 +416,10 @@
       "cost": {"COIN": 5},
       "productionRequirements": {"SERVANT": 2},
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 7
     },
@@ -431,10 +431,10 @@
       "cost": {"STONE": 5},
       "productionRequirements": {"SHIELD": 2},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 7
     },
@@ -449,9 +449,9 @@
       },
       "productionRequirements": {"COIN": 1},
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 8
     },
@@ -466,9 +466,9 @@
       },
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 8
     },
@@ -483,9 +483,9 @@
       },
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints":  8
     },
@@ -500,9 +500,9 @@
       },
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 8
     },
@@ -514,11 +514,11 @@
       "cost": {"SHIELD": 6},
       "productionRequirements": {"COIN": 2},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 9
     },
@@ -530,11 +530,11 @@
       "cost": {"SERVANT": 6},
       "productionRequirements": {"STONE": 2},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 9
     },
@@ -546,11 +546,11 @@
       "cost": {"COIN": 6},
       "productionRequirements": {"SERVANT": 2},
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 9
     },
@@ -562,11 +562,11 @@
       "cost": {"STONE": 6},
       "productionRequirements": {"SHIELD":  2},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints":  9
     },
@@ -584,11 +584,11 @@
         "SERVANT": 1
       },
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 10
     },
@@ -606,11 +606,11 @@
         "SHIELD": 1
       },
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 10
     },
@@ -628,11 +628,11 @@
         "SHIELD": 1
       },
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 10
     },
@@ -650,11 +650,11 @@
         "SERVANT": 1
       },
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 10
     },
@@ -666,10 +666,10 @@
       "cost": {"SHIELD": 7},
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 11
     },
@@ -682,10 +682,10 @@
       "cost": {"SERVANT": 7},
       "productionRequirements": {"COIN": 1},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 11
     },
@@ -697,10 +697,10 @@
       "cost": {"COIN": 7},
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 11
     },
@@ -712,10 +712,10 @@
       "cost": {"STONE": 7},
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"},
-        {"type":"FAITH","className":"it.polimi.ingsw.gameboard.FaithPoint"}
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"},
+        {"type":"FAITH","className":"it.polimi.ingsw.model.gameboard.FaithPoint"}
       ],
       "victoryPoints": 11
     },
@@ -730,10 +730,10 @@
       },
       "productionRequirements": {"STONE": 1},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 12
     },
@@ -748,10 +748,10 @@
       },
       "productionRequirements": {"COIN": 1},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 12
     },
@@ -766,10 +766,10 @@
       },
       "productionRequirements": {"SERVANT": 1},
       "productionResults": [
-        {"type":"COIN","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SHIELD","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"COIN","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SHIELD","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 12
     },
@@ -784,10 +784,10 @@
       },
       "productionRequirements": {"SHIELD": 1},
       "productionResults": [
-        {"type":"STONE","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"},
-        {"type":"SERVANT","className":"it.polimi.ingsw.gameboard.Resource"}
+        {"type":"STONE","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"},
+        {"type":"SERVANT","className":"it.polimi.ingsw.model.gameboard.Resource"}
       ],
       "victoryPoints": 12
     }

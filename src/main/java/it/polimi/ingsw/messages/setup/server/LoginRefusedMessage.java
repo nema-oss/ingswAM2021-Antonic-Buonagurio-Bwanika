@@ -8,9 +8,11 @@ import java.io.Serializable;
 
 public class LoginRefusedMessage implements SetupMessage, Serializable {
 
+    private final boolean isFirstPlayer;
 
-
-
+    public LoginRefusedMessage(boolean isFirstPlayer){
+        this.isFirstPlayer = isFirstPlayer;
+    }
 
     @Override
     public void execute(VirtualView virtualView) {
@@ -22,6 +24,6 @@ public class LoginRefusedMessage implements SetupMessage, Serializable {
      */
     @Override
     public void execute(View view) {
-        view.showLoginFailed();
+        view.showLoginFailed(isFirstPlayer);
     }
 }

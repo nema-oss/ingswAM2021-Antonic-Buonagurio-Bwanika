@@ -129,13 +129,17 @@ public class VirtualView implements VirtualViewInterface{
     public synchronized void loginRequest(String nickname, int requiredNumberOfPlayers, Socket socket) {
 
         List<Error> errors = matchController.onNewPlayer(nickname);
+
+        boolean isFirstPlayer = false;
         if (errors.isEmpty()) {
             if(requiredNumberOfPlayers != -1) {
                 setRequiredNumberOfPlayers(requiredNumberOfPlayers);
             }
             onLoginAcceptedRequest(nickname, socket);
-        } else
-            onLoginRejectedRequest(nickname, errors, socket);
+        } else {
+            if (requiredNumberOfPlayers != -1) isFirstPlayer = true;
+            onLoginRejectedRequest(nickname, errors, socket, isFirstPlayer);
+        }
     }
 
     /**
@@ -181,8 +185,8 @@ public class VirtualView implements VirtualViewInterface{
      * @param nickname the proposed nickname of the new client
      * @param socket the new client socket
      */
-    private void onLoginRejectedRequest(String nickname, List<Error> errors, Socket socket){
-        sendMessage(socket, new ErrorWriter().rejectedLogin());
+    private void onLoginRejectedRequest(String nickname, List<Error> errors, Socket socket, boolean isFirstPlayer){
+        sendMessage(socket, new ErrorWriter().rejectedLogin(isFirstPlayer));
     }
 
     /**

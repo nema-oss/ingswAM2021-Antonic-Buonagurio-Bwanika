@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client;
 
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
@@ -28,6 +29,7 @@ public class Cli extends View {
         this.socket = socket;
         this.outputStream = outputStream;
     }
+
 
     @Override
     public void setMyIp() {
@@ -109,9 +111,16 @@ public class Cli extends View {
         System.out.println(username + " has joined the match");
     }
 
+    /**
+     * This methods asks the user to wait for its turn
+     * @param waitFor: reason why they're waiting
+     * @param nowPlaying: username of the player's turn
+     */
     @Override
     public void showWaitMessage(String waitFor, String nowPlaying) {
-
+        //We use a WAITMESSAGE that call this method on its execute
+        //on the server we do:
+            //Message waitMessage = new WaitMessage(waitFor,nowPlaying)
     }
 
     /**
@@ -120,7 +129,6 @@ public class Cli extends View {
     @Override
     public void showMatchStarted() {
         System.out.println("Match started assholes");
-
     }
 
     /**
@@ -154,21 +162,18 @@ public class Cli extends View {
 
     }
 
-    @Override
-    public void showDisconnectionForLobbyNoLongerAvailable() {
-
-    }
-
+    /**
+     * This method alerts the user that the server disconnected
+     */
     @Override
     public void showServerDisconnection() {
-
+        System.out.println("Server says Bye Bye, sayonara");
     }
 
-    @Override
-    public void showDisconnectionForInputExpiredTimeout() {
-
-    }
-
+    /**
+     * This method alerts the user that it has lost the game and tells who is the winner
+     * @param winner : username of the winner
+     */
     @Override
     public void showYouLose(String winner) {
 
@@ -182,6 +187,9 @@ public class Cli extends View {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void showEndGame() {
 
@@ -191,8 +199,12 @@ public class Cli extends View {
      * This method tells the user that login has been rejected
      */
     @Override
-    public void showLoginFailed() {
+    public void showLoginFailed(boolean isFirstPlayer) {
 
+        System.out.println("Login failed. Try again with a different username");
+        DoLoginMessage doLoginMessage = new DoLoginMessage();
+        doLoginMessage.setFirstPlayer(isFirstPlayer);
+        showLogin(doLoginMessage);
     }
 
     @Override

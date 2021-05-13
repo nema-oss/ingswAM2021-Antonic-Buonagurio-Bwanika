@@ -171,19 +171,9 @@ public abstract class View {
     public abstract void showAnotherClientDisconnection(String otherClient);
 
     /**
-     * Shows to the player that they have been disconnected because the lobby is not available anymore
-     */
-    public abstract void showDisconnectionForLobbyNoLongerAvailable();
-
-    /**
-     * Shows to the player that they have been disconnected because the server has been disconnected
+     * This method alerts the user that the server disconnected
      */
     public abstract void showServerDisconnection();
-
-    /**
-     * Shows to the player that they have been disconnected because the input timer has expired
-     */
-    public abstract void showDisconnectionForInputExpiredTimeout();
 
     /**
      * Shows that the player has lost
@@ -245,7 +235,11 @@ public abstract class View {
         return players.size() + 1;
     }
 
-    public abstract void showLoginFailed();
+    /**
+     * This method tells the user that login has been rejected
+     * @param isFirstPlayer true if it's the first player in the lobby
+     */
+    public abstract void showLoginFailed(boolean isFirstPlayer);
 
     public void pingMessage() {
         System.out.println("Receiving ping message");

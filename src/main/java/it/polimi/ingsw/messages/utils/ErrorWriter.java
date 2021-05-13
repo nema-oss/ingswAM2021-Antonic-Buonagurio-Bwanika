@@ -28,10 +28,9 @@ public class ErrorWriter {
      * This method create and return login refused message
      * @return login refused message
      */
-    public Message rejectedLogin() {
-        return new LoginRefusedMessage();
+    public Message rejectedLogin(boolean isFirstPlayer) {
+        return new LoginRefusedMessage(isFirstPlayer);
     }
-
 
 
     public Message cardSelectionRejected(List<LeaderCard> leaderCards) {

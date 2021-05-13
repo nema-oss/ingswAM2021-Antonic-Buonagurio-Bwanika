@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.messages.MessageSender;
-import it.polimi.ingsw.messages.setup.server.LoginMessage;
+import it.polimi.ingsw.messages.utils.MessageSender;
+import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 
 import java.io.ObjectOutputStream;
@@ -59,7 +59,7 @@ public class Cli extends View {
      * @param message the login message sent by the server
      */
     @Override
-    public void showLogin(LoginMessage message) {
+    public void showLogin(DoLoginMessage message) {
 
         boolean correct;
         String nickname;
@@ -170,16 +170,15 @@ public class Cli extends View {
     }
 
     @Override
-    public void showYouLose(int points, String winner) {
+    public void showYouLose(String winner) {
 
     }
 
     /**
      * This method tells the winner he won the match
-     * @param points: how many points the player has scored
      */
     @Override
-    public void showYouWin(int points) {
+    public void showYouWin() {
 
     }
 
@@ -199,11 +198,6 @@ public class Cli extends View {
     @Override
     public void showNumberOfPlayers() {
 
-
-    }
-
-    @Override
-    public void showLoginFailed() {
 
     }
 

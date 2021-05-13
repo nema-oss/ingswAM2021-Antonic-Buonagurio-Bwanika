@@ -1,11 +1,14 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.utils;
 
+import it.polimi.ingsw.messages.setup.DisconnectionMessage;
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.actions.server.CardMarketUpdateMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.setup.*;
 import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
-import it.polimi.ingsw.messages.setup.server.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -58,7 +61,7 @@ public class MessageWriter{
                 //messageOut = new LoginRequest(askClientNick());
                 break;
             case LOGIN:
-                messageOut = new LoginMessage();
+                messageOut = new DoLoginMessage();
                 break;
             case LOGIN_DONE:
                 messageOut = new LoginDoneMessage(true);

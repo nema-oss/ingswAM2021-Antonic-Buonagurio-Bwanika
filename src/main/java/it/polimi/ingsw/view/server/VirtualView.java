@@ -3,8 +3,12 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.server.MatchStartedMessage;
-import it.polimi.ingsw.messages.setup.server.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
+import it.polimi.ingsw.messages.utils.ErrorWriter;
+import it.polimi.ingsw.messages.utils.MessageSender;
+import it.polimi.ingsw.messages.utils.MessageWriter;
+import it.polimi.ingsw.messages.utils.UpdateWriter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -110,7 +114,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void toDoLogin(Socket client, boolean isFirstPlayer, ObjectOutputStream outputStream) {
 
-        LoginMessage message = (LoginMessage) new MessageWriter(SetupMessageType.LOGIN).getMessage();
+        DoLoginMessage message = (DoLoginMessage) new MessageWriter(SetupMessageType.LOGIN).getMessage();
         message.setFirstPlayer(isFirstPlayer);
         boolean success = new MessageSender(client,message).sendMsg(outputStream);
         if(!success) clientDown(client);
@@ -159,12 +163,17 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * This method send a message to the clients that the match has started and call the on
+     * to start the game on controller
+     */
     private void toStartMatch() {
 
         Message message = new MatchStartedMessage();
         for(Socket socket: clients.values()) {
             sendMessage(socket,message);
         }
+        matchController.onStartGame();
     }
 
     /**
@@ -175,8 +184,6 @@ public class VirtualView implements VirtualViewInterface{
     private void onLoginRejectedRequest(String nickname, List<Error> errors, Socket socket){
         sendMessage(socket, new ErrorWriter().rejectedLogin());
     }
-
-
 
     /**
      * This method ask a client to play its turn and send a wait message to the others
@@ -492,33 +499,50 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
-    public void endTurn(String user){} //dice a un giocatore che il suo turno è finito (si può anche evitare)
-    public void lastRound(){} //dice a tutti che si sta giocando l'ultimo round
-    public void toDoChooseLeaderCards(String user, ArrayList<LeaderCard> leaderCards ){} //manda le leaderCards tra cui scegliere
-    public void toDoChooseResources(String user, int numOfResourcesToChoose){} //manda il numero di risorse tra cui possono scegleire
+    /**
+     * This method alerts a user that its turn is finished
+     * @param nickname the user's nickname
+     */
+    public void endTurn(String nickname){
 
+    }
+
+    /**
+     * This method alerts the clients that it is the last turn to play
+     */
+    public void lastRound(){
+
+    }
+
+
+    public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards ){
+
+    }
+
+    /**
+     * Asks the user to choose its resources
+     * @param nickname the user's nickname
+     * @param numberOfResources the amount of resources to select
+     */
+    public void toDoChooseResources(String nickname, int numberOfResources){
+
+    }
+
+    /**
+     * This method check if the match has the required number of player
+     * @return true if number of player is enough
+     */
     public synchronized boolean isRequiredNumberOfPlayers() {
         return this.requiredNumberOfPlayers == clients.size();
     }
 
-    public synchronized void setRequiredNumberOfPlayers(int e) {
-        System.out.println("dddddd");
-        this.requiredNumberOfPlayers = e;
-    }
-
     /**
-     * this method update the number of players and if there are enough players, call startGame() and the match start
-     * @param client
-     * @param nickname
+     * This method set the required number of players for this match
+     * @param numberOfPlayers the selected number of players
      */
-
-    public synchronized void newPlayer(Socket client, String nickname) {
-
+    public synchronized void setRequiredNumberOfPlayers(int numberOfPlayers) {
+        this.requiredNumberOfPlayers = numberOfPlayers;
     }
-
-    public void playerReconnection(Socket client) {
-    }
-
 
 }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.messages.setup.server.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
@@ -125,7 +125,7 @@ public abstract class View {
      * Shows the login
      * @param message
      */
-    public abstract void showLogin(LoginMessage message);
+    public abstract void showLogin(DoLoginMessage message);
 
     /**
      * Shows the player that the login has been done
@@ -187,16 +187,14 @@ public abstract class View {
 
     /**
      * Shows that the player has lost
-     * @param points: how many points the player has scored
-     * @param winner: username of the winner
+     * @param winner : username of the winner
      */
-    public abstract void showYouLose(int points, String winner);
+    public abstract void showYouLose(String winner);
 
     /**
      * Shows that the player has won
-     * @param points: how many points the player has scored
      */
-    public abstract void showYouWin(int points);
+    public abstract void showYouWin();
 
     /**
      * Shows the game is finished

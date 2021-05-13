@@ -1,6 +1,9 @@
 package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.setup.PingMessage;
+import it.polimi.ingsw.messages.setup.server.EndGameMessage;
+import it.polimi.ingsw.messages.utils.MessageWriter;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.View;
 

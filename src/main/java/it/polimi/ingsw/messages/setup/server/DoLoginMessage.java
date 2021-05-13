@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 
-public class LoginMessage implements SetupMessage, Serializable {
+public class DoLoginMessage implements SetupMessage, Serializable {
 
     private final SetupMessageType messageType;
     private boolean isFirstPlayer;
@@ -20,7 +20,7 @@ public class LoginMessage implements SetupMessage, Serializable {
     /**
      * Server-side constructor to create the message
      */
-    public LoginMessage() {
+    public DoLoginMessage() {
         this.messageType = SetupMessageType.LOGIN;
         isFirstPlayer = false;
     }

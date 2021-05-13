@@ -1,5 +1,7 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.utils;
 
+import it.polimi.ingsw.messages.setup.DisconnectionMessage;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.setup.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.ChooseResourcesMessage;

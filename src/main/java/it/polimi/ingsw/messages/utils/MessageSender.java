@@ -1,4 +1,6 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.utils;
+
+import it.polimi.ingsw.messages.Message;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.server.VirtualView;
+import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
@@ -22,7 +23,7 @@ public class MatchController implements ControllerInterface{
 
     // in alcuni casi posso mandare una mappa con tutti gli errori per ogni carta (se voglio mandare indietro un messaggio di errore per ogni carta sbagliata)
     private final Game game;
-    private VirtualView virtualView;
+    private VirtualViewInterface viewInterface;
 
     private boolean developmentProductionActivated;
     private boolean leaderProductionActivated;
@@ -35,13 +36,12 @@ public class MatchController implements ControllerInterface{
      * this is the class constructor
      */
     public MatchController() {
-        game = new Game();
-        virtualView = null;
 
+        game = new Game();
+        this.viewInterface = null;
         developmentProductionActivated = false;
         leaderProductionActivated = false;
         boardProductionActivated = false;
-
         isLastRound = false;
     }
 
@@ -50,8 +50,8 @@ public class MatchController implements ControllerInterface{
      * this method sets the virtual view for the controller
      * @param virtualView the game's virtualView
      */
-    public void setVirtualView(VirtualView virtualView){
-        this.virtualView = virtualView;
+    public void setVirtualView(VirtualViewInterface virtualView){
+        this.viewInterface = virtualView;
     }
 
 
@@ -105,13 +105,13 @@ public class MatchController implements ControllerInterface{
     @Override
     public void sendChooseLeaderCards() {
 
-        ArrayList<LeaderCard> leaders = new ArrayList<>();
+        List<LeaderCard> leaders = new ArrayList<>();
 
         game.getLeaderDeck().shuffle();
         for (int i=0; i<4 && game.getLeaderDeck().getListOfCards().size() > 0; i++){
             leaders.add(game.getLeaderDeck().drawCard());
         }
-        virtualView.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
+        viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
     }
 
 
@@ -162,7 +162,7 @@ public class MatchController implements ControllerInterface{
         Player currentPlayer = game.getCurrentPlayer();
 
         if(currentPlayer.equals(game.getListOfPlayers().get(1)) || currentPlayer.equals(game.getListOfPlayers().get(2))) {
-            virtualView.toDoChooseResources(currentPlayer.getNickname(), 1);
+            viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
             if(currentPlayer.equals(game.getListOfPlayers().get(2))) {
                 currentPlayer.moveOnPopeRoad();
                 //BISOGNA AGGIUNGERE ANCHE I VICTORY POINTS INIZIALI?????????
@@ -172,7 +172,7 @@ public class MatchController implements ControllerInterface{
         }
 
         else if(currentPlayer.equals(game.getListOfPlayers().get(3))) {
-            virtualView.toDoChooseResources(currentPlayer.getNickname(), 0);
+            viewInterface.toDoChooseResources(currentPlayer.getNickname(), 0);
             game.getCurrentPlayer().moveOnPopeRoad();
             if(currentPlayer.getPosition().isPopeSpace())
                 game.vaticanReport(currentPlayer.getPositionIndex());
@@ -236,7 +236,7 @@ public class MatchController implements ControllerInterface{
             errors = controlStandardAction();
 
         if(errors.isEmpty())
-            virtualView.playTurn(nickname);
+            viewInterface.playTurn(nickname);
 
         return errors;
     }
@@ -625,7 +625,7 @@ public class MatchController implements ControllerInterface{
 
             if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
 
-                virtualView.lastRound();
+                viewInterface.lastRound();
                 isLastRound=true;
             }
         }
@@ -645,7 +645,7 @@ public class MatchController implements ControllerInterface{
             //controllo di non essere arrivato alla fine dell'ultimo giro
             if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
                 Player winner = game.endGame();
-                virtualView.endMatch();
+                viewInterface.endMatch();
             }
 
             else {
@@ -733,7 +733,7 @@ public class MatchController implements ControllerInterface{
      */
     @Override
     public void sendPlayTurn(){
-        virtualView.playTurn(game.getCurrentPlayer().getNickname());
+        viewInterface.playTurn(game.getCurrentPlayer().getNickname());
     }
 
 
@@ -742,7 +742,7 @@ public class MatchController implements ControllerInterface{
      */
     @Override
     public void sendEndTurn(){
-        virtualView.endTurn(game.getCurrentPlayer().getNickname());
+        viewInterface.endTurn(game.getCurrentPlayer().getNickname());
     }
 
     public Game getGame(){

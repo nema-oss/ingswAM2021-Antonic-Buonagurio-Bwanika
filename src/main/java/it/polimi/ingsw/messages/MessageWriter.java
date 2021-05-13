@@ -48,7 +48,6 @@ public class MessageWriter{
                 String disconnectedNick = askServerDisconnectedNick();
                 messageOut = new DisconnectionMessage(disconnectedNick);
                 break;
-
         }
 
     }
@@ -90,6 +89,10 @@ public class MessageWriter{
         }
     }
 
+    public Message getMessage() {
+        return messageOut;
+    }
+
     private ArrayList<Resource> askServerBoughtResources() {
         return null;
     }
@@ -124,8 +127,4 @@ public class MessageWriter{
         return 0;
     }
 
-
-    public Message getMessage() {
-        return messageOut;
-    }
 }

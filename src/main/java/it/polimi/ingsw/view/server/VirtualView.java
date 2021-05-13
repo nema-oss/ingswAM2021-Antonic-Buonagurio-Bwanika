@@ -343,13 +343,13 @@ public class VirtualView implements VirtualViewInterface{
      * @param developmentCards the card to use
      * @param user the current user
      */
-    public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards){
+    public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards) {
         List<Error> errors = matchController.onActivateDevelopmentProduction(user, developmentCards);
-        if(isActive){
-            if(errors.isEmpty())
-                onAcceptedActivateProductionDevelopmentCard(user,developmentCards);
+        if (isActive) {
+            if (errors.isEmpty())
+                onAcceptedActivateProductionDevelopmentCard(user, developmentCards);
             else
-                onRejectedActivateProductionDevelopmentCard(user,developmentCards);
+                onRejectedActivateProductionDevelopmentCard(user, developmentCards);
         }
     }
 
@@ -401,7 +401,6 @@ public class VirtualView implements VirtualViewInterface{
                 onAcceptedActivateProductionLeaderCard(user,leaderCards);
             else
                 onRejectedActivateProductionLeaderCard(user,leaderCards);
-
         }
     }
 

@@ -112,9 +112,9 @@
   {
     "productionResult"  : [
       {"type" : "",
-        "className" : "it.polimi.ingsw.gameboard.Resource" },
+        "className" : "it.polimi.ingsw.model.gameboard.Resource" },
       {"type" : "FaithPoint",
-        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+        "className" : "it.polimi.ingsw.model.gameboard.FaithPoint" }
     ],
     "productionRequirement" : {"SHIELD" : 1},
     "leaderCardType" : "EXTRA_PRODUCTION",
@@ -126,9 +126,9 @@
   {
     "productionResult"  : [
       {"type" : "",
-        "className" : "it.polimi.ingsw.gameboard.Resource" },
+        "className" : "it.polimi.ingsw.model.gameboard.Resource" },
       {"type" : "FaithPoint",
-        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+        "className" : "it.polimi.ingsw.model.gameboard.FaithPoint" }
     ],
     "productionRequirement" : {"SERVANT" : 1},
     "leaderCardType" : "EXTRA_PRODUCTION",
@@ -140,9 +140,9 @@
   {
     "productionResult"  : [
       {"type" : "",
-        "className" : "it.polimi.ingsw.gameboard.Resource" },
+        "className" : "it.polimi.ingsw.model.gameboard.Resource" },
       {"type" : "FaithPoint",
-        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+        "className" : "it.polimi.ingsw.model.gameboard.FaithPoint" }
     ],
     "productionRequirement" : {"STONE" : 1},
     "leaderCardType" : "EXTRA_PRODUCTION",
@@ -154,9 +154,9 @@
   {
     "productionResult"  : [
       {"type" : "",
-        "className" : "it.polimi.ingsw.gameboard.Resource" },
+        "className" : "it.polimi.ingsw.model.gameboard.Resource" },
       {"type" : "FaithPoint",
-        "className" : "it.polimi.ingsw.gameboard.FaithPoint" }
+        "className" : "it.polimi.ingsw.model.gameboard.FaithPoint" }
     ],
     "productionRequirement" : {"COIN" : 1},
     "leaderCardType" : "EXTRA_PRODUCTION",

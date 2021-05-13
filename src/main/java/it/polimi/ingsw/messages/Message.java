@@ -3,7 +3,6 @@ package it.polimi.ingsw.messages;
 //TODO == each Message should implement this class and Serializable and should contains just the minimum amount of info
 // to complete the required action
 
-import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 

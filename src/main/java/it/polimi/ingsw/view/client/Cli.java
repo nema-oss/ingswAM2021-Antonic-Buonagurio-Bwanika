@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MessageSender;
-import it.polimi.ingsw.messages.setup.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.LoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 
 import java.io.ObjectOutputStream;
@@ -15,12 +14,14 @@ import java.util.Scanner;
 public class Cli extends View {
 
 
-    private Scanner scanner;
+    private final Scanner scanner;
     private Socket socket;
     private ObjectOutputStream outputStream;
+    private final InputValidator inputValidator;
     
     public Cli(){
         this.scanner = new Scanner(System.in);
+        this.inputValidator = new InputValidator();
     }
 
     public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
@@ -53,31 +54,59 @@ public class Cli extends View {
 
     }
 
+    /**
+     * This method show the login view, asks nickname and number of players to the user and checks if the input is valid
+     * @param message the login message sent by the server
+     */
     @Override
     public void showLogin(LoginMessage message) {
-        System.out.println("Insert your nickname and your lobbyID");
-        String nickname = scanner.nextLine();
+
+        boolean correct;
+        String nickname;
+
+        do {
+            System.out.println("Insert your username (must be at least 3 characters long and no more than 10, valid characters: A-Z, a-z, 1-9, _)");
+            nickname = scanner.nextLine();
+            correct = inputValidator.isNickname(nickname);
+            if (!correct)
+                System.out.println("Invalid username, try again");
+        }while (!correct);
+
         LoginRequest loginRequest = new LoginRequest(nickname);
+
         if(message.isFirstPlayer()){
-            System.out.println("Insert number of players");
-            int numberOfPlayers = scanner.nextInt();
-            loginRequest.setNumberOfPlayers(numberOfPlayers);
+            do{
+                System.out.println("Insert number of players [1..4]");
+                int numberOfPlayers = scanner.nextInt();
+                correct = inputValidator.isNumberOfPlayers(numberOfPlayers);
+                if(!correct){
+                    System.out.println("Incorrect number of players. Try again");
+                }
+                else{
+                    loginRequest.setNumberOfPlayers(numberOfPlayers);
+                }
+            }while (!correct);
         }
-        else{
-            loginRequest.setNumberOfPlayers(-1);
-        }
-        //int lobbyID = scanner.nextInt();
+
         new MessageSender(socket,loginRequest).sendMsg(outputStream);
     }
 
+    /**
+     * This method tells the user that login has been successful and asks to wait for other players to join
+     */
     @Override
     public void showLoginDone() {
-
+        System.out.println("Login done, waiting to start the match ...");
     }
 
+    /**
+     * This method tells the user that a new player has joined the match
+     * @param username: username of the newly logged in player
+     */
     @Override
     public void showNewUserLogged(String username) {
 
+        System.out.println(username + " has joined the match");
     }
 
     @Override
@@ -85,27 +114,41 @@ public class Cli extends View {
 
     }
 
+    /**
+     * This methods tells the user that the match has started
+     */
     @Override
     public void showMatchStarted() {
         System.out.println("Match started assholes");
 
     }
 
+    /**
+     * This method shows the player personal board
+     */
     @Override
     public void showBoard() {
 
     }
 
+    /**
+     * This method shows the common game board
+     */
     @Override
     public void showGameBoard() {
 
     }
+
 
     @Override
     public void serverNotFound() {
 
     }
 
+    /**
+     * This method tells the user that another player has disconnected
+     * @param otherClient the disconnected player
+     */
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
 
@@ -131,16 +174,23 @@ public class Cli extends View {
 
     }
 
+    /**
+     * This method tells the winner he won the match
+     * @param points: how many points the player has scored
+     */
     @Override
     public void showYouWin(int points) {
 
     }
 
     @Override
-    public void showEnd() {
+    public void showEndGame() {
 
     }
 
+    /**
+     * This method tells the user that login has been rejected
+     */
     @Override
     public void showLoginFailed() {
 

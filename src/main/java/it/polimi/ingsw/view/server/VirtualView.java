@@ -2,11 +2,9 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
-import it.polimi.ingsw.messages.setup.BeginMessage;
-import it.polimi.ingsw.messages.setup.GameModeMessage;
-import it.polimi.ingsw.messages.setup.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.MatchStartedMessage;
+import it.polimi.ingsw.messages.setup.server.LoginMessage;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -15,13 +13,11 @@ import it.polimi.ingsw.controller.Error;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.ErrorManager;
 
 /**
  * this class represent the virtual view in the server and abstract the network to the controller. It observer the model
@@ -50,16 +46,28 @@ public class VirtualView implements VirtualViewInterface{
         this.socketObjectOutputStreamMap = new HashMap<>();
     }
 
-
+    /**
+     * This method returns the current number of players in the match
+     * @return number of players
+     */
     public synchronized int getLobbySize() {
         return clients.size();
     }
 
+    /**
+     * This method adds a client to a wait list before asking to login, and saves its output stream t
+     * @param client the client socket
+     * @param outputStream the client output stream
+     */
     public synchronized void addInWaitList(Socket client,ObjectOutputStream outputStream) {
         waitList.add(client);
         socketObjectOutputStreamMap.put(client,outputStream);
     }
 
+    /**
+     * This method check if the match has started
+     * @return true if match has started
+     */
     public synchronized boolean isActive() {
         return isActive;
     }
@@ -80,7 +88,6 @@ public class VirtualView implements VirtualViewInterface{
      * This method manage the client disconnection
      * @param disconnectedSocket the client unavailable
      */
-
     public void clientDown(Socket disconnectedSocket) {
 
         if(clients.containsValue(disconnectedSocket)) {
@@ -96,7 +103,6 @@ public class VirtualView implements VirtualViewInterface{
             if (isActive) inGameDisconnectionHandler.onClientDown(this, nickname);
         }
     }
-
 
     /**
      * This method send a login request to a client
@@ -116,7 +122,6 @@ public class VirtualView implements VirtualViewInterface{
      * @param nickname is the player who want to log in username
      * @param socket is the socket associated with the new player
      */
-
     public synchronized void loginRequest(String nickname, int requiredNumberOfPlayers, Socket socket) {
 
         List<Error> errors = matchController.onNewPlayer(nickname);
@@ -140,14 +145,13 @@ public class VirtualView implements VirtualViewInterface{
         clients.put(nickname,socket);
         System.out.println(nickname + " logged in lobby number " + lobbyID );
 
-        //Message loginUpdate = new UpdateWriter().loginUpdate(nickname);
-        /*for(String user: clients.keySet()){
+        Message newUserMessage = new UpdateWriter().loginUpdate(nickname);
+        for(String user: clients.keySet()){
             if(!user.equals(nickname)){
-                sendMessage(clients.get(user), loginUpdate);
+                sendMessage(clients.get(user), newUserMessage);
             }
         }
 
-         */
         if(getLobbySize() == MAXIMUM_LOBBY_SIZE || isRequiredNumberOfPlayers()) toStartMatch();
 
         sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
@@ -157,7 +161,7 @@ public class VirtualView implements VirtualViewInterface{
 
     private void toStartMatch() {
 
-        Message message = new BeginMessage();
+        Message message = new MatchStartedMessage();
         for(Socket socket: clients.values()) {
             sendMessage(socket,message);
         }

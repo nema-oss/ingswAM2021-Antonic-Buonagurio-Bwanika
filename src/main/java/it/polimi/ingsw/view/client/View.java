@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.messages.setup.LoginMessage;
+import it.polimi.ingsw.messages.setup.server.LoginMessage;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
@@ -8,14 +8,16 @@ import it.polimi.ingsw.network.client.EchoClient;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * this interface represent the view in the client
  * @author Nemanja Antonic
  */
 public abstract class View {
+
     protected Player myPlayer;
-    protected ArrayList<Player> players;
+    protected List<Player> players;
     public Board gameBoard;
 
     protected EchoClient clientHandler;
@@ -199,7 +201,7 @@ public abstract class View {
     /**
      * Shows the game is finished
      */
-    public abstract void showEnd();
+    public abstract void showEndGame();
 
     /**
      * Sends a login request to the server

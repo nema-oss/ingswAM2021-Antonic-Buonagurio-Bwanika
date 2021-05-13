@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.MatchController;
-import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -17,13 +16,11 @@ import java.util.concurrent.Executors;
 
 
 /**
- * the server. It handles the connection of multiples client using the ClientHandler and manage multiple matches using
+ * The server. It handles the connection of multiples client using the ClientHandler and manage multiple matches using
  * different lobbies for each match
  */
 
 public class EchoServer {
-
-    //attributes
 
     private static final int SERVER_PORT = 1234; // this should be read from command line args
     private ServerSocket server;

@@ -101,8 +101,14 @@ public class ClientHandler implements Runnable{
 
         }
 
+    }
 
-
+    /**
+     * This method return the outputStream of the client
+     * @return output stream
+     */
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
     }
 
     /**
@@ -112,29 +118,13 @@ public class ClientHandler implements Runnable{
 
     public void processMessage(Message message) throws IOException{
 
-        /*
+
         if(message instanceof LoginRequest){
             LoginRequest loginRequest = (LoginRequest) message;
             virtualView.loginRequest(loginRequest.getNickname(), loginRequest.getNumberOfPlayers(), client);
         }
         else {
             message.execute(virtualView);
-        }
-
-         */
-
-        if(message instanceof DisconnectionMessage){
-            System.out.println(((DisconnectionMessage) message).getDisconnectedNickname());
-            System.out.println("Disconnection");
-        }
-        else if(message instanceof LoginRequest){
-
-            if(!isLogged) {
-                System.out.println("[SERVER] client " + client + "  sends a Login request");
-                LoginRequest loginRequest = (LoginRequest) message;
-                isLogged = true;
-                virtualView.loginRequest(loginRequest.getNickname(), loginRequest.getNumberOfPlayers(), client);
-            }
         }
 
     }
@@ -170,10 +160,8 @@ public class ClientHandler implements Runnable{
             try {
                 Thread.sleep(1500);
                 Message message = new MessageWriter(MessageType.PING).getMessage();
-                //outputStream = new ObjectOutputStream(client.getOutputStream());
-                outputStream.writeObject(message);
-                //new MessageSender(client, message).sendMsg();
-            } catch (InterruptedException | IOException ignored) {
+                new MessageSender(client, message).sendMsg(outputStream);
+            } catch (InterruptedException  ignored) {
                 System.out.println("Droga");
             }
         }while(!client.isClosed());
@@ -185,9 +173,7 @@ public class ClientHandler implements Runnable{
         this.virtualView = virtualView;
     }
 
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
-    }
+
 }
 
 

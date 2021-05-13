@@ -1,11 +1,6 @@
 package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.messages.*;
-import it.polimi.ingsw.messages.setup.BeginMessage;
-import it.polimi.ingsw.messages.setup.GameModeMessage;
-import it.polimi.ingsw.messages.setup.LoginMessage;
-import it.polimi.ingsw.messages.setup.client.LoginRequest;
-import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.View;
 
@@ -92,6 +87,16 @@ public class EchoClient {
 
     }
 
+    /**
+     * This method initializes a socket connection on ip-serverPort.
+     */
+    public void initializeClientConnection() {
+        try {
+            server = new Socket(ip, serverPort);
+        } catch (IOException e) {
+            System.out.println("Can't connect to server on port: " + serverPort);
+        }
+    }
 
     /**
      * This method manage the disconnection of the server on client side
@@ -102,7 +107,7 @@ public class EchoClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //close the view
+        System.out.println("Server says Bye Bye");
     }
 
     /**
@@ -131,34 +136,11 @@ public class EchoClient {
 
 
     /**
-     * This method process messages using the Message manager
-     *
+     * This method process messages using the execute method in the message
      * @param message
      */
     public void processMessage(Message message) throws IOException{
-
-        if(message instanceof PingMessage){
-            //System.out.println("PING FROM SERVER");
-        }
-        else if(message instanceof DisconnectionMessage){
-            System.out.println("Disconnection");
-        }
-        else if(message instanceof LoginMessage){
-            System.out.println("Server asks to login");
-            view.showLogin((LoginMessage) message);
-        }
-        else if(message instanceof GameModeMessage){
-            view.showMatchStarted();
-        }
-        else if(message instanceof LoginDoneMessage){
-            System.out.println("Waiting for other players");
-        }
-        else if(message instanceof BeginMessage){
-            view.showMatchStarted();
-        }
-
-
-        //message.execute(view);
+        message.execute(view);
     }
 
     /**
@@ -190,10 +172,7 @@ public class EchoClient {
                     Thread.sleep(1500);
                     Message message = new MessageWriter(MessageType.PING).getMessage();
                     outputStream.writeObject( message);
-                    //new MessageSender(server, message).sendMsg();
                 } catch (InterruptedException | IOException ignored) {
-                    ignored.printStackTrace();
-                    System.out.println("Closing connection");
                 }
             } while (!server.isClosed());
 
@@ -201,15 +180,5 @@ public class EchoClient {
     }
 
 
-    /**
-     * This method initializes a socket connection on ip-serverPort.
-     */
-    public void initializeClientConnection() {
-        try {
-            server = new Socket(ip, serverPort);
-        } catch (IOException e) {
-            System.out.println("Can't connect to server on port: " + serverPort);
-        }
-    }
 
 }

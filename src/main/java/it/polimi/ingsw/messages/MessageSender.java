@@ -17,6 +17,7 @@ public class MessageSender {
         this.messageOutput = message;
     }
 
+   //TODO ABORT THIS METHOD
     /**
      * This method send a message to the socket. It return false/true if the operation is
      * successful or not
@@ -35,6 +36,12 @@ public class MessageSender {
         return false;
     }
 
+    /**
+     * This method send a message to the socket. It return false/true if the operation is
+     * successful or not
+     * @param outputStream the socket output
+     * @return true if the message has been sent successfully
+     */
     public synchronized boolean sendMsg(ObjectOutputStream outputStream) {
         if(!socket.isClosed()){
             try{

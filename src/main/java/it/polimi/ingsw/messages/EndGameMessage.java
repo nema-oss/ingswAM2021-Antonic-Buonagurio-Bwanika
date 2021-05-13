@@ -1,6 +1,5 @@
 package it.polimi.ingsw.messages;
 
-import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -29,7 +28,7 @@ public class EndGameMessage implements Message, Serializable {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showEnd();
+        view.showEndGame();
     }
     /**
      * Get the message type

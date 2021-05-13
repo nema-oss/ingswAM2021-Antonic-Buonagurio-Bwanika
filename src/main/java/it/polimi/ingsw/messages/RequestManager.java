@@ -28,8 +28,8 @@ public class RequestManager {
     }
 
     public void sendNickname(String nickname){
-        messageSender = new MessageSender(socket, new LoginRequest(nickname));
-        messageSender.sendMsg();
+        //messageSender = new MessageSender(socket, new LoginRequest(nickname));
+        //messageSender.sendMsg();
     }
 
     public void sendActivateBoardProduction(ResourceType resourceType){
@@ -37,18 +37,18 @@ public class RequestManager {
         messageSender.sendMsg();
     }
 
-    public void sendActivateCardProduction(DevelopmentCard developmentCard){
-        messageSender = new MessageSender(socket, new ActivateCardProductionMessage(developmentCard, true));
+    public void sendActivateCardProduction(List<DevelopmentCard> developmentCards){
+        messageSender = new MessageSender(socket, new ActivateCardProductionMessage(developmentCards, true));
         messageSender.sendMsg();
     }
 
-    public void sendActivateLeaderCard(LeaderCard leaderCard){
-        messageSender = new MessageSender(socket, new ActivateLeaderProductionMessage(leaderCard, true));
+    public void sendActivateLeaderCard(List<LeaderCard> leaderCards){
+        messageSender = new MessageSender(socket, new ActivateLeaderProductionMessage(leaderCards, true));
         messageSender.sendMsg();
     }
 
-    public void sendActivateLeaderProduction(LeaderCard leaderCard){
-        messageSender = new MessageSender(socket, new ActivateLeaderProductionMessage(leaderCard, true));
+    public void sendActivateLeaderProduction(List<LeaderCard> leaderCards){
+        messageSender = new MessageSender(socket, new ActivateLeaderProductionMessage(leaderCards, true));
         messageSender.sendMsg();
     }
 
@@ -93,8 +93,8 @@ public class RequestManager {
     }
 
     public void sendChooseResources(Resource resource){
-        messageSender = new MessageSender(socket, new ChooseResourcesMessage(resource, true));
-        messageSender.sendMsg();
+        //messageSender = new MessageSender(socket, new ChooseResourcesMessage(resource, true));
+        //messageSender.sendMsg();
     }
 
     public void sendGameMode(int n){

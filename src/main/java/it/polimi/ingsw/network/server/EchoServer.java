@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.MatchController;
+import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -33,7 +34,6 @@ public class EchoServer {
     private final List<VirtualView> lobbies;
     private final Map<String,Integer> disconnectedPlayers;
 
-    //constructors
 
     public EchoServer(int port){
 
@@ -45,6 +45,7 @@ public class EchoServer {
     }
 
     public static void main(String[] args) {
+
         EchoServer echoServer = new EchoServer(SERVER_PORT);
         echoServer.start();
     }
@@ -60,19 +61,15 @@ public class EchoServer {
 
         executor = Executors.newCachedThreadPool();
         initializeServer();
-
         while (true) {
             try {
                 Socket client = server.accept();
                 findAMatch(client);
-
             } catch(IOException e) {
                 break;
             }
         }
-
         executor.shutdown();
-
     }
 
     /**
@@ -86,7 +83,6 @@ public class EchoServer {
             System.err.println(e.getMessage());
             return;
         }
-
         System.out.println("[SERVER] ready on port: " + SERVER_PORT);
     }
 
@@ -99,12 +95,14 @@ public class EchoServer {
 
     public void findAMatch(Socket client){
 
+
         boolean found = false;
         for (VirtualView match : lobbies){
-            if(match.isRequiredNumberOfPlayers() && !match.isActive()){
+            if(!match.isRequiredNumberOfPlayers() && !match.isActive()){
                 if(match.getLobbySize() == 0) {
-                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match) + 1, true));
-                }else {
+                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match), true));
+                }
+                else {
                     executor.submit(new ClientHandler(client, match, lobbies.indexOf(match), false));
                 }
                 found = true;
@@ -117,7 +115,7 @@ public class EchoServer {
             System.out.println("[SERVER] creates a new lobby...");
             VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1, new InGameDisconnectionHandler());
             lobbies.add(match);
-            executor.submit(new ClientHandler(client,match,lobbies.indexOf(match) + 1));
+            executor.submit(new ClientHandler(client,match,lobbies.indexOf(match),true));
         }
     }
 
@@ -129,7 +127,6 @@ public class EchoServer {
 
     public void onEndOfMatch(VirtualView match){
         System.out.println("\nMatch in lobby " + (lobbies.indexOf(match) + 1) + " ended!");
-
         lobbies.remove(match);
     }
 }

@@ -40,9 +40,9 @@ public class Game {
 
     public Game(){
 
-        gameBoard = new GameBoard();
+        //gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
-        leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
         listOfPlayers = new ArrayList<>();
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();

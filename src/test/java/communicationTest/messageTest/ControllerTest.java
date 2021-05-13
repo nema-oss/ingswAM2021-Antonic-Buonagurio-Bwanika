@@ -6,7 +6,9 @@ import it.polimi.ingsw.controller.MatchController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
@@ -183,16 +185,85 @@ public class ControllerTest {
     public void onActivateLeaderTest(){}
 
     @Test
-    public void onDiscardLeaderTest(){}
+    public void onDiscardLeaderTest(){
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        List<LeaderCard> hand = new ArrayList<>(game.getLeaderDeck().getListOfCards());
+        p.setHand(hand);
+
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        game.getCurrentPlayer().setLeaderActionPlayed(true);
+        game.getCurrentPlayer().setLeaderActionPlayed(true);
+
+        List<Error> errors = controller.onDiscardLeader(game.getCurrentPlayer().getNickname(), game.getCurrentPlayer().getHand().get(0) );
+        assertFalse(errors.isEmpty());
+
+        game.getCurrentPlayer().setLeaderActionPlayed(false);
+        errors = controller.onDiscardLeader(game.getCurrentPlayer().getNickname(), game.getCurrentPlayer().getHand().get(0));
+        assertTrue(errors.isEmpty());
+        errors = controller.onDiscardLeader(game.getCurrentPlayer().getNickname(), game.getCurrentPlayer().getHand().get(1));
+        assertTrue(errors.isEmpty());
+    }
 
     @Test
-    public void EndTurnTest(){}
+    public void EndTurnTest(){
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        game.setGamePhase(GamePhase.PLAY_TURN);
+
+        game.getCurrentPlayer().setStandardActionPlayed(false);
+        List<Error> errors = controller.onEndTurn(game.getCurrentPlayer().getNickname());
+        assertTrue(errors.contains(Error.INVALID_ACTION));
+
+        game.getCurrentPlayer().setStandardActionPlayed(true);
+        errors = controller.onEndTurn(game.getCurrentPlayer().getNickname());
+        assertTrue(errors.isEmpty());
+    }
 
     @Test
-    public void onMoveDepositTest(){}
+    public void onMoveDepositTest(){
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+
+        try {
+            p.addResourceToDeposit(1, new Resource(ResourceType.COIN));
+            p.addResourceToDeposit(2, new Resource(ResourceType.SERVANT));
+        } catch (FullDepositException | Exception e) {
+            e.printStackTrace();
+        }
+
+        List<Error> errors = controller.onMoveDeposit(game.getCurrentPlayer().getNickname(), 1,2);
+        assertFalse(errors.isEmpty());
+
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        errors = controller.onMoveDeposit(game.getCurrentPlayer().getNickname(), 1, 2);
+        assertTrue(errors.isEmpty());
+        assertEquals(p.getDeposit().get(1).getType(), ResourceType.SERVANT);
+        assertNotEquals(p.getDeposit().get(2).getType(), ResourceType.SERVANT);
+
+    }
 
     @Test
-    public void onDiscardResourceTest(){}
+    public void onDiscardResourceTest(){
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        controller.onNewPlayer(p2.getNickname());
+
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        try {
+            p.addResourceToDeposit(1, new Resource(ResourceType.COIN));
+        } catch (FullDepositException | Exception e) {
+            e.printStackTrace();
+        }
+        List<Error> errors = controller.onDiscardResource(game.getCurrentPlayer().getNickname(),ResourceType.COIN);
+
+        assertTrue(errors.isEmpty());
+
+    }
 
     @Test
     public void nextTurnTest(){

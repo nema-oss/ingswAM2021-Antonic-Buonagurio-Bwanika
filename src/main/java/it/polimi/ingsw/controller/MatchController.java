@@ -251,7 +251,7 @@ public class MatchController implements ControllerInterface{
     public List<Error> onActivateDevelopmentProduction(String nickname, List<DevelopmentCard> developmentCards){
 
         Player currPlayer = game.getCurrentPlayer();
-        List<Error> errors = new ArrayList<>();
+        List<Error> errors;
 
 
         errors = controlTurn(nickname);
@@ -549,19 +549,21 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-        if(!game.getCurrentPlayer().hasPlayedStandardAction()) {
-            errors.add(Error.INVALID_ACTION);
-            return errors;
+        if(errors.isEmpty()) {
+            if (!game.getCurrentPlayer().hasPlayedStandardAction()) {
+                errors.add(Error.INVALID_ACTION);
+                return errors;
+            }
+
+            game.getCurrentPlayer().setStandardActionPlayed(false);
+            game.getCurrentPlayer().setLeaderActionPlayed(false);
+
+            controlEndOfGame();
+            game.nextPlayer();
+            if (game.getListOfPlayers().size() == 1)
+                game.lorenzoTurn();
+            sendPlayTurn();
         }
-
-        game.getCurrentPlayer().setStandardActionPlayed(false);
-        game.getCurrentPlayer().setLeaderActionPlayed(false);
-
-        controlEndOfGame();
-        game.nextPlayer();
-        if(game.getListOfPlayers().size()==1)
-            game.lorenzoTurn();
-        sendPlayTurn();
 
         return errors;
     }

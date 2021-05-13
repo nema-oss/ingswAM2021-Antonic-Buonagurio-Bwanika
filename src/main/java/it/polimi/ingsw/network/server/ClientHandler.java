@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * this class manage the connection between one single client and the server
@@ -15,11 +17,12 @@ import java.net.Socket;
 public class ClientHandler implements Runnable{
 
     private final Socket client;
-    private final VirtualView virtualView;
+    private VirtualView virtualView;
     private final int lobbyNumber;
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
-    private boolean isFirstPLayer;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
+    private final boolean isFirstPLayer;
+    private boolean isLogged;
 
 
     public ClientHandler(Socket socket, VirtualView virtualView, int lobbyNumber, boolean isFirstPLayer) {
@@ -27,6 +30,7 @@ public class ClientHandler implements Runnable{
         this.virtualView = virtualView;
         this.lobbyNumber = lobbyNumber;
         this.isFirstPLayer = isFirstPLayer;
+        this.isLogged = false;
     }
 
     /**
@@ -36,19 +40,27 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
 
-        System.out.println("[CLIENT] " + client + " has connected in lobby number " + lobbyNumber + "!");
-
-        new Thread(this::pingClient).start();
-
         try {
-            input = new ObjectInputStream(client.getInputStream());
+            outputStream = new ObjectOutputStream(client.getOutputStream());
+            inputStream = new ObjectInputStream(client.getInputStream());
         } catch (IOException e) {
             System.out.println("could not open connection to " + client.getInetAddress());
             return;
         }
 
-        virtualView.addInWaitList(client);
-        virtualView.toDoLogin(client, isFirstPLayer); // asks the client to login
+        //This is the ping received timeout.
+        //If in 3 seconds server doesn't receive a ping message, the connection is declared dropped.
+        try {
+            client.setSoTimeout(3000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+
+        new Thread(this::pingClient).start();
+
+        virtualView.addInWaitList(client,outputStream);
+        virtualView.toDoLogin(client, isFirstPLayer, outputStream); // asks the client to login
 
         try {
             handleClientConnection();
@@ -74,19 +86,21 @@ public class ClientHandler implements Runnable{
         try {
             while (true) {
 
-                Object next = input.readObject();
+                Object next = inputStream.readObject();
                 Message message = (Message) next;
-                if(message instanceof EndGameMessage) break;
-                if(!(message instanceof PingMessage))
-                    processMessage(message); // from this method we also send the message back to the client
+                if(!isPing(message)) {
+                    System.out.println(message);
+                    processMessage(message);
+                }
             }
-            input.close();
-            System.out.println("[SERVER] connection closed with" + client);
-            client.close();
-        } catch (ClassNotFoundException | ClassCastException e) {
+
+        } catch (ClassNotFoundException | ClassCastException | IOException e) {
             System.out.println("[SERVER] invalid stream from client");
+            inputStream.close();
             clientDisconnection();
+
         }
+
 
 
     }
@@ -96,8 +110,33 @@ public class ClientHandler implements Runnable{
      * @param message the message to parse
      */
 
-    public void processMessage(Message message){
-        new MessageManager().parseMessage(virtualView,message);
+    public void processMessage(Message message) throws IOException{
+
+        /*
+        if(message instanceof LoginRequest){
+            LoginRequest loginRequest = (LoginRequest) message;
+            virtualView.loginRequest(loginRequest.getNickname(), loginRequest.getNumberOfPlayers(), client);
+        }
+        else {
+            message.execute(virtualView);
+        }
+
+         */
+
+        if(message instanceof DisconnectionMessage){
+            System.out.println(((DisconnectionMessage) message).getDisconnectedNickname());
+            System.out.println("Disconnection");
+        }
+        else if(message instanceof LoginRequest){
+
+            if(!isLogged) {
+                System.out.println("[SERVER] client " + client + "  sends a Login request");
+                LoginRequest loginRequest = (LoginRequest) message;
+                isLogged = true;
+                virtualView.loginRequest(loginRequest.getNickname(), loginRequest.getNumberOfPlayers(), client);
+            }
+        }
+
     }
 
 
@@ -117,20 +156,37 @@ public class ClientHandler implements Runnable{
     }
 
 
+    public boolean isPing(Message message){
+        return message instanceof PingMessage;
+    }
+
+
     /**
      * This method send a ping message to the client to check if the connection is still active
      */
     private void pingClient() {
+
         do{
             try {
                 Thread.sleep(1500);
                 Message message = new MessageWriter(MessageType.PING).getMessage();
-                new MessageSender(client, message).sendMsg();
-            } catch (InterruptedException ignored) {
+                //outputStream = new ObjectOutputStream(client.getOutputStream());
+                outputStream.writeObject(message);
+                //new MessageSender(client, message).sendMsg();
+            } catch (InterruptedException | IOException ignored) {
+                System.out.println("Droga");
             }
         }while(!client.isClosed());
 
         Thread.currentThread().interrupt();
+    }
+
+    public void setVirtualView(VirtualView virtualView) {
+        this.virtualView = virtualView;
+    }
+
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
     }
 }
 

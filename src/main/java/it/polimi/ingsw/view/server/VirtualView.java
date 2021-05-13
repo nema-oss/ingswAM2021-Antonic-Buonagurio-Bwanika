@@ -2,7 +2,11 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.setup.BeginMessage;
+import it.polimi.ingsw.messages.setup.GameModeMessage;
+import it.polimi.ingsw.messages.setup.LoginMessage;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -10,6 +14,8 @@ import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.controller.Error;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,15 +34,20 @@ public class VirtualView implements VirtualViewInterface{
     private final int lobbyID;
     private final ControllerInterface matchController;
     private Map<String,Socket> clients;
-    private List<Socket> waitList;
+    private Map<Socket,ObjectOutputStream> socketObjectOutputStreamMap;
+    private final List<Socket> waitList;
     private boolean isActive;
     private InGameDisconnectionHandler inGameDisconnectionHandler;
+    private int requiredNumberOfPlayers;
 
     public VirtualView(ControllerInterface matchController, int lobbyID, InGameDisconnectionHandler inGameDisconnectionHandler) {
         this.lobbyID = lobbyID;
         this.matchController = matchController;
         this.clients = new HashMap<>();
+        this.waitList = new ArrayList<>();
         this.inGameDisconnectionHandler = inGameDisconnectionHandler;
+        this.requiredNumberOfPlayers = -1;
+        this.socketObjectOutputStreamMap = new HashMap<>();
     }
 
 
@@ -44,8 +55,9 @@ public class VirtualView implements VirtualViewInterface{
         return clients.size();
     }
 
-    public synchronized void addInWaitList(Socket client) {
+    public synchronized void addInWaitList(Socket client,ObjectOutputStream outputStream) {
         waitList.add(client);
+        socketObjectOutputStreamMap.put(client,outputStream);
     }
 
     public synchronized boolean isActive() {
@@ -58,7 +70,9 @@ public class VirtualView implements VirtualViewInterface{
      * @param message the message to send
      */
     public void sendMessage(Socket socket, Message message){
-        boolean success = new MessageSender(socket,message).sendMsg();
+
+        ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
+        boolean success = new MessageSender(socket,message).sendMsg(outputStream);
         if(!success) clientDown(socket);
     }
 
@@ -88,9 +102,12 @@ public class VirtualView implements VirtualViewInterface{
      * This method send a login request to a client
      * @param client the client that must login
      */
-    public void toDoLogin(Socket client, boolean isFirstPlayer) {
-        Message message = new MessageWriter(SetupMessageType.LOGIN).getMessage();
-        sendMessage(client, message);
+    public void toDoLogin(Socket client, boolean isFirstPlayer, ObjectOutputStream outputStream) {
+
+        LoginMessage message = (LoginMessage) new MessageWriter(SetupMessageType.LOGIN).getMessage();
+        message.setFirstPlayer(isFirstPlayer);
+        boolean success = new MessageSender(client,message).sendMsg(outputStream);
+        if(!success) clientDown(client);
     }
 
     /**
@@ -100,16 +117,16 @@ public class VirtualView implements VirtualViewInterface{
      * @param socket is the socket associated with the new player
      */
 
-    public synchronized void loginRequest(String nickname, Socket socket) {
+    public synchronized void loginRequest(String nickname, int requiredNumberOfPlayers, Socket socket) {
 
         List<Error> errors = matchController.onNewPlayer(nickname);
-
-        if(isActive) {
-            if (errors.isEmpty()) {
-                onLoginAcceptedRequest(nickname, socket);
-            } else
-                onLoginRejectedRequest(nickname, errors, socket);
-        }
+        if (errors.isEmpty()) {
+            if(requiredNumberOfPlayers != -1) {
+                setRequiredNumberOfPlayers(requiredNumberOfPlayers);
+            }
+            onLoginAcceptedRequest(nickname, socket);
+        } else
+            onLoginRejectedRequest(nickname, errors, socket);
     }
 
     /**
@@ -119,23 +136,31 @@ public class VirtualView implements VirtualViewInterface{
      * @param socket the new client socket
      */
     private void onLoginAcceptedRequest(String nickname, Socket socket){
-        waitList.remove(socket);
 
         clients.put(nickname,socket);
-        System.out.println(nickname + " logged in lobby number " + lobbyID + "\n");
+        System.out.println(nickname + " logged in lobby number " + lobbyID );
 
-        Message loginUpdate = new UpdateWriter().loginUpdate(nickname);
-        for(String user: clients.keySet()){
+        //Message loginUpdate = new UpdateWriter().loginUpdate(nickname);
+        /*for(String user: clients.keySet()){
             if(!user.equals(nickname)){
                 sendMessage(clients.get(user), loginUpdate);
             }
         }
+
+         */
+        if(getLobbySize() == MAXIMUM_LOBBY_SIZE || isRequiredNumberOfPlayers()) toStartMatch();
+
         sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
 
-        if(getLobbySize() == MAXIMUM_LOBBY_SIZE) toStartMatch();
+
     }
 
     private void toStartMatch() {
+
+        Message message = new BeginMessage();
+        for(Socket socket: clients.values()) {
+            sendMessage(socket,message);
+        }
     }
 
     /**
@@ -324,13 +349,13 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
-    private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> card) {
-        Message message = new UpdateWriter().productionCardAccepted(card);
+    private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
+        Message message = new UpdateWriter().productionCardAccepted(cards);
         sendMessage(clients.get(user), message);
     }
 
-    private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> card) {
-        Message message = new ErrorWriter().productionCardRejected(card);
+    private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
+        Message message = new ErrorWriter().productionCardRejected(cards);
         sendMessage(clients.get(user), message);
     }
 
@@ -469,8 +494,28 @@ public class VirtualView implements VirtualViewInterface{
     public void toDoChooseLeaderCards(String user, ArrayList<LeaderCard> leaderCards ){} //manda le leaderCards tra cui scegliere
     public void toDoChooseResources(String user, int numOfResourcesToChoose){} //manda il numero di risorse tra cui possono scegleire
 
-    public boolean isRequiredNumberOfPlayers() {
+    public synchronized boolean isRequiredNumberOfPlayers() {
+        return this.requiredNumberOfPlayers == clients.size();
+    }
+
+    public synchronized void setRequiredNumberOfPlayers(int e) {
+        System.out.println("dddddd");
+        this.requiredNumberOfPlayers = e;
+    }
+
+    /**
+     * this method update the number of players and if there are enough players, call startGame() and the match start
+     * @param client
+     * @param nickname
+     */
+
+    public synchronized void newPlayer(Socket client, String nickname) {
 
     }
+
+    public void playerReconnection(Socket client) {
+    }
+
+
 }
 

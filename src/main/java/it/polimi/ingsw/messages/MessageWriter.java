@@ -43,9 +43,12 @@ public class MessageWriter{
         switch (messageType){
             case PING:
                 messageOut = new PingMessage();
+                break;
             case DISCONNECTION:
                 String disconnectedNick = askServerDisconnectedNick();
                 messageOut = new DisconnectionMessage(disconnectedNick);
+                break;
+
         }
 
     }
@@ -53,13 +56,17 @@ public class MessageWriter{
     private void createMessage(SetupMessageType setupMessageType){
         switch (setupMessageType){
             case LOGIN_REQUEST:
-                messageOut = new LoginRequest(askClientNick());
+                //messageOut = new LoginRequest(askClientNick());
+                break;
             case LOGIN:
                 messageOut = new LoginMessage();
+                break;
             case LOGIN_DONE:
                 messageOut = new LoginDoneMessage(true);
+                break;
             case GAME_MODE:
                 messageOut = new GameModeMessage(askClientNumPlayers());
+                break;
         }
     }
 
@@ -67,29 +74,38 @@ public class MessageWriter{
         switch(actionMessage){
             case CARD_MARKET_UPDATE:
                 messageOut = new CardMarketUpdateMessage(askServerNewMarket());
+                break;
             case MOVE_ON_POPEROAD:
                 messageOut = new MoveOnPopeRoadMessage(askServerMovesPopeRoad());
+                break;
             case ACTIVATE_PRODUCTION:
                 messageOut = new ActivateProductionMessage();
+                break;
             case DISCARD_LEADERCARD:
                 messageOut = new DiscardLeaderCardMessage(askClientLeaderDiscardChoice());
+                break;
             case PLACE_RESOURCES:
                 messageOut = new PlaceResourcesMessage(askServerBoughtResources(), askClientToShelves());
+                break;
         }
     }
 
     private ArrayList<Resource> askServerBoughtResources() {
+        return null;
     }
 
     private ArrayList<Integer> askClientToShelves() {
+        return null;
+
     }
 
 
     private LeaderCard askClientLeaderDiscardChoice() {
+        return null;
     }
 
     private String askClientNick(){
-
+        return null;
     }
 
     private String askServerDisconnectedNick(){
@@ -97,15 +113,15 @@ public class MessageWriter{
     }
 
     private int askClientNumPlayers(){
-
+        return 0;
     }
 
     private CardMarket askServerNewMarket(){
-
+        return null;
     }
 
     private int askServerMovesPopeRoad(){
-
+        return 0;
     }
 
 

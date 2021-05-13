@@ -25,7 +25,20 @@ public class MessageSender {
         if(!socket.isClosed()){
             try{
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeObject((Object) messageOutput);
+                outputStream.writeObject( messageOutput);
+                return true;
+            }catch (IOException e){
+                System.out.println("Can't send message on socket");
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public synchronized boolean sendMsg(ObjectOutputStream outputStream) {
+        if(!socket.isClosed()){
+            try{
+                outputStream.writeObject( messageOutput);
                 return true;
             }catch (IOException e){
                 System.out.println("Can't send message on socket");

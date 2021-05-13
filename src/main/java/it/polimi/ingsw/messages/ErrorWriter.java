@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.util.List;
+import java.util.Map;
 
 public class ErrorWriter {
 
@@ -22,8 +23,8 @@ public class ErrorWriter {
         return new ChooseLeadersMessage(leaderCards, false);
     }
 
-    public Message resourceTypeSelectionRejected(ResourceType resourceType) {
-        return new ChooseResourcesMessage(new Resource(resourceType), false);
+    public Message resourceTypeSelectionRejected(Map<ResourceType,Integer> resourceType) {
+        return new ChooseResourcesMessage( resourceType, false);
     }
 
     public Message buyCardRejected(int x, int y) {
@@ -34,13 +35,13 @@ public class ErrorWriter {
         return new BuyResourcesMessage(x, y, false);
     }
 
-    public Message productionCardRejected(DevelopmentCard card) { return new ActivateCardProductionMessage(card, false);
+    public Message productionCardRejected(List<DevelopmentCard> cards) { return new ActivateCardProductionMessage(cards, false);
     }
 
     public Message productionBoardRejected(ResourceType resourceType) { return new ActivateBoardProductionMessage(resourceType, false);
     }
 
-    public Message productionLeaderRejected(LeaderCard card) { return new ActivateLeaderProductionMessage(card, false);
+    public Message productionLeaderRejected(List<LeaderCard> card) { return new ActivateLeaderProductionMessage(card, false);
     }
 
     public Message activateLeaderRejected(LeaderCard card) {

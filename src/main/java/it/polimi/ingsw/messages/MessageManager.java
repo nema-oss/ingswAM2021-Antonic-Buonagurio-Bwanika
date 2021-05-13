@@ -5,7 +5,6 @@ import it.polimi.ingsw.messages.setup.*;
 import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
-import org.graalvm.compiler.lir.aarch64.AArch64Move;
 
 import java.net.Socket;
 
@@ -18,6 +17,10 @@ public class MessageManager {
 
 
     public void parseMessage(VirtualView virtualView, Message message) {
+
+        if(message instanceof PingMessage){
+            System.out.println("Ping from client");
+        }
         if (message instanceof ActivateLeaderCardMessage){
             ((ActivateLeaderCardMessage) message).execute(virtualView);
         }
@@ -66,6 +69,10 @@ public class MessageManager {
     }
 
     public void parseMessageFromServer(Socket server, Message message, View view) {
+
+        if(message instanceof PingMessage){
+            System.out.println("Ping from Server");
+        }
         if (message instanceof ActivateLeaderCardMessage){
             ((ActivateLeaderCardMessage) message).execute(view);
         }

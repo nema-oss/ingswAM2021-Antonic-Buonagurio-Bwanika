@@ -1,11 +1,12 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.messages.setup.LoginMessage;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -120,8 +121,9 @@ public abstract class View {
 
     /**
      * Shows the login
+     * @param message
      */
-    public abstract void showLogin();
+    public abstract void showLogin(LoginMessage message);
 
     /**
      * Shows the player that the login has been done
@@ -244,4 +246,12 @@ public abstract class View {
     }
 
     public abstract void showLoginFailed();
+
+    public void pingMessage() {
+        System.out.println("Receiving ping message");
+    }
+
+    public abstract void showNumberOfPlayers();
+
+    public abstract void setReceiver(Socket socket, ObjectOutputStream outputStream);
 }

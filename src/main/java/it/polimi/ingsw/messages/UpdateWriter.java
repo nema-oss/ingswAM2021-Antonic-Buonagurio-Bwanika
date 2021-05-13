@@ -22,7 +22,7 @@ public class UpdateWriter {
      * @return the update login message
      */
     public Message loginUpdate(String nickname) {
-        return new LoginMessage();
+        return (Message) new Object();
     }
 
     public Message cardSelectionAccepted(List<LeaderCard> leaderCards) {
@@ -30,7 +30,7 @@ public class UpdateWriter {
     }
 
     public Message resourceTypeSelectionAccepted(Map<ResourceType,Integer> resourceTypeChoice) {
-        return new ChooseResourcesMessage(new Resource(resourceType), true);
+        return new ChooseResourcesMessage( resourceTypeChoice, true);
     }
 
     public Message moveDepositRequestAccepted(int a, int b) {
@@ -49,16 +49,16 @@ public class UpdateWriter {
         return new BuyResourcesMessage(x, y, true);
     }
 
-    public Message productionCardAccepted(DevelopmentCard card) {
-        return new ActivateCardProductionMessage(card, true);
+    public Message productionCardAccepted(List<DevelopmentCard> cards) {
+        return new ActivateCardProductionMessage(cards, true);
     }
 
     public Message productionBoardAccepted(ResourceType resourceType) {
         return new ActivateBoardProductionMessage(resourceType, true);
     }
 
-    public Message productionLeaderAccepted(LeaderCard card) {
-        return new ActivateLeaderProductionMessage(card, true);
+    public Message productionLeaderAccepted(List<LeaderCard> leaderCards) {
+        return new ActivateLeaderProductionMessage(leaderCards, true);
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {

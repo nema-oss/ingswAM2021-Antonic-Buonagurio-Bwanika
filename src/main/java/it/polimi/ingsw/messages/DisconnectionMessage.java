@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages;
 
 import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
+import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
@@ -24,6 +25,11 @@ public class DisconnectionMessage implements Serializable, Message {
         this.disconnectedNickname = disconnectedNickname;
     }
 
+    @Override
+    public void execute(VirtualView virtualView) {
+
+    }
+
     /**
      * Execute the request on the client
      * @param view: receiver view
@@ -39,5 +45,10 @@ public class DisconnectionMessage implements Serializable, Message {
 
     public MessageType getType() {
         return messageType;
+    }
+
+
+    public String getDisconnectedNickname(){
+        return disconnectedNickname;
     }
 }

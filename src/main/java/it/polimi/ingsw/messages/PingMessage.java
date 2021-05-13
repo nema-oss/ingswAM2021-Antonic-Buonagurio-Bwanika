@@ -1,6 +1,8 @@
 package it.polimi.ingsw.messages;
 
 import it.polimi.ingsw.messages.actions.ActionMessageType;
+import it.polimi.ingsw.view.client.View;
+import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
@@ -11,13 +13,27 @@ import java.io.Serializable;
 public class PingMessage implements Message, Serializable {
     private final MessageType messageType;
 
+    /**
+     * Server-side constructor to create the message
+     */
     public PingMessage() {
         this.messageType = MessageType.PING;
     }
 
 
-
+    /**
+     * Get the message type
+     * @return the message type
+     */
     public MessageType getType() {
         return messageType;
+    }
+
+    @Override
+    public void execute(VirtualView virtualView) {
+
+    }
+
+    public void execute(View view) {
     }
 }

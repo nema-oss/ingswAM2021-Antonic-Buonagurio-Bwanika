@@ -4,10 +4,15 @@ package it.polimi.ingsw.messages;
 // to complete the required action
 
 import it.polimi.ingsw.messages.actions.ActionMessageType;
+import it.polimi.ingsw.view.client.View;
+import it.polimi.ingsw.view.server.VirtualView;
 
 /**
  * this interface represent the message sent between client and server
  */
 public interface Message {
+
+    void execute(VirtualView virtualView);
+    void execute(View view);
 
 }

@@ -131,7 +131,7 @@ class PlayerTest {
 
     @Test
     @DisplayName("Testing the discard a Leader Card action")
-    void discardLeader() {
+    void discardLeader() throws NonExistentCardException {
 
         int previousPosition = player.getPositionIndex();
         player.discardLeader(0);

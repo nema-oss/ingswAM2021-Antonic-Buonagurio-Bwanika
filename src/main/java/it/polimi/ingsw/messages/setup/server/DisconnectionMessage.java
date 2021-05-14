@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messages.setup;
+package it.polimi.ingsw.messages.setup.server;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MessageType;

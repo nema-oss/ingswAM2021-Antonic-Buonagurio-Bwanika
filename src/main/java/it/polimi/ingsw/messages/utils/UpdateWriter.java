@@ -1,10 +1,10 @@
 package it.polimi.ingsw.messages.utils;
 
-import it.polimi.ingsw.messages.setup.DisconnectionMessage;
+import it.polimi.ingsw.messages.setup.server.DisconnectionMessage;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
-import it.polimi.ingsw.messages.setup.ChooseLeadersMessage;
-import it.polimi.ingsw.messages.setup.ChooseResourcesMessage;
+import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
+import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.NewUserLogged;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -13,6 +13,10 @@ import it.polimi.ingsw.model.gameboard.ResourceType;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * This class create the update messages sent by the server
+ */
 public class UpdateWriter {
 
     /**
@@ -32,12 +36,8 @@ public class UpdateWriter {
         return new ChooseResourcesMessage( resourceTypeChoice, true);
     }
 
-    public Message moveDepositRequestAccepted(int a, int b) {
-        return new MoveDepositMessage(a, b, true);
-    }
-
-    public Message moveDepositRequestRejected(int a, int b) {
-        return new MoveDepositMessage(a, b, false);
+    public Message moveDepositRequestAccepted(String user,int a, int b) {
+        return new MoveDepositMessage(user,a, b, true);
     }
 
     public Message buyCardAccepted(int x, int y) {
@@ -68,9 +68,6 @@ public class UpdateWriter {
         return new DiscardLeaderCardMessage(card);
     }
 
-    public Message activateLeaderRejected(LeaderCard card) {
-        return new ActivateLeaderCardMessage(card, false);
-    }
 
     public Message playerDisconnection(String user){
         return new DisconnectionMessage(user);

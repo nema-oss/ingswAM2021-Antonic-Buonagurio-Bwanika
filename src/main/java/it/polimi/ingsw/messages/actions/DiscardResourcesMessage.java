@@ -6,22 +6,26 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * message sent when a client discards extra resources
  * @author Nemanja Antonic
  */
 public class DiscardResourcesMessage implements Serializable, ActionMessage {
+
     private final ActionMessageType messageType;
-    private ArrayList<Resource> resources;
+    private final String user;
+    private final List<Resource> resources;
 
     /**
      * Server-side constructor to create the message
      * @param resources: the chosen extra resources to discard
      */
-    public DiscardResourcesMessage(ArrayList<Resource> resources) {
+    public DiscardResourcesMessage(String user, List<Resource> resources) {
         this.resources = resources;
-        messageType = ActionMessageType.DISCARD_RESOURCES;
+        this.user = user;
+        this.messageType = ActionMessageType.DISCARD_RESOURCES;
     }
     /**
      * Execute the request client side
@@ -35,6 +39,7 @@ public class DiscardResourcesMessage implements Serializable, ActionMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
+        virtualView.discardResources(user,resources);
         //method in virtualView
     }
     /**

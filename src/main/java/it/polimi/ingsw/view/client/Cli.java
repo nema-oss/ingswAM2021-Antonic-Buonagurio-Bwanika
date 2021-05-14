@@ -30,6 +30,54 @@ public class Cli extends View {
         this.outputStream = outputStream;
     }
 
+    /**
+     * This method tells the user that it has to play its turn
+     */
+    @Override
+    public void showPlayTurn() {
+
+    }
+
+    /**
+     * This method shows the resource market
+     */
+    @Override
+    public void showResourceMarket() {
+
+    }
+
+    /**
+     * This method shows the user's deposit
+     */
+    @Override
+    public void showDeposit() {
+
+    }
+
+    /**
+     * This method shows the user's development cards
+     */
+    @Override
+    public void showDevelopmentCards() {
+
+    }
+
+    /**
+     * This method shows the user's leader cards
+     */
+    @Override
+    public void showLeaderCards() {
+
+    }
+
+    /**
+     * This method shows the card market
+     */
+    @Override
+    public void showCardMarket() {
+
+    }
+
 
     @Override
     public void setMyIp() {
@@ -46,13 +94,11 @@ public class Cli extends View {
 
     }
 
+    /**
+     * This method allows to start a match
+     */
     @Override
     public void startMatch() {
-
-    }
-
-    @Override
-    public void turn(String firstOperation) {
 
     }
 
@@ -128,7 +174,7 @@ public class Cli extends View {
      */
     @Override
     public void showMatchStarted() {
-        System.out.println("Match started assholes");
+        System.out.println("Match started kids");
     }
 
     /**
@@ -146,7 +192,6 @@ public class Cli extends View {
     public void showGameBoard() {
 
     }
-
 
     @Override
     public void serverNotFound() {
@@ -205,12 +250,6 @@ public class Cli extends View {
         DoLoginMessage doLoginMessage = new DoLoginMessage();
         doLoginMessage.setFirstPlayer(isFirstPlayer);
         showLogin(doLoginMessage);
-    }
-
-    @Override
-    public void showNumberOfPlayers() {
-
-
     }
 
 

@@ -1,5 +1,7 @@
-package it.polimi.ingsw.messages.setup;
+package it.polimi.ingsw.messages.setup.server;
 
+import it.polimi.ingsw.messages.setup.SetupMessage;
+import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 

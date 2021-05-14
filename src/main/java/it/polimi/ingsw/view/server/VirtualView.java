@@ -160,9 +160,10 @@ public class VirtualView implements VirtualViewInterface{
             }
         }
 
+        sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
+
         if(getLobbySize() == MAXIMUM_LOBBY_SIZE || isRequiredNumberOfPlayers()) toStartMatch();
 
-        sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
 
 
     }
@@ -284,7 +285,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user
      */
     private void onAcceptedMoveDeposit(String user, int a, int b) {
-        Message message = new UpdateWriter().moveDepositRequestAccepted(a, b);
+        Message message = new UpdateWriter().moveDepositRequestAccepted(user,a, b);
         sendMessage(clients.get(user), message);
     }
 
@@ -293,7 +294,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user
      */
     private void onRejectedMoveDeposit(String user, int a, int b) {
-        Message message = new UpdateWriter().moveDepositRequestRejected(a, b);
+        Message message = new ErrorWriter().moveDepositRequestRejected(user,a, b);
         sendMessage(clients.get(user), message);
     }
 
@@ -477,7 +478,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
-        Message message = new UpdateWriter().activateLeaderRejected(card);
+        Message message = new ErrorWriter().activateLeaderRejected(card);
         sendMessage(clients.get(user), message);
     }
 
@@ -548,5 +549,20 @@ public class VirtualView implements VirtualViewInterface{
         this.requiredNumberOfPlayers = numberOfPlayers;
     }
 
+    /**
+     * This method handle a place resource request from the client
+     * @param resources the resources to place
+     * @param targetShelves the selected floors
+     */
+    public void placeResource(List<Resource> resources, List<Integer> targetShelves) {
+    }
+
+    /**
+     * This metho
+     * @param user
+     * @param resources
+     */
+    public void discardResources(String user, List<Resource> resources) {
+    }
 }
 

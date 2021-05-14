@@ -1,12 +1,13 @@
 package it.polimi.ingsw.messages.utils;
 
-import it.polimi.ingsw.messages.setup.DisconnectionMessage;
+import it.polimi.ingsw.messages.setup.server.DisconnectionMessage;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.actions.server.CardMarketUpdateMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.setup.*;
+import it.polimi.ingsw.messages.setup.server.GameModeMessage;
 import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;

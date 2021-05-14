@@ -12,19 +12,21 @@ import java.io.Serializable;
 
 public class MoveDepositMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
-    private int resources;
-    private int toShelves;
+    private int x;
+    private int y;
+    private String user;
     private boolean accepted;
 
     /**
      * Server-side constructor to create the message
-     * @param resources: index of the source level
-     * @param toShelves: index of the target level
+     * @param user the user nickname
+     * @param x,y the selected floors
      * @param accepted: result of the request
      */
-    public MoveDepositMessage(int resources, int toShelves, boolean accepted) {
-        this.resources = resources;
-        this.toShelves = toShelves;
+    public MoveDepositMessage(String user, int x, int y, boolean accepted) {
+        this.user = user;
+        this.x = x;
+        this.y = y;
         this.accepted = accepted;
         messageType = ActionMessageType.MOVE_DEPOSIT;
     }
@@ -40,6 +42,7 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
+        virtualView.moveDeposit(user,x,y);
         //method in virtualView
     }
     /**

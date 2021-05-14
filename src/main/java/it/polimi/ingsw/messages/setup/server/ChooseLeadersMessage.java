@@ -1,5 +1,7 @@
-package it.polimi.ingsw.messages.setup;
+package it.polimi.ingsw.messages.setup.server;
 
+import it.polimi.ingsw.messages.setup.SetupMessage;
+import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -12,7 +14,7 @@ import java.util.List;
  * message sent when a client has to choose which leaderCards to keep
  * @author Nemanja Antonic
  */
-public class ChooseLeadersMessage implements Serializable, SetupMessage{
+public class ChooseLeadersMessage implements Serializable, SetupMessage {
 
     private final SetupMessageType messageType;
     private List<LeaderCard> choice;

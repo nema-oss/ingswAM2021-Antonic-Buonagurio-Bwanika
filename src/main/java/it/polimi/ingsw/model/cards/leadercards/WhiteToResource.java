@@ -37,4 +37,5 @@ public class WhiteToResource extends LeaderCard{
     public LeaderCardType getLeaderType(){
         return leaderCardType;
     }
+
 }

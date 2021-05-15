@@ -35,5 +35,19 @@ public class GameBoard {
         return market;
     }
 
+    public static int getCardMarketRow() {
+        return CARD_MARKET_ROW;
+    }
 
+    public static int getCardMarketColumns() {
+        return CARD_MARKET_COLUMNS;
+    }
+
+    public static int getMarbleMarketRow() {
+        return MARBLE_MARKET_ROW;
+    }
+
+    public static int getMarbleMarketColumns() {
+        return MARBLE_MARKET_COLUMNS;
+    }
 }

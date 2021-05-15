@@ -20,7 +20,7 @@ public class Board {
     private Strongbox strongbox;
     private List<Stack<DevelopmentCard>> developmentCards;
     private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
-    private static int popeRoadSize = 20;
+    private static int popeRoadSize = 24;
     private CellFactory cellFactory;
 
 

@@ -128,5 +128,10 @@ public class Deposit {
         floor--;
         return warehouse.get(floor).get(0);
     }
+
+    public int getNumberOfResourcesOnFloor(int floor){
+        floor--;
+        return warehouse.get(floor).size();
+    }
 }
 

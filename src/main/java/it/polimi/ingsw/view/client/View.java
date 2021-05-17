@@ -1,10 +1,17 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.exception.NonExistentCardException;
+import it.polimi.ingsw.model.gameboard.CardMarket;
+import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.model.player.Board;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * The view abstract class
@@ -40,7 +47,7 @@ public abstract class View {
     /**
      * Shows the login
      *
-     * @param message
+     * @param message login message
      */
     public abstract void showLogin(DoLoginMessage message);
 
@@ -72,12 +79,12 @@ public abstract class View {
     /**
      * Shows the player's board
      */
-    public abstract void showBoard();
+    public abstract void showBoard(Board board, Player player);
 
     /**
      * Shows to the player the game board
      */
-    public abstract void showGameBoard();
+    public abstract void showGameBoard(GameBoard gameBoard) throws NonExistentCardException;
 
     /**
      * Shows that the server has not been found
@@ -145,13 +152,14 @@ public abstract class View {
     public abstract void showDevelopmentCards();
 
     /**
-     * This method shows the user's leader cards
+     * This method shows the user's active leader cards
      */
-    public  abstract void showLeaderCards();
+    public  abstract void showLeaderCards(ArrayList<LeaderCard> leaderCards);
 
     /**
      * This method shows the card market
      */
-    public abstract void showCardMarket();
+    public abstract void showCardMarket(CardMarket cardMarket);
+
 
 }

@@ -36,4 +36,8 @@ public class ExtraProduction extends LeaderCard{
         return productionRequirement;
     }
 
+    public List<Producible> getProductionResult(){
+        return productionResult;
+    }
+
 }

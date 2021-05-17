@@ -212,7 +212,9 @@ public class Cli extends View {
      */
     @Override
     public void showServerDisconnection() {
+
         System.out.println("Server says Bye Bye, sayonara");
+
     }
 
     /**

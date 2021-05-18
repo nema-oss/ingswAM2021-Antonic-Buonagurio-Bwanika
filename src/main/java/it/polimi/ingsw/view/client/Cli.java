@@ -616,16 +616,23 @@ public class Cli extends View {
 
 
         //now the rest
+        System.out.print("\n");
         if(player.getDeposit().getNumberOfResourcesOnFloor(1) ==1)
-            System.out.println("\t\t\t" + getResourceTypeColor(player.getDeposit().get(1).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+            System.out.println("\t\t\t"+ ANSI_RESET.escape() + getResourceTypeColor(player.getDeposit().get(1).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+        else{
+            System.out.println("\t\t\t" + ANSI_RESET.escape()+ JOLLY.escape() + ANSI_RESET.escape());
+
+        }
         System.out.print("\t\t\t"+HORIZ_POPE.escape());
 
         System.out.println("   \t\t\t"+JOLLY.escape());
 
-
-        for(int i=0; i<player.getDeposit().getNumberOfResourcesOnFloor(2); i++)
+        int z=0;
+        for(z=0; z<player.getDeposit().getNumberOfResourcesOnFloor(2); z++)
             System.out.print("\t\t" + getResourceTypeColor(player.getDeposit().get(2).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
-
+        for(; z<2; z++){
+            System.out.print("\t\t"  + JOLLY.escape() + ANSI_RESET.escape());
+        }
         System.out.print("\t\t\t\t-> "+JOLLY.escape());
         String color= ANSI_RESET.escape();
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
@@ -682,8 +689,12 @@ public class Cli extends View {
 
 
         System.out.print("\n");
-        for(int i=0; i<player.getDeposit().getNumberOfResourcesOnFloor(3); i++)
+        for(z=0; z<player.getDeposit().getNumberOfResourcesOnFloor(3); z++)
             System.out.print("   \t" + getResourceTypeColor(player.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+        for(; z<3; z++){
+            System.out.print("   \t" +  JOLLY.escape() + ANSI_RESET.escape());
+
+        }
         System.out.print("\t\t\t\t");
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
             System.out.print("\t\t");
@@ -769,13 +780,17 @@ public class Cli extends View {
                     System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape()+"\t\t" + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
         System.out.print("\n\t");
         Map<ResourceType,List<Resource>> strongbox = player.getStrongbox().getAll();
-        for(ResourceType resourceType: strongbox.keySet()){
-            System.out.print(getResourceTypeColor(resourceType) + strongbox.get(resourceType).size() + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
+        for(ResourceType resourceType: ResourceType.values()){
+            if(strongbox.containsKey(resourceType))
+                System.out.print(getResourceTypeColor(resourceType) + strongbox.get(resourceType).size() + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
+            else
+                System.out.print(getResourceTypeColor(resourceType) + "0" + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
+
         }
         System.out.print("\t\t\t\t\t\t");
         for(int i=0; i<3; i++) {
@@ -796,7 +811,7 @@ public class Cli extends View {
                 }
             }
             else{
-                System.out.print(ANSI_RESET.escape()+"\t\t" + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
@@ -819,7 +834,7 @@ public class Cli extends View {
                 }
             }
             else{
-                System.out.print(ANSI_RESET.escape()+"\t\t" + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
@@ -832,7 +847,7 @@ public class Cli extends View {
                 System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape()+"\t\t" + BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(ANSI_RESET.escape()+ BOLD_VERTICAL.escape()+"\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
 
         }

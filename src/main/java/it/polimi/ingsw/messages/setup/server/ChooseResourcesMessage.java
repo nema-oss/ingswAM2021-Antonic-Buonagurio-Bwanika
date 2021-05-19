@@ -23,7 +23,7 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
 
     /**
      * Server-side constructor to create the message
-     * @param resource: target resource
+     * @param resourceChoice: target resource
      * @param accepted: result of the request
      */
     public ChooseResourcesMessage(Map<ResourceType,Integer> resourceChoice, boolean accepted) {

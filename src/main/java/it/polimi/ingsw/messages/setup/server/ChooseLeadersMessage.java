@@ -36,7 +36,7 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in view to show the choice
+        view.showLeaderCards(choice);
     }
     /**
      * Execute the request server side

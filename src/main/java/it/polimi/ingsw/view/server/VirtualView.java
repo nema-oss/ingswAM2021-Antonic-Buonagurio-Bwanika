@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
-import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
-import it.polimi.ingsw.messages.setup.server.MatchStartedMessage;
-import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -204,7 +202,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCards the chosen card
      * @param user the user that selects the card
      */
-    public void chooseLeaderCard(String user, List<LeaderCard> leaderCards){
+    public void chooseLeaderCards(String user, List<LeaderCard> leaderCards){
         List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
         if(isActive){
             if(errors.isEmpty())
@@ -212,7 +210,9 @@ public class VirtualView implements VirtualViewInterface{
             else
                 onRejectedChooseLeaderCard(user, leaderCards);
         }
+
     }
+
 
 
     /**
@@ -522,9 +522,10 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
-
-    public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards ){
+    public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
+        sendMessage(clients.get(user), new ChooseLeadersMessage(leaderCards,true));
     }
+
 
     /**
      * Asks the user to choose its resources
@@ -532,7 +533,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param numberOfResources the amount of resources to select
      */
     public void toDoChooseResources(String nickname, int numberOfResources){
-
+        sendMessage(clients.get(nickname), new SelectResourcesMessage(numberOfResources));
     }
 
     /**

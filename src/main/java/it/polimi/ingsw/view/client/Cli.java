@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -432,7 +433,7 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showBoard(gameBoard,player);
+        showGameBoard(new ClientGameBoard());
         showAllAvailableResources();
 
 
@@ -441,7 +442,7 @@ public class Cli extends View {
 
         inputThread = inputExecutor.submit(() -> {
 
-            System.out.println("Choose " + numberOfResources + "among the resource type available. Press Enter to continue");
+            System.out.println("Choose " + numberOfResources + " among the resource type available. Press Enter to continue");
 
             inputWithTimeout();
 

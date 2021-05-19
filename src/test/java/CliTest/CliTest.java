@@ -23,6 +23,7 @@ import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import org.junit.Test;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,12 @@ public class CliTest {
     private CardFactory cardFactory;
     private ArrayList<LeaderCard> leaderCards;
 
+    @Test
+    public void clearScreen(){
+        Formatting.clearScreen();
+        System.out.println(4);
+        Formatting.clearScreen();
+    }
     @Test
     public void showTitle(){
         Cli cli = new Cli();

@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.client.utils;
 
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
 
+import static it.polimi.ingsw.view.client.utils.Formatting.ColorCode.ANSI_BLUE;
+
 /**
  * This class helps with formatting the output in CLI mode
  */
@@ -16,6 +18,17 @@ public class Formatting {
         for (int i = 0; i < height; i = i + 5) {
             clean.append("\n\n\n\n\n");
         }
+
+        System.out.print(ANSI_BLUE.escape() +
+                "___  ___          _                         __  ______                  \n"+
+                "|  \\/  |         | |                       / _| | ___ \\                O \n"+
+                "| .  . | __ _ ___| |_ ___ _ __ ___    ___ | |_  | |_/ /___ _ __   __ _ _ ___ ___  __ _ _ __   ___ ___ \n"+
+                "| |\\/| |/ _` / __| __/ _ \\ '__/ __|  / _ \\|  _| |    // _ \\ '_ \\ / _` | / __/ __|/ _` | '_ \\ / __/ _ \\\n"+
+                "| |  | | (_| \\__ \\ ||  __/ |  \\__ \\ | (_) | |   | |\\ \\  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/\n"+
+                "\\_|  |_/\\__,_|___/\\__\\___|_|  |___/  \\___/|_|   \\_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|\n"+
+                "                                                                                                                  \n" +
+                "By Nemanja Antonic, Chiara Buonagurio and René Bwanika"+ Formatting.ColorCode.ANSI_RESET.escape());
+
         System.out.print(clean);
     }
 

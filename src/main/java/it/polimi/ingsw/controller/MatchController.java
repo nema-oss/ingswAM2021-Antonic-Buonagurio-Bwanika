@@ -21,7 +21,6 @@ import java.util.*;
 public class MatchController implements ControllerInterface{
 
 
-    // in alcuni casi posso mandare una mappa con tutti gli errori per ogni carta (se voglio mandare indietro un messaggio di errore per ogni carta sbagliata)
     private final Game game;
     private VirtualViewInterface viewInterface;
 
@@ -70,7 +69,9 @@ public class MatchController implements ControllerInterface{
         }
 
         if(nickname == null || nickname.isEmpty()) throw new IllegalArgumentException("Invalid nickname");
+
         return game.addPlayer(new Player(nickname, game.getGameBoard(), game));
+
     }
 
     /**
@@ -94,6 +95,8 @@ public class MatchController implements ControllerInterface{
         //forse bisogna aggiungere metodo della view che comunica il numero di giocatori?
 
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
+
+        sendChooseLeaderCards(); // per il numero di giocatori
 
         return errors;
     }
@@ -145,8 +148,10 @@ public class MatchController implements ControllerInterface{
 
         game.nextPlayer();
 
-        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
+        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))) {
             game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
+            sendChooseResources();
+        }
         else
             sendChooseLeaderCards();
 
@@ -160,26 +165,19 @@ public class MatchController implements ControllerInterface{
     public void sendChooseResources() {
 
         Player currentPlayer = game.getCurrentPlayer();
+        int size = game.getListOfPlayers().size();
 
-        if(currentPlayer.equals(game.getListOfPlayers().get(1)) || currentPlayer.equals(game.getListOfPlayers().get(2))) {
+        if(size >= 2 && currentPlayer.equals(game.getListOfPlayers().get(1)))
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
-            if(currentPlayer.equals(game.getListOfPlayers().get(2))) {
-                currentPlayer.moveOnPopeRoad();
-                //BISOGNA AGGIUNGERE ANCHE I VICTORY POINTS INIZIALI?????????
-                if(currentPlayer.getPosition().isPopeSpace())
-                    game.vaticanReport(currentPlayer.getPositionIndex());
-            }
+
+        else if (size >= 3 && currentPlayer.equals(game.getListOfPlayers().get(2))) {
+            viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
+            currentPlayer.moveOnPopeRoad();
         }
 
-        else if(currentPlayer.equals(game.getListOfPlayers().get(3))) {
-            viewInterface.toDoChooseResources(currentPlayer.getNickname(), 0);
+        else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
+            viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
-            if(currentPlayer.getPosition().isPopeSpace())
-                game.vaticanReport(currentPlayer.getPositionIndex());
-            currentPlayer.moveOnPopeRoad();
-            //BISOGNA AGGIUNGERE ANCHE I VICTORY POINTS INIZIALI?????????
-            if(currentPlayer.getPosition().isPopeSpace())
-                game.vaticanReport(currentPlayer.getPositionIndex());
         }
     }
 
@@ -214,8 +212,10 @@ public class MatchController implements ControllerInterface{
 
         game.nextPlayer();
 
-        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0)))
+        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))) {
             game.setGamePhase(GamePhase.PLAY_TURN);
+            viewInterface.playTurn(game.getCurrentPlayer().getNickname());
+        }
         else
             sendChooseResources();
 
@@ -295,7 +295,7 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates production on active leader cards
      * @param nickname the player's nickname
-     * @param leaderCards the eaderCards chosen for production
+     * @param leaderCards the leaderCards chosen for production
      * @return the list of errors generated
      */
     @Override
@@ -642,7 +642,7 @@ public class MatchController implements ControllerInterface{
             sendEndTurn();
 
             game.nextPlayer();
-            //controllo di non essere arrivato alla fine dell'ultimo giro
+
             if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
                 Player winner = game.endGame();
                 viewInterface.endMatch();

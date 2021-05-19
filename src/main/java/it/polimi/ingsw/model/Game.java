@@ -40,9 +40,9 @@ public class Game {
 
     public Game(){
 
-        //gameBoard = new GameBoard();
+        gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
-        //leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
         listOfPlayers = new ArrayList<>();
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();
@@ -137,14 +137,15 @@ public class Game {
      * this method add a new player to the match
      */
     public List<Error> addPlayer(Player p){
+
         List<Error> errors = new ArrayList<>();
-        if(listOfPlayers.size() >= 4 && !errors.contains(Error.GAME_ALREADY_FULL))
+        if(listOfPlayers.size() >= 4)
             errors.add(Error.GAME_ALREADY_FULL);
         for(Player player : listOfPlayers)
             if(p.getNickname().equals(player.getNickname()))
                 errors.add(Error.NICKNAME_ALREADY_EXISTS);
         listOfPlayers.add(p);
-        return errors; //loro usano unmodifiable
+        return errors;
     }
 
     /**
@@ -335,6 +336,10 @@ public class Game {
 
     public GamePhase getGamePhase() {
         return gamePhase;
+    }
+
+    public void setCurrentPlayer (Player p){
+        currentPlayer = p;
     }
 }
 

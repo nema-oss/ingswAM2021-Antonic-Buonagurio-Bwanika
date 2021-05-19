@@ -58,12 +58,13 @@ public class ClientCardMarket {
         }
     }
 
-    public DevelopmentCard getCard(int row, int column) throws NonExistentCardException {
+    public DevelopmentCard getCard(int row, int column) {
 
         if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
-            throw new NonExistentCardException();
+            //throw new NonExistentCardException();
+            ;
 
-        else return cardMarket[row][column].getTop();
+        return cardMarket[row][column].getTop();
     }
 
 }

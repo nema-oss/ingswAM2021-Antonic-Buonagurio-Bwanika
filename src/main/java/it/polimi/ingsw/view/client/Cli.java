@@ -13,9 +13,9 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.*;
-import it.polimi.ingsw.model.player.Board;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.client.utils.*;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -308,7 +308,7 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showBoard(board, player);
+        showBoard(gameBoard, player);
         AtomicBoolean correct = new AtomicBoolean(true);
         if(currentPlayer.equals(player.getNickname())){
             askTurnAction();
@@ -425,7 +425,7 @@ public class Cli extends View {
 
 
 
-        System.out.println("It's your turn. You can choose both a turn action among these" + turnActionListString + "//" +
+        System.out.println("It's your turn. You can choose both a turn action among these" + "//" +
                 "and a leader action ( DISCARD or ACTIVATE)");
 
         AtomicBoolean correct = new AtomicBoolean(true);
@@ -448,10 +448,10 @@ public class Cli extends View {
                                 setBuyResourceAction(false);
                                 break;
                             case ACTIVATE_PRODUCTION:
-                                setProductionChoice(false);
+                                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
                                 break;
                             case LEADER_ACTION:
-                                setLeaderCardAction(false);
+                                setLeaderCardAction(player.getHand(),false);
                                 break;
                             case END_TURN:
 
@@ -474,7 +474,7 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showBoard(board,player);
+        showBoard(gameBoard,player);
 
         if(actionRejectedBefore)
             System.out.println();
@@ -574,7 +574,7 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showGameBoard();
+        showGameBoard(gameBoard);
 
         if(actionRejectedBefore)
             System.out.println();
@@ -614,7 +614,7 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showGameBoard();
+        showGameBoard(gameBoard);
 
         if(actionRejectedBefore)
             System.out.println();
@@ -721,7 +721,7 @@ public class Cli extends View {
      * This method shows the player personal board
      */
     @Override
-    public void showBoard(Board board, Player player) {
+    public void showBoard(ClientGameBoard board, ClientPlayer player) {
         //first off draw the poperoad
         int cell_width = 6;
         int section_card_width = 12;
@@ -1383,7 +1383,7 @@ public class Cli extends View {
      * This method shows the common game board
      */
     @Override
-    public void showGameBoard(GameBoard gameBoard) throws NonExistentCardException {
+    public void showGameBoard(ClientGameBoard gameBoard) /*throws NonExistentCardException*/ {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
             String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
             System.out.print(color + UP_LEFT.escape());
@@ -1614,7 +1614,7 @@ public class Cli extends View {
         }
     }
 
-    public void showCardsUtil(GameBoard gameBoard, ArrayList<HashMap<ResourceType, Integer>> results) throws NonExistentCardException {
+    public void showCardsUtil(ClientGameBoard gameBoard, ArrayList<HashMap<ResourceType, Integer>> results) /*throws NonExistentCardException */{
         System.out.print("\n");
 
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
@@ -1637,7 +1637,7 @@ public class Cli extends View {
     }
 
 
-    public void showMarbleMarketLine(int n, GameBoard gameBoard){
+    public void showMarbleMarketLine(int n, ClientGameBoard gameBoard){
         System.out.print("\t");
         for(int i=0; i<gameBoard.getMarbleMarketColumns(); i++){
             System.out.print(getMarbleTypeColor(gameBoard.getMarket().getMarble(n, i)) + RESOURCE.escape() + ANSI_RESET.escape()+ " ");

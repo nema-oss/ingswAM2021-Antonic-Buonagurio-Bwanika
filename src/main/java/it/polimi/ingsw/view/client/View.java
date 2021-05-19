@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -24,6 +26,14 @@ public abstract class View {
     protected EchoClient clientHandler;
     protected String myIp;
     protected int myPort;
+
+    protected ClientPlayer player;
+    protected ClientGameBoard gameBoard;
+
+    public void newMatch(String nickname){
+        this.gameBoard = new ClientGameBoard();
+        this.player = new ClientPlayer(nickname,this.gameBoard);
+    }
 
 
 
@@ -130,12 +140,12 @@ public abstract class View {
     /**
      * Shows the player's board
      */
-    public abstract void showBoard(Board board, Player player);
+    public abstract void showBoard(ClientGameBoard board, ClientPlayer player);
 
     /**
      * Shows to the player the game board
      */
-    public abstract void showGameBoard(GameBoard gameBoard) throws NonExistentCardException;
+    public abstract void showGameBoard(ClientGameBoard gameBoard) throws NonExistentCardException;
 
     /**
      * Shows that the server has not been found

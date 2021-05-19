@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.client;
 
+import it.polimi.ingsw.messages.LeaderActionMessage;
+import it.polimi.ingsw.messages.actions.BuyDevelopmentCardMessage;
+import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
+import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
@@ -8,36 +13,83 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.*;
-import it.polimi.ingsw.model.player.Board;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.view.client.utils.*;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static it.polimi.ingsw.view.client.ColorCode.*;
-import static it.polimi.ingsw.view.client.Unicode.*;
+import static it.polimi.ingsw.view.client.utils.Formatting.ColorCode.*;
+import static it.polimi.ingsw.view.client.utils.Formatting.Unicode.*;
 
 /**
  * this class implements the CLI view in the client
  */
 public class Cli extends View {
 
-    private final int max_spaces = 13;
+    private final int MAX_SPACES = 13;
     private final Scanner scanner;
     private Socket socket;
+    private boolean disconnected;
     private ObjectOutputStream outputStream;
     private final InputValidator inputValidator;
-    String playerColor = ANSI_CYAN.escape();
+    private String playerColor = ANSI_CYAN.escape();
+    ExecutorService inputExecutor;
+    Future inputThread;
+
+
     public Cli(){
         this.scanner = new Scanner(System.in);
         this.inputValidator = new InputValidator();
+        this.disconnected = false;
     }
 
     public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
         this.socket = socket;
         this.outputStream = outputStream;
     }
+
+
+    /**
+     * Get user's input without a timeout.
+     * @return user's input
+     */
+    public String inputWithoutTimeout(){
+
+        return InputCli.readLine();
+    }
+
+    /**
+     * Get user's input with a timeout. Close the client if timeout expires
+     * @return user's input
+     */
+    public String inputWithTimeout() {
+        String input = "";
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String> result = executor.submit(InputCli::readLine);
+
+        try {
+            input = result.get(2, TimeUnit.MINUTES);
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            if(!disconnected){
+                new Thread(this::disconnectionForInputExpiredTimeout).start();
+            }
+            Thread.currentThread().interrupt();
+            result.cancel(true);
+        }
+
+        return input;
+    }
+
+    private void disconnectionForInputExpiredTimeout() {
+    }
+    // SET METHOD THAT GET THE CLIENT INPUT AND SEND MESSAGES TO THE USER
+
 
     /**
      * This method tells the user that it has to play its turn
@@ -75,13 +127,13 @@ public class Cli extends View {
      * This method shows the user's leader cards
      */
     @Override
-    public void showLeaderCards(ArrayList<LeaderCard> leaderCards) {
+    public void showLeaderCards(List<LeaderCard> leaderCards) {
         String color;
        showFullLineTop(leaderCards.size());
         for(int i = 0; i< leaderCards.size(); i++){//for every card in the list
             LeaderCard leaderCard = leaderCards.get(i);
             System.out.print(BOLD_VERTICAL.escape() + " ");
-            int spaces = max_spaces; //max numbers of spaces per card on a row
+            int spaces = MAX_SPACES; //max numbers of spaces per card on a row
             for(Integer j: leaderCard.getCostDevelopment().keySet()){//checking costDevelopment
                 for(DevelopmentCardType k: leaderCard.getCostDevelopment().get(j).keySet()){
                     System.out.print(leaderCard.getCostDevelopment().get(j).get(k));
@@ -136,7 +188,7 @@ public class Cli extends View {
                     System.out.print(BOLD_VERTICAL.escape()+"   " + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
                 case EXTRA_PRODUCTION:
-                    int spaces = max_spaces;
+                    int spaces = MAX_SPACES;
                     for(ResourceType resourceType1: ((ExtraProduction) leaderCards.get(i)).getProductionRequirement().keySet()){
                         System.out.print(BOLD_VERTICAL.escape()+((ExtraProduction) leaderCards.get(i)).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
                                 RESOURCE.escape() + ANSI_RESET.escape()+"\t");
@@ -208,7 +260,7 @@ public class Cli extends View {
     public void showFullLineTop(int n){
         for(int i = 0; i< n; i++){
             System.out.print(UP_LEFT.escape());
-            for(int j=0; j<max_spaces; j++)
+            for(int j = 0; j< MAX_SPACES; j++)
                 System.out.print(BOLD_HORIZ.escape());
             System.out.print(UP_RIGHT.escape() + "\t");
         }
@@ -217,7 +269,7 @@ public class Cli extends View {
     public void showFullLineBottom(int n){
         for(int i = 0; i< n; i++){
             System.out.print(DOWN_LEFT.escape());
-            for(int j=0; j<max_spaces; j++)
+            for(int j = 0; j< MAX_SPACES; j++)
                 System.out.print(BOLD_HORIZ.escape());
             System.out.print(DOWN_RIGHT.escape() + "\t");
         }
@@ -252,8 +304,342 @@ public class Cli extends View {
      * This method allows to start a match
      */
     @Override
-    public void startMatch() {
+    public void startMatch(String currentPlayer) {
 
+        Formatting.clearScreen();
+
+        showBoard(gameBoard, player);
+        AtomicBoolean correct = new AtomicBoolean(true);
+        if(currentPlayer.equals(player.getNickname())){
+            askTurnAction();
+        }else {
+            System.out.println(currentPlayer + " is playing its turn...");
+        }
+
+
+    }
+
+    /**
+     * Asks the users to choose its leader card
+     *
+     * @param cardChoice the card pool
+     */
+    @Override
+    public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
+
+        Formatting.clearScreen();
+
+        showLeaderCards(cardChoice);
+
+        List<LeaderCard> userChoice = new ArrayList<>();
+        boolean correct = false;
+        inputThread = inputExecutor.submit(() -> {
+            System.out.println("Select 2 cards among these leader cards. The cards are numbered from //" +
+                    " 1 to 4. Write the correspondent number to select a card. Press enter to continue...");
+            inputWithTimeout();
+
+            if(!Thread.interrupted()) {
+                while (userChoice.size() < 2) {
+
+                    switch (inputWithTimeout()) {
+                        case "first":
+                            userChoice.add(cardChoice.get(0));
+                            System.out.println("First card selected");
+                            break;
+                        case "second":
+                            userChoice.add(cardChoice.get(1));
+                            break;
+                        case "third":
+                            userChoice.add(cardChoice.get(2));
+                            break;
+                        case "forth":
+                            userChoice.add(cardChoice.get(3));
+                            break;
+                        case "timeoutExpired":
+
+                    }
+                    if(Thread.interrupted()) return;
+                }
+            }
+
+            if(!Thread.interrupted())
+                new MessageSender(socket,new ChooseLeadersMessage(cardChoice,true)).sendMsg(outputStream);
+
+        });
+
+    }
+
+    /**
+     * Asks the user to choose its resource
+     *
+     * @param numberOfResources number of resources the user can choose
+     */
+    @Override
+    public void setResourceTypeChoice(int numberOfResources) {
+
+        Formatting.clearScreen();
+
+        showAllAvailableResources();
+
+
+        Map<ResourceType,Integer> resourceTypesChoice = new HashMap<>();
+        AtomicBoolean correct = new AtomicBoolean(true);
+
+        inputThread = inputExecutor.submit(() -> {
+
+            System.out.println("Choose " + numberOfResources + "among the resource type available. Press Enter to continue");
+
+            inputWithTimeout();
+
+            do{
+                String input = inputWithTimeout();
+                ResourceType resourceType = InputValidator.isResourceType(input);
+                correct.set(resourceType != null);
+                if(!correct.get()){
+                    System.out.println("Incorrect resource type name");
+                }else{
+                    resourceTypesChoice.merge(resourceType, 1, Integer::sum);
+                }
+
+                if(Thread.interrupted()) return;
+
+            }while(!correct.get() && resourceTypesChoice.size() < 2);
+
+            if(!Thread.interrupted())
+                new MessageSender(socket, new ChooseResourcesMessage(resourceTypesChoice,true)).sendMsg(outputStream);
+
+        });
+    }
+
+    /**
+     * This method prints all the type of resources available in a match
+     */
+    private void showAllAvailableResources() {
+    }
+
+    /**
+     * Asks the user to play its turn action
+     */
+    @Override
+    public void askTurnAction() {
+
+
+
+        System.out.println("It's your turn. You can choose both a turn action among these" + "//" +
+                "and a leader action ( DISCARD or ACTIVATE)");
+
+        AtomicBoolean correct = new AtomicBoolean(true);
+        inputThread = inputExecutor.submit(() -> {
+
+            do {
+                String input = inputWithoutTimeout();
+                TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT));
+                correct.set(action != null);
+                if (!correct.get()){
+                    System.out.println("Incorrect action. Try again");
+                }
+                else {
+                    if(action != null)
+                        switch (action) {
+                            case BUY_RESOURCES:
+                                setBuyCardAction(false);
+                                break;
+                            case BUY_CARD:
+                                setBuyResourceAction(false);
+                                break;
+                            case ACTIVATE_PRODUCTION:
+                                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
+                                break;
+                            case LEADER_ACTION:
+                                setLeaderCardAction(player.getHand(),false);
+                                break;
+                            case END_TURN:
+
+                        }
+                }
+
+            }while(!correct.get());
+        });
+    }
+
+    /**
+     * Asks the user what card productions it wants to use
+     *
+     * @param developmentCards     its development card
+     * @param leaderCards          its leader card type production
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setProductionChoice(List<DevelopmentCard> developmentCards, List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showBoard(gameBoard,player);
+
+        if(actionRejectedBefore)
+            System.out.println();
+        else
+            System.out.println("");
+
+        AtomicBoolean correct = new AtomicBoolean(true);
+        AtomicBoolean selectionDone = new AtomicBoolean(false);
+        inputThread = inputExecutor.submit(() -> {
+
+            System.out.println("");
+            List<DevelopmentCard> developmentCardChoice;
+            List<LeaderCard> leaderCardChoice;
+            Map<ResourceType,List<ResourceType>> boardProductionChoice;
+
+            if(!Thread.interrupted()) {
+                do {
+                    String input = inputWithTimeout();
+                    if (input.equals("done"))
+                        selectionDone.set(true);
+                    developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input);
+                    leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input);
+                    boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
+                    correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
+                    if (!correct.get() && !selectionDone.get())
+                        System.out.println("Inc");
+
+                    if (Thread.interrupted()) return;
+                } while (!correct.get() && !selectionDone.get());
+
+                if (!Thread.interrupted()) {
+
+                }
+            }
+
+        });
+
+
+    }
+
+    /**
+     * Asks the user what leader card it wants to use
+     *
+     * @param leaderCards          its leader card
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setLeaderCardAction(List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showLeaderCards(leaderCards);
+
+        if(actionRejectedBefore)
+            System.out.println("Leader card selection incorrect. Try again.");
+        else
+            System.out.println("Ch");
+
+
+        AtomicBoolean correct = new AtomicBoolean(false);
+        AtomicBoolean selectionDone = new AtomicBoolean(false);
+        inputThread = inputExecutor.submit(() -> {
+            System.out.println("");
+            inputWithTimeout();
+            Map<LeaderCard, Boolean> userChoice = new HashMap<>();
+
+            if(!Thread.interrupted()) {
+                do{
+                    String input = inputWithTimeout();
+                    userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
+                    correct.set(userChoice != null);
+                    if(!correct.get() && !selectionDone.get())
+                        System.out.println();
+                    if(input.equals("done"))
+                        selectionDone.set(true);
+                    if(Thread.interrupted()) return;
+
+                }while(!correct.get() && !selectionDone.get());
+            }
+
+            if(!Thread.interrupted()){
+                new MessageSender(socket, new LeaderActionMessage(userChoice,true)).sendMsg(outputStream);
+            }
+
+        });
+
+
+    }
+
+    /**
+     * Asks the user what card it wants to buy
+     *
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setBuyCardAction(boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showGameBoard(gameBoard);
+
+        if(actionRejectedBefore)
+            System.out.println();
+        else
+            System.out.println();
+
+        inputThread = inputExecutor.submit(() -> {
+
+            boolean correct = false;
+            Point userChoice = null;
+            if(!Thread.interrupted()){
+                do{
+                     String input = inputWithTimeout();
+                    userChoice = InputValidator.isValidBuyCardAction(input);
+                    correct = userChoice != null;
+                    if(!correct)
+                        System.out.println();
+                    if(Thread.interrupted()) return;
+                }while(!correct);
+            }
+
+            if(!Thread.interrupted())
+                new MessageSender(socket, new BuyDevelopmentCardMessage(userChoice.getX(),userChoice.getY(),true)).sendMsg(outputStream);
+
+        });
+
+
+    }
+
+    /**
+     * Asks the user what resources it wants to buy
+     *
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setBuyResourceAction(boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showGameBoard(gameBoard);
+
+        if(actionRejectedBefore)
+            System.out.println();
+        else
+            System.out.println();
+
+        inputThread = inputExecutor.submit(() -> {
+
+            boolean correct;
+            Point userChoice = null;
+            if(!Thread.interrupted()){
+                do{
+                    String input = inputWithTimeout();
+                    userChoice = InputValidator.isValidBuyResourcesAction(input);
+                    correct = userChoice != null;
+                    if(!correct)
+                        System.out.println("nn");
+                    if(Thread.interrupted()) return;
+                }while(!correct);
+            }
+
+            if(!Thread.interrupted())
+                new MessageSender(socket, new BuyResourcesMessage(userChoice.getX(),userChoice.getY(),true)).sendMsg(outputStream);
+
+        });
     }
 
     /**
@@ -335,7 +721,7 @@ public class Cli extends View {
      * This method shows the player personal board
      */
     @Override
-    public void showBoard(Board board, Player player) {
+    public void showBoard(ClientGameBoard board, ClientPlayer player) {
         //first off draw the poperoad
         int cell_width = 6;
         int section_card_width = 12;
@@ -647,7 +1033,7 @@ public class Cli extends View {
                 color = ANSI_RESET.escape();
             }
             System.out.print(color+ UP_LEFT.escape());
-            for(int i=0; i<max_spaces; i++){
+            for(int i = 0; i< MAX_SPACES; i++){
                 System.out.print(BOLD_HORIZ.escape());
             }
             System.out.print(color+ UP_RIGHT.escape()+"\t"+ANSI_RESET.escape());
@@ -857,13 +1243,13 @@ public class Cli extends View {
             if(player.getPlayerBoard().getDevelopmentCards().get(j).size()>0) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getType());
                 System.out.print(color + DOWN_LEFT.escape());
-                for (int k = 0; k < max_spaces; k++)
+                for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape()+"\t\t");
             }
             else{
                 System.out.print(ANSI_RESET.escape()+DOWN_LEFT.escape());
-                for(int i=0; i<max_spaces; i++){
+                for(int i = 0; i< MAX_SPACES; i++){
                     System.out.print(BOLD_HORIZ.escape());
                 }
                 System.out.print(ANSI_RESET.escape()+DOWN_RIGHT.escape()+"\t\t\t");
@@ -884,7 +1270,7 @@ public class Cli extends View {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 1) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(1).getType());
                 System.out.print(color + DOWN_LEFT.escape());
-                for (int k = 0; k < max_spaces; k++)
+                for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
@@ -903,7 +1289,7 @@ public class Cli extends View {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 2) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(2).getType());
                 System.out.print(color + DOWN_LEFT.escape());
-                for (int k = 0; k < max_spaces; k++)
+                for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
@@ -997,11 +1383,11 @@ public class Cli extends View {
      * This method shows the common game board
      */
     @Override
-    public void showGameBoard(GameBoard gameBoard) throws NonExistentCardException {
+    public void showGameBoard(ClientGameBoard gameBoard) /*throws NonExistentCardException*/ {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
             String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
             System.out.print(color + UP_LEFT.escape());
-            for(int j=0; j<max_spaces; j++)
+            for(int j = 0; j< MAX_SPACES; j++)
                 System.out.print(color +BOLD_HORIZ.escape());
             System.out.print(color +UP_RIGHT.escape() + "\t" + ANSI_RESET.escape());
         }
@@ -1100,7 +1486,7 @@ public class Cli extends View {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++){
             String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
             System.out.print(color + DOWN_LEFT.escape());
-            for(int j=0; j<max_spaces; j++)
+            for(int j = 0; j< MAX_SPACES; j++)
                 System.out.print(color +BOLD_HORIZ.escape());
             System.out.print(color +DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape());
         }
@@ -1111,7 +1497,7 @@ public class Cli extends View {
             for(int j=0; j<gameBoard.getCardMarketColumns();j++){
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
                 System.out.print(color + UP_LEFT.escape());
-                for(int k=0; k<max_spaces; k++)
+                for(int k = 0; k< MAX_SPACES; k++)
                     System.out.print(color +BOLD_HORIZ.escape());
                 System.out.print(color +UP_RIGHT.escape() + "\t" + ANSI_RESET.escape());
             }
@@ -1205,7 +1591,7 @@ public class Cli extends View {
             for(int j=0; j<gameBoard.getCardMarketColumns(); j++){
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
                 System.out.print(color + DOWN_LEFT.escape());
-                for(int k=0; k<max_spaces; k++)
+                for(int k = 0; k< MAX_SPACES; k++)
                     System.out.print(color +BOLD_HORIZ.escape());
                 System.out.print(color +DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape());
             }
@@ -1228,7 +1614,7 @@ public class Cli extends View {
         }
     }
 
-    public void showCardsUtil(GameBoard gameBoard, ArrayList<HashMap<ResourceType, Integer>> results) throws NonExistentCardException {
+    public void showCardsUtil(ClientGameBoard gameBoard, ArrayList<HashMap<ResourceType, Integer>> results) /*throws NonExistentCardException */{
         System.out.print("\n");
 
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
@@ -1251,7 +1637,7 @@ public class Cli extends View {
     }
 
 
-    public void showMarbleMarketLine(int n, GameBoard gameBoard){
+    public void showMarbleMarketLine(int n, ClientGameBoard gameBoard){
         System.out.print("\t");
         for(int i=0; i<gameBoard.getMarbleMarketColumns(); i++){
             System.out.print(getMarbleTypeColor(gameBoard.getMarket().getMarble(n, i)) + RESOURCE.escape() + ANSI_RESET.escape()+ " ");
@@ -1329,7 +1715,9 @@ public class Cli extends View {
      */
     @Override
     public void showServerDisconnection() {
+
         System.out.println("Server says Bye Bye, sayonara");
+
     }
 
     /**
@@ -1379,7 +1767,7 @@ public class Cli extends View {
                 "| |  | | (_| \\__ \\ ||  __/ |  \\__ \\ | (_) | |   | |\\ \\  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/\n"+
                 "\\_|  |_/\\__,_|___/\\__\\___|_|  |___/  \\___/|_|   \\_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|\n"+
                 "                                                                                                                  \n" +
-                "By Nemanja Antonic, Chiara Buonagurio and Renè Bwanika"+ColorCode.ANSI_RESET.escape());
+                "By Nemanja Antonic, Chiara Buonagurio and René Bwanika"+ Formatting.ColorCode.ANSI_RESET.escape());
     }
 
 }

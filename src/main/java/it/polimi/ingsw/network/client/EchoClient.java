@@ -88,6 +88,7 @@ public class EchoClient {
 
         }
 
+
     }
 
     /**
@@ -110,7 +111,7 @@ public class EchoClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Server says Bye Bye");
+        view.showServerDisconnection();
     }
 
     /**

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.*;
@@ -12,17 +13,15 @@ public class ClientPlayer {
 
     private final Board playerBoard;
     private String nickname;
-    private final Game currentGame;
     private final int victoryPoints;
     private final Effects activeEffects;
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
 
-    public ClientPlayer(String nickname, GameBoard gameBoard, Game currentGame){
+    public ClientPlayer(String nickname, ClientGameBoard gameBoard){
 
         playerBoard = new Board();
         this.nickname = nickname;
-        this.currentGame = currentGame;
         victoryPoints = 0;
         activeEffects = new Effects();
         activeLeaderCards = new ArrayList<>();
@@ -81,9 +80,17 @@ public class ClientPlayer {
         this.nickname = nickname;
     }
 
-    public Game getCurrentGame (){
-        return currentGame;
+
+    public int getPositionIndex() {
+        return 0;
     }
 
+    public List<DevelopmentCard> getDevelopmentCards() {
+        return null;
+    }
+
+    public List<LeaderCard> getProductionLeaderCards() {
+        return null;
+    }
 }
 

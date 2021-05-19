@@ -71,7 +71,7 @@ public class Formatting {
         ANSI_BLUE("\033[34m"),
         ANSI_MAGENTA("\033[35m"),
         ANSI_CYAN("\033[36m"),
-        ANSI_WHITE("\033[37m"),
+        ANSI_WHITE("\u001b[37m"),
         WHITE("\033[48;5;255m"),
         ORANGE1("\033[48;5;209m"),
         ORANGE("\\033[48;2;255;165;0m" ),

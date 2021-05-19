@@ -48,7 +48,7 @@ public class Cli extends View {
         this.inputValidator = new InputValidator();
         inputExecutor = Executors.newSingleThreadExecutor();
         this.disconnected = false;
-        gameSetup();
+        //gameSetup();
     }
 
     public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
@@ -1796,7 +1796,7 @@ public class Cli extends View {
             if(gameBoard.getCardMarket().getStack(i, j).getListOfCards().size()>0) {
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                if (results.get(i).keySet().size() > 0) {
+                if (results.get(j).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(j).keySet()) {
                         System.out.print(getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
                         results.get(j).remove(resourceType);
@@ -1848,7 +1848,7 @@ public class Cli extends View {
                 color = ANSI_GREY.escape();
                 break;
             case WHITE:
-                color = ANSI_WHITE.escape();
+                color = ANSI_RESET.escape();
                 break;
         }
         return color;

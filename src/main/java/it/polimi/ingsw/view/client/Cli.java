@@ -48,7 +48,7 @@ public class Cli extends View {
         this.inputValidator = new InputValidator();
         inputExecutor = Executors.newSingleThreadExecutor();
         this.disconnected = false;
-        //gameSetup();
+        gameSetup();
     }
 
     public void setReceiver(Socket socket, ObjectOutputStream outputStream) {

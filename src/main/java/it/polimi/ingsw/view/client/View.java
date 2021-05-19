@@ -213,7 +213,7 @@ public abstract class View {
     public abstract void showDevelopmentCards();
 
     /**
-     * This method shows the user's active leader cards
+     * This method shows a list of leader cards
      */
     public  abstract void showLeaderCards(List<LeaderCard> leaderCards);
 
@@ -222,5 +222,8 @@ public abstract class View {
      */
     public abstract void showCardMarket(CardMarket cardMarket);
 
-
+    /**
+    *This method shows all existing resources
+     */
+    public abstract void showAllAvailableResources();
 }

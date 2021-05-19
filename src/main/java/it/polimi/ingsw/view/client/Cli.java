@@ -469,9 +469,12 @@ public class Cli extends View {
     /**
      * This method prints all the type of resources available in a match
      */
-    private void showAllAvailableResources() {
+    @Override
+    public void showAllAvailableResources() {
+        for (ResourceType resourceType : ResourceType.values()) {
+            System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
+        }
     }
-
     /**
      * Asks the user to play its turn action
      */
@@ -1794,7 +1797,7 @@ public class Cli extends View {
             if(gameBoard.getCardMarket().getStack(i, j).getListOfCards().size()>0) {
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                if (results.get(i).keySet().size() > 0) {
+                if (results.get(j).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(j).keySet()) {
                         System.out.print(getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
                         results.get(j).remove(resourceType);
@@ -1846,7 +1849,7 @@ public class Cli extends View {
                 color = ANSI_GREY.escape();
                 break;
             case WHITE:
-                color = ANSI_WHITE.escape();
+                color = ANSI_RESET.escape();
                 break;
         }
         return color;

@@ -3,11 +3,15 @@ package it.polimi.ingsw.view.client.viewComponents;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ClientPlayer {
 
@@ -82,15 +86,21 @@ public class ClientPlayer {
 
 
     public int getPositionIndex() {
-        return 0;
+        return playerBoard.getPopeRoad().getCurrentPositionIndex();
     }
 
     public List<DevelopmentCard> getDevelopmentCards() {
-        return null;
+        List<DevelopmentCard> developmentCards = new ArrayList<>();
+        for(Stack<DevelopmentCard> s : playerBoard.getDevelopmentCards())
+            developmentCards.addAll(s);
+        return developmentCards;
     }
 
     public List<LeaderCard> getProductionLeaderCards() {
-        return null;
+
+        Stream<LeaderCard> stream =  hand.stream().filter(leaderCard -> leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION));
+        return  stream.collect(Collectors.toList());
+
     }
 }
 

@@ -53,12 +53,12 @@ public class CliTest {
     public void showEmptyGameBoard() {
         ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
-        for(int i=0; i<3; i++){
-            for(int j=0; j<4; j++){
+        for(int i=0; i<2; i++){
+
                 for(int k=0; k<4; k++){
-                    gameBoard.remove(i,j);
+                    gameBoard.remove(i,0);
                 }
-            }
+
         }
         cli.showGameBoard(gameBoard);
 

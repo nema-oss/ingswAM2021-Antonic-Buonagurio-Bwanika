@@ -17,6 +17,9 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Deposit;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.utils.Formatting;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -42,9 +45,12 @@ public class CliTest {
 
     @Test
     public void showGameBoard() throws NonExistentCardException {
-        GameBoard gameBoard = new GameBoard();
+        ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
         cli.showGameBoard(gameBoard);
+        Formatting.clearScreen();
+        cli.showGameBoard(gameBoard);
+        cli.askTurnAction();
 
     }
 
@@ -76,6 +82,6 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
-        cli.showBoard(board, p);
+        //cli.showBoard(board, p);
     }
 }

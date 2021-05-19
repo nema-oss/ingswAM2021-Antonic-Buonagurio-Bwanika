@@ -17,6 +17,23 @@ import java.util.stream.Collectors;
  */
 public class InputValidator {
 
+
+    /**
+     * This REGEXP is used to validate the IP address entered by the user
+     */
+
+    private final static String IP_REGEXP = "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\." +
+            "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\." +
+            "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\." +
+            "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])";
+
+    /**
+     * This REGEXP is used to validate the port number entered by the user
+     */
+
+    private final static String PORT_REGEXP = "(^(1)0[2-9]\\d$)|(^(1)[2-9](\\d{2}$))|(^[2-9](\\d{3}$))|(^[1-6](\\d{4})$)";
+
+
     // user nickname pattern
     private static final String NICKNAME_REGEX = "^[A-Za-z0-9_-]{3,10}$";
 
@@ -243,6 +260,28 @@ public class InputValidator {
     public static TurnActions isValidAction(String input) {
 
         return TurnActions.valueOfLabel(input.toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * This method check that input matches to IP_REGEXP
+     * @param input is the input of the user
+     * @return true : input matches to IP_REGEXP
+     *         false : input doesn't matches to IP_REGEXP
+     */
+
+    public static boolean validateIP(String input){
+        return Pattern.matches(IP_REGEXP,input);
+    }
+
+    /**
+     * This method check that input matches to PORT_REGEXP
+     * @param input is the input of the user
+     * @return true : input matches to PORT_REGEXP
+     *         false : input doesn't matches to PORT_REGEXP
+     */
+
+    public static boolean validatePORT(String input){
+        return Pattern.matches(PORT_REGEXP,input);
     }
 
 

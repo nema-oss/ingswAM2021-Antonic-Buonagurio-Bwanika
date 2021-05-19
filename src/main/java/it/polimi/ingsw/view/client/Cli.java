@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
@@ -45,7 +46,9 @@ public class Cli extends View {
     public Cli(){
         this.scanner = new Scanner(System.in);
         this.inputValidator = new InputValidator();
+        inputExecutor = Executors.newSingleThreadExecutor();
         this.disconnected = false;
+        gameSetup();
     }
 
     public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
@@ -285,16 +288,59 @@ public class Cli extends View {
 
 
 
+    /**
+     * This method represents the game setup
+     */
+
+    public void gameSetup() {
+        System.out.println("Press enter button to start");
+        inputWithTimeout();
+
+        //Connection setup
+        setMyIp();
+        setMyPort();
+
+        //start connection
+        new EchoClient(myIp,myPort,this).start();
+    }
+
+    //View Override methods
+
+    /**
+     * This method allows to insert the server ip.
+     */
+
     @Override
     public void setMyIp() {
+        System.out.println("Insert the server IP address!");
+        String ip = inputWithoutTimeout();
+        while (!InputValidator.validateIP(ip)) {
+            System.out.println("Invalid IP address! Please, try again!");
+            ip = inputWithoutTimeout();
+        }
 
+        myIp = ip;
     }
+
+    /**
+     * This method allows to insert the server port.
+     */
 
     @Override
     public void setMyPort() {
+        System.out.println("Insert the server port!");
+        String port = inputWithoutTimeout();
+        while (!InputValidator.validatePORT(port)) {
+            System.out.println("Invalid port! Please, try again.");
+            port = inputWithoutTimeout();
+        }
 
+        myPort = Integer.parseInt(port);
     }
 
+    /**
+     * Allows the player to set his username
+     */
     @Override
     public void setUsername() {
 
@@ -428,11 +474,12 @@ public class Cli extends View {
         System.out.println("It's your turn. You can choose both a turn action among these" + "//" +
                 "and a leader action ( DISCARD or ACTIVATE)");
 
-        AtomicBoolean correct = new AtomicBoolean(true);
+        AtomicBoolean correct = new AtomicBoolean(false);
+        String inputS = inputWithTimeout();
         inputThread = inputExecutor.submit(() -> {
 
             do {
-                String input = inputWithoutTimeout();
+                String input = inputWithTimeout();
                 TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT));
                 correct.set(action != null);
                 if (!correct.get()){

@@ -36,11 +36,6 @@ public class EchoClient {
 
     }
 
-    public static void main(String[] args) {
-
-        EchoClient echoClient = new EchoClient("127.0.0.1", 1234, new Cli()); // this should be read from cmd line
-        echoClient.start();
-    }
 
 
     /**

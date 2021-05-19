@@ -24,8 +24,11 @@ public class Main {
      * @param args cmd line args
      */
     private static void clientMode(String[] args) {
+
         if(args.length == 2 && args[1].equals("-cli"))
-            new Cli().start();
+            new Cli().gameSetup();
+
+
     }
 
     /**

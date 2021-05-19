@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Deposit;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -41,9 +42,24 @@ public class CliTest {
     }
 
     @Test
-    public void showGameBoard() throws NonExistentCardException {
-        GameBoard gameBoard = new GameBoard();
+    public void showGameBoard() {
+        ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
+        cli.showGameBoard(gameBoard);
+
+    }
+
+    @Test
+    public void showEmptyGameBoard() {
+        ClientGameBoard gameBoard = new ClientGameBoard();
+        Cli cli = new Cli();
+        for(int i=0; i<3; i++){
+            for(int j=0; j<4; j++){
+                for(int k=0; k<4; k++){
+                    gameBoard.remove(i,j);
+                }
+            }
+        }
         cli.showGameBoard(gameBoard);
 
     }
@@ -53,6 +69,7 @@ public class CliTest {
         Board board = new Board();
         Cli cli = new Cli();
         GameBoard gameBoard = new GameBoard();
+        ClientGameBoard cgameBoard = new ClientGameBoard();
         Player p = new Player("Paolo", gameBoard, new Game());
         List<Resource> newResources = p.buyResources(2,2);
         List<Resource> aLot = new ArrayList<>();
@@ -76,6 +93,6 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
-        cli.showBoard(board, p);
+        //cli.showBoard(board, p);
     }
 }

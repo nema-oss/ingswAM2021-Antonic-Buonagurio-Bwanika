@@ -101,4 +101,10 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         //cli.showBoard(board, p);
     }
+
+    @Test
+    public void showAllResources(){
+        Cli cli = new Cli();
+        cli.showAllAvailableResources();
+    }
 }

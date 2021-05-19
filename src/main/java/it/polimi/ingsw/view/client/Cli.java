@@ -468,9 +468,12 @@ public class Cli extends View {
     /**
      * This method prints all the type of resources available in a match
      */
-    private void showAllAvailableResources() {
+    @Override
+    public void showAllAvailableResources() {
+        for (ResourceType resourceType : ResourceType.values()) {
+            System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
+        }
     }
-
     /**
      * Asks the user to play its turn action
      */

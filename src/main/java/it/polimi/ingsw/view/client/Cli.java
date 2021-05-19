@@ -1538,8 +1538,9 @@ public class Cli extends View {
 
                     }
                 }
-                results.add(map);
+
             }
+            results.add(map);
         }
 
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++){
@@ -1595,7 +1596,7 @@ public class Cli extends View {
         //now the fun begins: all other rows need to be printed column by column
         for(int i=1; i<gameBoard.getCardMarketRow(); i++){
             for(int j=0; j<gameBoard.getCardMarketColumns();j++){
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, j).getType());
                     System.out.print(color + UP_LEFT.escape());
                     for (int k = 0; k < MAX_SPACES; k++)
@@ -1608,7 +1609,7 @@ public class Cli extends View {
             }
             System.out.print("\n");
             for(int k=0; k<gameBoard.getCardMarketColumns(); k++){
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,k).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, k).getType());
                     System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape());
                     for (ResourceType resourceType : gameBoard.getCardMarket().getCard(i, k).getCost().keySet()) {
@@ -1629,7 +1630,7 @@ public class Cli extends View {
             }
             System.out.print("\n");
             for(int k=0; k<gameBoard.getCardMarketColumns(); k++) {
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,k).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, k).getType());
                     System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape());
                     for (int j = 0; j < gameBoard.getCardMarket().getCard(i, k).getLevel(); j++) {
@@ -1651,7 +1652,7 @@ public class Cli extends View {
             }
             System.out.print("\n");
             for(int k=0; k<gameBoard.getCardMarketColumns(); k++) {
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,k).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, k).getType());
                     System.out.print(color + BOLD_VERTICAL.escape() + "\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
                 }
@@ -1667,7 +1668,7 @@ public class Cli extends View {
             for(int j=0; j<gameBoard.getCardMarketColumns(); j++){
                 //check if a card has faithpoint production
                 long count;
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     count = gameBoard.getCardMarket().getCard(i, j).getProductionResults().stream().filter(x -> (x instanceof FaithPoint)).count();
                 }
                 else{
@@ -1676,7 +1677,7 @@ public class Cli extends View {
                 faithResults.add((int) count);
                 //add the remaining to resource
                 HashMap<ResourceType, Integer> map = new HashMap<>();
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     for (Producible p : gameBoard.getCardMarket().getCard(i, j).getProductionResults()) {
                         if (!(p instanceof FaithPoint)) {
                             if (map.containsKey(((Resource) p).getType())) {
@@ -1686,12 +1687,13 @@ public class Cli extends View {
                             }
                         }
                     }
-                    results.add(map);
+
                 }
+                results.add(map);
             }
 
             for(int j=0; j<gameBoard.getCardMarketColumns();j++){
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, j).getType());
                     System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape());
                     for (ResourceType resourceType : gameBoard.getCardMarket().getCard(i, j).getProductionRequirements().keySet()) {
@@ -1708,12 +1710,12 @@ public class Cli extends View {
                     showBlankLine(1);
                 }
             }
-            showCardsUtil(gameBoard, results);
-            showCardsUtil(gameBoard, results);
+            showCardsUtil(gameBoard, results, i);
+            showCardsUtil(gameBoard, results, i);
             System.out.print("\n");
 
             for(int j=0; j<gameBoard.getCardMarketColumns(); j++) {
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, j).getType());
                     System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                     System.out.print(gameBoard.getCardMarket().getCard(i, j).getVictoryPoints());
@@ -1726,7 +1728,7 @@ public class Cli extends View {
             System.out.print("\n");
 
             for(int j=0; j<gameBoard.getCardMarketColumns(); j++){
-                if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
+                if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, j).getType());
                     System.out.print(color + DOWN_LEFT.escape());
                     for (int k = 0; k < MAX_SPACES; k++)
@@ -1769,6 +1771,32 @@ public class Cli extends View {
                     for (ResourceType resourceType : results.get(i).keySet()) {
                         System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
                         results.get(i).remove(resourceType);
+                        break;
+                    }
+
+                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                } else {
+                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+
+                }
+            }
+            else{
+                showBlankLine(1);
+            }
+        }
+    }
+
+    public void showCardsUtil(ClientGameBoard gameBoard, ArrayList<HashMap<ResourceType, Integer>> results, int i) /*throws NonExistentCardException */{
+        System.out.print("\n");
+
+        for(int j=0; j<gameBoard.getCardMarketColumns(); j++) {
+            if(gameBoard.getCardMarket().getStack(i, j).getListOfCards().size()>0) {
+                String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                if (results.get(i).keySet().size() > 0) {
+                    for (ResourceType resourceType : results.get(j).keySet()) {
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        results.get(j).remove(resourceType);
                         break;
                     }
 

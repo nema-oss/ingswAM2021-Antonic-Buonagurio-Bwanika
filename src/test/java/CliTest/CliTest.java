@@ -76,8 +76,7 @@ public class CliTest {
         Cli cli = new Cli();
         GameBoard gameBoard = new GameBoard();
         ClientGameBoard cgameBoard = new ClientGameBoard();
-        Player p = new Player("Paolo", gameBoard, new Game());
-        List<Resource> newResources = p.buyResources(2,2);
+        ClientPlayer p = new ClientPlayer("Paolo", cgameBoard);
         List<Resource> aLot = new ArrayList<>();
         for(int i=0; i<10; i++) {
             aLot.add(new Resource(ResourceType.SHIELD));
@@ -85,12 +84,7 @@ public class CliTest {
             aLot.add(new Resource(ResourceType.SERVANT));
             aLot.add(new Resource(ResourceType.STONE));
         }
-        p.getDeposit().addResource(1, newResources.get(0));
-        p.getDeposit().addResource(2, newResources.get(0));
-        p.getDeposit().addResource(2, newResources.get(0));
-        p.getDeposit().addResource(3, newResources.get(0));
-        p.getDeposit().addResource(3, newResources.get(0));
-        p.getDeposit().addResource(3, newResources.get(0));
+
         p.getStrongbox().addResource(aLot);
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,1));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,1));
@@ -99,7 +93,7 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
-        //cli.showBoard(board, p);
+        cli.showBoard(cgameBoard, p);
     }
 
     @Test

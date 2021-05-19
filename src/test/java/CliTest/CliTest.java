@@ -29,13 +29,14 @@ import java.util.List;
 
 public class CliTest {
     private CardFactory cardFactory;
-    private ArrayList<LeaderCard> leaderCards;
+    private List<LeaderCard> leaderCards;
 
     @Test
     public void clearScreen(){
         Formatting.clearScreen();
         System.out.println(4);
         Formatting.clearScreen();
+
     }
     @Test
     public void showTitle(){

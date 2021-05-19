@@ -51,7 +51,11 @@ public class MessageSender {
                 return true;
             }catch (IOException e){
                 System.out.println("Can't send message on socket");
-                e.printStackTrace();
+                try {
+                    socket.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         }
         return false;

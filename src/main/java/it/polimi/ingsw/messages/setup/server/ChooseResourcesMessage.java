@@ -18,18 +18,20 @@ import java.util.Map;
 public class ChooseResourcesMessage implements Serializable, SetupMessage {
 
     private final SetupMessageType messageType;
+    private final String user;
     private Map<ResourceType,Integer> resourceChoice;
-    private boolean accepted;
+    private final boolean accepted;
 
     /**
      * Server-side constructor to create the message
      * @param resourceChoice: target resource
      * @param accepted: result of the request
      */
-    public ChooseResourcesMessage(Map<ResourceType,Integer> resourceChoice, boolean accepted) {
+    public ChooseResourcesMessage(String user, Map<ResourceType,Integer> resourceChoice, boolean accepted) {
         this.resourceChoice = resourceChoice;
         this.accepted = accepted;
-        messageType = SetupMessageType.CHOOSE_RESOURCES;
+        this.messageType = SetupMessageType.CHOOSE_RESOURCES;
+        this.user = user;
     }
     /**
      * Execute the request client side
@@ -44,6 +46,7 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
      */
     public void execute(VirtualView virtualView){
         //method in virtualView
+        virtualView.chooseResourceType(user,resourceChoice);
     }
 
     /**

@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.utils.MessageWriter;
 import it.polimi.ingsw.messages.utils.UpdateWriter;
+import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -47,6 +48,8 @@ public class VirtualView implements VirtualViewInterface{
         this.inGameDisconnectionHandler = inGameDisconnectionHandler;
         this.requiredNumberOfPlayers = -1;
         this.socketObjectOutputStreamMap = new HashMap<>();
+
+        matchController.setVirtualView(this);
     }
 
     /**
@@ -113,7 +116,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void toDoLogin(Socket client, boolean isFirstPlayer, ObjectOutputStream outputStream) {
 
-        DoLoginMessage message = (DoLoginMessage) new MessageWriter(SetupMessageType.LOGIN).getMessage();
+        DoLoginMessage message = new DoLoginMessage();
         message.setFirstPlayer(isFirstPlayer);
         boolean success = new MessageSender(client,message).sendMsg(outputStream);
         if(!success) clientDown(client);
@@ -159,7 +162,7 @@ public class VirtualView implements VirtualViewInterface{
             }
         }
 
-        sendMessage(socket, new MessageWriter(SetupMessageType.LOGIN_DONE).getMessage());
+        sendMessage(socket, new UpdateWriter().loginDone(nickname));
 
         if(getLobbySize() == MAXIMUM_LOBBY_SIZE || isRequiredNumberOfPlayers()) toStartMatch();
 
@@ -173,13 +176,9 @@ public class VirtualView implements VirtualViewInterface{
      */
     private void toStartMatch() {
 
-        //TODO CANCEL THE COMMENT IT'S JUST A TEST
-        Message message = new MatchStartedMessage();
-        for(Socket socket: clients.values()) {
-            sendMessage(socket,message);
-        }
 
         matchController.onStartGame();
+
     }
 
     /**
@@ -256,7 +255,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param resourceType the type selected
      */
     private void onAcceptedChooseResourceType(String user, Map<ResourceType, Integer> resourceType) {
-        Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(resourceType);
+        Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(user, resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
     }
     /**
@@ -265,7 +264,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param resourceType the type selected
      */
     private void onRejectedChooseResourceType(String user, Map<ResourceType, Integer> resourceType) {
-        Message resourceTypeSelectionRejected = new ErrorWriter().resourceTypeSelectionRejected(resourceType);
+        Message resourceTypeSelectionRejected = new ErrorWriter().resourceTypeSelectionRejected(user,resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionRejected);
     }
 

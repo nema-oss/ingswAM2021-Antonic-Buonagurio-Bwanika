@@ -129,7 +129,10 @@ public class EchoClient {
             }
            input.close();
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
-            if (!server.isClosed()) serverDisconnection();
+            if (!server.isClosed()) {
+                serverDisconnection();
+                e.printStackTrace();
+            }
         }
     }
 

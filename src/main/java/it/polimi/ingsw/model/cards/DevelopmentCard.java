@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
     * DevelopmentCard represents a development card
     * @author Nemanja
  */
-public class DevelopmentCard implements Card {
+public class DevelopmentCard implements Card, Serializable {
 
     private int level;
     private DevelopmentCardType type;

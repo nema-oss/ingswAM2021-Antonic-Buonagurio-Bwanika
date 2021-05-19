@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +36,6 @@ public interface ControllerInterface {
     void sendEndTurn();
     void sendChooseResources ();
     void sendChooseLeaderCards();
+    void setVirtualView(VirtualViewInterface virtualView);
 
 }

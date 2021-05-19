@@ -49,6 +49,7 @@ public class MatchController implements ControllerInterface{
      * this method sets the virtual view for the controller
      * @param virtualView the game's virtualView
      */
+    @Override
     public void setVirtualView(VirtualViewInterface virtualView){
         this.viewInterface = virtualView;
     }
@@ -114,7 +115,9 @@ public class MatchController implements ControllerInterface{
         for (int i=0; i<4 && game.getLeaderDeck().getListOfCards().size() > 0; i++){
             leaders.add(game.getLeaderDeck().drawCard());
         }
+
         viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
+
     }
 
 

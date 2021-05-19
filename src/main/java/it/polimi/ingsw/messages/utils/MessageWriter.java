@@ -65,7 +65,7 @@ public class MessageWriter{
                 messageOut = new DoLoginMessage();
                 break;
             case LOGIN_DONE:
-                messageOut = new LoginDoneMessage(true);
+                messageOut = new LoginDoneMessage("gigi",true);
                 break;
             case GAME_MODE:
                 messageOut = new GameModeMessage(askClientNumPlayers());

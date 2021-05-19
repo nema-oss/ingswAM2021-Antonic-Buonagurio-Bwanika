@@ -115,7 +115,7 @@ public abstract class View {
     /**
      * Shows the player that the login has been done
      */
-    public abstract void showLoginDone();
+    public abstract void showLoginDone(String user);
 
     /**
      * Shows the player that a new player has logged in

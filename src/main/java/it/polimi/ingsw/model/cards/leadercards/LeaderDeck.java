@@ -4,16 +4,17 @@ import it.polimi.ingsw.model.cards.Deck;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class LeaderDeck implements Deck {
 
-    private ArrayList<LeaderCard> listOfLeaderCard;
+    private List<LeaderCard> listOfLeaderCard;
 
-    public LeaderDeck(ArrayList<LeaderCard> cardsList) {
+    public LeaderDeck(List<LeaderCard> cardsList) {
         listOfLeaderCard = cardsList;
     }
 
-    public ArrayList<LeaderCard> getListOfCards(){
+    public List<LeaderCard> getListOfCards(){
         return listOfLeaderCard;
     }
 

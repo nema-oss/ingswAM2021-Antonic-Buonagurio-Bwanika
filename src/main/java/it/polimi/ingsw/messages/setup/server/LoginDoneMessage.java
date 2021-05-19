@@ -13,13 +13,15 @@ import java.io.Serializable;
  */
 public class LoginDoneMessage implements Serializable, SetupMessage {
     private final SetupMessageType messageType;
+    private final String user;
     boolean accepted;
 
     /**
      * Server-side constructor to create the message
      * @param accepted: result of the request
      */
-    public LoginDoneMessage(boolean accepted) {
+    public LoginDoneMessage(String user, boolean accepted) {
+        this.user = user;
         this.accepted = accepted;
         this.messageType = SetupMessageType.LOGIN_DONE;
     }
@@ -33,7 +35,7 @@ public class LoginDoneMessage implements Serializable, SetupMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showLoginDone();
+        view.showLoginDone(user);
     }
 
 

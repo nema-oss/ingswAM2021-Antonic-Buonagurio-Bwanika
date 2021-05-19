@@ -45,8 +45,8 @@ public class ErrorWriter {
      * @param resourceType the selected types
      * @return the rejection message
      */
-    public Message resourceTypeSelectionRejected(Map<ResourceType,Integer> resourceType) {
-        return new ChooseResourcesMessage( resourceType, false);
+    public Message resourceTypeSelectionRejected(String user, Map<ResourceType,Integer> resourceType) {
+        return new ChooseResourcesMessage( user, resourceType, false);
     }
 
     public Message buyCardRejected(int x, int y) {

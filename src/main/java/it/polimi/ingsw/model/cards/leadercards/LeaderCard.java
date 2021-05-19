@@ -5,9 +5,10 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Effects;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public abstract class LeaderCard implements Card {
+public abstract class LeaderCard implements Card, Serializable {
 
     public Map<ResourceType, Integer> costResource;
     public Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;

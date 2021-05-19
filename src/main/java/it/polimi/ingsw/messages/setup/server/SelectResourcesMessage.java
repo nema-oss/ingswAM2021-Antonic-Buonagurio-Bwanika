@@ -1,6 +1,5 @@
 package it.polimi.ingsw.messages.setup.server;
 
-import com.sun.org.apache.bcel.internal.generic.PUSH;
 import it.polimi.ingsw.messages.setup.SetupMessage;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;

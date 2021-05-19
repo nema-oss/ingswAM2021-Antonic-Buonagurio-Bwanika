@@ -1,11 +1,8 @@
 package it.polimi.ingsw.messages.utils;
 
-import it.polimi.ingsw.messages.setup.server.DisconnectionMessage;
+import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
-import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
-import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
-import it.polimi.ingsw.messages.setup.server.NewUserLogged;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -32,8 +29,8 @@ public class UpdateWriter {
         return new ChooseLeadersMessage(leaderCards, true);
     }
 
-    public Message resourceTypeSelectionAccepted(Map<ResourceType,Integer> resourceTypeChoice) {
-        return new ChooseResourcesMessage( resourceTypeChoice, true);
+    public Message resourceTypeSelectionAccepted(String user, Map<ResourceType,Integer> resourceTypeChoice) {
+        return new ChooseResourcesMessage( user, resourceTypeChoice, true);
     }
 
     public Message moveDepositRequestAccepted(String user,int a, int b) {
@@ -71,5 +68,9 @@ public class UpdateWriter {
 
     public Message playerDisconnection(String user){
         return new DisconnectionMessage(user);
+    }
+
+    public Message loginDone(String nickname) {
+        return new LoginDoneMessage(nickname,true);
     }
 }

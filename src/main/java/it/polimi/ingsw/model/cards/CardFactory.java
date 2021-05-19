@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CardFactory {
 
@@ -48,7 +49,7 @@ public class CardFactory {
      * this method parse the Json file configuration and create the Leader cards
      */
 
-    public ArrayList<LeaderCard> getLeaderCards() {
+    public List<LeaderCard> getLeaderCards() {
 
         try {
             // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")

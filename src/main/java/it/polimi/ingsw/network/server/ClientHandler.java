@@ -165,7 +165,6 @@ public class ClientHandler implements Runnable{
                 Message message = new MessageWriter(MessageType.PING).getMessage();
                 new MessageSender(client, message).sendMsg(outputStream);
             } catch (InterruptedException  ignored) {
-                System.out.println("Droga");
             }
         }while(!client.isClosed());
 

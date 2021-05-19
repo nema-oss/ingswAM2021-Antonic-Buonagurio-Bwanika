@@ -301,7 +301,7 @@ public class Cli extends View {
 
     public void gameSetup() {
         System.out.println("Press enter button to start");
-        inputWithTimeout();
+        inputWithoutTimeout();
 
         //Connection setup
         setMyIp();
@@ -359,7 +359,6 @@ public class Cli extends View {
     @Override
     public void startMatch(String currentPlayer) {
 
-        newMatch("gue");
         Formatting.clearScreen();
 
         showBoard(gameBoard, player);
@@ -461,7 +460,7 @@ public class Cli extends View {
             }while(!correct.get() && resourceTypesChoice.size() < 2);
 
             if(!Thread.interrupted())
-                new MessageSender(socket, new ChooseResourcesMessage(resourceTypesChoice,true)).sendMsg(outputStream);
+                new MessageSender(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true)).sendMsg(outputStream);
 
         });
     }
@@ -742,7 +741,8 @@ public class Cli extends View {
      * This method tells the user that login has been successful and asks to wait for other players to join
      */
     @Override
-    public void showLoginDone() {
+    public void showLoginDone(String user) {
+        newMatch(user);
         System.out.println("Login done, waiting to start the match ...");
     }
 

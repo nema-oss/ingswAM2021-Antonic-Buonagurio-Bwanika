@@ -13,6 +13,7 @@ import java.io.Serializable;
  */
 
 public class PingMessage implements SetupMessage, Serializable {
+
     private final MessageType messageType;
 
     /**

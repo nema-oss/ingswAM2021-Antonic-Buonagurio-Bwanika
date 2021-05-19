@@ -145,7 +145,7 @@ public abstract class View {
     /**
      * Shows to the player the game board
      */
-    public abstract void showGameBoard(ClientGameBoard gameBoard) throws NonExistentCardException;
+    public abstract void showGameBoard(ClientGameBoard gameBoard);
 
     /**
      * Shows that the server has not been found

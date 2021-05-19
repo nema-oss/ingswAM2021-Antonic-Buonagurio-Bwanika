@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.MatchStartedMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.SetupMessageType;
@@ -174,10 +175,12 @@ public class VirtualView implements VirtualViewInterface{
      */
     private void toStartMatch() {
 
+        //TODO CANCEL THE COMMENT IT'S JUST A TEST
         Message message = new MatchStartedMessage();
         for(Socket socket: clients.values()) {
             sendMessage(socket,message);
         }
+
         matchController.onStartGame();
     }
 
@@ -521,7 +524,6 @@ public class VirtualView implements VirtualViewInterface{
 
 
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards ){
-
     }
 
     /**

@@ -1,12 +1,24 @@
 package it.polimi.ingsw.view.client.utils;
 
+import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
+
 /**
  * This class helps with formatting the output in CLI mode
  */
 public class Formatting {
 
+    /**
+     * Clears the screen and print the default heading
+     */
     public static void clearScreen() {
+        int height = 50;
+        StringBuilder clean = new StringBuilder();
+        for (int i = 0; i < height; i = i + 5) {
+            clean.append("\n\n\n\n\n");
+        }
+        System.out.print(clean);
     }
+
 
     public enum Unicode {
         RESOURCE("\u2B24"),

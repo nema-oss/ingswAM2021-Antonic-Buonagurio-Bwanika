@@ -25,7 +25,9 @@ public class Main {
      */
     private static void clientMode(String[] args) {
         if(args.length == 2 && args[1].equals("-cli"))
-            new Cli().start();
+            new Cli().gameSetup();
+
+
     }
 
     /**

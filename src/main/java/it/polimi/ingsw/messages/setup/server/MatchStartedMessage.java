@@ -32,6 +32,7 @@ public class MatchStartedMessage implements Serializable, SetupMessage {
      */
     public void execute(View view){
         view.showMatchStarted();
+        view.setResourceTypeChoice(2);
     }
     /**
      * Get the message type

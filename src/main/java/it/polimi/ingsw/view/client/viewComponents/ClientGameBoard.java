@@ -45,4 +45,8 @@ public class ClientGameBoard {
     public int getCardMarketRow() {
         return CARD_MARKET_ROW;
     }
+
+    public void remove(int i, int j){
+        cardMarket.getStack(i,j).getListOfCards().remove(cardMarket.getStack(i,j).getListOfCards().size()-1);
+    }
 }

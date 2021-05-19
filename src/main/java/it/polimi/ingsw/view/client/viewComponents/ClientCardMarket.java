@@ -67,4 +67,8 @@ public class ClientCardMarket {
         return cardMarket[row][column].getTop();
     }
 
+
+    public DevelopmentDeck getStack(int i, int j){
+        return cardMarket[i][j];
+    }
 }

@@ -31,7 +31,8 @@ public class MatchStartedMessage implements Serializable, SetupMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.startMatch("not you");
+        view.showMatchStarted();
+        view.setResourceTypeChoice(2);
     }
     /**
      * Get the message type

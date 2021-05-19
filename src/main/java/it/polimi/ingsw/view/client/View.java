@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.CardMarket;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.network.client.EchoClient;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The view abstract class
@@ -22,6 +24,7 @@ public abstract class View {
     protected EchoClient clientHandler;
     protected String myIp;
     protected int myPort;
+
 
 
     /**
@@ -41,13 +44,61 @@ public abstract class View {
 
     /**
      * This method allows to start a match
+     * @param currentPlayer  the first player to play
      */
-    public abstract void startMatch();
+    public abstract void startMatch(String currentPlayer);
+
+    /**
+     * Asks the users to choose its leader card
+     * @param cardChoice the card pool
+     */
+    public abstract void setLeaderCardChoice(List<LeaderCard> cardChoice);
+
+    /**
+     * Asks the user to choose its resource
+     * @param numberOfResources number of resources the user can choose
+     */
+    public abstract void setResourceTypeChoice(int numberOfResources);
+
+    /**
+     * Asks the user to play its turn action
+     */
+    public abstract void askTurnAction();
+
+    /**
+     * Asks the user what card productions it wants to use
+     * @param leaderCards its leader card type production
+     * @param developmentCards its development card
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    public abstract void setProductionChoice(List<DevelopmentCard> developmentCards, List<LeaderCard> leaderCards, boolean actionRejectedBefore);
+
+    /**
+     * Asks the user what leader card it wants to use
+     * @param leaderCards its leader card
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    public abstract void setLeaderCardAction(List<LeaderCard> leaderCards, boolean actionRejectedBefore);
+
+    /**
+     * Asks the user what card it wants to buy
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    public abstract void setBuyCardAction(boolean actionRejectedBefore);
+
+    /**
+     * Asks the user what resources it wants to buy
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    public abstract void setBuyResourceAction(boolean actionRejectedBefore);
+
+
 
     /**
      * Shows the login
      *
      * @param message login message
+     *
      */
     public abstract void showLogin(DoLoginMessage message);
 
@@ -154,7 +205,7 @@ public abstract class View {
     /**
      * This method shows the user's active leader cards
      */
-    public  abstract void showLeaderCards(ArrayList<LeaderCard> leaderCards);
+    public  abstract void showLeaderCards(List<LeaderCard> leaderCards);
 
     /**
      * This method shows the card market

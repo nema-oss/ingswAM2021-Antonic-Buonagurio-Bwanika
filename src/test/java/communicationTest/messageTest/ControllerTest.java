@@ -40,24 +40,34 @@ public class ControllerTest {
 
     @Test
     public void setVirtualViewTest(){
+
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
     }
 
     @Test
     public void onControllerNewPlayerTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         List<Error> error;
 
         game.setGamePhase(GamePhase.LOGIN);
         error = controller.onNewPlayer(p.getNickname());
-        assertTrue(game.getListOfPlayers().contains(p));
+        assertEquals(p.getNickname(), game.getPlayerByNickname(p.getNickname()).getNickname());
         assertTrue(error.isEmpty());
 
         error = controller.onNewPlayer(p2.getNickname());
         assertEquals(game.getListOfPlayers().size(), 2);
-        assertTrue(game.getListOfPlayers().contains(p2));
+        assertEquals(p2.getNickname(), game.getPlayerByNickname(p2.getNickname()).getNickname());
         assertTrue(error.isEmpty());
-
 
         error = controller.onNewPlayer(p.getNickname());
         assertTrue(error.contains(Error.NICKNAME_ALREADY_EXISTS));
@@ -71,14 +81,17 @@ public class ControllerTest {
         assertEquals(game.getGamePhase(), GamePhase.LOGIN);
 
         game.setGamePhase(GamePhase.PLAY_TURN);
-        Player p3 = new Player("Topolino", game.getGameBoard(), game);
-        controller.onNewPlayer(p3.getNickname());
-
 
     }
 
     @Test
     public void onStartGameTest(){
+
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -97,9 +110,15 @@ public class ControllerTest {
     @Test
     public void onLeaderCardsChosenTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setCurrentPlayer(p);
 
         List<LeaderCard> leaderCardsChosen = new ArrayList<>();
         leaderCardsChosen.add(game.getLeaderDeck().drawCard());
@@ -113,9 +132,12 @@ public class ControllerTest {
         assertTrue(errors.contains(Error.INVALID_ACTION));
 
         leaderCardsChosen.add(game.getLeaderDeck().drawCard());
+
+        Player player = game.getCurrentPlayer();
         errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen);
+
         assertTrue(errors.isEmpty());
-        assertTrue(game.getCurrentPlayer().getHand().containsAll(leaderCardsChosen));
+        assertTrue(player.getHand().containsAll(leaderCardsChosen));
 
         game.setGamePhase(GamePhase.LOGIN);
         errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen);
@@ -125,9 +147,16 @@ public class ControllerTest {
     @Test
     public void onResourcesChosenTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setCurrentPlayer(p);
 
         game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
 
@@ -146,24 +175,32 @@ public class ControllerTest {
     @Test
     public void onActivateProductionTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setPlayersOrder();
 
         List<Error> errors = controller.onActivateProduction(game.getCurrentPlayer().getNickname());
         assertTrue(errors.contains(Error.WRONG_GAME_PHASE));
 
-        p.setStandardActionPlayed(true);
-        p2.setStandardActionPlayed(true);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        game.getCurrentPlayer().setStandardActionPlayed(true);
         errors = controller.onActivateProduction(game.getCurrentPlayer().getNickname());
+
         assertTrue(errors.contains(Error.INVALID_ACTION));
 
-        game.setGamePhase(GamePhase.PLAY_TURN);
+        game.getCurrentPlayer().setStandardActionPlayed(false);
         errors = controller.onActivateProduction(game.getCurrentPlayer().getNickname());
         assertTrue(errors.isEmpty());
     }
 
-    @Test
+    /* @Test
     public void onActivateDevelopmentProductionTest(){}
 
     @Test
@@ -182,13 +219,19 @@ public class ControllerTest {
     public void onBuyResourcesTest(){}
 
     @Test
-    public void onActivateLeaderTest(){}
+    public void onActivateLeaderTest(){} */
 
     @Test
     public void onDiscardLeaderTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
         List<LeaderCard> hand = new ArrayList<>(game.getLeaderDeck().getListOfCards());
         p.setHand(hand);
 
@@ -209,9 +252,17 @@ public class ControllerTest {
     @Test
     public void EndTurnTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         game.setGamePhase(GamePhase.PLAY_TURN);
+        game.setSinglePlayerCPU();
+        game.setPlayersOrder();
 
         game.getCurrentPlayer().setStandardActionPlayed(false);
         List<Error> errors = controller.onEndTurn(game.getCurrentPlayer().getNickname());
@@ -225,8 +276,14 @@ public class ControllerTest {
     @Test
     public void onMoveDepositTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
 
         try {
             p.addResourceToDeposit(1, new Resource(ResourceType.COIN));
@@ -249,9 +306,16 @@ public class ControllerTest {
     @Test
     public void onDiscardResourceTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setCurrentPlayer(p);
+
 
         game.setGamePhase(GamePhase.PLAY_TURN);
         try {
@@ -268,9 +332,18 @@ public class ControllerTest {
     @Test
     public void nextTurnTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setPlayersOrder();
 
         game.setGamePhase(GamePhase.PLAY_TURN);
 
@@ -279,6 +352,7 @@ public class ControllerTest {
         controller.nextTurn();
         assertEquals(player, game.getCurrentPlayer());
 
+        player.setLeaderActionPlayed(true);
         player.setLeaderActionPlayed(true);
         player.setStandardActionPlayed(true);
         controller.nextTurn();
@@ -289,8 +363,14 @@ public class ControllerTest {
     @Test
     public void controlTurnTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
 
         List<Error> errors = controller.controlTurn(p.getNickname());
         assertFalse(errors.isEmpty());
@@ -307,8 +387,14 @@ public class ControllerTest {
     @Test
     public void onControlStandardActionTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
 
         p.setStandardActionPlayed(true);
         List<Error> errors = controller.controlStandardAction();
@@ -323,9 +409,16 @@ public class ControllerTest {
     @Test
     public void onControlLeaderActionTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
 
+        p.setLeaderActionPlayed(true);
         p.setLeaderActionPlayed(true);
         List<Error> errors = controller.controlLeaderAction();
         assertFalse(errors.isEmpty());
@@ -340,9 +433,15 @@ public class ControllerTest {
     @Test
     public void onPlayerDisconnectionTest(){
 
+        controller = new MatchController();
+        game = controller.getGame();
+        p = new Player("Pippo", game.getGameBoard(), game);
+        p2 = new Player("Pluto", game.getGameBoard(), game);
+
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        game.setCurrentPlayer(p);
 
         List<Error> errors = controller.onPlayerDisconnection("Paperino");
         assertFalse(errors.isEmpty());

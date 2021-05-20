@@ -15,8 +15,8 @@ public class WhiteToResource extends LeaderCard{
         return result;
     }
 
-    public WhiteToResource(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints);
+    public WhiteToResource(String id, Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType result, LeaderCardType leaderCardType) {
+        super(id, costResource, costDevelopment, victoryPoints);
         this.result = result;
         this.leaderCardType = leaderCardType;
     }
@@ -37,5 +37,10 @@ public class WhiteToResource extends LeaderCard{
     public LeaderCardType getLeaderType(){
         return leaderCardType;
     }
+
+    public String getId() {
+        return id;
+    }
+
 
 }

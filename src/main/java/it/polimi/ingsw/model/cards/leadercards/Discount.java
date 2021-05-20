@@ -12,8 +12,8 @@ public class Discount extends LeaderCard{
     private int discountAmount;
     private LeaderCardType leaderCardType;
 
-    public Discount(Map<ResourceType, Integer> costResource, Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType discountType, int discountAmount, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints);
+    public Discount(String id, Map<ResourceType, Integer> costResource, Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType discountType, int discountAmount, LeaderCardType leaderCardType) {
+        super(id, costResource, costDevelopment, victoryPoints);
         this.discountType = discountType;
         this.discountAmount = discountAmount;
         this.leaderCardType = leaderCardType;
@@ -37,4 +37,7 @@ public class Discount extends LeaderCard{
         return discountAmount;
     }
 
+    public String getId() {
+        return id;
+    }
 }

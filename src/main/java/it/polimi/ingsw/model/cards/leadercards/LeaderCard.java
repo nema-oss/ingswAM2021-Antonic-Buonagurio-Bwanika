@@ -10,12 +10,14 @@ import java.util.Map;
 
 public abstract class LeaderCard implements Card, Serializable {
 
+    public String id;
     public Map<ResourceType, Integer> costResource;
     public Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
     public int victoryPoints;
 
 
-    public LeaderCard(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints) {
+    public LeaderCard(String id, Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints) {
+        this.id = id;
         this.costResource = costResource;
         this.costDevelopment = costDevelopment;
         this.victoryPoints = victoryPoints;
@@ -38,5 +40,9 @@ public abstract class LeaderCard implements Card, Serializable {
     public abstract LeaderCardType getLeaderType();
 
     public abstract void useEffect(Effects activeEffects);
+
+    public String getId() {
+        return id;
+    }
 
 }

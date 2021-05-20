@@ -1,5 +1,6 @@
 [
   {
+      "id": "d1",
       "level": 1,
       "type": "GREEN",
       "cost": {"SHIELD": 2},
@@ -12,6 +13,7 @@
 
 
     {
+      "id": "d2",
       "level": 1,
       "type": "PURPLE",
       "cost": {"SERVANT": 2},
@@ -24,6 +26,7 @@
 
 
     {
+      "id": "d3",
       "level": 1,
       "type": "BLUE",
       "cost": {"COIN": 2},
@@ -36,6 +39,7 @@
 
 
     {
+      "id": "d4",
       "level": 1,
       "type": "YELLOW",
       "cost": {"STONE": 2},
@@ -48,6 +52,7 @@
 
 
     {
+      "id": "d5",
       "level": 1,
       "type": "GREEN",
       "cost": {
@@ -64,6 +69,7 @@
 
 
     {
+      "id": "d6",
       "level": 1,
       "type": "PURPLE",
       "cost": {
@@ -80,6 +86,7 @@
 
 
     {
+      "id": "d7",
       "level": 1,
       "type": "BLUE",
       "cost":{
@@ -96,6 +103,7 @@
 
 
     {
+      "id": "d8",
       "level": 1,
       "type": "YELLOW",
       "cost": {
@@ -112,6 +120,7 @@
 
 
     {
+      "id": "d9",
       "level": 1,
       "type": "GREEN",
       "cost": {"SHIELD": 3},
@@ -126,6 +135,7 @@
 
 
     {
+      "id": "d10",
       "level": 1,
       "type": "PURPLE",
       "cost": {"SERVANT": 3},
@@ -140,6 +150,7 @@
 
 
     {
+      "id": "d11",
       "level": 1,
       "type": "BLUE",
       "cost": {"COIN": 3},
@@ -155,6 +166,7 @@
 
 
     {
+      "id": "d12",
       "level": 1,
       "type": "YELLOW",
       "cost": {"STONE": 3},
@@ -169,6 +181,7 @@
 
 
     {
+      "id": "d13",
       "level": 1,
       "type": "GREEN",
       "cost": {
@@ -189,6 +202,7 @@
 
 
     {
+      "id": "d14",
       "level": 1,
       "type": "PURPLE",
       "cost": {
@@ -209,6 +223,7 @@
 
 
     {
+      "id": "d15",
       "level": 1,
       "type": "BLUE",
       "cost": {
@@ -229,6 +244,7 @@
 
 
     {
+      "id": "d16",
       "level": 1,
       "type": "YELLOW",
       "cost": {
@@ -249,6 +265,7 @@
 
 
     {
+      "id": "d17",
       "level": 2,
       "type": "GREEN",
       "cost": {"SHIELD": 4},
@@ -262,6 +279,7 @@
 
 
     {
+      "id": "d18",
       "level": 2,
       "type": "PURPLE",
       "cost": {"SERVANT": 4},
@@ -275,6 +293,7 @@
 
 
     {
+      "id": "d19",
       "level": 2,
       "type": "BLUE",
       "cost": {"COIN": 4},
@@ -288,6 +307,7 @@
 
 
     {
+      "id": "d20",
       "level": 2,
       "type": "YELLOW",
       "cost": {"STONE": 4},
@@ -301,6 +321,7 @@
 
 
     {
+      "id": "d21",
       "level": 2,
       "type": "GREEN",
       "cost": {
@@ -321,6 +342,7 @@
 
 
     {
+      "id": "d22",
       "level": 2,
       "type": "PURPLE",
       "cost": {
@@ -341,6 +363,7 @@
 
 
     {
+      "id": "d23",
       "level": 2,
       "type": "BLUE",
       "cost": {
@@ -361,6 +384,7 @@
 
 
     {
+      "id": "d24",
       "level": 2,
       "type": "YELLOW",
       "cost": {
@@ -381,6 +405,7 @@
 
 
     {
+      "id": "d25",
       "level": 2,
       "type": "GREEN",
       "cost": {"SHIELD": 5},
@@ -396,6 +421,7 @@
 
 
     {
+      "id": "d26",
       "level": 2,
       "type": "PURPLE",
       "cost": {"SERVANT": 5},
@@ -411,6 +437,7 @@
 
 
     {
+      "id": "d27",
       "level": 2,
       "type": "BLUE",
       "cost": {"COIN": 5},
@@ -426,6 +453,7 @@
 
 
     {
+      "id": "d28",
       "level": 2,
       "type": "YELLOW",
       "cost": {"STONE": 5},
@@ -441,6 +469,7 @@
 
 
     {
+      "id": "d29",
       "level": 2,
       "type": "GREEN",
       "cost": {
@@ -458,6 +487,7 @@
 
 
     {
+      "id": "d30",
       "level": 2,
       "type": "PURPLE",
       "cost": {
@@ -475,6 +505,7 @@
 
 
     {
+      "id": "d31",
       "level": 2,
       "type": "BLUE",
       "cost": {
@@ -492,6 +523,7 @@
 
 
     {
+      "id": "d32",
       "level": 2,
       "type": "YELLOW",
       "cost": {
@@ -509,6 +541,7 @@
 
 
     {
+      "id": "d33",
       "level": 3,
       "type": "GREEN",
       "cost": {"SHIELD": 6},
@@ -525,6 +558,7 @@
 
 
     {
+      "id": "d34",
       "level": 3,
       "type": "PURPLE",
       "cost": {"SERVANT": 6},
@@ -541,6 +575,7 @@
 
 
     {
+      "id": "d35",
       "level": 3,
       "type": "BLUE",
       "cost": {"COIN": 6},
@@ -557,6 +592,7 @@
 
 
     {
+      "id": "d36",
       "level": 3,
       "type": "YELLOW",
       "cost": {"STONE": 6},
@@ -573,6 +609,7 @@
 
 
     {
+      "id": "d37",
       "level": 3,
       "type": "GREEN",
       "cost": {
@@ -595,6 +632,7 @@
 
 
     {
+      "id": "d38",
       "level": 3,
       "type": "PURPLE",
       "cost": {
@@ -617,6 +655,7 @@
 
 
     {
+      "id": "d39",
       "level": 3,
       "type": "BLUE",
       "cost": {
@@ -639,6 +678,7 @@
 
 
     {
+      "id": "d40",
       "level": 3,
       "type": "YELLOW",
       "cost": {
@@ -661,6 +701,7 @@
 
 
     {
+      "id": "d41",
       "level": 3,
       "type": "GREEN",
       "cost": {"SHIELD": 7},
@@ -677,6 +718,7 @@
 
 
     {
+      "id": "d42",
       "level": 3,
       "type": "PURPLE",
       "cost": {"SERVANT": 7},
@@ -692,6 +734,7 @@
 
 
     {
+      "id": "d43",
       "level": 3,
       "type": "BLUE",
       "cost": {"COIN": 7},
@@ -707,6 +750,7 @@
 
 
     {
+      "id": "d44",
       "level": 3,
       "type": "YELLOW",
       "cost": {"STONE": 7},
@@ -722,6 +766,7 @@
 
 
     {
+      "id": "d45",
       "level": 3,
       "type": "GREEN",
       "cost": {
@@ -740,6 +785,7 @@
 
 
     {
+      "id": "d46",
       "level": 3,
       "type": "PURPLE",
       "cost": {
@@ -758,6 +804,7 @@
 
 
     {
+      "id": "d47",
       "level": 3,
       "type": "BLUE",
       "cost": {
@@ -776,6 +823,7 @@
 
 
     {
+      "id": "d48",
       "level": 3,
       "type": "YELLOW",
       "cost": {

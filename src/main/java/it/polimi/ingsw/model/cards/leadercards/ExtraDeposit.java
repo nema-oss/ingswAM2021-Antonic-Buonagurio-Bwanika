@@ -17,8 +17,8 @@ public class ExtraDeposit extends LeaderCard{
     private final ResourceType storageType;
     private LeaderCardType leaderCardType;
 
-    public ExtraDeposit(Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType storageType, LeaderCardType leaderCardType) {
-        super(costResource, costDevelopment, victoryPoints);
+    public ExtraDeposit(String id, Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType storageType, LeaderCardType leaderCardType) {
+        super(id, costResource, costDevelopment, victoryPoints);
         this.storageType = storageType;
         this.leaderCardType = leaderCardType;
     }
@@ -35,6 +35,10 @@ public class ExtraDeposit extends LeaderCard{
 
     public ResourceType getStorageType() {
         return storageType;
+    }
+
+    public String getId() {
+        return id;
     }
 
 }

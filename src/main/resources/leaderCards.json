@@ -1,6 +1,7 @@
 [
 
   {
+    "id": "l1",
     "discountType" : "SERVANT",
     "discountAmount" : 1,
     "leaderCardType" : "DISCOUNT",
@@ -10,6 +11,7 @@
   },
 
   {
+    "id": "l2",
     "discountType" : "SHIELD",
     "discountAmount" : 1,
     "leaderCardType" : "DISCOUNT",
@@ -19,6 +21,7 @@
   },
 
   {
+    "id": "l3",
     "discountType" : "STONE",
     "discountAmount" : 1,
     "leaderCardType" : "DISCOUNT",
@@ -28,6 +31,7 @@
   },
 
   {
+    "id": "l4",
     "discountType" : "COIN",
     "discountAmount" : 1,
     "leaderCardType" : "DISCOUNT",
@@ -40,6 +44,7 @@
 
 
   {
+    "id": "l5",
     "storageType" : "STONE",
     "leaderCardType" : "EXTRA_DEPOSIT",
     "costResource" : {"COIN" : 5},
@@ -48,6 +53,7 @@
   },
 
   {
+    "id": "l6",
     "storageType" : "SERVANT",
     "leaderCardType" : "EXTRA_DEPOSIT",
     "costResource" : {"STONE" : 5},
@@ -56,6 +62,7 @@
   },
 
   {
+    "id": "l7",
     "storageType" : "SHIELD",
     "leaderCardType" : "EXTRA_DEPOSIT",
     "costResource" : {"SERVANT" : 5},
@@ -64,6 +71,7 @@
   },
 
   {
+    "id": "l8",
     "storageType" : "COIN",
     "leaderCardType" : "EXTRA_DEPOSIT",
     "costResource" : {"SHIELD" : 5},
@@ -75,6 +83,7 @@
 
 
   {
+    "id": "l9",
     "result" : "SERVANT",
     "leaderCardType" : "WHITE_TO_RESOURCE",
     "costResource" : {},
@@ -83,6 +92,7 @@
   },
 
   {
+    "id": "l10",
     "result" : "SHIELD",
     "leaderCardType" : "WHITE_TO_RESOURCE",
     "costResource" : {},
@@ -91,6 +101,7 @@
   },
 
   {
+    "id": "l11",
     "result" : "STONE",
     "leaderCardType" : "WHITE_TO_RESOURCE",
     "costResource" : {},
@@ -99,6 +110,7 @@
   },
 
   {
+    "id": "l12",
     "result" : "COIN",
     "leaderCardType" : "WHITE_TO_RESOURCE",
     "costResource" : {},
@@ -110,6 +122,7 @@
 
 
   {
+    "id": "l13",
     "productionResult"  : [
       {"type" : "",
         "className" : "it.polimi.ingsw.model.gameboard.Resource" },
@@ -124,6 +137,7 @@
   },
 
   {
+    "id": "l14",
     "productionResult"  : [
       {"type" : "",
         "className" : "it.polimi.ingsw.model.gameboard.Resource" },
@@ -138,6 +152,7 @@
   },
 
   {
+    "id": "l15",
     "productionResult"  : [
       {"type" : "",
         "className" : "it.polimi.ingsw.model.gameboard.Resource" },
@@ -152,6 +167,7 @@
   },
 
   {
+    "id": "l16",
     "productionResult"  : [
       {"type" : "",
         "className" : "it.polimi.ingsw.model.gameboard.Resource" },

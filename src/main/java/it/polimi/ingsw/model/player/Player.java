@@ -135,7 +135,7 @@ public class Player{
 
     }
 
-    private void takeResourceForAction(Map<ResourceType, Integer> cost) throws Exception {
+    public void takeResourceForAction(Map<ResourceType, Integer> cost) throws Exception {
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
@@ -165,7 +165,6 @@ public class Player{
      */
 
     public void checkCardRequirements(Map<ResourceType, Integer> cost) throws InsufficientPaymentException {
-
 
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();

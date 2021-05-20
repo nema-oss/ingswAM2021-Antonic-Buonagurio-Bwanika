@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  */
 public class DevelopmentCard implements Card, Serializable {
 
+    private String id;
     private int level;
     private DevelopmentCardType type;
     private Map<ResourceType, Integer> cost;
@@ -23,7 +24,8 @@ public class DevelopmentCard implements Card, Serializable {
     private List<Producible> productionResults;
     private int victoryPoints;
 
-    public DevelopmentCard(int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
+    public DevelopmentCard(String id, int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
+        this.id = id;
         this.level = level;
         this.type = type;
         this.cost = cost;
@@ -88,5 +90,9 @@ public class DevelopmentCard implements Card, Serializable {
 
         return productionResults;
 
+    }
+
+    public String getId(){
+        return id;
     }
 }

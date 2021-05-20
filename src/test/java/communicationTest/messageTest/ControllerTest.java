@@ -243,8 +243,10 @@ public class ControllerTest {
         assertFalse(errors.isEmpty());
 
         game.getCurrentPlayer().setLeaderActionPlayed(false);
+        LeaderCard card = game.getCurrentPlayer().getHand().get(0);
         errors = controller.onDiscardLeader(game.getCurrentPlayer().getNickname(), game.getCurrentPlayer().getHand().get(0));
         assertTrue(errors.isEmpty());
+        assertFalse(game.getCurrentPlayer().getHand().contains(card));
         errors = controller.onDiscardLeader(game.getCurrentPlayer().getNickname(), game.getCurrentPlayer().getHand().get(1));
         assertTrue(errors.isEmpty());
     }

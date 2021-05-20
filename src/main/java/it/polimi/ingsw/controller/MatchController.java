@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.exception.*;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.server.VirtualView;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
@@ -355,14 +354,16 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates the board production
      * @param nickname the player's nickname
-     * @param toGive the resources to put in the production
-     * @param toGet the resourceType of the resource to obtain from the production
+     * @param userChoice a map containing the resource the player wants to get e the ones to put in the production
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateBoardProduction(String nickname, List<Resource> toGive, ResourceType toGet){
+    public List<Error> onActivateBoardProduction(String nickname, Map<ResourceType, List<ResourceType>> userChoice){
 
         Player currPlayer = game.getCurrentPlayer();
+        ResourceType toGet = null;
+        List<Resource> toGive = new ArrayList<>();
+        Map<ResourceType, Integer> requirements = new HashMap<>();
 
         List<Error> errors = controlTurn(nickname);
         if(!errors.isEmpty())
@@ -371,12 +372,31 @@ public class MatchController implements ControllerInterface{
         if(boardProductionActivated)
             errors.add(Error.INVALID_ACTION);
 
-        else if(!toGive.isEmpty() && toGet != null) {
+        else if(userChoice.keySet().size()==1) {
 
             try {
-                currPlayer.getPlayerBoard().useProductionPower(toGive, toGet);
-                game.getCurrentPlayer().setStandardActionPlayed(true);
-                boardProductionActivated = true;
+                for(ResourceType r : userChoice.keySet())
+                    toGet = r;
+
+                if(toGet != null && userChoice.get(toGet)!=null) {
+                    for (ResourceType r : userChoice.get(toGet)) {
+                        toGive.add(new Resource(r));
+                        requirements.put(r,1);
+                    }
+
+                    try{
+                        currPlayer.checkCardRequirements(requirements);
+                        currPlayer.getPlayerBoard().useProductionPower(toGive, toGet);
+                        currPlayer.takeResourceForAction(requirements);
+                        game.getCurrentPlayer().setStandardActionPlayed(true);
+                        boardProductionActivated = true;
+
+                    } catch(InsufficientPaymentException e){
+                        errors.add(Error.INSUFFICIENT_PAYMENT);
+                        return errors;
+                    }
+                }
+                else errors.add(Error.INVALID_ACTION);
                 if(currPlayer.getPosition().isPopeSpace())
                     game.vaticanReport(currPlayer.getPositionIndex());
             } catch (Exception e) {

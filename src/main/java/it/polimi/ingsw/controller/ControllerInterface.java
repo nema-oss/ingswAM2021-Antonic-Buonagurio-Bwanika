@@ -22,7 +22,7 @@ public interface ControllerInterface {
     List<Error> onActivateProduction(String nickname);
     List<Error> onActivateDevelopmentProduction(String nickname, List<DevelopmentCard> developmentCardCards);
     List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards);
-    List<Error> onActivateBoardProduction(String nickname, List<Resource> toGive, ResourceType toGet);
+    List<Error> onActivateBoardProduction(String nickname, Map<ResourceType, List<ResourceType>> userChoice);
     List<Error> onEndProduction(String nickname);
     List<Error> onBuyDevelopmentCards(String nickname, int row, int column);
     List<Error> onBuyResources(String nickname, int row, int column);

@@ -585,5 +585,8 @@ public class VirtualView implements VirtualViewInterface{
 
         List<Error> errors = matchController.onActivateProduction(user);
     }
+
+    public void sendResourcesBought(List<Resource> resources){}
+    public void sendDepositException(){}
 }
 

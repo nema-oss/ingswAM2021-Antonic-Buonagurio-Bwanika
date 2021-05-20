@@ -10,36 +10,45 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class BuyResourcesMessage implements Serializable, ActionMessage {
+
     private final ActionMessageType messageType;
+    private String user;
     private int x;
     private int y;
     private boolean accepted;
 
     /**
      * Server-side constructor to create the message
+     * @param user the current player
      * @param x: x coordinate of the target developmentCard
      * @param y: y coordinate of the target developmentCard
      * @param accepted: result of the request
      */
-    public BuyResourcesMessage(int x, int y, boolean accepted) {
+    public BuyResourcesMessage(String user, int x, int y, boolean accepted) {
         this.x = x;
         this.y = y;
+        this.user = user;
         this.accepted = accepted;
         messageType = ActionMessageType.BUY_RESOURCES;
     }
     /**
-     * Execute the request client side
+     * This method asks the user to select where to place it's resources if the buy request has been accepted otherwise
+     * it asks to repeat the request
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in view to show the update
+
+        if(!isAccepted())
+            view.setBuyCardAction(accepted);
+        else
+            view.setPlaceResourcesAction();
     }
     /**
      * Execute the request server side
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-        //method in virtualView to update
+        virtualView.buyResources(user,x,y);
     }
     /**
      * Get the message type

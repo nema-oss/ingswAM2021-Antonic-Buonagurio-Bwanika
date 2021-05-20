@@ -31,14 +31,13 @@ public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
      * @param view: receiver view
      */
     public void execute(View view) {
-        //method in view to show the choice
+        if(isAccepted()) view.showAcceptedLeaderAction();
     }
     /**
      * Execute the request server side
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView) {
-        //method in virtualView
     }
     /**
      * Get the message type

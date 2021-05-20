@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.client;
 
-import it.polimi.ingsw.messages.LeaderActionMessage;
-import it.polimi.ingsw.messages.actions.BuyDevelopmentCardMessage;
-import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -11,9 +10,7 @@ import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
-import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.*;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -97,10 +94,19 @@ public class Cli extends View {
 
     /**
      * This method tells the user that it has to play its turn
+     * @param currentPlayer the player that it's playing now
      */
     @Override
-    public void showPlayTurn() {
+    public void showPlayTurn(String currentPlayer) {
 
+        Formatting.clearScreen();
+        showBoard(gameBoard, player);
+
+        if(currentPlayer.equals(player.getNickname())){
+            askTurnAction();
+        }else {
+            System.out.println(currentPlayer + " is playing its turn...");
+        }
     }
 
     /**
@@ -387,7 +393,7 @@ public class Cli extends View {
         List<LeaderCard> userChoice = new ArrayList<>();
         boolean correct = false;
         inputThread = inputExecutor.submit(() -> {
-            System.out.println("Select 2 cards among these leader cards. The cards are numbered from //" +
+            System.out.println("Select 2 cards among these leader cards. The cards are numbered from" +
                     " 1 to 4. Write the correspondent number to select a card. Press enter to continue...");
             inputWithTimeout();
 
@@ -416,7 +422,7 @@ public class Cli extends View {
             }
 
             if(!Thread.interrupted())
-                new MessageSender(socket,new ChooseLeadersMessage(cardChoice,true)).sendMsg(outputStream);
+                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(),userChoice,true));
 
         });
 
@@ -460,8 +466,7 @@ public class Cli extends View {
             }while(!correct.get() && resourceTypesChoice.size() < 2);
 
             if(!Thread.interrupted())
-                new MessageSender(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true)).sendMsg(outputStream);
-
+                sendMessage(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true));
         });
     }
 
@@ -474,6 +479,32 @@ public class Cli extends View {
             System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
         }
     }
+
+    /**
+     * This method set the phase to choose where to place the resources after a buy resource action
+     */
+    @Override
+    public void setPlaceResourcesAction() {
+
+    }
+
+    /**
+     * This method tells the user that the leader card action has been accepted
+     */
+    @Override
+    public void showAcceptedLeaderAction() {
+
+    }
+
+    /**
+     * This method tells the user that the buy card action has been accepted
+     */
+    @Override
+    public void showAcceptedBuyDevelopmentCard() {
+
+    }
+
+
     /**
      * Asks the user to play its turn action
      */
@@ -482,11 +513,11 @@ public class Cli extends View {
 
 
 
-        System.out.println("It's your turn. You can choose both a turn action among these" + "//" +
-                "and a leader action ( DISCARD or ACTIVATE)");
+        System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
+                " Press Enter to continue.");
 
         AtomicBoolean correct = new AtomicBoolean(false);
-        String inputS = inputWithTimeout();
+        inputWithTimeout();
         inputThread = inputExecutor.submit(() -> {
 
             do {
@@ -500,23 +531,31 @@ public class Cli extends View {
                     if(action != null)
                         switch (action) {
                             case BUY_RESOURCES:
-                                setBuyCardAction(false);
+                                setBuyResourceAction(false);
+                                player.standardActionDone();
                                 break;
                             case BUY_CARD:
-                                setBuyResourceAction(false);
+                                setBuyCardAction(false);
+                                player.standardActionDone();
                                 break;
                             case ACTIVATE_PRODUCTION:
+                                sendMessage(socket, new ActivateProductionMessage(player.getNickname()));
                                 setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
+                                player.standardActionDone();
                                 break;
                             case LEADER_ACTION:
                                 setLeaderCardAction(player.getHand(),false);
+                                player.leaderActionDone();
                                 break;
                             case END_TURN:
+                                player.resetTurnActionCounter();
+                                sendMessage(socket, new EndTurnMessage());
+                                return;
 
                         }
                 }
 
-            }while(!correct.get());
+            }while(!correct.get() && player.allPossibleActionDone());
         });
     }
 
@@ -535,15 +574,18 @@ public class Cli extends View {
         showBoard(gameBoard,player);
 
         if(actionRejectedBefore)
-            System.out.println();
+            System.out.println("Your production request has been rejected. Try again.");
         else
-            System.out.println("");
+            System.out.println("Select which production power you want to activate. " +
+                    "E.g. 'board shield,coin/stone' to activate the board production or " +
+                    "'develop 1' to select the first development card. " +
+                    "Write 'done' to end the production action. Press Enter to continue.");
 
         AtomicBoolean correct = new AtomicBoolean(true);
         AtomicBoolean selectionDone = new AtomicBoolean(false);
         inputThread = inputExecutor.submit(() -> {
 
-            System.out.println("");
+            inputWithTimeout();
             List<DevelopmentCard> developmentCardChoice;
             List<LeaderCard> leaderCardChoice;
             Map<ResourceType,List<ResourceType>> boardProductionChoice;
@@ -558,13 +600,15 @@ public class Cli extends View {
                     boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
                     correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
                     if (!correct.get() && !selectionDone.get())
-                        System.out.println("Inc");
+                        System.out.println("Incorrect production choices. Try again");
 
                     if (Thread.interrupted()) return;
                 } while (!correct.get() && !selectionDone.get());
 
                 if (!Thread.interrupted()) {
-
+                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
+                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
+                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
                 }
             }
 
@@ -574,8 +618,7 @@ public class Cli extends View {
     }
 
     /**
-     * Asks the user what leader card it wants to use
-     *
+     * Asks the user what leader card it wants to use.
      * @param leaderCards          its leader card
      * @param actionRejectedBefore true if the action was rejected before
      */
@@ -589,7 +632,9 @@ public class Cli extends View {
         if(actionRejectedBefore)
             System.out.println("Leader card selection incorrect. Try again.");
         else
-            System.out.println("Ch");
+            System.out.println("Select which leader card you want to select. " +
+                    "E.g. 'discard 1, activate 2' if you want to discard the first leader card and activate the second " +
+                    ". Write 'done' if you have finished");
 
 
         AtomicBoolean correct = new AtomicBoolean(false);
@@ -602,19 +647,20 @@ public class Cli extends View {
             if(!Thread.interrupted()) {
                 do{
                     String input = inputWithTimeout();
+                    if(input.equals("done"))
+                        selectionDone.set(true);
                     userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
                     correct.set(userChoice != null);
                     if(!correct.get() && !selectionDone.get())
-                        System.out.println();
-                    if(input.equals("done"))
-                        selectionDone.set(true);
+                        System.out.println("Incorrect selection. Try again.");
+
                     if(Thread.interrupted()) return;
 
                 }while(!correct.get() && !selectionDone.get());
             }
 
             if(!Thread.interrupted()){
-                new MessageSender(socket, new LeaderActionMessage(userChoice,true)).sendMsg(outputStream);
+                sendMessage(socket, new LeaderActionMessage(player.getNickname(),userChoice,true));
             }
 
         });
@@ -635,9 +681,11 @@ public class Cli extends View {
         showGameBoard(gameBoard);
 
         if(actionRejectedBefore)
-            System.out.println();
+            System.out.println("Your previous buy card request has been rejected. Try a different one." +
+                    "Remember that to buy a card you must have enough resources on your deposits.");
         else
-            System.out.println();
+            System.out.println("Select the card you want to buy. E.g. 1,2 to select the first row " +
+                    "second column.");
 
         inputThread = inputExecutor.submit(() -> {
 
@@ -649,14 +697,14 @@ public class Cli extends View {
                     userChoice = InputValidator.isValidBuyCardAction(input);
                     correct = userChoice != null;
                     if(!correct)
-                        System.out.println();
+                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
+                                "and Yth column");
                     if(Thread.interrupted()) return;
                 }while(!correct);
             }
 
             if(!Thread.interrupted())
-                new MessageSender(socket, new BuyDevelopmentCardMessage(userChoice.getX(),userChoice.getY(),true)).sendMsg(outputStream);
-
+                sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
         });
 
 
@@ -675,9 +723,10 @@ public class Cli extends View {
         showGameBoard(gameBoard);
 
         if(actionRejectedBefore)
-            System.out.println();
+            System.out.println("Your previous buy resource request has been rejected. Try again");
         else
-            System.out.println();
+            System.out.println("Select where you want to place the free marble. E.g. 1,2 to select the first row " +
+                    "second column.");
 
         inputThread = inputExecutor.submit(() -> {
 
@@ -689,13 +738,14 @@ public class Cli extends View {
                     userChoice = InputValidator.isValidBuyResourcesAction(input);
                     correct = userChoice != null;
                     if(!correct)
-                        System.out.println("nn");
+                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
+                                "and Yth column");
                     if(Thread.interrupted()) return;
                 }while(!correct);
             }
 
             if(!Thread.interrupted())
-                new MessageSender(socket, new BuyResourcesMessage(userChoice.getX(),userChoice.getY(),true)).sendMsg(outputStream);
+                sendMessage(socket, new BuyResourcesMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
 
         });
     }
@@ -734,7 +784,7 @@ public class Cli extends View {
             }while (!correct);
         }
 
-        new MessageSender(socket,loginRequest).sendMsg(outputStream);
+        sendMessage(socket, loginRequest);
     }
 
     /**
@@ -1945,6 +1995,17 @@ public class Cli extends View {
                 "\\_|  |_/\\__,_|___/\\__\\___|_|  |___/  \\___/|_|   \\_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|\n"+
                 "                                                                                                                  \n" +
                 "By Nemanja Antonic, Chiara Buonagurio and René Bwanika"+ Formatting.ColorCode.ANSI_RESET.escape());
+    }
+
+
+    /**
+     * This method send a message on the socket
+     * @param socket the receiver
+     * @param message the message to send
+     */
+    public void sendMessage(Socket socket, Message message){
+
+        new MessageSender(socket,message).sendMsg(outputStream);
     }
 
 }

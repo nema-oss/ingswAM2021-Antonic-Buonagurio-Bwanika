@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -131,24 +132,32 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>();
 
+
         if(!game.getGamePhase().equals(GamePhase.CHOOSE_LEADERS)){
             errors.add(Error.WRONG_GAME_PHASE);
+            System.out.println(errors);
             return errors;
         }
 
         if(!nickname.equals(game.getCurrentPlayer().getNickname())) {
             errors.add(Error.NOT_YOUR_TURN);
+            System.out.println(errors);
             return errors;
         }
 
         if(leaderCardsChosen == null || leaderCardsChosen.size() != 2) {
+            System.out.println(leaderCardsChosen == null);
+            if(leaderCardsChosen != null)
+                System.out.println(leaderCardsChosen.size());
             errors.add(Error.INVALID_ACTION);
+            System.out.println(errors);
             return errors;
         }
 
         game.getCurrentPlayer().setHand(leaderCardsChosen);
 
         game.nextPlayer();
+
 
         if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))) {
             game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
@@ -180,7 +189,11 @@ public class MatchController implements ControllerInterface{
         else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
+        }else{
+            game.setGamePhase(GamePhase.PLAY_TURN);
+            viewInterface.playTurn(game.getCurrentPlayer().getNickname());
         }
+
     }
 
     /**

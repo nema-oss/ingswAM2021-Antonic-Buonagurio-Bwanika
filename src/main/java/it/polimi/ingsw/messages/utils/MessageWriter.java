@@ -7,7 +7,6 @@ import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.actions.server.CardMarketUpdateMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.setup.*;
-import it.polimi.ingsw.messages.setup.server.GameModeMessage;
 import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -67,9 +66,7 @@ public class MessageWriter{
             case LOGIN_DONE:
                 messageOut = new LoginDoneMessage("gigi",true);
                 break;
-            case GAME_MODE:
-                messageOut = new GameModeMessage(askClientNumPlayers());
-                break;
+
         }
     }
 
@@ -80,9 +77,6 @@ public class MessageWriter{
                 break;
             case MOVE_ON_POPEROAD:
                 messageOut = new MoveOnPopeRoadMessage(askServerMovesPopeRoad());
-                break;
-            case ACTIVATE_PRODUCTION:
-                messageOut = new ActivateProductionMessage();
                 break;
             case DISCARD_LEADERCARD:
                 messageOut = new DiscardLeaderCardMessage(askClientLeaderDiscardChoice());

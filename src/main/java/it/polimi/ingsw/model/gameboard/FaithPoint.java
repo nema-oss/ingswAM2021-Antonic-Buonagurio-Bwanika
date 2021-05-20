@@ -2,12 +2,14 @@ package it.polimi.ingsw.model.gameboard;
 
 import it.polimi.ingsw.model.player.PopeRoad;
 
+import java.io.Serializable;
+
 /*
 * this class represents a FaithPoint (red cross)
 * @author Chiara Buonagurio
  */
 
-public class FaithPoint implements Producible {
+public class FaithPoint implements Producible, Serializable {
 
     FaithType type;
     private String className;

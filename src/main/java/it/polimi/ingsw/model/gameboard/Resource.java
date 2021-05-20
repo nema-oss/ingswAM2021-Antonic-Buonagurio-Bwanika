@@ -6,7 +6,9 @@ package it.polimi.ingsw.model.gameboard;
 
 import it.polimi.ingsw.model.player.PopeRoad;
 
-public class Resource implements Producible{
+import java.io.Serializable;
+
+public class Resource implements Producible, Serializable {
 
     private final ResourceType type;
     private final String className;

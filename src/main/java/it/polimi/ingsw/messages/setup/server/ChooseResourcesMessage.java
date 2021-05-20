@@ -17,10 +17,10 @@ import java.util.Map;
  */
 public class ChooseResourcesMessage implements Serializable, SetupMessage {
 
-    private final SetupMessageType messageType;
-    private final String user;
+    private SetupMessageType messageType;
+    private String user;
     private Map<ResourceType,Integer> resourceChoice;
-    private final boolean accepted;
+    private boolean accepted;
 
     /**
      * Server-side constructor to create the message
@@ -33,6 +33,8 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
         this.messageType = SetupMessageType.CHOOSE_RESOURCES;
         this.user = user;
     }
+
+
     /**
      * Execute the request client side
      * @param view: receiver view

@@ -88,6 +88,7 @@ public class VirtualView implements VirtualViewInterface{
         ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
         boolean success = new MessageSender(socket,message).sendMsg(outputStream);
         if(!success) clientDown(socket);
+        else System.out.println("sent from server === " + message);
     }
 
     /**
@@ -174,9 +175,9 @@ public class VirtualView implements VirtualViewInterface{
      * This method send a message to the clients that the match has started and call the on
      * to start the game on controller
      */
-    private void toStartMatch() {
+    private synchronized void toStartMatch() {
 
-
+        isActive = true;
         matchController.onStartGame();
 
     }
@@ -195,6 +196,8 @@ public class VirtualView implements VirtualViewInterface{
      * @param username the nickname of the player that has to play
      */
     public void playTurn(String username){
+        for(Socket socket: clients.values())
+            sendMessage(socket, new PlayTurnMessage(username));
     }
     /**
      * This method manage the choose leaderCard request from client
@@ -203,12 +206,16 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void chooseLeaderCards(String user, List<LeaderCard> leaderCards){
         List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
+
+        /*
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseLeaderCard(user,leaderCards);
             else
                 onRejectedChooseLeaderCard(user, leaderCards);
         }
+
+         */
 
     }
 
@@ -220,7 +227,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCards the card selected
      */
     private void onAcceptedChooseLeaderCard(String user, List<LeaderCard> leaderCards) {
-        Message requestAccepted = new UpdateWriter().cardSelectionAccepted(leaderCards);
+        Message requestAccepted = new UpdateWriter().cardSelectionAccepted(user,leaderCards);
         sendMessage(clients.get(user), requestAccepted);
     }
 
@@ -230,7 +237,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCard the card selected
      */
     private void onRejectedChooseLeaderCard(String user, List<LeaderCard> leaderCard) {
-        Message requestRejected = new ErrorWriter().cardSelectionRejected(leaderCard);
+        Message requestRejected = new ErrorWriter().cardSelectionRejected(user,leaderCard);
         sendMessage(clients.get(user), requestRejected);
     }
 
@@ -317,13 +324,13 @@ public class VirtualView implements VirtualViewInterface{
 
 
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
-        Message message = new UpdateWriter().buyCardAccepted(x, y);
+        Message message = new UpdateWriter().buyCardAccepted(user, x, y);
         for(Socket socket: clients.values())
             sendMessage(socket, message);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
-        Message message = new ErrorWriter().buyCardRejected(x, y);
+        Message message = new ErrorWriter().buyCardRejected(user,x, y);
         sendMessage(clients.get(user), message);
     }
 
@@ -342,12 +349,12 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedBuyResources(String user, int x, int y) {
-        Message message = new UpdateWriter().buyResourceAccepted(x,y);
+        Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         sendMessage(clients.get(user), message);
     }
 
     private void onRejectedBuyResources(String user, int x, int y) {
-        Message message = new ErrorWriter().buyResourceRejected(x,y);
+        Message message = new ErrorWriter().buyResourceRejected(user,x,y);
         sendMessage(clients.get(user), message);
 
     }
@@ -368,37 +375,40 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
-        Message message = new UpdateWriter().productionCardAccepted(cards);
+        Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
     }
 
     private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
-        Message message = new ErrorWriter().productionCardRejected(cards);
+        Message message = new ErrorWriter().productionCardRejected(user,cards);
         sendMessage(clients.get(user), message);
     }
 
     /**
      * This method manage the activate production board request from client
      */
-    public void activateProductionBoard(String user, ArrayList<Resource> toGive, ResourceType resourceType){
-        List<Error> errors = matchController.onActivateBoardProduction(user, toGive, resourceType);
+    public void activateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice){
+        /*
+        List<Error> errors = matchController.onActivateBoardProduction(user, userChoice);
         if(isActive){
             if(errors.isEmpty())
-                onAcceptedActivateProductionBoard(user,resourceType);
+                onAcceptedActivateProductionBoard(user, userChoice);
             else
-                onRejectedActivateProductionBoard(user,resourceType);
+                onRejectedActivateProductionBoard(user, userChoice);
 
         }
+
+         */
     }
 
-    private void onAcceptedActivateProductionBoard(String user, ResourceType resourceType) {
-        Message message = new UpdateWriter().productionBoardAccepted(resourceType);
+    private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
+        Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
     }
 
 
-    private void onRejectedActivateProductionBoard(String user, ResourceType resourceType) {
-        Message message = new ErrorWriter().productionBoardRejected(resourceType);
+    private void onRejectedActivateProductionBoard(String user,  Map<ResourceType,List<ResourceType>> userChoice) {
+        Message message = new ErrorWriter().productionBoardRejected(user,userChoice);
         sendMessage(clients.get(user), message);
     }
 
@@ -522,7 +532,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
-        sendMessage(clients.get(user), new ChooseLeadersMessage(leaderCards,true));
+        sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,true));
     }
 
 
@@ -565,6 +575,15 @@ public class VirtualView implements VirtualViewInterface{
      * @param resources
      */
     public void discardResources(String user, List<Resource> resources) {
+    }
+
+    /**
+     * This method manage an activate production request from the client
+     * @param user the current player
+     */
+    public void activateProduction(String user) {
+
+        List<Error> errors = matchController.onActivateProduction(user);
     }
 }
 

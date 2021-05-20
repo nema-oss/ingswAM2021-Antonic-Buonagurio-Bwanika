@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class ActivateLeaderProductionMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
+    private final String user;
     private List<LeaderCard> choice;
     boolean accepted;
 
@@ -21,8 +22,9 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
      * @param choice: target leaderCard
      * @param accepted: the result of the request
      */
-    public ActivateLeaderProductionMessage(List<LeaderCard> choice, boolean accepted) {
+    public ActivateLeaderProductionMessage(String user,List<LeaderCard> choice, boolean accepted) {
         this.choice = choice;
+        this.user = user;
         this.accepted = accepted;
         this.messageType = ActionMessageType.ACTIVATE_LEADERCARD_PRODUCTION;
     }

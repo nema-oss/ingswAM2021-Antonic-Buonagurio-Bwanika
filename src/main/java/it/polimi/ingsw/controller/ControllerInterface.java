@@ -26,6 +26,7 @@ public interface ControllerInterface {
     List<Error> onEndProduction(String nickname);
     List<Error> onBuyDevelopmentCards(String nickname, int row, int column);
     List<Error> onBuyResources(String nickname, int row, int column);
+    List<Error> onPlaceResources(String nickname, Map<Resource, Integer> resources);
     List<Error> onActivateLeader(String nickname, LeaderCard leaderCard);
     List<Error> onDiscardLeader(String nickname, LeaderCard leaderCard);
     List<Error> onPlayerDisconnection(String nickname);

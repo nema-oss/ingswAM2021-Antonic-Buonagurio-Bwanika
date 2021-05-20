@@ -497,7 +497,7 @@ public class MatchController implements ControllerInterface{
     public List<Error> onBuyResources(String nickname, int row, int column) {
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
-
+        List<Resource> resourcesBought;
 
         if(errors.isEmpty()){
             errors.addAll(controlStandardAction());
@@ -506,11 +506,12 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty()) {
 
             try {
-                game.getCurrentPlayer().buyResources(row, column);
+                resourcesBought = game.getCurrentPlayer().buyResources(row, column);
                 game.getCurrentPlayer().setStandardActionPlayed(true);
                 if (game.getCurrentPlayer().getPosition().isPopeSpace())
                     game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
                 controlEndOfGame();
+                viewInterface.sendResourcesBought(resourcesBought);
             } catch (FullDepositException e) {
                 errors.add(Error.DEPOSIT_IS_FULL);
             }
@@ -520,6 +521,8 @@ public class MatchController implements ControllerInterface{
 
         return errors;
     }
+
+
 
     /**
      * this method activates a player's leaderCard
@@ -629,6 +632,33 @@ public class MatchController implements ControllerInterface{
         System.out.println(errors.size());
         return errors;
     }
+
+
+    /**
+     * this method adds the resources just bought from the marbleMarket to the player's deposit
+     * @param nickname the player's nickname
+     * @param resources the resources and the floor to put them in
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onPlaceResources(String nickname, Map<Resource, Integer> resources){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()){
+            for(Resource r : resources.keySet()){
+                try {
+                    game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
+                } catch (FullDepositException e) {
+                    errors.add(Error.DEPOSIT_IS_FULL);
+                } catch (Exception e) {
+                    errors.add(Error.INVALID_ACTION);
+                }
+            }
+        }
+        return errors;
+    }
+
 
     /**
      * this method calls player's method swapDepositFloor

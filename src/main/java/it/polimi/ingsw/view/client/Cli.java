@@ -10,7 +10,9 @@ import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
+import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -492,13 +494,63 @@ public class Cli extends View {
 
         showBoard(gameBoard,player);
 
-        //List<Resource> resourceList = player.buyResources(x,y); // just get the resources from the mini model on the client
+        List<Resource> resourceList = new ArrayList<>();
+        resourceList.add(new Resource(ResourceType.COIN));
+        resourceList.add(new Resource(ResourceType.STONE));
+        resourceList.add(new Resource(ResourceType.SHIELD));
 
 
         inputThread = inputExecutor.submit( () ->{
 
-            System.out.println("Place you resources in your deposit. The resources that can't go into " +
-                    "the deposit, will be discarded.");
+            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
+                    "Enter to continue.");
+
+            String input = inputWithTimeout();
+            if(!Thread.interrupted()) {
+                while (!input.equals("done")) {
+                    List<String> splitInput = Arrays.asList(input.split("\\s*,\\s*"));
+                    if (splitInput.size() == 2) {
+                        String first = splitInput.get(0);
+                        String second = splitInput.get(1);
+                        try {
+                            int a = Integer.parseInt(first);
+                            int b = Integer.parseInt(second);
+                            Message message = new MoveDepositMessage(player.getNickname(), a, b, true);
+                            sendMessage(socket, message);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Incorrect number format. Try again");
+                        }
+                    }
+                    input = inputWithTimeout();
+
+                }
+
+                Formatting.clearScreen();
+                showBoard(gameBoard,player);
+
+                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
+                        "the first floor.");
+
+                input = inputWithTimeout();
+                boolean correct = false;
+                Map<Resource,Integer> userChoice = new HashMap<>();
+                while(!input.equals("done") &&  !correct){
+                    userChoice = InputValidator.isValidPlaceResourceAction(resourceList, input);
+                    correct = userChoice != null;
+                    if(!correct){
+                        System.out.println("Incorrect selection. Try again.");
+                        input = inputWithTimeout();
+                    }
+                    if(Thread.interrupted()) return;
+                }
+                if(!Thread.interrupted())
+                    sendMessage(socket, new PlaceResourcesMessage(player.getNickname(),userChoice));
+
+
+            }
+
+
+
 
 
 
@@ -513,6 +565,7 @@ public class Cli extends View {
     public void showAcceptedLeaderAction() {
         System.out.println("Leader action accepted.");
         player.leaderActionDone();
+        askTurnAction();
     }
 
     /**
@@ -543,15 +596,28 @@ public class Cli extends View {
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
         player.setHand(choice);
-        Formatting.clearScreen();
-        showBoard(gameBoard,player);
-        showLeaderCards(player.getHand());
         System.out.println("Leader card selection done");
     }
 
     @Override
     public void showRejectedLeaderAction() {
         setLeaderCardAction(player.getHand(), true);
+    }
+
+    @Override
+    public void showMoveDepositResult(int x, int y, boolean accepted) {
+        if(accepted){
+            try {
+                player.getDeposit().swapFloors(x,y);
+            } catch (WrongDepositSwapException e) {
+                e.printStackTrace();
+            }
+            Formatting.clearScreen();
+            showBoard(gameBoard,player);
+            System.out.println("Move deposit request accepted");
+        }else{
+            System.out.println("Move deposit request rejected. Try again");
+        }
     }
 
 

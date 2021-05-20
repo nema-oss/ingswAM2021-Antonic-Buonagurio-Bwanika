@@ -45,8 +45,7 @@ public class UpdateWriter {
     }
 
     public Message buyResourceAccepted(String user, int x, int y){
-        return new BuyResourcesAccepted(user,x,y);
-        //BuyResourcesMessage message = new BuyResourcesMessage(user,x, y, true);
+        return new BuyResourcesMessage(user,x, y, true);
     }
 
     public Message productionCardAccepted(String user,List<DevelopmentCard> cards) {

@@ -564,10 +564,10 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method handle a place resource request from the client
-     * @param resources the resources to place
-     * @param targetShelves the selected floors
+
      */
-    public void placeResource(List<Resource> resources, List<Integer> targetShelves) {
+    public void placeResource(String user, Map<Resource,Integer> userChoice) {
+
     }
 
     /**

@@ -251,4 +251,6 @@ public abstract class View {
     public abstract void showLeaderCardsSelectionAccepted(List<LeaderCard> choice);
 
     public abstract void showRejectedLeaderAction();
+
+    public abstract void showMoveDepositResult(int x, int y, boolean accepted);
 }

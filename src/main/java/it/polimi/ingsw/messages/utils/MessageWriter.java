@@ -78,9 +78,7 @@ public class MessageWriter{
             case MOVE_ON_POPEROAD:
                 messageOut = new MoveOnPopeRoadMessage(askServerMovesPopeRoad());
                 break;
-            case PLACE_RESOURCES:
-                messageOut = new PlaceResourcesMessage(askServerBoughtResources(), askClientToShelves());
-                break;
+
         }
     }
 

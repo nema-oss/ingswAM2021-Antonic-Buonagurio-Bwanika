@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.client.utils;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import javax.print.DocFlavor;
@@ -282,6 +283,27 @@ public class InputValidator {
 
     public static boolean validatePORT(String input){
         return Pattern.matches(PORT_REGEXP,input);
+    }
+
+    public static Map<Resource, Integer> isValidPlaceResourceAction(List<Resource> resourceList, String input) {
+
+        List<String> actions = Arrays.asList(input.split("\\s*,\\s*"));
+        Map<Resource, Integer> userChoice = new HashMap<>();
+        for(String action: actions){
+            List<String> singleAction = Arrays.asList(action.split("\\s+"));
+            ResourceType resourceType = isResourceType(singleAction.get(0));
+            if(resourceType == null) return null;
+            Resource resource = resourceList.stream().filter(p -> p.getType() == resourceType).findAny().get();
+            try{
+                int floor = Integer.parseInt(singleAction.get(1));
+                userChoice.put(resource,floor);
+            }catch (NumberFormatException e){
+                return null;
+            }
+
+        }
+        return userChoice;
+
     }
 
 

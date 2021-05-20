@@ -26,7 +26,7 @@ public class ClientPlayer {
     private List<LeaderCard> hand;
     private ClientGameBoard gameBoard;
 
-    public ClientPlayer(String nickname, ClientGameBoard gameBoard){
+    public ClientPlayer(String nickname, ClientGameBoard gameBoard) {
 
         playerBoard = new Board();
         this.nickname = nickname;
@@ -60,15 +60,15 @@ public class ClientPlayer {
         return getPopeRoad().getCurrentPosition();
     }
 
-    public Deposit getDeposit(){
+    public Deposit getDeposit() {
         return playerBoard.getDeposit();
     }
 
-    public Strongbox getStrongbox(){
+    public Strongbox getStrongbox() {
         return playerBoard.getStrongbox();
     }
 
-    public PopeRoad getPopeRoad(){
+    public PopeRoad getPopeRoad() {
         return playerBoard.getPopeRoad();
     }
 
@@ -76,7 +76,7 @@ public class ClientPlayer {
         return nickname;
     }
 
-    public Effects getActiveEffects(){
+    public Effects getActiveEffects() {
         return activeEffects;
     }
 
@@ -95,15 +95,15 @@ public class ClientPlayer {
 
     public List<DevelopmentCard> getDevelopmentCards() {
         List<DevelopmentCard> developmentCards = new ArrayList<>();
-        for(Stack<DevelopmentCard> s : playerBoard.getDevelopmentCards())
+        for (Stack<DevelopmentCard> s : playerBoard.getDevelopmentCards())
             developmentCards.addAll(s);
         return developmentCards;
     }
 
     public List<LeaderCard> getProductionLeaderCards() {
 
-        Stream<LeaderCard> stream =  hand.stream().filter(leaderCard -> leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION));
-        return  stream.collect(Collectors.toList());
+        Stream<LeaderCard> stream = hand.stream().filter(leaderCard -> leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION));
+        return stream.collect(Collectors.toList());
 
     }
 
@@ -115,7 +115,7 @@ public class ClientPlayer {
         standardActionPlayed = true;
     }
 
-    public void leaderActionDone(){
+    public void leaderActionDone() {
         actionLeaderPlayed = true;
     }
 
@@ -125,8 +125,9 @@ public class ClientPlayer {
     }
 
     public void buyDevelopmentCard(int x, int y) {
-        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x,y);
+        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x, y);
         playerBoard.addDevelopmentCard(developmentCard);
     }
+
 }
 

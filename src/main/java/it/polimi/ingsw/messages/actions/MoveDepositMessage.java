@@ -36,6 +36,7 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
      */
     public void execute(View view){
         //method in view to show the choice
+        view.showMoveDepositResult(x,y,accepted);
     }
     /**
      * Execute the request server side

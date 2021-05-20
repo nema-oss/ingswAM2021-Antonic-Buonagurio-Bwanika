@@ -650,10 +650,8 @@ public class MatchController implements ControllerInterface{
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
                 } catch (FullDepositException e) {
                     errors.add(Error.DEPOSIT_IS_FULL);
-                    viewInterface.sendDepositException();
                 } catch (Exception e) {
                     errors.add(Error.INVALID_ACTION);
-                    viewInterface.sendDepositException();
                 }
             }
         }

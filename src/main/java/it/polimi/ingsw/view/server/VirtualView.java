@@ -588,6 +588,5 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void sendResourcesBought(List<Resource> resources){}
-    public void sendDepositException(){}
 }
 

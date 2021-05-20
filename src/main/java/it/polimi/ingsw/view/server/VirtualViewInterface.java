@@ -47,5 +47,4 @@ public interface VirtualViewInterface {
     void endTurn(String nickname);
 
     void sendResourcesBought(List<Resource> resources);
-    void sendDepositException();
 }

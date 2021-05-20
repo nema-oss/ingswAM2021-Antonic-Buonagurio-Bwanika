@@ -549,11 +549,6 @@ public class Cli extends View {
 
             }
 
-
-
-
-
-
         });
 
     }
@@ -596,7 +591,6 @@ public class Cli extends View {
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
         player.setHand(choice);
-        System.out.println("Leader card selection done");
     }
 
     @Override
@@ -663,7 +657,7 @@ public class Cli extends View {
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
-                                sendMessage(socket, new EndTurnMessage());
+                                sendMessage(socket, new EndTurnMessage(player.getNickname()));
                                 return;
                         }
                 }

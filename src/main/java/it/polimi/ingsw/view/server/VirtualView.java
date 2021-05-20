@@ -3,12 +3,9 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.server.*;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
-import it.polimi.ingsw.messages.utils.MessageWriter;
 import it.polimi.ingsw.messages.utils.UpdateWriter;
-import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -48,7 +45,6 @@ public class VirtualView implements VirtualViewInterface{
         this.inGameDisconnectionHandler = inGameDisconnectionHandler;
         this.requiredNumberOfPlayers = -1;
         this.socketObjectOutputStreamMap = new HashMap<>();
-        this.isActive = true;
 
         matchController.setVirtualView(this);
     }
@@ -207,7 +203,6 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void chooseLeaderCards(String user, List<LeaderCard> leaderCards){
         List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
-
 
         if(isActive){
             if(errors.isEmpty())
@@ -522,7 +517,8 @@ public class VirtualView implements VirtualViewInterface{
      * @param nickname the user's nickname
      */
     public void endTurn(String nickname){
-
+        System.out.println("end turn virtual view");
+        matchController.onEndTurn(nickname);
     }
 
     /**

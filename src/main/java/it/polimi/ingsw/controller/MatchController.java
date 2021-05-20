@@ -626,6 +626,7 @@ public class MatchController implements ControllerInterface{
             sendPlayTurn();
         }
 
+        System.out.println(errors.size());
         return errors;
     }
 

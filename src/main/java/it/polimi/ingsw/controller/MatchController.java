@@ -104,7 +104,7 @@ public class MatchController implements ControllerInterface{
 
 
     /**
-     * this method calls the virtualView's mwethod to send message "Choose Leader Cards"
+     * this method calls the virtualView's method to send message "Choose Leader Cards"
      */
     @Override
     public void sendChooseLeaderCards() {
@@ -283,7 +283,7 @@ public class MatchController implements ControllerInterface{
 
                     for (Stack<DevelopmentCard> s : currPlayer.getPlayerBoard().getDevelopmentCards()) {
 
-                        if (s.peek().equals(c)) {
+                        if (s.peek().getId().equals(c.getId())) {
                             currPlayer.activateProduction(i);
                             game.getCurrentPlayer().setStandardActionPlayed(true);
                             developmentProductionActivated = true;
@@ -328,20 +328,31 @@ public class MatchController implements ControllerInterface{
         else {
             int i = 0;
             for (LeaderCard c : leaderCards) {
-                if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION) && currPlayer.getActiveLeaderCards().contains(c)) {
-                    try {
-                        currPlayer.activateProductionLeader(i);
-                        leaderProductionActivated = true;
-                        game.getCurrentPlayer().setStandardActionPlayed(true);
-                        if (currPlayer.getPosition().isPopeSpace())
-                            game.vaticanReport(currPlayer.getPositionIndex());
-                    } catch (ProductionRequirementsException e) {
-                        errors.add(Error.PRODUCTION_REQUIREMENTS_ERROR);
-                    } catch (InsufficientPaymentException e) {
-                        errors.add(Error.INSUFFICIENT_PAYMENT);
+                if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
+
+                    for(LeaderCard l : game.getCurrentPlayer().getHand()) {
+                        if (l.getId().equals(c.getId())) {
+                            try {
+                                currPlayer.activateProductionLeader(i);
+                                leaderProductionActivated = true;
+                                game.getCurrentPlayer().setStandardActionPlayed(true);
+                                if (currPlayer.getPosition().isPopeSpace())
+                                    game.vaticanReport(currPlayer.getPositionIndex());
+                            } catch (ProductionRequirementsException e) {
+                                errors.add(Error.PRODUCTION_REQUIREMENTS_ERROR);
+                            } catch (InsufficientPaymentException e) {
+                                errors.add(Error.INSUFFICIENT_PAYMENT);
+                            }
+                        }
                     }
-                } else
+                    if(!leaderProductionActivated) {
+                        errors.add(Error.CARD_DOESNT_EXIST);
+                        return errors;
+                    }
+                } else {
                     errors.add(Error.INVALID_ACTION);
+                    return errors;
+                }
                 i++;
             }
         }
@@ -525,10 +536,14 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()) {
             try {
-                int index = game.getCurrentPlayer().getHand().indexOf(leaderCard);
-                game.getCurrentPlayer().activateLeaderCard(index);
-                game.getCurrentPlayer().setLeaderActionPlayed(true);
-                controlEndOfGame();
+                int index =0;
+                for(LeaderCard l : game.getCurrentPlayer().getHand())
+                    if(l.getId().equals(leaderCard.getId())) {
+                        index = game.getCurrentPlayer().getHand().indexOf(l);
+                        game.getCurrentPlayer().activateLeaderCard(index);
+                        game.getCurrentPlayer().setLeaderActionPlayed(true);
+                        controlEndOfGame();
+                    }
             } catch (NonExistentCardException e) {
                 errors.add(Error.CARD_DOESNT_EXIST);
             } catch (InsufficientResourcesException | InsufficientDevelopmentCardsException e) {
@@ -559,11 +574,16 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty()) {
 
             try {
-                curr.discardLeader(curr.getHand().indexOf(leaderCard));
-                curr.setLeaderActionPlayed(true);
-                if (curr.getPosition().isPopeSpace())
-                    game.vaticanReport(curr.getPositionIndex());
-                controlEndOfGame();
+
+                for(LeaderCard l : curr.getHand())
+                    if(l.getId().equals(leaderCard.getId())) {
+                        curr.discardLeader(curr.getHand().indexOf(l));
+                        curr.setLeaderActionPlayed(true);
+                        if (curr.getPosition().isPopeSpace())
+                            game.vaticanReport(curr.getPositionIndex());
+                        controlEndOfGame();
+                        break;
+                    }
             } catch (NonExistentCardException e) {
                 errors.add(Error.CARD_DOESNT_EXIST);
             }
@@ -758,8 +778,10 @@ public class MatchController implements ControllerInterface{
 
         if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
             errors.add(Error.INVALID_ACTION);
-        else
+        else {
             game.removePlayer(nickname);
+            sendPlayTurn();
+        }
 
         return errors;
     }

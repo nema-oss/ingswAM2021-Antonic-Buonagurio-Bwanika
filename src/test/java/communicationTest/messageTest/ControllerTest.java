@@ -114,6 +114,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -439,6 +440,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());

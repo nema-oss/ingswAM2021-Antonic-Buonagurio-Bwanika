@@ -1,9 +1,11 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * message sent when a client chooses to buy resources
@@ -16,6 +18,7 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     private int x;
     private int y;
     private boolean accepted;
+    private List<Resource> resources;
 
     /**
      * Server-side constructor to create the message
@@ -41,7 +44,7 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
         if(!isAccepted())
             view.setBuyCardAction(accepted);
         else
-            view.setPlaceResourcesAction();
+            view.setPlaceResourcesAction(x,y);
     }
     /**
      * Execute the request server side
@@ -63,5 +66,8 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
      */
     public boolean isAccepted() {
         return accepted;
+    }
+
+    public void setResourceList(List<Resource> resourceList) {
     }
 }

@@ -38,7 +38,10 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.setLeaderCardChoice(choice);
+        if(isAccepted())
+            view.showLeaderCardsSelectionAccepted(choice);
+        else
+            view.setLeaderCardChoice(choice);
     }
     /**
      * Execute the request server side

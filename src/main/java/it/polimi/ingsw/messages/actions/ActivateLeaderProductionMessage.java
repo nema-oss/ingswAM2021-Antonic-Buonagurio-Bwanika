@@ -33,7 +33,7 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-
+        virtualView.activateProductionLeaderCard(user,choice);
     }
     /**
      * Execute the request client side

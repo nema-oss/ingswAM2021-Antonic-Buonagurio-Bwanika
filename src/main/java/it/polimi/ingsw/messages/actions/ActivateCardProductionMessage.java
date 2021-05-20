@@ -33,14 +33,15 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-
+        virtualView.activateProductionDevelopmentCard(user,choice);
     }
     /**
      * Execute the request client side
      * @param view: receiver view
      */
     public void execute(View view){
-
+        if(!isAccepted())
+            view.showProductionError();
     }
     /**
      * Get the message type

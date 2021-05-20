@@ -18,6 +18,7 @@ import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -391,30 +392,30 @@ public class Cli extends View {
         showLeaderCards(cardChoice);
 
         List<LeaderCard> userChoice = new ArrayList<>();
-        boolean correct = false;
         inputThread = inputExecutor.submit(() -> {
             System.out.println("Select 2 cards among these leader cards. The cards are numbered from" +
-                    " 1 to 4. Write the correspondent number to select a card. Press enter to continue...");
+                    " 1 to 4. Write L + the correspondent number (e.g. 'L1' for the first one) to select a card. Press enter to continue...");
             inputWithTimeout();
 
             if(!Thread.interrupted()) {
                 while (userChoice.size() < 2) {
 
                     switch (inputWithTimeout()) {
-                        case "first":
+                        case "L1":
                             userChoice.add(cardChoice.get(0));
                             System.out.println("First card selected");
                             break;
-                        case "second":
+                        case "L2":
                             userChoice.add(cardChoice.get(1));
                             break;
-                        case "third":
+                        case "L3":
                             userChoice.add(cardChoice.get(2));
                             break;
-                        case "forth":
+                        case "L4":
                             userChoice.add(cardChoice.get(3));
                             break;
                         case "timeoutExpired":
+                            return;
 
                     }
                     if(Thread.interrupted()) return;
@@ -430,7 +431,6 @@ public class Cli extends View {
 
     /**
      * Asks the user to choose its resource
-     *
      * @param numberOfResources number of resources the user can choose
      */
     @Override
@@ -484,7 +484,25 @@ public class Cli extends View {
      * This method set the phase to choose where to place the resources after a buy resource action
      */
     @Override
-    public void setPlaceResourcesAction() {
+    public void setPlaceResourcesAction(int x, int y) {
+
+        // should handle both move deposit and place resources requests -> all the other resources are discarded
+
+        Formatting.clearScreen();
+
+        showBoard(gameBoard,player);
+
+        //List<Resource> resourceList = player.buyResources(x,y); // just get the resources from the mini model on the client
+
+
+        inputThread = inputExecutor.submit( () ->{
+
+            System.out.println("Place you resources in your deposit. The resources that can't go into " +
+                    "the deposit, will be discarded.");
+
+
+
+        });
 
     }
 
@@ -493,15 +511,47 @@ public class Cli extends View {
      */
     @Override
     public void showAcceptedLeaderAction() {
-
+        System.out.println("Leader action accepted.");
+        player.leaderActionDone();
     }
 
     /**
      * This method tells the user that the buy card action has been accepted
      */
     @Override
-    public void showAcceptedBuyDevelopmentCard() {
+    public void showAcceptedBuyDevelopmentCard(int x, int y) {
+        player.buyDevelopmentCard(x,y);
+        Formatting.clearScreen();
+        showBoard(gameBoard,player);
+        System.out.println("Buy development card request accepted");
+    }
 
+    /**
+     * This method tells the user that the activate production request has been rejected
+     */
+    @Override
+    public void showProductionError() {
+        System.out.println("Production request rejected. Try again.");
+        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
+    }
+
+    /**
+     * This method add the leader cards to the user's hand
+     *
+     * @param choice user choice
+     */
+    @Override
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
+        Formatting.clearScreen();
+        showBoard(gameBoard,player);
+        showLeaderCards(player.getHand());
+        System.out.println("Leader card selection done");
+    }
+
+    @Override
+    public void showRejectedLeaderAction() {
+        setLeaderCardAction(player.getHand(), true);
     }
 
 
@@ -510,8 +560,6 @@ public class Cli extends View {
      */
     @Override
     public void askTurnAction() {
-
-
 
         System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
                 " Press Enter to continue.");
@@ -529,6 +577,7 @@ public class Cli extends View {
                 }
                 else {
                     if(action != null)
+
                         switch (action) {
                             case BUY_RESOURCES:
                                 setBuyResourceAction(false);
@@ -545,17 +594,15 @@ public class Cli extends View {
                                 break;
                             case LEADER_ACTION:
                                 setLeaderCardAction(player.getHand(),false);
-                                player.leaderActionDone();
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
                                 sendMessage(socket, new EndTurnMessage());
                                 return;
-
                         }
                 }
 
-            }while(!correct.get() && player.allPossibleActionDone());
+            }while(!correct.get() && !player.allPossibleActionDone());
         });
     }
 
@@ -633,34 +680,42 @@ public class Cli extends View {
             System.out.println("Leader card selection incorrect. Try again.");
         else
             System.out.println("Select which leader card you want to select. " +
-                    "E.g. 'discard 1, activate 2' if you want to discard the first leader card and activate the second " +
+                    "E.g. 'D1, A2' if you want to discard the first leader card and activate the second " +
                     ". Write 'done' if you have finished");
 
 
         AtomicBoolean correct = new AtomicBoolean(false);
         AtomicBoolean selectionDone = new AtomicBoolean(false);
         inputThread = inputExecutor.submit(() -> {
-            System.out.println("");
-            inputWithTimeout();
+
             Map<LeaderCard, Boolean> userChoice = new HashMap<>();
 
             if(!Thread.interrupted()) {
-                do{
-                    String input = inputWithTimeout();
-                    if(input.equals("done"))
-                        selectionDone.set(true);
-                    userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
-                    correct.set(userChoice != null);
-                    if(!correct.get() && !selectionDone.get())
-                        System.out.println("Incorrect selection. Try again.");
 
-                    if(Thread.interrupted()) return;
+                String input = inputWithTimeout();
+                while(!input.equals("done") && userChoice.size() < 2){
 
-                }while(!correct.get() && !selectionDone.get());
-            }
+                    switch(input){
+                        case "A1":
+                            userChoice.put(leaderCards.get(0),true);
+                            break;
+                        case "A2":
+                            userChoice.put(leaderCards.get(1),true);
+                            break;
+                        case "D1":
+                            userChoice.put(leaderCards.get(0),false);
+                            break;
+                        case "D2":
+                            userChoice.put(leaderCards.get(1), false);
+                    }
+                    //userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
+                    input  = inputWithTimeout();
 
-            if(!Thread.interrupted()){
-                sendMessage(socket, new LeaderActionMessage(player.getNickname(),userChoice,true));
+                    if (Thread.interrupted()) return;
+                }
+
+                if(!Thread.interrupted()) sendMessage(socket, new LeaderActionMessage(player.getNickname(),userChoice,true));
+
             }
 
         });
@@ -793,7 +848,7 @@ public class Cli extends View {
     @Override
     public void showLoginDone(String user) {
         newMatch(user);
-        System.out.println("Login done, waiting to start the match ...");
+        System.out.println("Login done, matchmaking ...");
     }
 
     /**
@@ -1934,7 +1989,7 @@ public class Cli extends View {
      */
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
-
+        System.out.println(otherClient + " has disconnected from the match.");
     }
 
     /**
@@ -1943,7 +1998,7 @@ public class Cli extends View {
     @Override
     public void showServerDisconnection() {
 
-        System.out.println("Server says Bye Bye, sayonara");
+        System.out.println("Server says bye, bye!");
 
     }
 
@@ -1953,7 +2008,8 @@ public class Cli extends View {
      */
     @Override
     public void showYouLose(String winner) {
-
+        Formatting.clearScreen();
+        System.out.println("You LOSE. " + winner + " won the match" );
     }
 
     /**
@@ -1961,7 +2017,8 @@ public class Cli extends View {
      */
     @Override
     public void showYouWin() {
-
+        Formatting.clearScreen();
+        System.out.println("You are the champion! VICTORY!" );
     }
 
     /**
@@ -2004,7 +2061,6 @@ public class Cli extends View {
      * @param message the message to send
      */
     public void sendMessage(Socket socket, Message message){
-
         new MessageSender(socket,message).sendMsg(outputStream);
     }
 

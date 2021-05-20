@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ClientPlayer {
     private final Effects activeEffects;
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
+    private ClientGameBoard gameBoard;
 
     public ClientPlayer(String nickname, ClientGameBoard gameBoard){
 
@@ -33,6 +35,7 @@ public class ClientPlayer {
         activeLeaderCards = new ArrayList<>();
         this.standardActionPlayed = false;
         this.actionLeaderPlayed = false;
+        this.gameBoard = gameBoard;
 
     }
 
@@ -119,6 +122,11 @@ public class ClientPlayer {
     public void resetTurnActionCounter() {
         standardActionPlayed = false;
         actionLeaderPlayed = false;
+    }
+
+    public void buyDevelopmentCard(int x, int y) {
+        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x,y);
+        playerBoard.addDevelopmentCard(developmentCard);
     }
 }
 

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.messages.utils;
 
+import it.polimi.ingsw.messages.actions.server.ActivateProductionAccepted;
+import it.polimi.ingsw.messages.actions.server.BuyResourcesAccepted;
+import it.polimi.ingsw.messages.actions.server.LeaderActionAccepted;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
@@ -41,29 +44,30 @@ public class UpdateWriter {
         return new BuyDevelopmentCardMessage(user,x, y, true);
     }
 
-    public Message buyResourceAccepted(String user,int x, int y) {
-        return new BuyResourcesMessage(user,x, y, true);
+    public Message buyResourceAccepted(String user, int x, int y){
+        return new BuyResourcesAccepted(user,x,y);
+        //BuyResourcesMessage message = new BuyResourcesMessage(user,x, y, true);
     }
 
     public Message productionCardAccepted(String user,List<DevelopmentCard> cards) {
-        return new ActivateCardProductionMessage(user,cards, true);
+        return new ActivateProductionAccepted();
     }
 
     public Message productionBoardAccepted(String user,Map<ResourceType,List<ResourceType>> userChoice) {
-        return new ActivateBoardProductionMessage(user, userChoice, true);
+        return new ActivateProductionAccepted();
     }
 
     public Message productionLeaderAccepted(List<LeaderCard> leaderCards) {
-        return null;
+        return new ActivateProductionAccepted();
         //return new ActivateLeaderProductionMessage(leaderCards, true);
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {
-        return new ActivateLeaderCardMessage(card, true);
+        return new LeaderActionAccepted();
     }
 
     public Message discardLeaderAccepted(LeaderCard card) {
-        return new DiscardLeaderCardMessage(card);
+        return new LeaderActionAccepted();
     }
 
 

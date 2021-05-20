@@ -156,6 +156,8 @@ public class MatchController implements ControllerInterface{
         }
 
         game.getCurrentPlayer().setHand(leaderCardsChosen);
+        System.out.println("carte nel controller");
+        game.getCurrentPlayer().getHand().forEach(System.out::println);
 
         game.nextPlayer();
 
@@ -516,7 +518,10 @@ public class MatchController implements ControllerInterface{
             }
         }
 
+
         nextTurn();
+
+        System.out.println("dentro controller ");
 
         return errors;
     }

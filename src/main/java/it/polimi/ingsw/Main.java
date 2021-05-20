@@ -27,7 +27,6 @@ public class Main {
         if(args.length == 2 && args[1].equals("-cli"))
             new Cli().gameSetup();
 
-
     }
 
     /**

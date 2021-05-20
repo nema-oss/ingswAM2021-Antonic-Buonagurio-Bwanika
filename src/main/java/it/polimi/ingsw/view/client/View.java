@@ -3,18 +3,14 @@ package it.polimi.ingsw.view.client;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.CardMarket;
-import it.polimi.ingsw.model.gameboard.GameBoard;
-import it.polimi.ingsw.model.player.Board;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -231,7 +227,7 @@ public abstract class View {
     /**
      * This method set the phase to choose where to place the resources after a buy resource action
      */
-    public abstract void setPlaceResourcesAction();
+    public abstract void setPlaceResourcesAction(int x, int y);
 
     /**
      * This method tells the user that the leader card action has been accepted
@@ -241,5 +237,20 @@ public abstract class View {
     /**
      * This method tells the user that the buy card action has been accepted
      */
-    public abstract void showAcceptedBuyDevelopmentCard();
+    public abstract void showAcceptedBuyDevelopmentCard(int x, int y);
+
+    /**
+     * This method tells the user that the activate production request has been rejected
+     */
+    public abstract void showProductionError();
+
+    /**
+     * This method add the leader cards to the user's hand
+     * @param choice user choice
+     */
+    public abstract void showLeaderCardsSelectionAccepted(List<LeaderCard> choice);
+
+    public abstract void showRejectedLeaderAction();
+
+    public abstract void showMoveDepositResult(int x, int y, boolean accepted);
 }

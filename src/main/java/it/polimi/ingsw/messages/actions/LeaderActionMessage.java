@@ -23,15 +23,16 @@ public class LeaderActionMessage implements ActionMessage, Serializable {
     @Override
     public void execute(VirtualView virtualView) {
         for(LeaderCard leaderCard: userChoice.keySet()) {
-            if(userChoice.get(leaderCard))
-                virtualView.activateLeaderCard(user,leaderCard);
-            else
-                virtualView.discardLeaderCard(user,leaderCard);
+            if(userChoice.get(leaderCard)) {
+                virtualView.activateLeaderCard(user, leaderCard);
+            }
+            else {
+                virtualView.discardLeaderCard(user, leaderCard);
+            }
         }
     }
 
     @Override
     public void execute(View view) {
-
     }
 }

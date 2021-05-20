@@ -7,23 +7,23 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * message sent after the client buys from the market to choose where to place the resources
  */
 public class PlaceResourcesMessage implements Serializable, ActionMessage {
+
     private final ActionMessageType messageType;
-    private List<Resource> resources;
-    private List<Integer> targetShelves; //which shelves does the client want to place the resources in
+    private final String user;
+    private final Map<Resource,Integer> userChoice;
 
     /**
      * Server-side constructor to create the message
-     * @param resources: the acquired resources
-     * @param targetShelves: the target shelves
      */
-    public PlaceResourcesMessage(List<Resource> resources, List<Integer> targetShelves) {
-        this.resources = resources;
-        this.targetShelves = targetShelves;
+    public PlaceResourcesMessage(String user, Map<Resource, Integer> userChoice) {
+        this.user = user;
+        this.userChoice = userChoice;
         messageType = ActionMessageType.PLACE_RESOURCES;
     }
     /**
@@ -38,7 +38,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-        virtualView.placeResource(resources,targetShelves);
+        virtualView.placeResource(user,userChoice);
     }
     /**
      * Get the message type

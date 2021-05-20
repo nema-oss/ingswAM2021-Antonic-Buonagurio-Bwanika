@@ -48,6 +48,7 @@ public class VirtualView implements VirtualViewInterface{
         this.inGameDisconnectionHandler = inGameDisconnectionHandler;
         this.requiredNumberOfPlayers = -1;
         this.socketObjectOutputStreamMap = new HashMap<>();
+        this.isActive = true;
 
         matchController.setVirtualView(this);
     }
@@ -207,7 +208,7 @@ public class VirtualView implements VirtualViewInterface{
     public void chooseLeaderCards(String user, List<LeaderCard> leaderCards){
         List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
 
-        /*
+
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedChooseLeaderCard(user,leaderCards);
@@ -215,7 +216,6 @@ public class VirtualView implements VirtualViewInterface{
                 onRejectedChooseLeaderCard(user, leaderCards);
         }
 
-         */
 
     }
 
@@ -388,7 +388,7 @@ public class VirtualView implements VirtualViewInterface{
      * This method manage the activate production board request from client
      */
     public void activateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice){
-        /*
+
         List<Error> errors = matchController.onActivateBoardProduction(user, userChoice);
         if(isActive){
             if(errors.isEmpty())
@@ -398,7 +398,6 @@ public class VirtualView implements VirtualViewInterface{
 
         }
 
-         */
     }
 
     private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
@@ -447,13 +446,13 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void activateLeaderCard(String user, LeaderCard card){
         List<Error> errors = matchController.onActivateLeader(user,card);
-        if(isActive){
-            if(errors.isEmpty())
-                onAcceptedActivateLeaderCard(user,card);
+        if(isActive()) {
+            if (errors.isEmpty())
+                onAcceptedActivateLeaderCard(user, card);
             else
-                onRejectedActivateLeaderCard(user,card);
-
+                onRejectedActivateLeaderCard(user, card);
         }
+
     }
 
     private void onAcceptedActivateLeaderCard(String user, LeaderCard card) {
@@ -477,8 +476,10 @@ public class VirtualView implements VirtualViewInterface{
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedDiscardLeaderCard(user,card);
-            else
-                onRejectedDiscardLeaderCard(user,card);
+            else {
+                errors.forEach(System.out::println);
+                onRejectedDiscardLeaderCard(user, card);
+            }
 
         }
     }
@@ -490,7 +491,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
-        Message message = new ErrorWriter().activateLeaderRejected(card);
+        Message message = new ErrorWriter().discardLeaderRejected(card);
         sendMessage(clients.get(user), message);
     }
 
@@ -532,7 +533,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
-        sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,true));
+        sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,false));
     }
 
 
@@ -563,10 +564,10 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method handle a place resource request from the client
-     * @param resources the resources to place
-     * @param targetShelves the selected floors
+
      */
-    public void placeResource(List<Resource> resources, List<Integer> targetShelves) {
+    public void placeResource(String user, Map<Resource,Integer> userChoice) {
+
     }
 
     /**

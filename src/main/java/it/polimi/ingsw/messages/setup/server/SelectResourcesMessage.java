@@ -16,7 +16,6 @@ public class SelectResourcesMessage implements SetupMessage, Serializable {
     }
     @Override
     public void execute(VirtualView virtualView) {
-
     }
 
     @Override

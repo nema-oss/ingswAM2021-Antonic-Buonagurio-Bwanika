@@ -10,13 +10,16 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class ActivateProductionMessage implements Serializable, ActionMessage {
+
     private final ActionMessageType messageType;
+    private final String user;
 
     /**
      * Server-side constructor to create the message
      */
-    public ActivateProductionMessage() {
+    public ActivateProductionMessage(String user) {
         messageType = ActionMessageType.ACTIVATE_PRODUCTION;
+        this.user = user;
     }
     /**
      * Execute the request client side
@@ -30,7 +33,7 @@ public class ActivateProductionMessage implements Serializable, ActionMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-        //method in virtualView
+        virtualView.activateProduction(user);
     }
     /**
      * Get the message type

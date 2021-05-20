@@ -13,7 +13,7 @@ public class Formatting {
      * Clears the screen and print the default heading
      */
     public static void clearScreen() {
-        int height = 50;
+        int height = 20;
         StringBuilder clean = new StringBuilder();
         for (int i = 0; i < height; i = i + 5) {
             clean.append("\n\n\n\n\n");

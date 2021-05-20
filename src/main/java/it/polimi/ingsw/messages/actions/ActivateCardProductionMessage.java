@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class ActivateCardProductionMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
+    private final String user;
     private List<DevelopmentCard> choice;
     boolean accepted;
 
@@ -21,8 +22,9 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
      * @param choice: target development card
      * @param accepted: result of the request
      */
-    public ActivateCardProductionMessage(List<DevelopmentCard> choice, boolean accepted) {
+    public ActivateCardProductionMessage(String user, List<DevelopmentCard> choice, boolean accepted) {
         this.choice = choice;
+        this.user = user;
         this.accepted=accepted;
         this.messageType = ActionMessageType.ACTIVATE_DEVELOPMENT_CARD_PRODUCTION;
     }

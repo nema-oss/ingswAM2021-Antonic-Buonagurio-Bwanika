@@ -36,8 +36,8 @@ public class ErrorWriter {
      * @param leaderCards the selected cards
      * @return the rejection message
      */
-    public Message cardSelectionRejected(List<LeaderCard> leaderCards) {
-        return new ChooseLeadersMessage(leaderCards, false);
+    public Message cardSelectionRejected(String user, List<LeaderCard> leaderCards) {
+        return new ChooseLeadersMessage(user,leaderCards, false);
     }
 
     /**
@@ -49,21 +49,23 @@ public class ErrorWriter {
         return new ChooseResourcesMessage( user, resourceType, false);
     }
 
-    public Message buyCardRejected(int x, int y) {
-        return new BuyDevelopmentCardMessage(x, y, false);
+    public Message buyCardRejected(String user, int x, int y) {
+        return new BuyDevelopmentCardMessage(user, x, y, false);
     }
 
-    public Message buyResourceRejected(int x, int y) {
-        return new BuyResourcesMessage(x, y, false);
+    public Message buyResourceRejected(String user, int x, int y) {
+        return new BuyResourcesMessage(user, x, y, false);
     }
 
-    public Message productionCardRejected(List<DevelopmentCard> cards) { return new ActivateCardProductionMessage(cards, false);
+    public Message productionCardRejected(String user,List<DevelopmentCard> cards) { return new ActivateCardProductionMessage(user,cards, false);
     }
 
-    public Message productionBoardRejected(ResourceType resourceType) { return new ActivateBoardProductionMessage(resourceType, false);
+    public Message productionBoardRejected(String user, Map<ResourceType,List<ResourceType>> resourceType) { return new ActivateBoardProductionMessage(user,resourceType, false);
     }
 
-    public Message productionLeaderRejected(List<LeaderCard> card) { return new ActivateLeaderProductionMessage(card, false);
+    public Message productionLeaderRejected(List<LeaderCard> card) {
+        return null;
+        //return new ActivateLeaderProductionMessage(card, false);
     }
 
     public Message activateLeaderRejected(LeaderCard card) {

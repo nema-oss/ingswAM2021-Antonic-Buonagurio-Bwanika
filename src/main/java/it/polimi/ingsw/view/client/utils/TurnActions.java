@@ -32,4 +32,9 @@ public enum TurnActions {
     public static TurnActions valueOfLabel(String label) {
         return BY_LABEL.get(label);
     }
+
+    @Override
+    public  String toString() {
+        return label;
+    }
 }

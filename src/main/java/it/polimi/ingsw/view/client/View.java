@@ -194,8 +194,9 @@ public abstract class View {
 
     /**
      * This method tells the user that it has to play its turn
+     * @param currentPlayer the player that it's playing now
      */
-    public abstract void showPlayTurn();
+    public abstract void showPlayTurn(String currentPlayer);
 
     /**
      * This method shows the resource market
@@ -226,4 +227,19 @@ public abstract class View {
     *This method shows all existing resources
      */
     public abstract void showAllAvailableResources();
+
+    /**
+     * This method set the phase to choose where to place the resources after a buy resource action
+     */
+    public abstract void setPlaceResourcesAction();
+
+    /**
+     * This method tells the user that the leader card action has been accepted
+     */
+    public abstract void showAcceptedLeaderAction();
+
+    /**
+     * This method tells the user that the buy card action has been accepted
+     */
+    public abstract void showAcceptedBuyDevelopmentCard();
 }

@@ -18,6 +18,7 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
 
     private final SetupMessageType messageType;
     private List<LeaderCard> choice;
+    private String user;
     private boolean accepted;
 
 
@@ -26,8 +27,9 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
      * @param choice: the target LeaderCard
      * @param accepted: the result of the request
      */
-    public ChooseLeadersMessage(List<LeaderCard> choice, boolean accepted) {
+    public ChooseLeadersMessage(String user, List<LeaderCard> choice, boolean accepted) {
         this.choice = choice;
+        this.user = user;
         this.accepted = accepted;
         messageType = SetupMessageType.CHOOSE_LEADERS;
     }
@@ -43,7 +45,7 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-        //method in virtualView
+        virtualView.chooseLeaderCards(user,choice);
     }
 
     /**

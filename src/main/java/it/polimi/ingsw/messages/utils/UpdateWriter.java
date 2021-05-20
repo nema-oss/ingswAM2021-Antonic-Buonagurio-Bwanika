@@ -25,8 +25,8 @@ public class UpdateWriter {
         return  new NewUserLogged(nickname);
     }
 
-    public Message cardSelectionAccepted(List<LeaderCard> leaderCards) {
-        return new ChooseLeadersMessage(leaderCards, true);
+    public Message cardSelectionAccepted(String user, List<LeaderCard> leaderCards) {
+        return new ChooseLeadersMessage(user, leaderCards, true);
     }
 
     public Message resourceTypeSelectionAccepted(String user, Map<ResourceType,Integer> resourceTypeChoice) {
@@ -37,24 +37,25 @@ public class UpdateWriter {
         return new MoveDepositMessage(user,a, b, true);
     }
 
-    public Message buyCardAccepted(int x, int y) {
-        return new BuyDevelopmentCardMessage(x, y, true);
+    public Message buyCardAccepted(String user,int x, int y) {
+        return new BuyDevelopmentCardMessage(user,x, y, true);
     }
 
-    public Message buyResourceAccepted(int x, int y) {
-        return new BuyResourcesMessage(x, y, true);
+    public Message buyResourceAccepted(String user,int x, int y) {
+        return new BuyResourcesMessage(user,x, y, true);
     }
 
-    public Message productionCardAccepted(List<DevelopmentCard> cards) {
-        return new ActivateCardProductionMessage(cards, true);
+    public Message productionCardAccepted(String user,List<DevelopmentCard> cards) {
+        return new ActivateCardProductionMessage(user,cards, true);
     }
 
-    public Message productionBoardAccepted(ResourceType resourceType) {
-        return new ActivateBoardProductionMessage(resourceType, true);
+    public Message productionBoardAccepted(String user,Map<ResourceType,List<ResourceType>> userChoice) {
+        return new ActivateBoardProductionMessage(user, userChoice, true);
     }
 
     public Message productionLeaderAccepted(List<LeaderCard> leaderCards) {
-        return new ActivateLeaderProductionMessage(leaderCards, true);
+        return null;
+        //return new ActivateLeaderProductionMessage(leaderCards, true);
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {

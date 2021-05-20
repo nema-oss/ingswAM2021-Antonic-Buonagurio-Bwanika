@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 public class ClientPlayer {
 
     private final Board playerBoard;
+    private boolean standardActionPlayed;
+    private boolean actionLeaderPlayed;
     private String nickname;
     private final int victoryPoints;
     private final Effects activeEffects;
@@ -29,9 +31,8 @@ public class ClientPlayer {
         victoryPoints = 0;
         activeEffects = new Effects();
         activeLeaderCards = new ArrayList<>();
-
-        boolean standardActionPlayed = false;
-        boolean[] leaderActionPlayed = new boolean[2];
+        this.standardActionPlayed = false;
+        this.actionLeaderPlayed = false;
 
     }
 
@@ -101,6 +102,23 @@ public class ClientPlayer {
         Stream<LeaderCard> stream =  hand.stream().filter(leaderCard -> leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION));
         return  stream.collect(Collectors.toList());
 
+    }
+
+    public boolean allPossibleActionDone() {
+        return standardActionPlayed && actionLeaderPlayed;
+    }
+
+    public void standardActionDone() {
+        standardActionPlayed = true;
+    }
+
+    public void leaderActionDone(){
+        actionLeaderPlayed = true;
+    }
+
+    public void resetTurnActionCounter() {
+        standardActionPlayed = false;
+        actionLeaderPlayed = false;
     }
 }
 

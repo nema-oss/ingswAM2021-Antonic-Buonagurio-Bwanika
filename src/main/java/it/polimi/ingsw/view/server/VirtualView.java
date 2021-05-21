@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
+import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -36,6 +37,7 @@ public class VirtualView implements VirtualViewInterface{
     private boolean isActive;
     private InGameDisconnectionHandler inGameDisconnectionHandler;
     private int requiredNumberOfPlayers;
+    private List<Resource> boughtResources;
 
     public VirtualView(ControllerInterface matchController, int lobbyID, InGameDisconnectionHandler inGameDisconnectionHandler) {
         this.lobbyID = lobbyID;
@@ -345,6 +347,7 @@ public class VirtualView implements VirtualViewInterface{
 
     private void onAcceptedBuyResources(String user, int x, int y) {
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
+        ((BuyResourcesMessage) message).setResourceList(boughtResources);
         sendMessage(clients.get(user), message);
     }
 
@@ -563,8 +566,25 @@ public class VirtualView implements VirtualViewInterface{
 
      */
     public void placeResource(String user, Map<Resource,Integer> userChoice) {
-
+        List<Error> errors = matchController.onPlaceResources(user,userChoice);
+        if(isActive()){
+            if(errors.isEmpty())
+                onAcceptedPlaceResource(user, userChoice);
+            else
+                onRejectedPlaceResource(user, userChoice);
+        }
     }
+
+    private void onRejectedPlaceResource(String user, Map<Resource, Integer> userChoice) {
+        Message message = new ErrorWriter().placeResourceRejected(user,userChoice);
+        sendMessage(clients.get(user), message);
+    }
+
+    private void onAcceptedPlaceResource(String user, Map<Resource, Integer> userChoice) {
+        Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
+        sendMessage(clients.get(user), message);
+    }
+
 
     /**
      * This metho
@@ -583,6 +603,9 @@ public class VirtualView implements VirtualViewInterface{
         List<Error> errors = matchController.onActivateProduction(user);
     }
 
-    public void sendResourcesBought(List<Resource> resources){}
+    // I temporary save the resource and send them after the buy resources action is accepted
+    public synchronized void sendResourcesBought(List<Resource> resources){
+        boughtResources = resources;
+    }
 }
 

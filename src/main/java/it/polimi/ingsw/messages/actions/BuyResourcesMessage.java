@@ -42,9 +42,11 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     public void execute(View view){
 
         if(!isAccepted())
-            view.setBuyCardAction(accepted);
-        else
-            view.setPlaceResourcesAction(x,y);
+            view.setBuyResourceAction(accepted);
+        else {
+            view.setBoughtResources(resources);
+            view.setPlaceResourcesAction();
+        }
     }
     /**
      * Execute the request server side
@@ -69,5 +71,6 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     }
 
     public void setResourceList(List<Resource> resourceList) {
+        this.resources = resourceList;
     }
 }

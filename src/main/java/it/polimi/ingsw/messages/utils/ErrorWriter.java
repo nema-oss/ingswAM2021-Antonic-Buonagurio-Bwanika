@@ -11,6 +11,7 @@ import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.LoginRefusedMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.util.List;
@@ -84,5 +85,11 @@ public class ErrorWriter {
 
     public Message discardLeaderRejected(LeaderCard card) {
         return new LeaderActionRejected();
+    }
+
+    public Message placeResourceRejected(String user, Map<Resource, Integer> userChoice) {
+        Message message = new PlaceResourcesMessage(user,userChoice);
+        ((PlaceResourcesMessage) message).setAccepted(false);
+        return message;
     }
 }

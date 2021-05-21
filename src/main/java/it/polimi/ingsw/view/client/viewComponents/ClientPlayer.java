@@ -25,6 +25,7 @@ public class ClientPlayer {
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
     private ClientGameBoard gameBoard;
+    private List<Resource> boughtResources;
 
     public ClientPlayer(String nickname, ClientGameBoard gameBoard) {
 
@@ -129,5 +130,12 @@ public class ClientPlayer {
         playerBoard.addDevelopmentCard(developmentCard);
     }
 
+    public void setBoughtResources(List<Resource> resources) {
+        this.boughtResources = resources;
+    }
+
+    public List<Resource> getBoughtResources() {
+        return boughtResources;
+    }
 }
 

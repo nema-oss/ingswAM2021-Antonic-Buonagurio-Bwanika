@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.util.List;
@@ -76,5 +77,11 @@ public class UpdateWriter {
 
     public Message loginDone(String nickname) {
         return new LoginDoneMessage(nickname,true);
+    }
+
+    public Message placeResourceAccepted(String user, Map<Resource, Integer> userChoice) {
+        Message message = new PlaceResourcesMessage(user,userChoice);
+        ((PlaceResourcesMessage) message).setAccepted(true);
+        return message;
     }
 }

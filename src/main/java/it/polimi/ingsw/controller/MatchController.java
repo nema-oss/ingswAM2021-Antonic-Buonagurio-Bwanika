@@ -25,7 +25,6 @@ public class MatchController implements ControllerInterface{
 
     private final Game game;
     private VirtualViewInterface viewInterface;
-    private int cont;
 
     private boolean developmentProductionActivated;
     private boolean leaderProductionActivated;
@@ -206,12 +205,9 @@ public class MatchController implements ControllerInterface{
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
         }
-        else if(cont == size){
+        else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))){
             game.setGamePhase(GamePhase.PLAY_TURN);
             viewInterface.playTurn(game.getCurrentPlayer().getNickname());
-        }
-        else{
-            cont++;
         }
 
     }

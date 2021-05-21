@@ -541,7 +541,7 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()) {
             try {
-                int index =0;
+                int index;
                 for(LeaderCard l : game.getCurrentPlayer().getHand())
                     if(l.getId().equals(leaderCard.getId())) {
                         index = game.getCurrentPlayer().getHand().indexOf(l);

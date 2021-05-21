@@ -227,7 +227,7 @@ public abstract class View {
     /**
      * This method set the phase to choose where to place the resources after a buy resource action
      */
-    public abstract void setPlaceResourcesAction(int x, int y);
+    public abstract void setPlaceResourcesAction();
 
     /**
      * This method tells the user that the leader card action has been accepted
@@ -253,4 +253,8 @@ public abstract class View {
     public abstract void showRejectedLeaderAction();
 
     public abstract void showMoveDepositResult(int x, int y, boolean accepted);
+
+    public abstract void showPlaceResourcesResult(boolean accepted);
+
+    public abstract void setBoughtResources(List<Resource> resources);
 }

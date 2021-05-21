@@ -409,12 +409,15 @@ public class Cli extends View {
                             break;
                         case "L2":
                             userChoice.add(cardChoice.get(1));
+                            System.out.println("Second card selected");
                             break;
                         case "L3":
                             userChoice.add(cardChoice.get(2));
+                            System.out.println("Third card selected");
                             break;
                         case "L4":
                             userChoice.add(cardChoice.get(3));
+                            System.out.println("Forth card selected");
                             break;
                         case "timeoutExpired":
                             return;
@@ -486,7 +489,7 @@ public class Cli extends View {
      * This method set the phase to choose where to place the resources after a buy resource action
      */
     @Override
-    public void setPlaceResourcesAction(int x, int y) {
+    public void setPlaceResourcesAction() {
 
         // should handle both move deposit and place resources requests -> all the other resources are discarded
 
@@ -494,10 +497,8 @@ public class Cli extends View {
 
         showBoard(gameBoard,player);
 
-        List<Resource> resourceList = new ArrayList<>();
-        resourceList.add(new Resource(ResourceType.COIN));
-        resourceList.add(new Resource(ResourceType.STONE));
-        resourceList.add(new Resource(ResourceType.SHIELD));
+
+        List<Resource> resourceList = player.getBoughtResources();
 
 
         inputThread = inputExecutor.submit( () ->{
@@ -531,9 +532,12 @@ public class Cli extends View {
                 System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
                         "the first floor.");
 
+                resourceList.stream().map(resource -> resource.getType() + "---").forEach(System.out::print);
+
                 input = inputWithTimeout();
                 boolean correct = false;
                 Map<Resource,Integer> userChoice = new HashMap<>();
+
                 while(!input.equals("done") &&  !correct){
                     userChoice = InputValidator.isValidPlaceResourceAction(resourceList, input);
                     correct = userChoice != null;
@@ -612,6 +616,24 @@ public class Cli extends View {
         }else{
             System.out.println("Move deposit request rejected. Try again");
         }
+    }
+
+    @Override
+    public void showPlaceResourcesResult(boolean accepted) {
+        if(accepted){
+            System.out.println("The other resources will be discarded. Press Enter to continue");
+            inputWithTimeout();
+            askTurnAction();
+        }
+        else{
+            System.out.println("Incorrect place resources. Try again.");
+            setPlaceResourcesAction();
+        }
+    }
+
+    @Override
+    public void setBoughtResources(List<Resource> resources) {
+        player.setBoughtResources(resources);
     }
 
 

@@ -559,7 +559,6 @@ public class MatchController implements ControllerInterface{
 
         nextTurn();
 
-        System.out.println("dentro controller ");
 
         return errors;
     }

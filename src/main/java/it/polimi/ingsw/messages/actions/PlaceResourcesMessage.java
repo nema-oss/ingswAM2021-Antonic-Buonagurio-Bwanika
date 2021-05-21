@@ -17,7 +17,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     private final String user;
     private final Map<Resource,Integer> userChoice;
-
+    private boolean accepted;
     /**
      * Server-side constructor to create the message
      */
@@ -25,13 +25,14 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
         this.user = user;
         this.userChoice = userChoice;
         messageType = ActionMessageType.PLACE_RESOURCES;
+        accepted = true;
     }
     /**
      * Execute the request client side
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in view to show the update
+        view.showPlaceResourcesResult(accepted);
     }
     /**
      * Execute the request server side
@@ -46,5 +47,9 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
      */
     public ActionMessageType getType() {
         return messageType;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

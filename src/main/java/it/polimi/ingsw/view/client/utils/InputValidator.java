@@ -103,23 +103,32 @@ public class InputValidator {
      */
     public static Point isValidBuyResourcesAction(String input) {
 
+        // row,x
         List<String> splitInput = Arrays.asList(input.split("\\s*,\\s*"));
-        Point coordinates = new Point();
-        int x;
-        int y;
+        int idx;
+        Point point = new Point();
 
-        if(splitInput.size() == 2) {
-            try {
-                x = Integer.parseInt(splitInput.get(0));
-                y = Integer.parseInt(splitInput.get(1));
-                if( !(0 <= x && x <= MARBLE_MARKET_ROW && 0 <= y && y <= MARBLE_MARKET_COLUMNS )) return null;
-            } catch (NumberFormatException e) {
-                return null;
+        if(splitInput.size() == 2){
+            switch(splitInput.get(0).toLowerCase(Locale.ROOT)){
+                case "row":
+                    try{
+                        idx = Integer.parseInt(splitInput.get(1));
+                        point.setY(-1);
+                        point.setX(idx);
+                        return point;
+                    }catch (NumberFormatException e){
+                        return null;
+                    }
+                case "column":
+                    try{
+                        idx = Integer.parseInt(splitInput.get(1));
+                        point.setX(-1);
+                        point.setY(idx);
+                        return point;
+                    }catch (NumberFormatException e){
+                        return null;
+                    }
             }
-
-            coordinates.setX(x);
-            coordinates.setY(y);
-            return coordinates;
         }
 
         return null;

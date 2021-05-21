@@ -331,13 +331,14 @@ public class Player{
             //need to check player's deposit, auxiliary deposit (if present) and strongbox
             for(ResourceType resourceType : hand.get(positionIndex).getCostResource().keySet()) { // for every resource needed count how many resources the player has
                 resourceCounter = 0;
-                resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
+                if(playerBoard.getDeposit().getAll().get(resourceType)!=null)
+                    resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
 
                 if(activeEffects.isExtraDeposit()){
                     resourceCounter += activeEffects.getAuxiliaryDeposit(0).getAuxiliaryDeposit().stream().filter(r -> r.getType() == resourceType).count();
                 }
-
-                resourceCounter += playerBoard.getStrongbox().getAll().get(resourceType).size();
+                if(playerBoard.getStrongbox().getAll().get(resourceType)!=null)
+                    resourceCounter += playerBoard.getStrongbox().getAll().get(resourceType).size();
                 if(resourceCounter < hand.get(positionIndex).getCostResource().get(resourceType)) throw new InsufficientResourcesException();
             }
         }
@@ -346,14 +347,16 @@ public class Player{
 
             for(Integer integer : hand.get(positionIndex).getCostDevelopment().keySet()){
                 for(DevelopmentCardType developmentCardType : hand.get(positionIndex).getCostDevelopment().get(integer).keySet()){
+                    numberOfCards = 0;
                     for(Stack<DevelopmentCard> developmentCards : playerBoard.getDevelopmentCards()){
                         for(DevelopmentCard developmentCard : developmentCards){
                             if(developmentCard.getType() == developmentCardType && (integer == 0 || developmentCard.getLevel() == integer))
                                 numberOfCards++;
                         }
                     }
+                    if(numberOfCards < hand.get(positionIndex).getCostDevelopment().get(integer).get(developmentCardType)) throw new InsufficientDevelopmentCardsException();
                 }
-                if(numberOfCards < integer) throw new InsufficientDevelopmentCardsException();
+
             }
         }
 

@@ -348,7 +348,7 @@ public class Player{
                 for(DevelopmentCardType developmentCardType : hand.get(positionIndex).getCostDevelopment().get(integer).keySet()){
                     for(Stack<DevelopmentCard> developmentCards : playerBoard.getDevelopmentCards()){
                         for(DevelopmentCard developmentCard : developmentCards){
-                            if(developmentCard.getType() == developmentCardType)
+                            if(developmentCard.getType() == developmentCardType && (integer == 0 || developmentCard.getLevel() == integer))
                                 numberOfCards++;
                         }
                     }

@@ -27,6 +27,7 @@ public class MatchController implements ControllerInterface{
     private boolean developmentProductionActivated;
     private boolean leaderProductionActivated;
     private boolean boardProductionActivated;
+    private boolean firstSkipped;
 
     private boolean isLastRound;
 
@@ -42,6 +43,7 @@ public class MatchController implements ControllerInterface{
         leaderProductionActivated = false;
         boardProductionActivated = false;
         isLastRound = false;
+        firstSkipped = false;
     }
 
 
@@ -180,14 +182,18 @@ public class MatchController implements ControllerInterface{
         Player currentPlayer = game.getCurrentPlayer();
         int size = game.getListOfPlayers().size();
 
-        if(size >= 2 && currentPlayer.equals(game.getListOfPlayers().get(1)))
+        if(size > 1 && currentPlayer.equals(game.getListOfPlayers().get(0)) && !firstSkipped){
+            firstSkipped = true;
+            game.nextPlayer();
+            sendChooseResources();
+        }
+        else if(size >= 2 && currentPlayer.equals(game.getListOfPlayers().get(1)))
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
 
         else if (size >= 3 && currentPlayer.equals(game.getListOfPlayers().get(2))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
             currentPlayer.moveOnPopeRoad();
         }
-
         else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();

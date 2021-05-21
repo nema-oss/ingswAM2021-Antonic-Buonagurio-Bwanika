@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The view abstract class
@@ -213,7 +214,7 @@ public abstract class View {
     /**
      * This method shows a list of leader cards
      */
-    public  abstract void showLeaderCards(List<LeaderCard> leaderCards);
+    public  abstract void showLeaderCards(Map<LeaderCard, Boolean> status);
 
     /**
      * This method shows the card market

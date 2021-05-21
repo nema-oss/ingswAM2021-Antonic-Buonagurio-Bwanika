@@ -5,11 +5,12 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PopeSectionFactory {
+public class PopeSectionFactory implements Serializable {
 
     private List<PopeSection> popeSections;
 

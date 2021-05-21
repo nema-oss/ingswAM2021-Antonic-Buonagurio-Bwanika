@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-public class PopeSection {
+import java.io.Serializable;
+
+public class PopeSection implements Serializable {
 
     private int start;
     private int end;

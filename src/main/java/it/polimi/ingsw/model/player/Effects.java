@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import java.util.*;
 
-public class Effects {
+public class Effects{
 
 
     private boolean isWhiteToResource;

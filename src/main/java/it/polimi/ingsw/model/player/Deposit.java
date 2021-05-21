@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import javax.naming.InsufficientResourcesException;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -13,7 +14,7 @@ import java.util.*;
     *@author René
  */
 
-public class Deposit {
+public class Deposit implements Serializable {
 
     private List<List<Resource>> warehouse;
     private static final int NUMBER_OF_FLOORS = 3;

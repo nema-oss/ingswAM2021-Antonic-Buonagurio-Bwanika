@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import java.io.Serializable;
 import java.util.List;
 
 /*
@@ -8,7 +9,7 @@ import java.util.List;
     * @author René
  */
 
-public class PopeRoad {
+public class PopeRoad implements Serializable {
 
     private List<Cell> popeRoad;
     private List<Cell> popeSpaces;

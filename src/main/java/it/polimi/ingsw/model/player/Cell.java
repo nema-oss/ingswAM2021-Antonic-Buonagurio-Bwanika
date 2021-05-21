@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
 
 
     private int points;

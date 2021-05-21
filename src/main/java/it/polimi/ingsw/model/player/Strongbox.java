@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
  *@author René
  */
 
-public class Strongbox {
+public class Strongbox implements Serializable {
 
     private HashMap<ResourceType,List<Resource>> strongbox;
     private List<Resource> temporaryResourceStorage;

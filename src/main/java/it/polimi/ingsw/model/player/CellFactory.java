@@ -5,8 +5,9 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.Serializable;
 
-public class CellFactory {
+public class CellFactory implements Serializable {
 
     private Cell[] cells;
 

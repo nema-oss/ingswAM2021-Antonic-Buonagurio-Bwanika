@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
@@ -257,4 +258,6 @@ public abstract class View {
     public abstract void showPlaceResourcesResult(boolean accepted);
 
     public abstract void setBoughtResources(List<Resource> resources);
+
+    public abstract void updatePlayerBoard(Board board);
 }

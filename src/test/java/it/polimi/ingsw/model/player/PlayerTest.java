@@ -40,6 +40,7 @@ class PlayerTest {
         CardFactory cardFactory = new CardFactory();
         leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
         List<LeaderCard> leaderCards = new ArrayList<>();
+        leaderDeck.shuffle();
         leaderCards.add(leaderDeck.drawCard());
         leaderCards.add(leaderDeck.drawCard());
         player.setHand(leaderCards);
@@ -148,7 +149,12 @@ class PlayerTest {
     void activateLeaderCard() throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException {
 
         LeaderCardType leaderCardType = player.getHand().get(0).getLeaderType();
-        player.activateLeaderCard(0);
+        LeaderCard card = player.getHand().get(0);
+        System.out.println(player.getHand().get(0).getLeaderType());
+        System.out.println(card.getCostResource().keySet());
+        System.out.println("level == " + card.getCostDevelopment().keySet());
+        System.out.println("cards == "+ card.getCostDevelopment().values());
+        assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
         Effects effects = player.getActiveEffects();
         switch (leaderCardType){
             case DISCOUNT:

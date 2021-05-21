@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.player.Board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,4 +48,5 @@ public interface VirtualViewInterface {
     void endTurn(String nickname);
 
     void sendResourcesBought(List<Resource> resources);
+
 }

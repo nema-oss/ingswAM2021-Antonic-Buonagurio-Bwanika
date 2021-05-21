@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
@@ -23,6 +25,7 @@ public class MatchController implements ControllerInterface{
 
     private final Game game;
     private VirtualViewInterface viewInterface;
+    private int cont;
 
     private boolean developmentProductionActivated;
     private boolean leaderProductionActivated;
@@ -42,6 +45,7 @@ public class MatchController implements ControllerInterface{
         leaderProductionActivated = false;
         boardProductionActivated = false;
         isLastRound = false;
+        cont = 0;
     }
 
 
@@ -160,8 +164,12 @@ public class MatchController implements ControllerInterface{
 
         game.nextPlayer();
 
-
-        if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))) {
+        boolean cardSelectionDone = true;
+        for(Player p: game.getListOfPlayers()){
+            if(p.getHand() == null || p.getHand().size() < 2)
+                cardSelectionDone = false;
+        }
+        if(cardSelectionDone){
             game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
             sendChooseResources();
         }
@@ -180,7 +188,10 @@ public class MatchController implements ControllerInterface{
         Player currentPlayer = game.getCurrentPlayer();
         int size = game.getListOfPlayers().size();
 
-        if(size >= 2 && currentPlayer.equals(game.getListOfPlayers().get(1)))
+        if(size >= 2 && game.getListOfPlayers().indexOf(currentPlayer) == 1){
+            viewInterface.toDoChooseResources(currentPlayer.getNickname(),1);
+        }
+        else if(size >= 2  && currentPlayer.getNickname().equals(game.getListOfPlayers().get(1).getNickname()))
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
 
         else if (size >= 3 && currentPlayer.equals(game.getListOfPlayers().get(2))) {
@@ -191,9 +202,13 @@ public class MatchController implements ControllerInterface{
         else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
-        }else{
+        }
+        else if(cont == size){
             game.setGamePhase(GamePhase.PLAY_TURN);
             viewInterface.playTurn(game.getCurrentPlayer().getNickname());
+        }
+        else{
+            cont++;
         }
 
     }
@@ -840,6 +855,13 @@ public class MatchController implements ControllerInterface{
 
     public Game getGame(){
         return this.game;
+    }
+
+    /**
+     * Sends the updated board to the client after a successful standard action
+     */
+    public Board sendBoardUpdate(){
+        return game.getCurrentPlayer().getPlayerBoard();
     }
 
 

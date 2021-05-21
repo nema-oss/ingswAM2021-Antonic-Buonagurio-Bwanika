@@ -72,7 +72,7 @@ public class Deposit {
 
     public Map<ResourceType,List<Resource>> getAll(){
 
-        Map<ResourceType,List<Resource>> result = new HashMap<ResourceType,List<Resource>>();
+        Map<ResourceType,List<Resource>> result = new HashMap<>();
         for(List<Resource> floor: warehouse){
             if(floor.size() > 0)
                 result.put(floor.get(0).getType(), new ArrayList<>(floor));

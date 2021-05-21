@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class ClientPlayer {
 
-    private final Board playerBoard;
+    private Board playerBoard;
     private boolean standardActionPlayed;
     private boolean actionLeaderPlayed;
     private String nickname;
@@ -136,6 +136,10 @@ public class ClientPlayer {
 
     public List<Resource> getBoughtResources() {
         return boughtResources;
+    }
+
+    public void setPlayerBoard(Board board) {
+        playerBoard = board;
     }
 }
 

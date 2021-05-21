@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -261,6 +262,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedChooseResourceType(String user, Map<ResourceType, Integer> resourceType) {
         Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(user, resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
     /**
      * This method send alerts the client that its resourceType selection has been rejected
@@ -293,6 +297,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedMoveDeposit(String user, int a, int b) {
         Message message = new UpdateWriter().moveDepositRequestAccepted(user,a, b);
         sendMessage(clients.get(user), message);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
 
     /**
@@ -324,6 +331,9 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
         for(Socket socket: clients.values())
             sendMessage(socket, message);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
@@ -348,7 +358,13 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedBuyResources(String user, int x, int y) {
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
+
         sendMessage(clients.get(user), message);
+
+
     }
 
     private void onRejectedBuyResources(String user, int x, int y) {
@@ -375,6 +391,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
 
     private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
@@ -401,6 +420,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -583,6 +605,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedPlaceResource(String user, Map<Resource, Integer> userChoice) {
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
         sendMessage(clients.get(user), message);
+
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        sendMessage(clients.get(user), boardUpdate);
     }
 
 

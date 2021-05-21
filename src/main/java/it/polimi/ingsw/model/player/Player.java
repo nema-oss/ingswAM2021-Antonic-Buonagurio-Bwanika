@@ -317,14 +317,14 @@ public class Player{
 
     }
 
-    /*
+    /**
         *this method allows the player to use a leaderCard from his hand
-        * @param the leader card index
+        * @param positionIndex the leader card index
      */
 
     public void activateLeaderCard(int positionIndex) throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException{
 
-        if(hand.get(positionIndex) == null) throw new NonExistentCardException(); // this can be fixed in the controller
+        if(positionIndex < 0 || hand.size() < positionIndex || hand.get(positionIndex) == null) throw new NonExistentCardException(); // this can be fixed in the controller
 
         int resourceCounter = 0;
         if(!hand.get(positionIndex).getCostResource().isEmpty()){ //this means the resource requirement for the LeaderCard needs to be satisfied

@@ -1,13 +1,10 @@
 package it.polimi.ingsw.view.client.utils;
 
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
-import javax.print.DocFlavor;
-import javax.swing.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;

@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
@@ -468,7 +469,7 @@ public class Cli extends View {
 
                 if(Thread.interrupted()) return;
 
-            }while(!correct.get() && resourceTypesChoice.size() < 2);
+            }while(!correct.get() || resourceTypesChoice.size() < numberOfResources);
 
             if(!Thread.interrupted())
                 sendMessage(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true));
@@ -532,7 +533,7 @@ public class Cli extends View {
                 System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
                         "the first floor.");
 
-                resourceList.stream().map(resource -> resource.getType() + "---").forEach(System.out::print);
+                resourceList.stream().map(resource -> resource.getType() + "---" + "\n").forEach(System.out::print);
 
                 input = inputWithTimeout();
                 boolean correct = false;
@@ -634,6 +635,11 @@ public class Cli extends View {
     @Override
     public void setBoughtResources(List<Resource> resources) {
         player.setBoughtResources(resources);
+    }
+
+    @Override
+    public void updatePlayerBoard(Board board) {
+        player.setPlayerBoard(board);
     }
 
 

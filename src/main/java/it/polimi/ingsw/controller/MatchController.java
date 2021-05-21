@@ -816,7 +816,12 @@ public class MatchController implements ControllerInterface{
         else {
             game.nextPlayer();
             game.removePlayer(nickname);
-            sendPlayTurn();
+
+            if(game.getListOfPlayers().size()>1)
+                sendPlayTurn();
+            else
+                viewInterface.endMatch();
+
         }
 
         return errors;

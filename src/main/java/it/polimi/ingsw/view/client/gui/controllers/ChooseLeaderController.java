@@ -41,10 +41,10 @@ public class ChooseLeaderController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        l1.setImage(new Image("Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png"));
-        l2.setImage(new Image("Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-50-1.png"));
-        l3.setImage(new Image("Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-51-1.png"));
-        l4.setImage(new Image("Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-52-1.png"));
+        l1.setImage(new Image("gui/Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png"));
+        l2.setImage(new Image("gui/Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-50-1.png"));
+        l3.setImage(new Image("gui/Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-51-1.png"));
+        l4.setImage(new Image("gui/Images/LeaderCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-52-1.png"));
 
 
         try {

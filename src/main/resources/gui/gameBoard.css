@@ -1,5 +1,5 @@
 .gameBoard{
-    -fx-background-image: url("../Images/Boards/planciaportabiglie.png");
+    -fx-background-image: url("Images/Boards/planciaportabiglie.png");
     -fx-background-size: 100% 100%;
 }
 

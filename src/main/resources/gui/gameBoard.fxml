@@ -12,14 +12,14 @@
     <children>
                 <ImageView fitHeight="412.0" fitWidth="289.0" layoutX="611.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../Images/Boards/planciaportabiglie.png" />
+                        <Image url="@Images/Boards/planciaportabiglie.png" />
                     </image>
                 </ImageView>
                 <AnchorPane layoutX="657.0" layoutY="122.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="200.0" styleClass="gridPane" stylesheets="@gameBoard.css">
          <children>
                         <ImageView fitHeight="217.0" fitWidth="201.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../Images/Immagine.png" />
+                                <Image url="@Images/Immagine.png" />
                             </image>
                         </ImageView>
                         <GridPane fx:id="marbleMarket" alignment="CENTER" layoutX="40.0" layoutY="40.0" prefHeight="93.0" prefWidth="121.0">

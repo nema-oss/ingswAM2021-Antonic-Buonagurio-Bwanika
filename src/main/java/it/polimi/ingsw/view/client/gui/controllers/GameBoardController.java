@@ -33,10 +33,10 @@ public class GameBoardController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        d00.setImage(new Image("Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
-        d01.setImage(new Image("Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
-        d02.setImage(new Image("Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
-        d03.setImage(new Image("Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
+        d00.setImage(new Image("gui/Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
+        d01.setImage(new Image("gui/Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
+        d02.setImage(new Image("gui/Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
+        d03.setImage(new Image("gui/Images/DevelopmentCardsFront/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
     }
 
     public static Node getGameBoard(){

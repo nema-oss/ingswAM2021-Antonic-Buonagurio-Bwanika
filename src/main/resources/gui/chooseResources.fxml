@@ -14,22 +14,22 @@
          <children>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="76.0" layoutY="50.0" onMouseClicked="#goldChosen" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/Resources/coin.png" />
+                  <Image url="@Images/Resources/coin.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="76.0" layoutY="193.0" onMouseClicked="#servantChosen" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/Resources/servant.png" />
+                  <Image url="@Images/Resources/servant.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="88.0" layoutY="342.0" onMouseClicked="#shieldChosen" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/Resources/shield.png" />
+                  <Image url="@Images/Resources/shield.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="75.0" layoutY="513.0" onMouseClicked="#stoneChosen" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/Resources/stone.png" />
+                  <Image url="@Images/Resources/stone.png" />
                </image>
             </ImageView>
             <Button fx:id="resourcesOk" layoutX="39.0" layoutY="681.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="78.0" prefWidth="223.0" text="Confirm" />

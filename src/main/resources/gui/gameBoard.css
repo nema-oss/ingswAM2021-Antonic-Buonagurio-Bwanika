@@ -1,0 +1,17 @@
+.gameBoard{
+    -fx-background-image: url("../Images/Boards/planciaportabiglie.png");
+    -fx-background-size: 100% 100%;
+}
+
+.progress-indicator {
+    -fx-progress-color: #203ca7;
+}
+
+.cardPane {
+    -fx-background-color: #c19d1e;
+    -fx-border-color: #6a4c35;
+}
+
+.gridPane {
+    -fx-border-color: #ffffff;
+}

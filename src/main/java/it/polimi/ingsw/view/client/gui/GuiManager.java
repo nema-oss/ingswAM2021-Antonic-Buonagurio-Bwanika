@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 public class GuiManager extends Application {
@@ -22,12 +23,11 @@ public class GuiManager extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        this.stage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/connection.fxml"));
+        GuiManager.stage = stage;
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/connection.fxml")));
         Scene scene = new Scene(root,1600,900);
         stage.setScene(scene);
         stage.show();
-
     }
 
 

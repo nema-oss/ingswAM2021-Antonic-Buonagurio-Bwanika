@@ -28,6 +28,7 @@ public class NumOfPlayersController implements Initializable {
 
         numOfPlayers = comboBox.getValue();
         //Gui.tellOk()
+        GuiManager.changeScene("/gui/game");
     }
 
 

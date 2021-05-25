@@ -57,8 +57,11 @@ public class CliTest {
     public void showLeaders(){
         cardFactory = new CardFactory();
         leaderCards = cardFactory.getLeaderCards();
+        Map<LeaderCard,Boolean> cards = new HashMap<>();
+        cards.put(leaderCards.get(0),true);
+        cards.put(leaderCards.get(1),false);
         Cli cli = new Cli();
-        cli.showLeaderCards(leaderCards);
+        cli.showLeaderCards(cards);
     }
 
     @Test
@@ -112,8 +115,9 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
-        p.getPlayerBoard().getPopeRoad().move(2);
-        cli.showBoard(cgameBoard, p);
+        p.getPlayerBoard().getPopeRoad().move(7);
+        //cli.showBoard(cgameBoard, p);
+        cli.showPopeRoad(p);
     }
 
     @Test
@@ -122,6 +126,23 @@ public class CliTest {
         cli.showAllAvailableResources();
 
     }
+
+    @Test
+    public void showActiveLeaders(){
+        cardFactory = new CardFactory();
+        leaderCards = cardFactory.getLeaderCards();
+        Cli cli = new Cli();
+        ClientPlayer clientPlayer = new ClientPlayer("prova", new ClientGameBoard());
+        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand.add(leaderCards.get(12));
+        hand.add(leaderCards.get(13));
+        clientPlayer.setHand(hand);
+        HashMap<LeaderCard, Boolean> active = new HashMap<>();
+        active.put(hand.get(0), true);
+        active.put(hand.get(1), false);
+        cli.showLeaderCards(active);
+    }
+
 
 
 }

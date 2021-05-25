@@ -112,11 +112,20 @@ public class Cli extends View {
         }
     }
 
+    /**
+     * This method shows a list of leader cards
+     *
+     * @param status
+     */
+    @Override
+    public void showLeaderCards(Map<LeaderCard, Boolean> status) {
+
+    }
+
 
     /**
      * This method shows the user's leader cards
      */
-    @Override
     public void showLeaderCards(List<LeaderCard> leaderCards) {
         String color;
        showFullLineTop(leaderCards.size());

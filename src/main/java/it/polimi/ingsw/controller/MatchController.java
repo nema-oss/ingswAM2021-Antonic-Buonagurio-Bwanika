@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -13,7 +12,6 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -25,7 +23,6 @@ public class MatchController implements ControllerInterface{
 
     private final Game game;
     private VirtualViewInterface viewInterface;
-    private int cont;
 
     private boolean developmentProductionActivated;
     private boolean leaderProductionActivated;
@@ -167,8 +164,10 @@ public class MatchController implements ControllerInterface{
 
         boolean cardSelectionDone = true;
         for(Player p: game.getListOfPlayers()){
-            if(p.getHand() == null || p.getHand().size() < 2)
+            if (p.getHand() == null || p.getHand().size() < 2) {
                 cardSelectionDone = false;
+                break;
+            }
         }
         if(cardSelectionDone){
             game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
@@ -206,12 +205,9 @@ public class MatchController implements ControllerInterface{
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
         }
-        else if(cont == size){
+        else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))){
             game.setGamePhase(GamePhase.PLAY_TURN);
             viewInterface.playTurn(game.getCurrentPlayer().getNickname());
-        }
-        else{
-            cont++;
         }
 
     }

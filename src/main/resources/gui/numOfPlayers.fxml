@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.NumOfPlayersController">
+   <children>
+      <AnchorPane layoutX="210.0" layoutY="124.0" prefHeight="653.0" prefWidth="543.0" styleClass="anchorPane" stylesheets="@logo.css" />
+      <AnchorPane layoutX="791.0" layoutY="214.0" prefHeight="387.0" prefWidth="392.0">
+         <children>
+            <Label alignment="CENTER" layoutX="29.0" layoutY="121.0" prefHeight="62.0" prefWidth="334.0" text="Select number of players">
+               <font>
+                  <Font name="Old English Text MT" size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboBox" layoutX="121.0" layoutY="194.0" prefWidth="150.0" promptText="number of players" />
+            <Button fx:id="numOk" layoutX="149.0" layoutY="310.0" onAction="#switchToLobby" prefHeight="25.0" prefWidth="95.0" text="Confirm" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

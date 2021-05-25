@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.client.gui;
 
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.view.client.gui.controllers.GameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +17,7 @@ public class GuiManager extends Application {
     public static ExecutorService executorService;
 
     public static Stage stage;
+    public static GameController gameController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -37,6 +40,12 @@ public class GuiManager extends Application {
         Parent root = loadFXML(fxml).load();
         Scene scene = new Scene(root, 1600, 900);
         stage.setScene(scene);
+    }
+
+    public static void changeGameScene(String fxml) throws IOException {
+
+        gameController.leftBorder.setCenter(loadFXML(fxml).load());
+
     }
 
 

@@ -5,41 +5,39 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ChooseResourcesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="848.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ChooseResourcesController">
    <children>
-      <AnchorPane layoutX="1198.0" layoutY="46.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="808.0" prefWidth="300.0">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="76.0" layoutY="50.0" onMouseClicked="#goldChosen" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Resources/coin.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="76.0" layoutY="193.0" onMouseClicked="#servantChosen" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Resources/servant.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="88.0" layoutY="342.0" onMouseClicked="#shieldChosen" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Resources/shield.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="75.0" layoutY="513.0" onMouseClicked="#stoneChosen" pickOnBounds="true" preserveRatio="true">
+            <AnchorPane fx:id="coin" layoutX="135.0" layoutY="51.0" />
+            <AnchorPane fx:id="servant" layoutX="76.0" layoutY="193.0" />
+            <AnchorPane fx:id="shield" layoutX="88.0" layoutY="342.0" />
+            <AnchorPane fx:id="stone" layoutX="75.0" layoutY="513.0" />
+            <Button fx:id="resourcesOk" layoutX="120.0" layoutY="787.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="38.0" prefWidth="180.0" text="Confirm" />
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="135.0" layoutY="597.0" onMouseClicked="#stoneChosen" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/Resources/stone.png" />
                </image>
             </ImageView>
-            <Button fx:id="resourcesOk" layoutX="39.0" layoutY="681.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="78.0" prefWidth="223.0" text="Confirm" />
-         </children>
-      </AnchorPane>
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="505.0" layoutY="14.0" prefHeight="140.0" prefWidth="591.0" text="Choose a starting resource" textAlignment="JUSTIFY">
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="147.0" layoutY="424.0" onMouseClicked="#shieldChosen" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/Resources/shield.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="135.0" layoutY="263.0" onMouseClicked="#servantChosen" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/Resources/servant.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="135.0" layoutY="118.0" onMouseClicked="#goldChosen" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/Resources/coin.png" />
+               </image>
+            </ImageView>
+      <Label layoutY="6.0" prefHeight="68.0" prefWidth="420.0" text="Choose a resource among these">
          <font>
-            <Font name="Old English Text MT" size="49.0" />
+            <Font name="Old English Text MT" size="34.0" />
          </font>
       </Label>
-      <BorderPane fx:id="gb" layoutX="150.0" layoutY="154.0" prefHeight="682.0" prefWidth="989.0" />
-   </children>
+         </children>
 </AnchorPane>

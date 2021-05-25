@@ -1,69 +1,115 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ChooseResourcesController implements Initializable {
+public class ChooseResourcesController {
 
-    private ArrayList<String> resources = new ArrayList<>();
-    private String lastR;
 
-    @FXML
-    private ImageView resource;
+    private ResourceType resource;
 
     @FXML
     private BorderPane gb;
 
     @FXML
-    private Label title;
+    private AnchorPane coin, servant, shield, stone;
+
+    private boolean coinsel, servantsel, shieldsel, stonesel;
+
 
 
     @FXML
     private void switchOnGame() throws IOException {
-        lastR = resources.get(0);
-        GuiManager.changeScene("/gui/game");
+
+        if(!coinsel && !servantsel && !shieldsel && !stonesel)
+            notifySelectResource();
+
+        else {
+            //Gui.tellOk();
+            GuiManager.changeGameScene("/gui/others");
+        }
     }
 
     @FXML
     private void goldChosen(){
-        resources.add("gold");
+        if(!coinsel) {
+            coin.setStyle("-fx-border-color: violet; -fx-border-width: 5");
+            resource = ResourceType.COIN;
+            coinsel = true;
+        }
+        else {
+            coin.setStyle("");
+            coinsel = false;
+        }
     }
 
     @FXML
     private void servantChosen(){
-        resources.add("servant");
+        if(!servantsel) {
+            servant.setStyle("-fx-border-color: violet; -fx-border-width: 5");
+            resource = ResourceType.SERVANT;
+            servantsel = true;
+        }
+        else {
+            servant.setStyle("");
+            servantsel = false;
+        }
     }
 
     @FXML
     private void shieldChosen(){
-        resources.add("shield");
+        if(!shieldsel) {
+            shield.setStyle("-fx-border-color: violet; -fx-border-width: 5");
+            resource = ResourceType.SHIELD;
+            shieldsel = true;
+        }
+        else {
+            shield.setStyle("");
+            shieldsel = false;
+        }
     }
 
     @FXML
     private void stoneChosen(){
-        resources.add("stone");
+
+        if(!stonesel) {
+            stone.setStyle("-fx-border-color: violet; -fx-border-width: 5");
+            resource = ResourceType.STONE;
+            stonesel = true;
+        }
+        else {
+            stone.setStyle("");
+            stonesel = false;
+        }
+
     }
 
-    private String getLastR(){
-        return lastR;
+    public void initialize(AnchorPane gameBoard) {
+        gb.setCenter(gameBoard);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Group group = new Group();
-        resources = new ArrayList<>();
+    public ResourceType getResource(){
 
-        gb.setCenter(GameBoardController.getGameBoard());
+        return resource;
+    }
 
+    public void notifySelectResource(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText("You need to choose a resource before proceeding!");
+        alert.showAndWait();
     }
 }

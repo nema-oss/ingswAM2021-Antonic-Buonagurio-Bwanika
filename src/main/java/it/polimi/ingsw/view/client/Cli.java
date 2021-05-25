@@ -16,13 +16,12 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
+import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
-import javax.swing.*;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -94,7 +93,6 @@ public class Cli extends View {
 
     private void disconnectionForInputExpiredTimeout() {
     }
-    // SET METHOD THAT GET THE CLIENT INPUT AND SEND MESSAGES TO THE USER
 
 
     /**
@@ -115,14 +113,868 @@ public class Cli extends View {
     }
 
     /**
-     * This method shows the resource market
+     * This method shows a list of leader cards
+     *
+     * @param status
      */
     @Override
-    public void showResourceMarket() {
+    public void showLeaderCards(Map<LeaderCard, Boolean> status) {
 
     }
 
-    public void showPopeRoad(ClientPlayer player){
+
+    /**
+     * This method shows the user's leader cards
+     */
+    public void showLeaderCards(List<LeaderCard> leaderCards) {
+        String color;
+       showFullLineTop(leaderCards.size());
+        System.out.print("\n");
+        for(int i = 0; i< leaderCards.size(); i++){//for every card in the list
+            LeaderCard leaderCard = leaderCards.get(i);
+            System.out.print(BOLD_VERTICAL.escape() + " ");
+            int spaces = MAX_SPACES; //max numbers of spaces per card on a row
+            for(Integer j: leaderCard.getCostDevelopment().keySet()){//checking costDevelopment
+                for(DevelopmentCardType k: leaderCard.getCostDevelopment().get(j).keySet()){
+                    System.out.print(leaderCard.getCostDevelopment().get(j).get(k));
+                    spaces--;
+                    switch(k){
+                        case BLUE:
+                            System.out.print(ANSI_BLUE.escape() + DEVELOPMENTCARD.escape() + ANSI_RESET.escape());
+                            break;
+                        case GREEN:
+                            System.out.print(ANSI_GREEN.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
+                            break;
+                        case PURPLE:
+                            System.out.print(ANSI_PURPLE.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
+                            break;
+                        case YELLOW:
+                            System.out.print(ANSI_YELLOW.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
+                            break;
+                    }
+                    spaces--;
+                }
+                if(j!=0){
+                    spaces-=j;
+                    for(int h=0; h<j; h++)
+                        System.out.print(LEVEL.escape());
+                }
+
+            }
+            //checking costResources
+            for(ResourceType resourceType: leaderCard.getCostResource().keySet()){
+                System.out.print(getResourceTypeColor(resourceType)+ leaderCard.getCostResource().get(resourceType) + RESOURCE.escape()+ANSI_RESET.escape());
+            }
+            System.out.print("\t\t\t"+BOLD_VERTICAL.escape() + "\t");
+        }
+        System.out.print("\n");
+        showBlankLine(leaderCards.size());
+        System.out.print("\n");
+        showBlankLine(leaderCards.size());
+        System.out.print("\n");
+        for(int i=0; i< leaderCards.size(); i++){
+            System.out.print(BOLD_VERTICAL.escape()+"\t\t" + leaderCards.get(i).getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t");
+        }
+        System.out.print("\n");
+        showBlankLine(leaderCards.size());
+        System.out.print("\n");
+        for(int i=0; i<leaderCards.size(); i++){
+            LeaderCardType type = leaderCards.get(i).getLeaderType();
+            switch(type){
+                case DISCOUNT:
+                    ResourceType resourceType = ((Discount) leaderCards.get(i)).getDiscountType();
+                    color = getResourceTypeColor(resourceType);
+                    System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCards.get(i)).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    break;
+                case EXTRA_DEPOSIT:
+                    color = getResourceTypeColor(((ExtraDeposit) leaderCards.get(i)).getStorageType());
+                    System.out.print(BOLD_VERTICAL.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    break;
+                case EXTRA_PRODUCTION:
+                    int spaces = MAX_SPACES;
+                    for(ResourceType resourceType1: ((ExtraProduction) leaderCards.get(i)).getProductionRequirement().keySet()){
+                        System.out.print(BOLD_VERTICAL.escape()+"\t"+((ExtraProduction) leaderCards.get(i)).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
+                                RESOURCE.escape() + ANSI_RESET.escape()+"\t");
+                        spaces-=3;
+                    }
+                    System.out.print("->");
+                    spaces-=2;
+                    for(Producible producible: ((ExtraProduction) leaderCards.get(i)).getProductionResult()){
+                        String flag = "";
+                        if(producible instanceof Resource){
+                            if(((Resource) producible).getType() == null){
+                                flag = JOLLY.escape();
+                                color = WHITE.escape();
+                            }
+                            else {
+                                flag = RESOURCE.escape();
+                                color = getResourceTypeColor(((Resource) producible).getType());
+                            }
+                        }
+                        else{
+                            //faithpoint
+                            flag = CROSS.escape();
+                            color = ANSI_RED.escape();
+                        }
+                       System.out.print(color +"1" + flag + ANSI_RESET.escape());
+                        spaces-=3;
+                    }
+                    System.out.print("\t"+BOLD_VERTICAL.escape()+"\t");
+                    break;
+                case WHITE_TO_RESOURCE:
+                    System.out.print(BOLD_VERTICAL.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCards.get(i)).getResult())
+                    + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    break;
+            }
+        }
+        System.out.print("\n");
+        showBlankLine(leaderCards.size());
+        System.out.print("\n");
+        showFullLineBottom(leaderCards.size());
+        System.out.print("\n");
+    }
+
+    public String getResourceTypeColor(ResourceType resourceType){
+        String color = "";
+        switch (resourceType){
+            case COIN:
+                color = ANSI_YELLOW.escape();
+                break;
+            case STONE:
+                color = ANSI_GREY.escape();
+                break;
+            case SHIELD:
+                color = ANSI_BLUE.escape();
+                break;
+            case SERVANT:
+                color = ANSI_PURPLE.escape();
+                break;
+
+        }
+        return color;
+    }
+
+
+    public void showBlankLine(int n){
+        for(int i = 0; i< n; i++){
+            System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+ "\t");
+        }
+
+    }
+
+    public void showFullLineTop(int n){
+        for(int i = 0; i< n; i++){
+            System.out.print(UP_LEFT.escape());
+            for(int j = 0; j< MAX_SPACES; j++)
+                System.out.print(BOLD_HORIZ.escape());
+            System.out.print(UP_RIGHT.escape() + "\t");
+        }
+
+    }
+    public void showFullLineBottom(int n){
+        for(int i = 0; i< n; i++){
+            System.out.print(DOWN_LEFT.escape());
+            for(int j = 0; j< MAX_SPACES; j++)
+                System.out.print(BOLD_HORIZ.escape());
+            System.out.print(DOWN_RIGHT.escape() + "\t");
+        }
+
+    }
+
+    /**
+     * This method represents the game setup
+     */
+
+    public void gameSetup() {
+        System.out.println("Press enter button to start");
+        inputWithoutTimeout();
+
+        //Connection setup
+        setMyIp();
+        setMyPort();
+
+        //start connection
+        new EchoClient(myIp,myPort,this).start();
+    }
+
+    //View Override methods
+
+    /**
+     * This method allows to insert the server ip.
+     */
+
+    @Override
+    public void setMyIp() {
+        System.out.println("Insert the server IP address!");
+        String ip = inputWithoutTimeout();
+        while (!InputValidator.validateIP(ip)) {
+            System.out.println("Invalid IP address! Please, try again!");
+            ip = inputWithoutTimeout();
+        }
+
+        myIp = ip;
+    }
+
+    /**
+     * This method allows to insert the server port.
+     */
+
+    @Override
+    public void setMyPort() {
+        System.out.println("Insert the server port!");
+        String port = inputWithoutTimeout();
+        while (!InputValidator.validatePORT(port)) {
+            System.out.println("Invalid port! Please, try again.");
+            port = inputWithoutTimeout();
+        }
+
+        myPort = Integer.parseInt(port);
+    }
+
+    /**
+     * Asks the users to choose its leader card
+     *
+     * @param cardChoice the card pool
+     */
+    @Override
+    public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
+
+        Formatting.clearScreen();
+
+        showLeaderCards(cardChoice);
+
+        List<LeaderCard> userChoice = new ArrayList<>();
+        inputThread = inputExecutor.submit(() -> {
+            System.out.println("Select 2 cards among these leader cards. The cards are numbered from" +
+                    " 1 to 4. Write L + the correspondent number (e.g. 'L1' for the first one) to select a card. Press enter to continue...");
+            inputWithTimeout();
+
+            if(!Thread.interrupted()) {
+                while (userChoice.size() < 2) {
+
+                    switch (inputWithTimeout()) {
+                        case "L1":
+                            userChoice.add(cardChoice.get(0));
+                            System.out.println("First card selected");
+                            break;
+                        case "L2":
+                            userChoice.add(cardChoice.get(1));
+                            System.out.println("Second card selected");
+                            break;
+                        case "L3":
+                            userChoice.add(cardChoice.get(2));
+                            System.out.println("Third card selected");
+                            break;
+                        case "L4":
+                            userChoice.add(cardChoice.get(3));
+                            System.out.println("Forth card selected");
+                            break;
+                        case "timeoutExpired":
+                            return;
+
+                    }
+                    if(Thread.interrupted()) return;
+                }
+            }
+
+            if(!Thread.interrupted()) {
+                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(), userChoice, true));
+                System.out.println("\nWait a minute, we are preparing the match...");
+            }
+
+        });
+
+    }
+
+    /**
+     * Asks the user to choose its resource
+     * @param numberOfResources number of resources the user can choose
+     */
+    @Override
+    public void setResourceTypeChoice(int numberOfResources) {
+
+        Formatting.clearScreen();
+
+        showGameBoard(new ClientGameBoard());
+        showAllAvailableResources();
+
+
+
+        AtomicBoolean correct = new AtomicBoolean(true);
+
+        inputThread = inputExecutor.submit(() -> {
+
+            System.out.println("Choose " + numberOfResources + " among the resource type available. You can choose" +
+                    numberOfResources + "resources. Press Enter to continue");
+
+            Map<ResourceType,Integer> resourceTypesChoice = new HashMap<>();
+            inputWithTimeout();
+
+            do{
+                String input = inputWithTimeout();
+                resourceTypesChoice = InputValidator.isValidChooseResourceType(input);
+                correct.set(resourceTypesChoice != null);
+                if(!correct.get())
+                    System.out.println("Incorrect resource type name");
+
+                if(Thread.interrupted()) return;
+
+            }while(!correct.get());
+
+            if(!Thread.interrupted())
+                sendMessage(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true));
+        });
+    }
+
+    /**
+     * This method prints all the type of resources available in a match
+     */
+    @Override
+    public void showAllAvailableResources() {
+        for (ResourceType resourceType : ResourceType.values()) {
+            System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
+        }
+    }
+
+    /**
+     * This method prints all the type of resources available in a match
+     * @param resources the resources to show
+     */
+    public void showAllAvailableResources(List<Resource> resources) {
+        for (Resource resource : resources) {
+            System.out.println(getResourceTypeColor(resource.getType()) +  RESOURCE.escape() +" " + resource.getType().toString() + ANSI_RESET.escape());
+        }
+    }
+    /**
+     * This method set the phase to choose where to place the resources after a buy resource action
+     */
+    @Override
+    public void setPlaceResourcesAction() {
+
+        // should handle both move deposit and place resources requests -> all the other resources are discarded
+
+        Formatting.clearScreen();
+
+        showBoard(gameBoard,player);
+
+
+
+
+        inputThread = inputExecutor.submit( () ->{
+
+            List<Resource> resourceList = player.getBoughtResources();
+
+            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
+                    "Enter to continue.");
+
+            showAllAvailableResources(resourceList);
+
+            String input = inputWithTimeout();
+            if(!Thread.interrupted()) {
+                while (!input.equals("done")) {
+                    List<String> splitInput = Arrays.asList(input.split("\\s*,\\s*"));
+                    if (splitInput.size() == 2) {
+                        String first = splitInput.get(0);
+                        String second = splitInput.get(1);
+                        try {
+                            int a = Integer.parseInt(first);
+                            int b = Integer.parseInt(second);
+                            Message message = new MoveDepositMessage(player.getNickname(), a, b, true);
+                            sendMessage(socket, message);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Incorrect number format. Try again");
+                        }
+                    }
+                    input = inputWithTimeout();
+
+                }
+
+                Formatting.clearScreen();
+                showBoard(gameBoard,player);
+
+                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
+                        "the first floor.");
+
+                resourceList.stream().map(resource -> resource.getType() + "---" + "\n").forEach(System.out::print);
+
+                input = inputWithTimeout();
+                boolean correct = false;
+                Map<Resource,Integer> userChoice = new HashMap<>();
+
+                while(!input.equals("done") &&  !correct){
+                    userChoice = InputValidator.isValidPlaceResourceAction(resourceList, input);
+                    correct = userChoice != null;
+                    if(!correct){
+                        System.out.println("Incorrect selection. Try again.");
+                        input = inputWithTimeout();
+                    }
+                    if(Thread.interrupted()) return;
+                }
+                if(!Thread.interrupted())
+                    sendMessage(socket, new PlaceResourcesMessage(player.getNickname(),userChoice));
+
+
+            }
+
+        });
+
+    }
+
+    /**
+     * This method tells the user that the leader card action has been accepted
+     */
+    @Override
+    public void showAcceptedLeaderAction() {
+        System.out.println("Leader action accepted.");
+        player.leaderActionDone();
+        askTurnAction();
+    }
+
+    /**
+     * This method tells the user that the leader card action has been rejected
+     */
+    @Override
+    public void showRejectedLeaderAction() {
+        setLeaderCardAction(player.getHand(), true);
+    }
+
+    /**
+     * This method tells the user that the buy card action has been accepted
+     */
+    @Override
+    public void showAcceptedBuyDevelopmentCard(int x, int y) {
+        player.buyDevelopmentCard(x,y);
+        Formatting.clearScreen();
+        showBoard(gameBoard,player);
+        System.out.println("Buy development card request accepted");
+    }
+
+    /**
+     * This method tells the user that the activate production request has been rejected
+     */
+    @Override
+    public void showProductionError() {
+        System.out.println("Production request rejected. Try again.");
+        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
+    }
+
+    /**
+     * This method add the leader cards to the user's hand
+     *
+     * @param choice user choice
+     */
+    @Override
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
+    }
+
+    /**
+     * Shows the results of the move deposit request.
+     * @param x,y the floors to swap
+     * @param accepted true if the request has been accepted, false if rejected
+     */
+    @Override
+    public void showMoveDepositResult(int x, int y, boolean accepted) {
+
+        if(accepted) {
+            player.getDeposit().swapFloors(x, y);
+            //System.out.println("Move deposit request accepted. Press Enter to continue");
+        }
+        else {
+            System.out.println("Move deposit request rejected. Try again");
+            setPlaceResourcesAction();
+        }
+    }
+
+
+    @Override
+    public void showPlaceResourcesResult(boolean accepted, Map<Resource,Integer> userChoice) {
+        if(accepted){
+            System.out.println("The other resources will be discarded. Press Enter to continue");
+
+            player.addResource(userChoice);
+            inputWithTimeout();
+            askTurnAction();
+        }
+        else{
+            System.out.println("Incorrect place resources. Try again.");
+            setPlaceResourcesAction();
+        }
+    }
+
+    @Override
+    public void setBoughtResources(List<Resource> resources) {
+        player.setBoughtResources(resources);
+    }
+
+    @Override
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
+
+        ClientDeposit deposit = player.getDeposit();
+        for(ResourceType resourceType: resourceChoice.keySet()){
+            deposit.addResource(resourceChoice.get(resourceType), new Resource(resourceType));
+        }
+    }
+
+    @Override
+    public void showReconnectionToMatch() {
+        System.out.println("Reconnection to match...");
+    }
+
+
+    /**
+     * Asks the user to play its turn action
+     */
+    @Override
+    public void askTurnAction() {
+
+        System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
+                " Press Enter to continue.");
+
+        AtomicBoolean correct = new AtomicBoolean(false);
+        inputWithTimeout();
+        inputThread = inputExecutor.submit(() -> {
+
+            do {
+                String input = inputWithTimeout();
+                TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT), player.isStandardActionPlayed());
+                correct.set(action != null);
+                if (!correct.get()){
+                    System.out.println("Incorrect action. Try again");
+                }
+                else {
+                    if(action != null)
+
+                        switch (action) {
+                            case BUY_RESOURCES:
+                                setBuyResourceAction(false);
+                                break;
+                            case BUY_CARD:
+                                setBuyCardAction(false);
+                                break;
+                            case ACTIVATE_PRODUCTION:
+                                sendMessage(socket, new ActivateProductionMessage(player.getNickname()));
+                                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
+                                break;
+                            case LEADER_ACTION:
+                                setLeaderCardAction(player.getHand(),false);
+                                break;
+                            case SHOW_GAMEBOARD:
+                                Formatting.clearScreen();
+                                showGameBoard(gameBoard);
+                                askTurnAction();
+                                break;
+                            case END_TURN:
+                                player.resetTurnActionCounter();
+                                sendMessage(socket, new EndTurnMessage(player.getNickname()));
+                                return;
+                        }
+                }
+
+            }while(!correct.get() && !player.allPossibleActionDone());
+        });
+    }
+
+    /**
+     * Asks the user what card productions it wants to use
+     *
+     * @param developmentCards     its development card
+     * @param leaderCards          its leader card type production
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setProductionChoice(List<DevelopmentCard> developmentCards, List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showBoard(gameBoard,player);
+
+        if(actionRejectedBefore)
+            System.out.println("Your production request has been rejected. Try again.");
+        else
+            System.out.println("Select which production power you want to activate. " +
+                    "E.g. 'board shield,coin/stone' to activate the board production or " +
+                    "'develop 1' to select the first development card. " +
+                    "Write 'done' to end the production action. Press Enter to continue.");
+
+        AtomicBoolean correct = new AtomicBoolean(true);
+        AtomicBoolean selectionDone = new AtomicBoolean(false);
+        inputThread = inputExecutor.submit(() -> {
+
+            inputWithTimeout();
+            List<DevelopmentCard> developmentCardChoice;
+            List<LeaderCard> leaderCardChoice;
+            Map<ResourceType,List<ResourceType>> boardProductionChoice;
+
+            if(!Thread.interrupted()) {
+                do {
+                    String input = inputWithTimeout();
+                    if (input.equals("done"))
+                        selectionDone.set(true);
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
+                    developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input);
+                    leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input);
+                    boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
+                    correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
+                    if (!correct.get() && !selectionDone.get())
+                        System.out.println("Incorrect production choices. Try again");
+
+                    if (Thread.interrupted()) return;
+                } while (!correct.get() && !selectionDone.get());
+
+                if (!Thread.interrupted()) {
+                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
+                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
+                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
+                }
+
+                player.standardActionDone();
+            }
+
+        });
+
+
+    }
+
+    /**
+     * Asks the user what leader card it wants to use.
+     * @param leaderCards          its leader card
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setLeaderCardAction(List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showLeaderCards(leaderCards);
+
+        if(actionRejectedBefore)
+            System.out.println("Leader card selection incorrect. Try again.");
+        else
+            System.out.println("Select which leader card you want to select. " +
+                    "E.g. 'D1, A2' if you want to discard the first leader card and activate the second " +
+                    ". Write 'done' if you have finished");
+
+
+        AtomicBoolean correct = new AtomicBoolean(false);
+        AtomicBoolean selectionDone = new AtomicBoolean(false);
+        inputThread = inputExecutor.submit(() -> {
+
+            Map<LeaderCard, Boolean> userChoice = new HashMap<>();
+
+            if(!Thread.interrupted()) {
+
+                String input = inputWithTimeout();
+                while(!input.equals("done") && userChoice.size() < 2){
+
+                    switch(input){
+                        case "A1":
+                            userChoice.put(leaderCards.get(0),true);
+                            break;
+                        case "A2":
+                            userChoice.put(leaderCards.get(1),true);
+                            break;
+                        case "D1":
+                            userChoice.put(leaderCards.get(0),false);
+                            break;
+                        case "D2":
+                            userChoice.put(leaderCards.get(1), false);
+                    }
+
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
+                    //userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
+                    input  = inputWithTimeout();
+
+                    if (Thread.interrupted()) return;
+                }
+
+                if(!Thread.interrupted()) sendMessage(socket, new LeaderActionMessage(player.getNickname(),userChoice,true));
+
+            }
+
+        });
+
+
+    }
+
+    /**
+     * Asks the user what card it wants to buy
+     *
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setBuyCardAction(boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showGameBoard(gameBoard);
+
+        if(actionRejectedBefore)
+            System.out.println("Your previous buy card request has been rejected. Try a different one." +
+                    "Remember that to buy a card you must have enough resources on your deposits.");
+        else
+            System.out.println("Select the card you want to buy. E.g. 1,2 to select the first row " +
+                    "second column.");
+
+        inputThread = inputExecutor.submit(() -> {
+
+            boolean correct = false;
+            Point userChoice = null;
+            if(!Thread.interrupted()){
+                do{
+                    String input = inputWithTimeout();
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
+                    userChoice = InputValidator.isValidBuyCardAction(input);
+                    correct = userChoice != null;
+                    if(!correct)
+                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
+                                "and Yth column");
+                    if(Thread.interrupted()) return;
+                }while(!correct);
+            }
+
+            if(!Thread.interrupted())
+                sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
+
+            player.standardActionDone();
+        });
+
+
+    }
+
+    /**
+     * Asks the user what resources it wants to buy
+     *
+     * @param actionRejectedBefore true if the action was rejected before
+     */
+    @Override
+    public void setBuyResourceAction(boolean actionRejectedBefore) {
+
+        Formatting.clearScreen();
+
+        showGameBoard(gameBoard);
+
+        if(actionRejectedBefore)
+            System.out.println("Your previous buy resource request has been rejected. Try again");
+        else
+            System.out.println("Select where you want to place the free marble. E.g. 1,2 to select the first row " +
+                    "second column.");
+
+        inputThread = inputExecutor.submit(() -> {
+
+            boolean correct;
+            Point userChoice = null;
+            if(!Thread.interrupted()){
+                do{
+                    String input = inputWithTimeout();
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
+                    userChoice = InputValidator.isValidBuyResourcesAction(input);
+                    correct = userChoice != null;
+                    if(!correct)
+                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
+                                "and Yth column");
+                    if(Thread.interrupted()) return;
+                }while(!correct);
+            }
+
+            if(!Thread.interrupted()) {
+                BuyResourcesMessage message = new BuyResourcesMessage(player.getNickname(), userChoice.getX(), userChoice.getY(), true);
+
+                if(player.getActiveEffects().isWhiteToResource() && player.getActiveEffects().getWhiteToResourceList().size() > 1){
+
+                    correct = false;
+                    do {
+                        List<ResourceType> whiteToResourceList = player.getActiveEffects().getWhiteToResourceList();
+                        System.out.println("You have more than one whiteToResource effect active. Choose one among " +
+                                whiteToResourceList + ". Write the correspondent resource type.");
+                        String input = inputWithTimeout();
+                        ResourceType resourceType = InputValidator.isResourceType(input);
+                        correct = resourceType != null && !whiteToResourceList.contains(resourceType);
+                        if(correct)
+                            message.setWhiteToResourceChoice(resourceType);
+                    }while(!correct);
+                }
+                sendMessage(socket, message);
+            }
+            player.standardActionDone();
+
+        });
+    }
+
+    /**
+     * This method show the login view, asks nickname and number of players to the user and checks if the input is valid
+     * @param message the login message sent by the server
+     */
+    @Override
+    public void showLogin(DoLoginMessage message) {
+
+        boolean correct;
+        String nickname;
+
+        do {
+            System.out.println("Insert your username (must be at least 3 characters long and no more than 10, valid characters: A-Z, a-z, 1-9, _)");
+            nickname = scanner.nextLine();
+            correct = inputValidator.isNickname(nickname);
+            if (!correct)
+                System.out.println("Invalid username, try again");
+        }while (!correct);
+
+        LoginRequest loginRequest = new LoginRequest(nickname);
+
+        if(message.isFirstPlayer()){
+            do{
+                System.out.println("Insert number of players [1..4]");
+                int numberOfPlayers = scanner.nextInt();
+                correct = inputValidator.isNumberOfPlayers(numberOfPlayers);
+                if(!correct){
+                    System.out.println("Incorrect number of players. Try again");
+                }
+                else{
+                    loginRequest.setNumberOfPlayers(numberOfPlayers);
+                }
+            }while (!correct);
+        }
+
+        sendMessage(socket, loginRequest);
+    }
+
+    /**
+     * This method tells the user that login has been successful and asks to wait for other players to join
+     */
+    @Override
+    public void showLoginDone(String user) {
+        newMatch(user);
+        System.out.println("Login done, matchmaking ...");
+    }
+
+    /**
+     * This method tells the user that a new player has joined the match
+     * @param username: username of the newly logged in player
+     */
+    @Override
+    public void showNewUserLogged(String username) {
+
+        System.out.println(username + " has joined the match");
+    }
+
+    /**
+     * This method shows the player personal board
+     */
+    @Override
+    public void showBoard(ClientGameBoard board, ClientPlayer player) {
+        //first off draw the poperoad
         int cell_width = 6;
         int section_card_width = 12;
         int x;
@@ -399,959 +1251,9 @@ public class Cli extends View {
             x=-1;
         showFullCells(5, "bottom", cell_width, ANSI_YELLOW.escape(), x);
         System.out.print("\n");
-    }
 
 
-    /**
-     * This method shows the user's deposit
-     */
-    @Override
-    public void showDeposit() {
-
-    }
-
-    /**
-     * This method shows the user's development cards
-     */
-    @Override
-    public void showDevelopmentCards() {
-
-    }
-
-    /**
-     * This method shows the user's leader cards
-     */
-    @Override
-    public void showLeaderCards(Map<LeaderCard, Boolean> leaderCards) {
-        String color;
-        String activeColor = ANSI_GREEN.escape();
-        for(LeaderCard leaderCard: leaderCards.keySet()){
-            if(leaderCards.get(leaderCard)){
-                showFullLineTop(1, activeColor);
-            }
-            else{
-                showFullLineTop(1);
-            }
-        }
-
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()){//for every card in the list
-            if(leaderCards.get(leaderCard))
-                color = activeColor;
-            else
-                color = ANSI_RESET.escape();
-            System.out.print(color + BOLD_VERTICAL.escape() + " " + ANSI_RESET.escape());
-            int spaces = MAX_SPACES; //max numbers of spaces per card on a row
-            for(Integer j: leaderCard.getCostDevelopment().keySet()){//checking costDevelopment
-                for(DevelopmentCardType k: leaderCard.getCostDevelopment().get(j).keySet()){
-                    System.out.print(leaderCard.getCostDevelopment().get(j).get(k));
-                    spaces--;
-                    switch(k){
-                        case BLUE:
-                            System.out.print(ANSI_BLUE.escape() + DEVELOPMENTCARD.escape() + ANSI_RESET.escape());
-                            break;
-                        case GREEN:
-                            System.out.print(ANSI_GREEN.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
-                            break;
-                        case PURPLE:
-                            System.out.print(ANSI_PURPLE.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
-                            break;
-                        case YELLOW:
-                            System.out.print(ANSI_YELLOW.escape() + DEVELOPMENTCARD.escape()+ ANSI_RESET.escape());
-                            break;
-                    }
-                    spaces--;
-                }
-                if(j!=0){
-                    spaces-=j;
-                    for(int h=0; h<j; h++)
-                        System.out.print(LEVEL.escape());
-                }
-
-            }
-            //checking costResources
-            for(ResourceType resourceType: leaderCard.getCostResource().keySet()){
-                System.out.print(getResourceTypeColor(resourceType)+ leaderCard.getCostResource().get(resourceType) + RESOURCE.escape()+ANSI_RESET.escape());
-            }
-            System.out.print("\t\t\t"+BOLD_VERTICAL.escape() + "\t");
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                showBlankLine(1, activeColor);
-            }
-            else{
-                showBlankLine(1);
-            }
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                showBlankLine(1, activeColor);
-            }
-            else{
-                showBlankLine(1);
-            }
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                color = activeColor;
-            }
-            else{
-                color = ANSI_RESET.escape();
-            }
-            System.out.print(BOLD_VERTICAL.escape()+"\t\t" + leaderCard.getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t");
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                showBlankLine(1, activeColor);
-            }
-            else{
-                showBlankLine(1);
-            }
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            LeaderCardType type = leaderCard.getLeaderType();
-            switch(type){
-                case DISCOUNT:
-                    ResourceType resourceType = ((Discount) leaderCard).getDiscountType();
-                    color = getResourceTypeColor(resourceType);
-                    if(leaderCards.get(leaderCard)){
-                        System.out.print(activeColor + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t-" + ((Discount) leaderCards.get(i)).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
-                    }
-                    else{
-                        System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCards.get(i)).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
-                    }
-                    break;
-                case EXTRA_DEPOSIT:
-                    color = getResourceTypeColor(((ExtraDeposit) leaderCards).getStorageType());
-                    if(leaderCards.get(leaderCard)){
-                        System.out.print(activeColor +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
-                    }
-                    else
-                        System.out.print(BOLD_VERTICAL.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
-                    break;
-                case EXTRA_PRODUCTION:
-                    int spaces = MAX_SPACES;
-                    if(leaderCards.get(leaderCard))
-                        System.out.print(activeColor + BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
-                    else
-                        System.out.print(BOLD_VERTICAL.escape()+"\t");
-                    for(ResourceType resourceType1: ((ExtraProduction) leaderCard).getProductionRequirement().keySet()){
-                        System.out.print(((ExtraProduction) leaderCard).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
-                                RESOURCE.escape() + ANSI_RESET.escape()+"\t");
-                        spaces-=3;
-                    }
-                    System.out.print("->");
-                    spaces-=2;
-                    for(Producible producible: ((ExtraProduction) leaderCards.get(i)).getProductionResult()){
-                        String flag = "";
-                        if(producible instanceof Resource){
-                            if(((Resource) producible).getType() == null){
-                                flag = JOLLY.escape();
-                                color = WHITE.escape();
-                            }
-                            else {
-                                flag = RESOURCE.escape();
-                                color = getResourceTypeColor(((Resource) producible).getType());
-                            }
-                        }
-                        else{
-                            //faithpoint
-                            flag = CROSS.escape();
-                            color = ANSI_RED.escape();
-                        }
-                       System.out.print(color +"1" + flag + ANSI_RESET.escape());
-                        spaces-=3;
-                    }
-                    if(leaderCards.get(leaderCard))
-                        System.out.print(activeColor+"\t"+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
-                    else
-                        System.out.print("\t"+BOLD_VERTICAL.escape()+"\t");
-                    break;
-                case WHITE_TO_RESOURCE:
-                    if(leaderCards.get(leaderCard))
-                        System.out.print(activeColor+BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCards.get(i)).getResult())
-                                + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
-                    else
-                        System.out.print(BOLD_VERTICAL.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCards.get(i)).getResult())
-                        + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+BOLD_VERTICAL.escape()+"\t");
-                    break;
-            }
-        }
-        System.out.print("\n");
-
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                showBlankLine(1, activeColor);
-            }
-            else{
-                showBlankLine(1);
-            }
-        }
-        System.out.print("\n");
-        for(LeaderCard leaderCard: leaderCards.keySet()) {
-            if (leaderCards.get(leaderCard)) {
-                showFullLineBottom(1, activeColor);
-            }
-            else{
-                showFullLineBottom(1);
-            }
-        }
-        System.out.print("\n");
-    }
-
-    public String getResourceTypeColor(ResourceType resourceType){
-        String color = "";
-        switch (resourceType){
-            case COIN:
-                color = ANSI_YELLOW.escape();
-                break;
-            case STONE:
-                color = ANSI_GREY.escape();
-                break;
-            case SHIELD:
-                color = ANSI_BLUE.escape();
-                break;
-            case SERVANT:
-                color = ANSI_PURPLE.escape();
-                break;
-
-        }
-        return color;
-    }
-
-
-    public void showBlankLine(int n){
-        for(int i = 0; i< n; i++){
-            System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+ "\t");
-        }
-
-    }
-
-    public void showBlankLine(int n, String color){
-        for(int i = 0; i< n; i++){
-            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+ "\t" + ANSI_RESET.escape());
-        }
-
-    }
-
-    public void showFullLineTop(int n){
-        for(int i = 0; i< n; i++){
-            System.out.print(UP_LEFT.escape());
-            for(int j = 0; j< MAX_SPACES; j++)
-                System.out.print(BOLD_HORIZ.escape());
-            System.out.print(UP_RIGHT.escape() + "\t");
-        }
-
-    }
-
-    public void showFullLineTop(int n, String color){
-        for(int i = 0; i< n; i++){
-            System.out.print(color + UP_LEFT.escape());
-            for(int j = 0; j< MAX_SPACES; j++)
-                System.out.print(BOLD_HORIZ.escape());
-            System.out.print(UP_RIGHT.escape() + "\t" + ANSI_RESET.escape());
-        }
-
-    }
-    public void showFullLineBottom(int n){
-        for(int i = 0; i< n; i++){
-            System.out.print(DOWN_LEFT.escape());
-            for(int j = 0; j< MAX_SPACES; j++)
-                System.out.print(BOLD_HORIZ.escape());
-            System.out.print(DOWN_RIGHT.escape() + "\t");
-        }
-
-    }
-
-    public void showFullLineBottom(int n, String color){
-        for(int i = 0; i< n; i++){
-            System.out.print(color + DOWN_LEFT.escape());
-            for(int j = 0; j< MAX_SPACES; j++)
-                System.out.print(BOLD_HORIZ.escape());
-            System.out.print(DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape());
-        }
-
-    }
-    /**
-     * This method shows the card market
-     */
-    @Override
-    public void showCardMarket(CardMarket cardMarket) {
-
-    }
-
-
-
-    /**
-     * This method represents the game setup
-     */
-
-    public void gameSetup() {
-        System.out.println("Press enter button to start");
-        inputWithoutTimeout();
-
-        //Connection setup
-        setMyIp();
-        setMyPort();
-
-        //start connection
-        new EchoClient(myIp,myPort,this).start();
-    }
-
-    //View Override methods
-
-    /**
-     * This method allows to insert the server ip.
-     */
-
-    @Override
-    public void setMyIp() {
-        System.out.println("Insert the server IP address!");
-        String ip = inputWithoutTimeout();
-        while (!InputValidator.validateIP(ip)) {
-            System.out.println("Invalid IP address! Please, try again!");
-            ip = inputWithoutTimeout();
-        }
-
-        myIp = ip;
-    }
-
-    /**
-     * This method allows to insert the server port.
-     */
-
-    @Override
-    public void setMyPort() {
-        System.out.println("Insert the server port!");
-        String port = inputWithoutTimeout();
-        while (!InputValidator.validatePORT(port)) {
-            System.out.println("Invalid port! Please, try again.");
-            port = inputWithoutTimeout();
-        }
-
-        myPort = Integer.parseInt(port);
-    }
-
-    /**
-     * Allows the player to set his username
-     */
-    @Override
-    public void setUsername() {
-
-    }
-
-    /**
-     * This method allows to start a match
-     */
-    @Override
-    public void startMatch(String currentPlayer) {
-
-        Formatting.clearScreen();
-
-        showBoard(gameBoard, player);
-        AtomicBoolean correct = new AtomicBoolean(true);
-        if(currentPlayer.equals(player.getNickname())){
-            askTurnAction();
-        }else {
-            System.out.println(currentPlayer + " is playing its turn...");
-        }
-
-
-    }
-
-    /**
-     * Asks the users to choose its leader card
-     *
-     * @param cardChoice the card pool
-     */
-    @Override
-    public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
-
-        Formatting.clearScreen();
-
-        showLeaderCards(cardChoice);
-
-        List<LeaderCard> userChoice = new ArrayList<>();
-        inputThread = inputExecutor.submit(() -> {
-            System.out.println("Select 2 cards among these leader cards. The cards are numbered from" +
-                    " 1 to 4. Write L + the correspondent number (e.g. 'L1' for the first one) to select a card. Press enter to continue...");
-            inputWithTimeout();
-
-            if(!Thread.interrupted()) {
-                while (userChoice.size() < 2) {
-
-                    switch (inputWithTimeout()) {
-                        case "L1":
-                            userChoice.add(cardChoice.get(0));
-                            System.out.println("First card selected");
-                            break;
-                        case "L2":
-                            userChoice.add(cardChoice.get(1));
-                            System.out.println("Second card selected");
-                            break;
-                        case "L3":
-                            userChoice.add(cardChoice.get(2));
-                            System.out.println("Third card selected");
-                            break;
-                        case "L4":
-                            userChoice.add(cardChoice.get(3));
-                            System.out.println("Forth card selected");
-                            break;
-                        case "timeoutExpired":
-                            return;
-
-                    }
-                    if(Thread.interrupted()) return;
-                }
-            }
-
-            if(!Thread.interrupted())
-                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(),userChoice,true));
-
-        });
-
-    }
-
-    /**
-     * Asks the user to choose its resource
-     * @param numberOfResources number of resources the user can choose
-     */
-    @Override
-    public void setResourceTypeChoice(int numberOfResources) {
-
-        Formatting.clearScreen();
-
-        showGameBoard(new ClientGameBoard());
-        showAllAvailableResources();
-
-
-        Map<ResourceType,Integer> resourceTypesChoice = new HashMap<>();
-        AtomicBoolean correct = new AtomicBoolean(true);
-
-        inputThread = inputExecutor.submit(() -> {
-
-            System.out.println("Choose " + numberOfResources + " among the resource type available. Press Enter to continue");
-
-            inputWithTimeout();
-
-            do{
-                String input = inputWithTimeout();
-                ResourceType resourceType = InputValidator.isResourceType(input);
-                correct.set(resourceType != null);
-                if(!correct.get()){
-                    System.out.println("Incorrect resource type name");
-                }else{
-                    resourceTypesChoice.merge(resourceType, 1, Integer::sum);
-                }
-
-                if(Thread.interrupted()) return;
-
-            }while(!correct.get() || resourceTypesChoice.size() < numberOfResources);
-
-            if(!Thread.interrupted())
-                sendMessage(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true));
-        });
-    }
-
-    /**
-     * This method prints all the type of resources available in a match
-     */
-    @Override
-    public void showAllAvailableResources() {
-        for (ResourceType resourceType : ResourceType.values()) {
-            System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
-        }
-    }
-
-    /**
-     * This method set the phase to choose where to place the resources after a buy resource action
-     */
-    @Override
-    public void setPlaceResourcesAction() {
-
-        // should handle both move deposit and place resources requests -> all the other resources are discarded
-
-        Formatting.clearScreen();
-
-        showBoard(gameBoard,player);
-
-
-        List<Resource> resourceList = player.getBoughtResources();
-
-
-        inputThread = inputExecutor.submit( () ->{
-
-            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
-                    "Enter to continue.");
-
-            String input = inputWithTimeout();
-            if(!Thread.interrupted()) {
-                while (!input.equals("done")) {
-                    List<String> splitInput = Arrays.asList(input.split("\\s*,\\s*"));
-                    if (splitInput.size() == 2) {
-                        String first = splitInput.get(0);
-                        String second = splitInput.get(1);
-                        try {
-                            int a = Integer.parseInt(first);
-                            int b = Integer.parseInt(second);
-                            Message message = new MoveDepositMessage(player.getNickname(), a, b, true);
-                            sendMessage(socket, message);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Incorrect number format. Try again");
-                        }
-                    }
-                    input = inputWithTimeout();
-
-                }
-
-                Formatting.clearScreen();
-                showBoard(gameBoard,player);
-
-                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
-                        "the first floor.");
-
-                resourceList.stream().map(resource -> resource.getType() + "---" + "\n").forEach(System.out::print);
-
-                input = inputWithTimeout();
-                boolean correct = false;
-                Map<Resource,Integer> userChoice = new HashMap<>();
-
-                while(!input.equals("done") &&  !correct){
-                    userChoice = InputValidator.isValidPlaceResourceAction(resourceList, input);
-                    correct = userChoice != null;
-                    if(!correct){
-                        System.out.println("Incorrect selection. Try again.");
-                        input = inputWithTimeout();
-                    }
-                    if(Thread.interrupted()) return;
-                }
-                if(!Thread.interrupted())
-                    sendMessage(socket, new PlaceResourcesMessage(player.getNickname(),userChoice));
-
-
-            }
-
-        });
-
-    }
-
-    /**
-     * This method tells the user that the leader card action has been accepted
-     */
-    @Override
-    public void showAcceptedLeaderAction() {
-        System.out.println("Leader action accepted.");
-        player.leaderActionDone();
-        askTurnAction();
-    }
-
-    /**
-     * This method tells the user that the buy card action has been accepted
-     */
-    @Override
-    public void showAcceptedBuyDevelopmentCard(int x, int y) {
-        player.buyDevelopmentCard(x,y);
-        Formatting.clearScreen();
-        showBoard(gameBoard,player);
-        System.out.println("Buy development card request accepted");
-    }
-
-    /**
-     * This method tells the user that the activate production request has been rejected
-     */
-    @Override
-    public void showProductionError() {
-        System.out.println("Production request rejected. Try again.");
-        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
-    }
-
-    /**
-     * This method add the leader cards to the user's hand
-     *
-     * @param choice user choice
-     */
-    @Override
-    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
-        player.setHand(choice);
-    }
-
-    @Override
-    public void showRejectedLeaderAction() {
-        setLeaderCardAction(player.getHand(), true);
-    }
-
-    @Override
-    public void showMoveDepositResult(int x, int y, boolean accepted) {
-        if(accepted){
-            try {
-                player.getDeposit().swapFloors(x,y);
-            } catch (WrongDepositSwapException e) {
-                e.printStackTrace();
-            }
-            Formatting.clearScreen();
-            showBoard(gameBoard,player);
-            System.out.println("Move deposit request accepted");
-        }else{
-            System.out.println("Move deposit request rejected. Try again");
-        }
-    }
-
-    @Override
-    public void showPlaceResourcesResult(boolean accepted) {
-        if(accepted){
-            System.out.println("The other resources will be discarded. Press Enter to continue");
-            inputWithTimeout();
-            askTurnAction();
-        }
-        else{
-            System.out.println("Incorrect place resources. Try again.");
-            setPlaceResourcesAction();
-        }
-    }
-
-    @Override
-    public void setBoughtResources(List<Resource> resources) {
-        player.setBoughtResources(resources);
-    }
-
-    @Override
-    public void updatePlayerBoard(Board board) {
-        player.setPlayerBoard(board);
-    }
-
-
-    /**
-     * Asks the user to play its turn action
-     */
-    @Override
-    public void askTurnAction() {
-
-        System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
-                " Press Enter to continue.");
-
-        AtomicBoolean correct = new AtomicBoolean(false);
-        inputWithTimeout();
-        inputThread = inputExecutor.submit(() -> {
-
-            do {
-                String input = inputWithTimeout();
-                TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT));
-                correct.set(action != null);
-                if (!correct.get()){
-                    System.out.println("Incorrect action. Try again");
-                }
-                else {
-                    if(action != null)
-
-                        switch (action) {
-                            case BUY_RESOURCES:
-                                setBuyResourceAction(false);
-                                player.standardActionDone();
-                                break;
-                            case BUY_CARD:
-                                setBuyCardAction(false);
-                                player.standardActionDone();
-                                break;
-                            case ACTIVATE_PRODUCTION:
-                                sendMessage(socket, new ActivateProductionMessage(player.getNickname()));
-                                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
-                                player.standardActionDone();
-                                break;
-                            case LEADER_ACTION:
-                                setLeaderCardAction(player.getHand(),false);
-                                break;
-                            case END_TURN:
-                                player.resetTurnActionCounter();
-                                sendMessage(socket, new EndTurnMessage(player.getNickname()));
-                                return;
-                        }
-                }
-
-            }while(!correct.get() && !player.allPossibleActionDone());
-        });
-    }
-
-    /**
-     * Asks the user what card productions it wants to use
-     *
-     * @param developmentCards     its development card
-     * @param leaderCards          its leader card type production
-     * @param actionRejectedBefore true if the action was rejected before
-     */
-    @Override
-    public void setProductionChoice(List<DevelopmentCard> developmentCards, List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
-
-        Formatting.clearScreen();
-
-        showBoard(gameBoard,player);
-
-        if(actionRejectedBefore)
-            System.out.println("Your production request has been rejected. Try again.");
-        else
-            System.out.println("Select which production power you want to activate. " +
-                    "E.g. 'board shield,coin/stone' to activate the board production or " +
-                    "'develop 1' to select the first development card. " +
-                    "Write 'done' to end the production action. Press Enter to continue.");
-
-        AtomicBoolean correct = new AtomicBoolean(true);
-        AtomicBoolean selectionDone = new AtomicBoolean(false);
-        inputThread = inputExecutor.submit(() -> {
-
-            inputWithTimeout();
-            List<DevelopmentCard> developmentCardChoice;
-            List<LeaderCard> leaderCardChoice;
-            Map<ResourceType,List<ResourceType>> boardProductionChoice;
-
-            if(!Thread.interrupted()) {
-                do {
-                    String input = inputWithTimeout();
-                    if (input.equals("done"))
-                        selectionDone.set(true);
-                    developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input);
-                    leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input);
-                    boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
-                    correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
-                    if (!correct.get() && !selectionDone.get())
-                        System.out.println("Incorrect production choices. Try again");
-
-                    if (Thread.interrupted()) return;
-                } while (!correct.get() && !selectionDone.get());
-
-                if (!Thread.interrupted()) {
-                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
-                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
-                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
-                }
-            }
-
-        });
-
-
-    }
-
-    /**
-     * Asks the user what leader card it wants to use.
-     * @param leaderCards          its leader card
-     * @param actionRejectedBefore true if the action was rejected before
-     */
-    @Override
-    public void setLeaderCardAction(List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
-
-        Formatting.clearScreen();
-
-        showLeaderCards(leaderCards);
-
-        if(actionRejectedBefore)
-            System.out.println("Leader card selection incorrect. Try again.");
-        else
-            System.out.println("Select which leader card you want to select. " +
-                    "E.g. 'D1, A2' if you want to discard the first leader card and activate the second " +
-                    ". Write 'done' if you have finished");
-
-
-        AtomicBoolean correct = new AtomicBoolean(false);
-        AtomicBoolean selectionDone = new AtomicBoolean(false);
-        inputThread = inputExecutor.submit(() -> {
-
-            Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-
-            if(!Thread.interrupted()) {
-
-                String input = inputWithTimeout();
-                while(!input.equals("done") && userChoice.size() < 2){
-
-                    switch(input){
-                        case "A1":
-                            userChoice.put(leaderCards.get(0),true);
-                            break;
-                        case "A2":
-                            userChoice.put(leaderCards.get(1),true);
-                            break;
-                        case "D1":
-                            userChoice.put(leaderCards.get(0),false);
-                            break;
-                        case "D2":
-                            userChoice.put(leaderCards.get(1), false);
-                    }
-                    //userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
-                    input  = inputWithTimeout();
-
-                    if (Thread.interrupted()) return;
-                }
-
-                if(!Thread.interrupted()) sendMessage(socket, new LeaderActionMessage(player.getNickname(),userChoice,true));
-
-            }
-
-        });
-
-
-    }
-
-    /**
-     * Asks the user what card it wants to buy
-     *
-     * @param actionRejectedBefore true if the action was rejected before
-     */
-    @Override
-    public void setBuyCardAction(boolean actionRejectedBefore) {
-
-        Formatting.clearScreen();
-
-        showGameBoard(gameBoard);
-
-        if(actionRejectedBefore)
-            System.out.println("Your previous buy card request has been rejected. Try a different one." +
-                    "Remember that to buy a card you must have enough resources on your deposits.");
-        else
-            System.out.println("Select the card you want to buy. E.g. 1,2 to select the first row " +
-                    "second column.");
-
-        inputThread = inputExecutor.submit(() -> {
-
-            boolean correct = false;
-            Point userChoice = null;
-            if(!Thread.interrupted()){
-                do{
-                     String input = inputWithTimeout();
-                    userChoice = InputValidator.isValidBuyCardAction(input);
-                    correct = userChoice != null;
-                    if(!correct)
-                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
-                                "and Yth column");
-                    if(Thread.interrupted()) return;
-                }while(!correct);
-            }
-
-            if(!Thread.interrupted())
-                sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
-        });
-
-
-    }
-
-    /**
-     * Asks the user what resources it wants to buy
-     *
-     * @param actionRejectedBefore true if the action was rejected before
-     */
-    @Override
-    public void setBuyResourceAction(boolean actionRejectedBefore) {
-
-        Formatting.clearScreen();
-
-        showGameBoard(gameBoard);
-
-        if(actionRejectedBefore)
-            System.out.println("Your previous buy resource request has been rejected. Try again");
-        else
-            System.out.println("Select where you want to place the free marble. E.g. 1,2 to select the first row " +
-                    "second column.");
-
-        inputThread = inputExecutor.submit(() -> {
-
-            boolean correct;
-            Point userChoice = null;
-            if(!Thread.interrupted()){
-                do{
-                    String input = inputWithTimeout();
-                    userChoice = InputValidator.isValidBuyResourcesAction(input);
-                    correct = userChoice != null;
-                    if(!correct)
-                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
-                                "and Yth column");
-                    if(Thread.interrupted()) return;
-                }while(!correct);
-            }
-
-            if(!Thread.interrupted())
-                sendMessage(socket, new BuyResourcesMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
-
-        });
-    }
-
-    /**
-     * This method show the login view, asks nickname and number of players to the user and checks if the input is valid
-     * @param message the login message sent by the server
-     */
-    @Override
-    public void showLogin(DoLoginMessage message) {
-
-        boolean correct;
-        String nickname;
-
-        do {
-            System.out.println("Insert your username (must be at least 3 characters long and no more than 10, valid characters: A-Z, a-z, 1-9, _)");
-            nickname = scanner.nextLine();
-            correct = inputValidator.isNickname(nickname);
-            if (!correct)
-                System.out.println("Invalid username, try again");
-        }while (!correct);
-
-        LoginRequest loginRequest = new LoginRequest(nickname);
-
-        if(message.isFirstPlayer()){
-            do{
-                System.out.println("Insert number of players [1..4]");
-                int numberOfPlayers = scanner.nextInt();
-                correct = inputValidator.isNumberOfPlayers(numberOfPlayers);
-                if(!correct){
-                    System.out.println("Incorrect number of players. Try again");
-                }
-                else{
-                    loginRequest.setNumberOfPlayers(numberOfPlayers);
-                }
-            }while (!correct);
-        }
-
-        sendMessage(socket, loginRequest);
-    }
-
-    /**
-     * This method tells the user that login has been successful and asks to wait for other players to join
-     */
-    @Override
-    public void showLoginDone(String user) {
-        newMatch(user);
-        System.out.println("Login done, matchmaking ...");
-    }
-
-    /**
-     * This method tells the user that a new player has joined the match
-     * @param username: username of the newly logged in player
-     */
-    @Override
-    public void showNewUserLogged(String username) {
-
-        System.out.println(username + " has joined the match");
-    }
-
-    /**
-     * This methods asks the user to wait for its turn
-     * @param waitFor: reason why they're waiting
-     * @param nowPlaying: username of the player's turn
-     */
-    @Override
-    public void showWaitMessage(String waitFor, String nowPlaying) {
-        //We use a WAITMESSAGE that call this method on its execute
-        //on the server we do:
-            //Message waitMessage = new WaitMessage(waitFor,nowPlaying)
-    }
-
-    /**
-     * This methods tells the user that the match has started
-     */
-    @Override
-    public void showMatchStarted() {
-        System.out.println("Match started kids");
-    }
-
-    public void showLowerBoard(ClientPlayer player){
+        //now the rest
         System.out.print("\n");
         if(player.getDeposit().getNumberOfResourcesOnFloor(1) ==1)
             System.out.println("\t\t\t"+ ANSI_RESET.escape() + getResourceTypeColor(player.getDeposit().get(1).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
@@ -1450,10 +1352,10 @@ public class Cli extends View {
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                 }
                 System.out.print(color +"\t"+ BOLD_VERTICAL.escape() + ANSI_RESET.escape()+"\t");
-            }
+                }
 
             else{
-                //if no card is present i'll use the default outline
+            //if no card is present i'll use the default outline
                 System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
             }
 
@@ -1481,23 +1383,23 @@ public class Cli extends View {
             //check if a card has faithpoint production
             HashMap<ResourceType, Integer> map = new HashMap<>();
             if(stack.size()>0){
-                long count = stack.peek().getProductionResults().stream().filter(xa -> (xa instanceof FaithPoint)).count();
-                faithResults.add((int) count);
-                //add the remaining to resource
+            long count = stack.peek().getProductionResults().stream().filter(xa -> (xa instanceof FaithPoint)).count();
+            faithResults.add((int) count);
+            //add the remaining to resource
 
-                for(Producible p: stack.peek().getProductionResults()){
-                    if(!(p instanceof FaithPoint)){
+            for(Producible p: stack.peek().getProductionResults()){
+                if(!(p instanceof FaithPoint)){
 
-                        if(map.containsKey(((Resource) p).getType())){
-                            map.put(((Resource) p).getType(), map.get(((Resource) p).getType())+1);
-                        }
-                        else{
-                            map.put(((Resource) p).getType(), 1);
-                        }
-
-
+                    if(map.containsKey(((Resource) p).getType())){
+                        map.put(((Resource) p).getType(), map.get(((Resource) p).getType())+1);
                     }
-                }}
+                    else{
+                        map.put(((Resource) p).getType(), 1);
+                    }
+
+
+                }
+            }}
             results.add(map);
         }
 
@@ -1644,36 +1546,6 @@ public class Cli extends View {
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
         }
-    }
-
-    /**
-     * This method shows the player personal board
-     */
-    @Override
-    public void showBoard(ClientGameBoard board, ClientPlayer player) {
-        showPopeRoad(player);
-        showLowerBoard(player);
-        Map<LeaderCard, Boolean> map = new HashMap<>();
-        for(LeaderCard leaderCard: player.getActiveLeaderCards()){
-            map.put(leaderCard, true);
-        }
-        showLeaderCards(map);
-    }
-
-    /**
-     * Shows a simplified version of the otherPlayer's board where the popeRoad is not shown
-     * @param otherPlayer: the player of whom to show the board without the popeRoad
-     */
-    public void showOtherPlayerBoard(ClientPlayer otherPlayer){
-        int position = otherPlayer.getPositionIndex();
-        System.out.println(otherPlayer.getNickname() + " is on cell number " + position);
-
-        showLowerBoard(otherPlayer);
-        Map<LeaderCard, Boolean> map = new HashMap<>();
-        for(LeaderCard leaderCard: otherPlayer.getActiveLeaderCards()){
-            map.put(leaderCard, true);
-        }
-        showLeaderCards(map);
     }
 
     public void showFullCells(int x, String where, int cell_width, String color, int PV){
@@ -2215,6 +2087,9 @@ public class Cli extends View {
     public void showServerDisconnection() {
 
         System.out.println("Server says bye, bye!");
+        System.out.println("Do you want to reconnect again? Type 'YES' to reconnect.");
+        if(inputWithTimeout().toLowerCase(Locale.ROOT).equals("yes"))
+            gameSetup();
 
     }
 

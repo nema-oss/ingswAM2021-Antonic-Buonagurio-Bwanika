@@ -1,10 +1,12 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.MatchController;
-import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
+import it.polimi.ingsw.view.server.InGameReconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -20,16 +22,16 @@ import java.util.concurrent.Executors;
  * different lobbies for each match
  */
 
-public class EchoServer {
+public class EchoServer implements InGameReconnectionHandler {
 
     private static final int SERVER_PORT = 1234; // this should be read from command line args
     private ServerSocket server;
     private ExecutorService executor;
     private static int serverPort;
-
-
+    private Map<String, Integer> disconnectedPlayers;
+    private Map<Integer,VirtualView> matchesWithDisconnectedPlayers;
     private final List<VirtualView> lobbies;
-    private final Map<String,Integer> disconnectedPlayers;
+
 
 
     public EchoServer(int port){
@@ -37,7 +39,8 @@ public class EchoServer {
         serverPort = port;
         lobbies = new ArrayList<>();
         disconnectedPlayers = new HashMap<>();
-        lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1,new InGameDisconnectionHandler()));
+        matchesWithDisconnectedPlayers = new HashMap<>();
+        lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1, this));
 
     }
 
@@ -110,7 +113,7 @@ public class EchoServer {
         //The server have to create a new lobby because there isn't a free one.
         if(!found){
             System.out.println("[SERVER] creates a new lobby...");
-            VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1, new InGameDisconnectionHandler());
+            VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1,this);
             lobbies.add(match);
             executor.submit(new ClientHandler(client,match,lobbies.indexOf(match),true));
         }
@@ -125,5 +128,33 @@ public class EchoServer {
     public void onEndOfMatch(VirtualView match){
         System.out.println("\nMatch in lobby " + (lobbies.indexOf(match) + 1) + " ended!");
         lobbies.remove(match);
+    }
+
+    public void onClientDown(VirtualView virtualView, String disconnectedPlayer) {
+
+        if (virtualView.getLobbySize() > 1) {
+            virtualView.inGameDisconnection(disconnectedPlayer);
+            disconnectedPlayers.put(disconnectedPlayer, virtualView.getLobbyID());
+            matchesWithDisconnectedPlayers.put(virtualView.getLobbyID(),virtualView);
+        }
+        else{
+            virtualView.endMatch();
+        }
+    }
+
+    public void playerReconnection(String disconnectedPlayer, Socket socket, ObjectOutputStream outputStream){
+
+        if(disconnectedPlayer.contains(disconnectedPlayer)){
+            int lobbyID = disconnectedPlayers.get(disconnectedPlayer);
+            VirtualView previousMatch = matchesWithDisconnectedPlayers.get(lobbyID);
+            previousMatch.reconnectPlayer(disconnectedPlayer,socket,outputStream);
+
+        }
+
+    }
+
+    @Override
+    public boolean hasDisconnectedBefore(String nickname) {
+        return disconnectedPlayers.containsKey(nickname);
     }
 }

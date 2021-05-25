@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.actions;
 
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -19,6 +20,7 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     private int y;
     private boolean accepted;
     private List<Resource> resources;
+    private ResourceType whiteToResourceChoice;
 
     /**
      * Server-side constructor to create the message
@@ -72,5 +74,13 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
 
     public void setResourceList(List<Resource> resourceList) {
         this.resources = resourceList;
+    }
+
+    public void setWhiteToResourceChoice(ResourceType resourceType) {
+        whiteToResourceChoice = resourceType;
+    }
+
+    public ResourceType getWhiteToResourceChoice() {
+        return whiteToResourceChoice;
     }
 }

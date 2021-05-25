@@ -1,7 +1,5 @@
 package it.polimi.ingsw.messages.utils;
 
-import it.polimi.ingsw.messages.actions.server.ActivateProductionAccepted;
-import it.polimi.ingsw.messages.actions.server.BuyResourcesAccepted;
 import it.polimi.ingsw.messages.actions.server.LeaderActionAccepted;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.Message;
@@ -50,16 +48,15 @@ public class UpdateWriter {
     }
 
     public Message productionCardAccepted(String user,List<DevelopmentCard> cards) {
-        return new ActivateProductionAccepted();
+        return new ActivateCardProductionMessage(user,cards,true);
     }
 
     public Message productionBoardAccepted(String user,Map<ResourceType,List<ResourceType>> userChoice) {
-        return new ActivateProductionAccepted();
+        return new ActivateBoardProductionMessage(user,userChoice,true);
     }
 
-    public Message productionLeaderAccepted(List<LeaderCard> leaderCards) {
-        return new ActivateProductionAccepted();
-        //return new ActivateLeaderProductionMessage(leaderCards, true);
+    public Message productionLeaderAccepted(String user, List<LeaderCard> leaderCards) {
+        return new ActivateLeaderProductionMessage(user, leaderCards, true);
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {

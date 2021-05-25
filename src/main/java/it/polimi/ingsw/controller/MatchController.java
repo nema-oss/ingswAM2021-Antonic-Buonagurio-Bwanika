@@ -828,12 +828,11 @@ public class MatchController implements ControllerInterface{
         if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
             errors.add(Error.INVALID_ACTION);
         else {
-            game.nextPlayer();
+            //game.nextPlayer();
             game.removePlayer(nickname);
 
-            if(game.getListOfPlayers().size()>1)
-                sendPlayTurn();
-            else
+
+            if(game.getListOfPlayers().size() <= 1)
                 viewInterface.endMatch();
 
         }
@@ -865,8 +864,20 @@ public class MatchController implements ControllerInterface{
     /**
      * Sends the updated board to the client after a successful standard action
      */
-    public Board sendBoardUpdate(){
-        return game.getCurrentPlayer().getPlayerBoard();
+    public Board sendBoardUpdate(String user){
+        return game.getPlayerByNickname(user).getPlayerBoard();
+    }
+
+    /**
+     * Add the previously disconnected player to the game
+     * @param disconnectedPlayer the previously disconnected player
+     * @return errors
+     */
+    @Override
+    public void onPlayerReconnection(String disconnectedPlayer) {
+
+        game.reconnectPlayer(disconnectedPlayer);
+
     }
 
 

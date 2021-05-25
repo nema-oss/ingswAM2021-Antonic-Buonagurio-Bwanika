@@ -11,7 +11,8 @@ import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.server.InGameDisconnectionHandler;
+import it.polimi.ingsw.network.server.EchoServer;
+import it.polimi.ingsw.view.server.InGameReconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class ControllerTest {
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
 
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234) {
+        }));
     }
 
     @Test
@@ -91,7 +93,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -114,7 +116,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -152,7 +154,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -180,7 +182,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -259,7 +261,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -341,7 +343,7 @@ public class ControllerTest {
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
 
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -440,7 +442,7 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new InGameDisconnectionHandler()));
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());

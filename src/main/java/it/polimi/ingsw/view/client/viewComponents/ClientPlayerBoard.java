@@ -8,9 +8,9 @@ import java.util.*;
 
 public class ClientPlayerBoard {
 
-    private final PopeRoad popeRoad;
-    private final Deposit deposit;
-    private final Strongbox strongbox;
+    private final ClientPopeRoad popeRoad;
+    private final ClientDeposit deposit;
+    private final ClientStrongbox strongbox;
     private final List<Stack<DevelopmentCard>> developmentCards;
     private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
     private final CellFactory cellFactory;
@@ -20,24 +20,24 @@ public class ClientPlayerBoard {
 
         cellFactory = new CellFactory();
         List<Cell> cells = new ArrayList<>(Arrays.asList(cellFactory.getCells()));
-        popeRoad = new PopeRoad(cells);
-        deposit = new Deposit();
-        strongbox = new Strongbox();
+        popeRoad = new ClientPopeRoad(cells);
+        deposit = new ClientDeposit();
+        strongbox = new ClientStrongbox();
         developmentCards = new ArrayList<Stack<DevelopmentCard>>();
         developmentCards.add(new Stack<DevelopmentCard>());
         developmentCards.add(new Stack<DevelopmentCard>());
         developmentCards.add(new Stack<DevelopmentCard>());
     }
 
-    public PopeRoad getPopeRoad() {
+    public ClientPopeRoad getPopeRoad() {
         return popeRoad;
     }
 
-    public Deposit getDeposit() {
+    public ClientDeposit getDeposit() {
         return deposit;
     }
 
-    public Strongbox getStrongbox() {
+    public ClientStrongbox getStrongbox() {
         return strongbox;
     }
 
@@ -61,6 +61,27 @@ public class ClientPlayerBoard {
         return cellFactory;
     }
 
+    /*
+     *this method add a new DevelopmentCard to the board
+     *@param the card to add
+     */
+
+    public void addDevelopmentCard(DevelopmentCard card){
+
+
+        for (Stack<DevelopmentCard> developmentCard : developmentCards) {
+            if (developmentCard.empty()) {
+                developmentCard.push(card);
+                break;
+            } else {
+                DevelopmentCard top = developmentCard.peek();
+                if (card.getLevel() == top.getLevel() + 1) {
+                    developmentCard.push(card);
+                    break;
+                }
+            }
+        }
+    }
 
 
 }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.PingMessage;
 import it.polimi.ingsw.messages.setup.server.EndGameMessage;
-import it.polimi.ingsw.messages.utils.MessageWriter;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.View;
 
@@ -131,7 +130,6 @@ public class EchoClient {
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
             if (!server.isClosed()) {
                 serverDisconnection();
-                e.printStackTrace();
             }
         }
     }
@@ -172,7 +170,7 @@ public class EchoClient {
             do {
                 try {
                     Thread.sleep(1500);
-                    Message message = new MessageWriter(MessageType.PING).getMessage();
+                    Message message = new PingMessage();
                     outputStream.writeObject( message);
                 } catch (InterruptedException | IOException ignored) {
                 }

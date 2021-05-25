@@ -27,6 +27,7 @@ public class Game {
     private int lorenzoPoints;
     private List<PopeSection> popeSectionList;
     private PopeSection lastPopeSection;
+    private Map<String,Player> disconnectedPlayers;
 
     // single player mode
     private PopeRoad lorenzoPopeRoad;
@@ -47,6 +48,7 @@ public class Game {
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();
         lastPopeSection = popeSectionList.remove(0);
+        disconnectedPlayers = new HashMap<>();
 
         gamePhase = GamePhase.LOGIN;
 
@@ -327,7 +329,10 @@ public class Game {
     public void removePlayer(String nickname){
 
         Player p = getPlayerByNickname(nickname);
-        listOfPlayers.remove(p);
+        if(p != null) {
+            disconnectedPlayers.put(p.getNickname(), p);
+            listOfPlayers.remove(p);
+        }
     }
 
     public void setGamePhase(GamePhase gamePhase){
@@ -340,6 +345,18 @@ public class Game {
 
     public void setCurrentPlayer (Player p){
         currentPlayer = p;
+    }
+
+    /**
+     * Reconnects a previously disconnected player
+     * @param disconnectedPlayer the player that reconnected
+     */
+    public void reconnectPlayer(String disconnectedPlayer) {
+
+        if(disconnectedPlayers.containsKey(disconnectedPlayer)){
+            Player p = disconnectedPlayers.get(disconnectedPlayer);
+            listOfPlayers.add(p);
+        }
     }
 }
 

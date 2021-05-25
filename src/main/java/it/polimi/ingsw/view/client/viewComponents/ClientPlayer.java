@@ -10,18 +10,19 @@ import it.polimi.ingsw.model.player.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ClientPlayer {
 
-    private Board playerBoard;
+    private ClientPlayerBoard playerBoard;
     private boolean standardActionPlayed;
     private boolean actionLeaderPlayed;
     private String nickname;
     private final int victoryPoints;
-    private final Effects activeEffects;
+    private final ClientActiveEffects activeEffects;
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
     private ClientGameBoard gameBoard;
@@ -29,10 +30,10 @@ public class ClientPlayer {
 
     public ClientPlayer(String nickname, ClientGameBoard gameBoard) {
 
-        playerBoard = new Board();
+        playerBoard = new ClientPlayerBoard();
         this.nickname = nickname;
         victoryPoints = 0;
-        activeEffects = new Effects();
+        activeEffects = new ClientActiveEffects();
         activeLeaderCards = new ArrayList<>();
         this.standardActionPlayed = false;
         this.actionLeaderPlayed = false;
@@ -45,7 +46,7 @@ public class ClientPlayer {
         return hand;
     }
 
-    public Board getPlayerBoard() {
+    public ClientPlayerBoard getPlayerBoard() {
         return playerBoard;
     }
 
@@ -61,15 +62,15 @@ public class ClientPlayer {
         return getPopeRoad().getCurrentPosition();
     }
 
-    public Deposit getDeposit() {
+    public ClientDeposit getDeposit() {
         return playerBoard.getDeposit();
     }
 
-    public Strongbox getStrongbox() {
+    public ClientStrongbox getStrongbox() {
         return playerBoard.getStrongbox();
     }
 
-    public PopeRoad getPopeRoad() {
+    public ClientPopeRoad getPopeRoad() {
         return playerBoard.getPopeRoad();
     }
 
@@ -77,7 +78,7 @@ public class ClientPlayer {
         return nickname;
     }
 
-    public Effects getActiveEffects() {
+    public ClientActiveEffects getActiveEffects() {
         return activeEffects;
     }
 
@@ -89,6 +90,9 @@ public class ClientPlayer {
         this.nickname = nickname;
     }
 
+    public boolean isStandardActionPlayed() {
+        return standardActionPlayed;
+    }
 
     public int getPositionIndex() {
         return playerBoard.getPopeRoad().getCurrentPositionIndex();
@@ -138,8 +142,17 @@ public class ClientPlayer {
         return boughtResources;
     }
 
-    public void setPlayerBoard(Board board) {
+    public void setPlayerBoard(ClientPlayerBoard board) {
         playerBoard = board;
+    }
+
+    public void addResource(Map<Resource, Integer> userChoice) {
+
+        ClientDeposit clientDeposit = playerBoard.getDeposit();
+
+        for(Resource resource: userChoice.keySet()){
+            clientDeposit.addResource(userChoice.get(resource), resource);
+        }
     }
 }
 

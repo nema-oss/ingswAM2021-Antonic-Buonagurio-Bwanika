@@ -42,6 +42,7 @@ public class Player{
         activeEffects = new Effects();
         activeLeaderCards = new ArrayList<>();
 
+
         standardActionPlayed = false;
         leaderActionPlayed = new boolean[2];
 
@@ -283,8 +284,6 @@ public class Player{
         getPopeRoad().move();
         Cell position = getPopeRoad().getCurrentPosition();
         addVictoryPoints(position.getPoints());
-        if(position.isPopeSpace()) currentGame.vaticanReport(getPositionIndex());
-
     }
 
     /*

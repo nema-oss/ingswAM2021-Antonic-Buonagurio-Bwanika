@@ -105,9 +105,8 @@ public class Deposit implements Serializable {
         * @exception the deposit is full or the floor is not present
      */
 
-    public void addResource(int floor, Resource resource){
+    public void addResource(int floor, Resource resource) throws FullDepositException{
 
-        try {
             floor--; // workaround to fix
             if (floor > warehouse.size()) throw new FullDepositException();
             warehouse.get(floor).add(resource);
@@ -115,7 +114,6 @@ public class Deposit implements Serializable {
                 warehouse.get(floor).remove(resource);
                 throw new FullDepositException();
             }
-        }catch (FullDepositException e) {e.printStackTrace();}
     }
 
     /*

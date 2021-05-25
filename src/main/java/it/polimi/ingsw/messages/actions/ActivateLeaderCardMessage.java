@@ -32,6 +32,7 @@ public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
      */
     public void execute(View view) {
         System.out.println(accepted);
+
     }
     /**
      * Execute the request server side

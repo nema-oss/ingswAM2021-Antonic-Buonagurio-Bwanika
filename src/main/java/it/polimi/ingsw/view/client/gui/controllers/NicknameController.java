@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
+import it.polimi.ingsw.view.client.utils.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,12 +22,12 @@ public class NicknameController {
 
         String nickname = nickField.getText();
 
-        GuiManager.changeScene("/gui/numOfPlayers");
+        if(!InputValidator.isNickname(nickname))
+            notifyInvalidNickname();
 
-        //controllo sul nick e faccio notifyInvalidUsername
-
-        //se è ok
-       // gui.sendLoginRequest(nickField.getText());
+        else {
+            //gui.sendLoginRequest(nickField.getText());
+        }
 
     }
 

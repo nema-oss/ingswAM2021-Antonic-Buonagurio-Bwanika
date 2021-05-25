@@ -1,11 +1,14 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
+import it.polimi.ingsw.view.client.utils.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -21,23 +24,22 @@ public class ConnectionController{
     AnchorPane anchorPane;
 
     @FXML
-    public void onConnection(ActionEvent event) throws IOException {
+    public void onConnection(ActionEvent event) {
         String ipAddress = ip.getText();
         String portNumber = port.getText();
 
-        //controllo validità con input validator e faccio notifyInvalidPort() e notifyInvalidIp()
+        if(!InputValidator.validateIP(ipAddress))
+            notifyInvalidIp();
 
+        else if(!InputValidator.validatePORT(portNumber))
+            notifyInvalidPort();
 
-        //altrimenti creo un nuovo thread con una nuova gui e la faccio partire.
-     /*   GuiManager.executorService.submit(new Thread(() -> {
-            Gui gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
-           gui.start();
-        }));
-        */
-
-        GuiManager.changeScene("/gui/nickname");
-
-
+        else{
+            GuiManager.executorService.submit(new Thread(() -> {
+                Gui gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
+                gui.start();
+            }));
+        }
     }
 
     private void notifyInvalidIp(){

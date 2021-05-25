@@ -318,7 +318,7 @@ public class InputValidator {
      * @param nickname the selected nickname
      * @return true if correct
      */
-    public boolean isNickname(String nickname) {
+    public static boolean isNickname(String nickname) {
         return Pattern.matches(NICKNAME_REGEX,nickname);
     }
 

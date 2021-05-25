@@ -37,11 +37,11 @@ public class GameController implements Initializable{
         try {
             FXMLLoader loader1 = GuiManager.loadFXML("/gui/gameBoard");
             gameBoardController = loader1.getController();
-            gameBoardPane.setCenter(loader1.load());
+            gameBoardPane.setLeft(loader1.load());
 
             FXMLLoader loader2 = GuiManager.loadFXML("/gui/playerBoard");
             playerBoardController = loader2.getController();
-            myPlayerPane.setCenter(loader2.load());
+            gameBoardPane.setRight(loader2.load());
 
             leftBorder.setCenter(GuiManager.loadFXML("/gui/chooseLeaders").load());
 

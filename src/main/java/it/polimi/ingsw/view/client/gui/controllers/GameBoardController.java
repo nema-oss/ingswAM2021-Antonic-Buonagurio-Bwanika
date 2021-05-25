@@ -21,10 +21,10 @@ import java.util.ResourceBundle;
 public class GameBoardController implements Initializable{
 
     @FXML
-    private static AnchorPane gBoard;
+    private AnchorPane gBoard;
 
     @FXML
-    private static GridPane cardMarket, marbleMarket;
+    private GridPane cardMarket, marbleMarket;
 
 
     @Override
@@ -34,12 +34,20 @@ public class GameBoardController implements Initializable{
         ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
         ClientMarbleMarket clientMarbleMarket = clientGameBoard.getMarket();
 
-        List<Node> devCards = new ArrayList<>();
+        for(int i=0; i<3; i++)
+            for(int j=0; j<4; j++) {
+                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
+                card.setFitWidth(129.0);
+                card.setFitHeight(174.0);
+                cardMarket.add(card, j, i);
 
-        for(int i=0, j=0; i<3 && j<4; i++, j++){
-            cardMarket.add(new ImageView(new Image("/gui/Images/DevelopmentCardsFront" +clientCardMarket.getCard(i,j).getId())), i,j);
-            marbleMarket.add(new ImageView(new Image("/gui/Images/Marbles" + clientMarbleMarket.getMarble(i,j).getColor())), i, j); //MAIUSCOLO RICORDATELO
-        }
+                ImageView marble = new ImageView(new Image("gui/Images/Marbles/WHITE.png" /* + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" */));
+                marble.setPreserveRatio(true);
+                marble.setFitHeight(28);
+                marble.setFitWidth(28);
+                marbleMarket.add(marble, j, i);
+            }
+
     }
 
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
@@ -47,8 +55,9 @@ public class GameBoardController implements Initializable{
         for(Node n : marbleMarket.getChildren())
             n.setVisible(false);
 
-        for(int i=0, j=0; i<3 && j<4 ; i++, j++)
-            marbleMarket.add(new ImageView(new Image("/gui/Images/Marbles/" +clientGameBoard.getMarket().getMarble(i,j).getColor() + ".png")), i, j);
+        for(int i=0; i<3; i++)
+            for(int j=0; j<4; j++)
+                marbleMarket.add(new ImageView(new Image("/gui/Images/Marbles/" +clientGameBoard.getMarket().getMarble(i,j).getColor() + ".png")), j, i);
 
     }
 
@@ -57,8 +66,9 @@ public class GameBoardController implements Initializable{
         for(Node n : cardMarket.getChildren())
             n.setVisible(false);
 
-        for(int i=0, j=0; i<3 && j<4; i++, j++)
-            cardMarket.add(new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j) + ".png")), i, j);
+        for(int i=0; i<3; i++)
+            for(int j=0; j<4; j++)
+                cardMarket.add(new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j) + ".png")), j, i);
     }
 
 }

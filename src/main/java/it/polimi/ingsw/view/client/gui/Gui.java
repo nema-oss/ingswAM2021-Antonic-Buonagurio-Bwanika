@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -44,15 +45,6 @@ public class Gui extends View {
 
     }
 
-    @Override
-    public void setUsername() {
-
-    }
-
-    @Override
-    public void startMatch(String currentPlayer) {
-
-    }
 
     @Override
     public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
@@ -104,15 +96,6 @@ public class Gui extends View {
 
     }
 
-    @Override
-    public void showWaitMessage(String waitFor, String nowPlaying) {
-
-    }
-
-    @Override
-    public void showMatchStarted() {
-
-    }
 
     @Override
     public void showBoard(ClientGameBoard board, ClientPlayer player) {
@@ -169,30 +152,12 @@ public class Gui extends View {
 
     }
 
-    @Override
-    public void showResourceMarket() {
-
-    }
-
-    @Override
-    public void showDeposit() {
-
-    }
-
-    @Override
-    public void showDevelopmentCards() {
-
-    }
 
     @Override
     public void showLeaderCards(Map<LeaderCard, Boolean> status) {
 
     }
 
-    @Override
-    public void showCardMarket(CardMarket cardMarket) {
-
-    }
 
     @Override
     public void showAllAvailableResources() {
@@ -234,8 +199,14 @@ public class Gui extends View {
 
     }
 
+    /**
+     * Shows the result of the place resources request.
+     *
+     * @param accepted   true if the request has been accepted
+     * @param userChoice the user choice
+     */
     @Override
-    public void showPlaceResourcesResult(boolean accepted) {
+    public void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice) {
 
     }
 
@@ -244,8 +215,19 @@ public class Gui extends View {
 
     }
 
+    /**
+     * Show the results of the selection the initial resources
+     *
+     * @param resourceChoice the user choice
+     */
     @Override
-    public void updatePlayerBoard(Board board) {
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
 
     }
+
+    @Override
+    public void showReconnectionToMatch() {
+
+    }
+
 }

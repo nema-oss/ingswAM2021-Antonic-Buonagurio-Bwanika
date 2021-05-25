@@ -13,11 +13,14 @@ public class Formatting {
      * Clears the screen and print the default heading
      */
     public static void clearScreen() {
-        int height = 20;
+
+        int height = 5;
         StringBuilder clean = new StringBuilder();
         for (int i = 0; i < height; i = i + 5) {
             clean.append("\n\n\n\n\n");
         }
+
+        System.out.print(clean);
 
         System.out.print(ANSI_BLUE.escape() +
                 "___  ___          _                         __  ______                  \n"+
@@ -30,6 +33,7 @@ public class Formatting {
                 "By Nemanja Antonic, Chiara Buonagurio and René Bwanika"+ Formatting.ColorCode.ANSI_RESET.escape());
 
         System.out.print(clean);
+
     }
 
 

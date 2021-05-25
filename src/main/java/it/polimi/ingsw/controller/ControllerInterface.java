@@ -39,6 +39,7 @@ public interface ControllerInterface {
     void sendChooseResources ();
     void sendChooseLeaderCards();
     void setVirtualView(VirtualViewInterface virtualView);
-    Board sendBoardUpdate();
+    Board sendBoardUpdate(String user);
 
+    void onPlayerReconnection(String disconnectedPlayer);
 }

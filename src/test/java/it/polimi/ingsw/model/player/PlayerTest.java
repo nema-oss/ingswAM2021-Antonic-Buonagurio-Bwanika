@@ -49,7 +49,7 @@ class PlayerTest {
 
     @Test
     @DisplayName("Testing the buy a Card action")
-    void buyDevelopmentCard() throws Exception, NonExistentCardException, InsufficientPaymentException {
+    void buyDevelopmentCard() throws Exception, NonExistentCardException, InsufficientPaymentException, FullDepositException {
 
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
         System.out.println(developmentCard.getCost());
@@ -84,6 +84,8 @@ class PlayerTest {
         deposit.addResource(2, newResources.get(1));
         deposit.swapFloors(1,2);
         deposit.swapFloors(2,3);
+
+        System.out.println(deposit.getAll());
 
 
     }
@@ -155,21 +157,7 @@ class PlayerTest {
         System.out.println("level == " + card.getCostDevelopment().keySet());
         System.out.println("cards == "+ card.getCostDevelopment().values());
         assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
-        Effects effects = player.getActiveEffects();
-        switch (leaderCardType){
-            case DISCOUNT:
-                assertTrue(effects.isDiscount());
-                break;
-            case EXTRA_DEPOSIT:
-                assertTrue(effects.isExtraDeposit());
-                break;
-            case WHITE_TO_RESOURCE:
-                assertTrue(effects.isWhiteToResource());
-                break;
-            case EXTRA_PRODUCTION:
-                assertTrue(effects.isExtraProduction());
-                break;
-        }
+
     }
 
 }

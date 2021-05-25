@@ -3,9 +3,8 @@ package it.polimi.ingsw.view.client;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.player.Board;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
@@ -13,6 +12,7 @@ import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The view abstract class
@@ -44,16 +44,6 @@ public abstract class View {
      */
     public abstract void setMyPort();
 
-    /**
-     * Allows the player to set his username
-     */
-    public abstract void setUsername();
-
-    /**
-     * This method allows to start a match
-     * @param currentPlayer  the first player to play
-     */
-    public abstract void startMatch(String currentPlayer);
 
     /**
      * Asks the users to choose its leader card
@@ -66,6 +56,7 @@ public abstract class View {
      * @param numberOfResources number of resources the user can choose
      */
     public abstract void setResourceTypeChoice(int numberOfResources);
+
 
     /**
      * Asks the user to play its turn action
@@ -120,19 +111,6 @@ public abstract class View {
      * @param username: username of the newly logged in player
      */
     public abstract void showNewUserLogged(String username);
-
-    /**
-     * Shows the player a waiting message
-     *
-     * @param waitFor:    reason why they're waiting
-     * @param nowPlaying: username of the player's turn
-     */
-    public abstract void showWaitMessage(String waitFor, String nowPlaying);
-
-    /**
-     * Shows that the match has started
-     */
-    public abstract void showMatchStarted();
 
     /**
      * Shows the player's board
@@ -196,29 +174,9 @@ public abstract class View {
     public abstract void showPlayTurn(String currentPlayer);
 
     /**
-     * This method shows the resource market
-     */
-    public abstract void showResourceMarket();
-
-    /**
-     * This method shows the user's deposit
-     */
-    public abstract void showDeposit();
-
-    /**
-     * This method shows the user's development cards
-     */
-    public abstract void showDevelopmentCards();
-
-    /**
      * This method shows a list of leader cards
      */
     public  abstract void showLeaderCards(List<LeaderCard> leaderCards);
-
-    /**
-     * This method shows the card market
-     */
-    public abstract void showCardMarket(CardMarket cardMarket);
 
     /**
     *This method shows all existing resources
@@ -236,6 +194,11 @@ public abstract class View {
     public abstract void showAcceptedLeaderAction();
 
     /**
+     * This method tells the user that the leader card action has been accepted
+     */
+    public abstract void showRejectedLeaderAction();
+
+    /**
      * This method tells the user that the buy card action has been accepted
      */
     public abstract void showAcceptedBuyDevelopmentCard(int x, int y);
@@ -251,13 +214,31 @@ public abstract class View {
      */
     public abstract void showLeaderCardsSelectionAccepted(List<LeaderCard> choice);
 
-    public abstract void showRejectedLeaderAction();
-
+    /**
+     * Shows the results of the move deposit request.
+     * @param x,y the floors to swap
+     * @param accepted true if the request has been accepted, false if rejected
+     */
     public abstract void showMoveDepositResult(int x, int y, boolean accepted);
 
-    public abstract void showPlaceResourcesResult(boolean accepted);
+    /**
+     * Shows the result of the place resources request.
+     * @param accepted true if the request has been accepted
+     * @param userChoice the user choice
+     */
+    public abstract void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice);
 
+    /**
+     * Sets the recently bought resources from market
+     * @param resources the bought resources
+     */
     public abstract void setBoughtResources(List<Resource> resources);
 
-    public abstract void updatePlayerBoard(Board board);
+    /**
+     * Show the results of the selection the initial resources
+     * @param resourceChoice the user choice
+     */
+    public abstract void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice);
+
+    public abstract void showReconnectionToMatch();
 }

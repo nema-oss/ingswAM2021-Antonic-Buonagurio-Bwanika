@@ -21,6 +21,5 @@ public class UpdatePlayerBoardMessage implements ActionMessage, Serializable {
 
     @Override
     public void execute(View view) {
-        view.updatePlayerBoard(board);
     }
 }

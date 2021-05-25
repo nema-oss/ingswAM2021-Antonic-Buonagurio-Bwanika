@@ -2,9 +2,6 @@ package it.polimi.ingsw.messages.utils;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
-import it.polimi.ingsw.messages.actions.server.ActivateProductionRejected;
-import it.polimi.ingsw.messages.actions.server.BuyCardRejected;
-import it.polimi.ingsw.messages.actions.server.BuyResourcesRejected;
 import it.polimi.ingsw.messages.actions.server.LeaderActionRejected;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
@@ -55,25 +52,24 @@ public class ErrorWriter {
     }
 
     public Message buyCardRejected(String user, int x, int y) {
-        return new BuyCardRejected(user,x,y);
+        return new BuyDevelopmentCardMessage(user,x,y,false);
     }
 
     public Message buyResourceRejected(String user, int x, int y) {
-        return new BuyResourcesRejected(user, x, y);
+        return new BuyResourcesMessage(user, x, y,false);
     }
 
-    public Message productionCardRejected(String user,List<DevelopmentCard> cards) { return new ActivateProductionRejected();
+    public Message productionCardRejected(String user,List<DevelopmentCard> cards) {
+        return new ActivateCardProductionMessage(user,cards,false);
     }
 
     public Message productionBoardRejected(String user, Map<ResourceType,List<ResourceType>> resourceType) {
-        return new ActivateProductionRejected();
+        return new ActivateBoardProductionMessage(user,resourceType,false);
     }
 
-    public Message productionLeaderRejected(List<LeaderCard> card) {
-        return new ActivateProductionRejected();
-        //return new ActivateLeaderProductionMessage(card, false);
+    public Message productionLeaderRejected(String user, List<LeaderCard> card) {
+        return new ActivateLeaderProductionMessage(user, card, false);
     }
-
 
     public Message activateLeaderRejected(LeaderCard card) {
         return new LeaderActionRejected();

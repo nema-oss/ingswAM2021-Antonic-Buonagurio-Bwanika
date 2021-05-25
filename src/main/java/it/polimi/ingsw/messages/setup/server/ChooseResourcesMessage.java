@@ -40,7 +40,7 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in View to show the resources
+        view.showResourceSelectionAccepted(resourceChoice);
     }
     /**
      * Execute the request server side

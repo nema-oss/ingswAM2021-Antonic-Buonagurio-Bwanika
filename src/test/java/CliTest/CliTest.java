@@ -18,14 +18,14 @@ import it.polimi.ingsw.model.player.Deposit;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.utils.Formatting;
+import it.polimi.ingsw.view.client.utils.InputValidator;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import org.junit.Test;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CliTest {
     private CardFactory cardFactory;
@@ -41,7 +41,16 @@ public class CliTest {
     @Test
     public void showTitle(){
         Cli cli = new Cli();
-        cli.showTitle();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        List<Resource> resources = new ArrayList<>();
+        resources.add(new Resource(ResourceType.SHIELD));
+        resources.add(new Resource(ResourceType.STONE));
+        resources.add(new Resource(ResourceType.COIN));
+        resources.add(new Resource(ResourceType.SERVANT));
+        Map<Resource,Integer> userChoice = InputValidator.isValidPlaceResourceAction(resources,input);
+        System.out.println(userChoice);
+
     }
 
     @Test
@@ -93,6 +102,8 @@ public class CliTest {
             aLot.add(new Resource(ResourceType.STONE));
         }
 
+        p.getDeposit().addResource(1,new Resource(ResourceType.SHIELD));
+        p.getDeposit().addResource(2,new Resource(ResourceType.STONE));
         p.getStrongbox().addResource(aLot);
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,1));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,1));
@@ -101,6 +112,7 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
+        p.getPlayerBoard().getPopeRoad().move(2);
         cli.showBoard(cgameBoard, p);
     }
 
@@ -108,5 +120,8 @@ public class CliTest {
     public void showAllResources(){
         Cli cli = new Cli();
         cli.showAllAvailableResources();
+
     }
+
+
 }

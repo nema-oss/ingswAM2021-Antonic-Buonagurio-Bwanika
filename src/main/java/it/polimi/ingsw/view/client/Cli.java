@@ -16,12 +16,12 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
+import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -93,7 +93,6 @@ public class Cli extends View {
 
     private void disconnectionForInputExpiredTimeout() {
     }
-    // SET METHOD THAT GET THE CLIENT INPUT AND SEND MESSAGES TO THE USER
 
 
     /**
@@ -113,29 +112,6 @@ public class Cli extends View {
         }
     }
 
-    /**
-     * This method shows the resource market
-     */
-    @Override
-    public void showResourceMarket() {
-
-    }
-
-    /**
-     * This method shows the user's deposit
-     */
-    @Override
-    public void showDeposit() {
-
-    }
-
-    /**
-     * This method shows the user's development cards
-     */
-    @Override
-    public void showDevelopmentCards() {
-
-    }
 
     /**
      * This method shows the user's leader cards
@@ -295,15 +271,6 @@ public class Cli extends View {
         }
 
     }
-    /**
-     * This method shows the card market
-     */
-    @Override
-    public void showCardMarket(CardMarket cardMarket) {
-
-    }
-
-
 
     /**
      * This method represents the game setup
@@ -356,33 +323,6 @@ public class Cli extends View {
     }
 
     /**
-     * Allows the player to set his username
-     */
-    @Override
-    public void setUsername() {
-
-    }
-
-    /**
-     * This method allows to start a match
-     */
-    @Override
-    public void startMatch(String currentPlayer) {
-
-        Formatting.clearScreen();
-
-        showBoard(gameBoard, player);
-        AtomicBoolean correct = new AtomicBoolean(true);
-        if(currentPlayer.equals(player.getNickname())){
-            askTurnAction();
-        }else {
-            System.out.println(currentPlayer + " is playing its turn...");
-        }
-
-
-    }
-
-    /**
      * Asks the users to choose its leader card
      *
      * @param cardChoice the card pool
@@ -428,8 +368,10 @@ public class Cli extends View {
                 }
             }
 
-            if(!Thread.interrupted())
-                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(),userChoice,true));
+            if(!Thread.interrupted()) {
+                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(), userChoice, true));
+                System.out.println("\nWait a minute, we are preparing the match...");
+            }
 
         });
 
@@ -448,28 +390,27 @@ public class Cli extends View {
         showAllAvailableResources();
 
 
-        Map<ResourceType,Integer> resourceTypesChoice = new HashMap<>();
+
         AtomicBoolean correct = new AtomicBoolean(true);
 
         inputThread = inputExecutor.submit(() -> {
 
-            System.out.println("Choose " + numberOfResources + " among the resource type available. Press Enter to continue");
+            System.out.println("Choose " + numberOfResources + " among the resource type available. You can choose" +
+                    numberOfResources + "resources. Press Enter to continue");
 
+            Map<ResourceType,Integer> resourceTypesChoice = new HashMap<>();
             inputWithTimeout();
 
             do{
                 String input = inputWithTimeout();
-                ResourceType resourceType = InputValidator.isResourceType(input);
-                correct.set(resourceType != null);
-                if(!correct.get()){
+                resourceTypesChoice = InputValidator.isValidChooseResourceType(input);
+                correct.set(resourceTypesChoice != null);
+                if(!correct.get())
                     System.out.println("Incorrect resource type name");
-                }else{
-                    resourceTypesChoice.merge(resourceType, 1, Integer::sum);
-                }
 
                 if(Thread.interrupted()) return;
 
-            }while(!correct.get() || resourceTypesChoice.size() < numberOfResources);
+            }while(!correct.get());
 
             if(!Thread.interrupted())
                 sendMessage(socket, new ChooseResourcesMessage(player.getNickname(),resourceTypesChoice,true));
@@ -487,6 +428,15 @@ public class Cli extends View {
     }
 
     /**
+     * This method prints all the type of resources available in a match
+     * @param resources the resources to show
+     */
+    public void showAllAvailableResources(List<Resource> resources) {
+        for (Resource resource : resources) {
+            System.out.println(getResourceTypeColor(resource.getType()) +  RESOURCE.escape() +" " + resource.getType().toString() + ANSI_RESET.escape());
+        }
+    }
+    /**
      * This method set the phase to choose where to place the resources after a buy resource action
      */
     @Override
@@ -499,13 +449,16 @@ public class Cli extends View {
         showBoard(gameBoard,player);
 
 
-        List<Resource> resourceList = player.getBoughtResources();
 
 
         inputThread = inputExecutor.submit( () ->{
 
+            List<Resource> resourceList = player.getBoughtResources();
+
             System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
                     "Enter to continue.");
+
+            showAllAvailableResources(resourceList);
 
             String input = inputWithTimeout();
             if(!Thread.interrupted()) {
@@ -569,6 +522,14 @@ public class Cli extends View {
     }
 
     /**
+     * This method tells the user that the leader card action has been rejected
+     */
+    @Override
+    public void showRejectedLeaderAction() {
+        setLeaderCardAction(player.getHand(), true);
+    }
+
+    /**
      * This method tells the user that the buy card action has been accepted
      */
     @Override
@@ -598,31 +559,31 @@ public class Cli extends View {
         player.setHand(choice);
     }
 
-    @Override
-    public void showRejectedLeaderAction() {
-        setLeaderCardAction(player.getHand(), true);
-    }
-
+    /**
+     * Shows the results of the move deposit request.
+     * @param x,y the floors to swap
+     * @param accepted true if the request has been accepted, false if rejected
+     */
     @Override
     public void showMoveDepositResult(int x, int y, boolean accepted) {
-        if(accepted){
-            try {
-                player.getDeposit().swapFloors(x,y);
-            } catch (WrongDepositSwapException e) {
-                e.printStackTrace();
-            }
-            Formatting.clearScreen();
-            showBoard(gameBoard,player);
-            System.out.println("Move deposit request accepted");
-        }else{
+
+        if(accepted) {
+            player.getDeposit().swapFloors(x, y);
+            //System.out.println("Move deposit request accepted. Press Enter to continue");
+        }
+        else {
             System.out.println("Move deposit request rejected. Try again");
+            setPlaceResourcesAction();
         }
     }
 
+
     @Override
-    public void showPlaceResourcesResult(boolean accepted) {
+    public void showPlaceResourcesResult(boolean accepted, Map<Resource,Integer> userChoice) {
         if(accepted){
             System.out.println("The other resources will be discarded. Press Enter to continue");
+
+            player.addResource(userChoice);
             inputWithTimeout();
             askTurnAction();
         }
@@ -638,8 +599,17 @@ public class Cli extends View {
     }
 
     @Override
-    public void updatePlayerBoard(Board board) {
-        player.setPlayerBoard(board);
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
+
+        ClientDeposit deposit = player.getDeposit();
+        for(ResourceType resourceType: resourceChoice.keySet()){
+            deposit.addResource(resourceChoice.get(resourceType), new Resource(resourceType));
+        }
+    }
+
+    @Override
+    public void showReconnectionToMatch() {
+        System.out.println("Reconnection to match...");
     }
 
 
@@ -658,7 +628,7 @@ public class Cli extends View {
 
             do {
                 String input = inputWithTimeout();
-                TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT));
+                TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT), player.isStandardActionPlayed());
                 correct.set(action != null);
                 if (!correct.get()){
                     System.out.println("Incorrect action. Try again");
@@ -669,19 +639,21 @@ public class Cli extends View {
                         switch (action) {
                             case BUY_RESOURCES:
                                 setBuyResourceAction(false);
-                                player.standardActionDone();
                                 break;
                             case BUY_CARD:
                                 setBuyCardAction(false);
-                                player.standardActionDone();
                                 break;
                             case ACTIVATE_PRODUCTION:
                                 sendMessage(socket, new ActivateProductionMessage(player.getNickname()));
                                 setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
-                                player.standardActionDone();
                                 break;
                             case LEADER_ACTION:
                                 setLeaderCardAction(player.getHand(),false);
+                                break;
+                            case SHOW_GAMEBOARD:
+                                Formatting.clearScreen();
+                                showGameBoard(gameBoard);
+                                askTurnAction();
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
@@ -730,6 +702,10 @@ public class Cli extends View {
                     String input = inputWithTimeout();
                     if (input.equals("done"))
                         selectionDone.set(true);
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
                     developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input);
                     leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input);
                     boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
@@ -745,6 +721,8 @@ public class Cli extends View {
                     if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
                     if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
                 }
+
+                player.standardActionDone();
             }
 
         });
@@ -796,6 +774,11 @@ public class Cli extends View {
                         case "D2":
                             userChoice.put(leaderCards.get(1), false);
                     }
+
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
                     //userChoice = InputValidator.isValidLeaderCardAction(leaderCards,input);
                     input  = inputWithTimeout();
 
@@ -836,7 +819,11 @@ public class Cli extends View {
             Point userChoice = null;
             if(!Thread.interrupted()){
                 do{
-                     String input = inputWithTimeout();
+                    String input = inputWithTimeout();
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
                     userChoice = InputValidator.isValidBuyCardAction(input);
                     correct = userChoice != null;
                     if(!correct)
@@ -848,6 +835,8 @@ public class Cli extends View {
 
             if(!Thread.interrupted())
                 sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
+
+            player.standardActionDone();
         });
 
 
@@ -878,6 +867,10 @@ public class Cli extends View {
             if(!Thread.interrupted()){
                 do{
                     String input = inputWithTimeout();
+                    if (input.equals("reset")) {
+                        askTurnAction();
+                        return;
+                    }
                     userChoice = InputValidator.isValidBuyResourcesAction(input);
                     correct = userChoice != null;
                     if(!correct)
@@ -887,8 +880,26 @@ public class Cli extends View {
                 }while(!correct);
             }
 
-            if(!Thread.interrupted())
-                sendMessage(socket, new BuyResourcesMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
+            if(!Thread.interrupted()) {
+                BuyResourcesMessage message = new BuyResourcesMessage(player.getNickname(), userChoice.getX(), userChoice.getY(), true);
+
+                if(player.getActiveEffects().isWhiteToResource() && player.getActiveEffects().getWhiteToResourceList().size() > 1){
+
+                    correct = false;
+                    do {
+                        List<ResourceType> whiteToResourceList = player.getActiveEffects().getWhiteToResourceList();
+                        System.out.println("You have more than one whiteToResource effect active. Choose one among " +
+                                whiteToResourceList + ". Write the correspondent resource type.");
+                        String input = inputWithTimeout();
+                        ResourceType resourceType = InputValidator.isResourceType(input);
+                        correct = resourceType != null && !whiteToResourceList.contains(resourceType);
+                        if(correct)
+                            message.setWhiteToResourceChoice(resourceType);
+                    }while(!correct);
+                }
+                sendMessage(socket, message);
+            }
+            player.standardActionDone();
 
         });
     }
@@ -947,26 +958,6 @@ public class Cli extends View {
     public void showNewUserLogged(String username) {
 
         System.out.println(username + " has joined the match");
-    }
-
-    /**
-     * This methods asks the user to wait for its turn
-     * @param waitFor: reason why they're waiting
-     * @param nowPlaying: username of the player's turn
-     */
-    @Override
-    public void showWaitMessage(String waitFor, String nowPlaying) {
-        //We use a WAITMESSAGE that call this method on its execute
-        //on the server we do:
-            //Message waitMessage = new WaitMessage(waitFor,nowPlaying)
-    }
-
-    /**
-     * This methods tells the user that the match has started
-     */
-    @Override
-    public void showMatchStarted() {
-        System.out.println("Match started kids");
     }
 
     /**
@@ -2087,6 +2078,9 @@ public class Cli extends View {
     public void showServerDisconnection() {
 
         System.out.println("Server says bye, bye!");
+        System.out.println("Do you want to reconnect again? Type 'YES' to reconnect.");
+        if(inputWithTimeout().toLowerCase(Locale.ROOT).equals("yes"))
+            gameSetup();
 
     }
 

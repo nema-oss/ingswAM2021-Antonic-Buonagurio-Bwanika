@@ -76,8 +76,8 @@ public class InputValidator {
 
         if(splitInput.size() == 2) {
             try {
-                x = Integer.parseInt(splitInput.get(0));
-                y = Integer.parseInt(splitInput.get(1));
+                x = Integer.parseInt(splitInput.get(0)) - 1;
+                y = Integer.parseInt(splitInput.get(1)) - 1;
                 if( !(0 <= x && x <= CARD_MARKET_ROW && 0 <= y && y <= CARD_MARKET_COLUMNS )) return null;
             } catch (NumberFormatException e) {
                 return null;
@@ -109,7 +109,7 @@ public class InputValidator {
             switch(splitInput.get(0).toLowerCase(Locale.ROOT)){
                 case "row":
                     try{
-                        idx = Integer.parseInt(splitInput.get(1));
+                        idx = Integer.parseInt(splitInput.get(1)) - 1;
                         point.setY(-1);
                         point.setX(idx);
                         return point;
@@ -118,7 +118,7 @@ public class InputValidator {
                     }
                 case "column":
                     try{
-                        idx = Integer.parseInt(splitInput.get(1));
+                        idx = Integer.parseInt(splitInput.get(1)) - 1;
                         point.setX(-1);
                         point.setY(idx);
                         return point;
@@ -264,9 +264,12 @@ public class InputValidator {
         return userChoice;
     }
 
-    public static TurnActions isValidAction(String input) {
+    public static TurnActions isValidAction(String input, boolean isStandardActionDone) {
 
-        return TurnActions.valueOfLabel(input.toLowerCase(Locale.ROOT));
+        TurnActions action = TurnActions.valueOfLabel(input.toLowerCase(Locale.ROOT));
+        if(isStandardActionDone && ( action == TurnActions.BUY_CARD || action == TurnActions.BUY_RESOURCES || action == TurnActions.ACTIVATE_PRODUCTION))
+            return null;
+        return action;
     }
 
     /**
@@ -283,8 +286,7 @@ public class InputValidator {
     /**
      * This method check that input matches to PORT_REGEXP
      * @param input is the input of the user
-     * @return true : input matches to PORT_REGEXP
-     *         false : input doesn't matches to PORT_REGEXP
+     * @return true : input matches to PORT_REGEX, false : input doesn't matches to PORT_REGEXP
      */
 
     public static boolean validatePORT(String input){
@@ -307,6 +309,25 @@ public class InputValidator {
                 return null;
             }
 
+        }
+        return userChoice;
+
+    }
+
+    public static Map<ResourceType, Integer> isValidChooseResourceType(String input) {
+
+        List<String> actions = Arrays.asList(input.split("\\s*,\\s*"));
+        Map<ResourceType, Integer> userChoice = new HashMap<>();
+        for(String action: actions){
+            List<String> singleAction = Arrays.asList(action.split("\\s+"));
+            ResourceType resourceType = isResourceType(singleAction.get(0));
+            if(resourceType == null) return null;
+            try{
+                int floor = Integer.parseInt(singleAction.get(1));
+                userChoice.put(resourceType,floor);
+            }catch (NumberFormatException e){
+                return null;
+            }
         }
         return userChoice;
 

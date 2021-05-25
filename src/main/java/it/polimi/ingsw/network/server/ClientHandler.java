@@ -4,7 +4,6 @@ import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.PingMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.messages.utils.MessageSender;
-import it.polimi.ingsw.messages.utils.MessageWriter;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
@@ -162,7 +161,7 @@ public class ClientHandler implements Runnable{
         do{
             try {
                 Thread.sleep(1500);
-                Message message = new MessageWriter(MessageType.PING).getMessage();
+                Message message = new PingMessage();
                 new MessageSender(client, message).sendMsg(outputStream);
             } catch (InterruptedException  ignored) {
             }

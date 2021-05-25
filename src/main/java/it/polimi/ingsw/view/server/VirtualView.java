@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
@@ -14,8 +15,10 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.controller.Error;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,18 +39,18 @@ public class VirtualView implements VirtualViewInterface{
     private Map<Socket,ObjectOutputStream> socketObjectOutputStreamMap;
     private final List<Socket> waitList;
     private boolean isActive;
-    private InGameDisconnectionHandler inGameDisconnectionHandler;
     private int requiredNumberOfPlayers;
     private List<Resource> boughtResources;
+    private InGameReconnectionHandler inGameReconnectionHandler;
 
-    public VirtualView(ControllerInterface matchController, int lobbyID, InGameDisconnectionHandler inGameDisconnectionHandler) {
+    public VirtualView(ControllerInterface matchController, int lobbyID, InGameReconnectionHandler inGameReconnectionHandler) {
         this.lobbyID = lobbyID;
         this.matchController = matchController;
         this.clients = new HashMap<>();
         this.waitList = new ArrayList<>();
-        this.inGameDisconnectionHandler = inGameDisconnectionHandler;
         this.requiredNumberOfPlayers = -1;
         this.socketObjectOutputStreamMap = new HashMap<>();
+        this.inGameReconnectionHandler = inGameReconnectionHandler;
 
         matchController.setVirtualView(this);
     }
@@ -58,6 +61,14 @@ public class VirtualView implements VirtualViewInterface{
      */
     public synchronized int getLobbySize() {
         return clients.size();
+    }
+
+    /**
+     * Returns the ID of the current match
+     * @return match id
+     */
+    public int getLobbyID() {
+        return lobbyID;
     }
 
     /**
@@ -88,7 +99,7 @@ public class VirtualView implements VirtualViewInterface{
         ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
         boolean success = new MessageSender(socket,message).sendMsg(outputStream);
         if(!success) clientDown(socket);
-        else System.out.println("sent from server === " + message);
+        else System.out.println("sent from server === " + message + " \nsocket == " + socket);
     }
 
     /**
@@ -102,12 +113,14 @@ public class VirtualView implements VirtualViewInterface{
                     .stream()
                     .filter(key -> disconnectedSocket.equals(clients.get(key)))
                     .findAny().get();
+            clients.remove(nickname);
+            socketObjectOutputStreamMap.remove(disconnectedSocket);
             Message message = new UpdateWriter().playerDisconnection(nickname);
             for (Socket socket : clients.values()) {
                 if (!socket.isClosed())
                     sendMessage(socket, message);
             }
-            if (isActive) inGameDisconnectionHandler.onClientDown(this, nickname);
+            if (isActive()) inGameReconnectionHandler.onClientDown(this, nickname);
         }
     }
 
@@ -125,23 +138,31 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method handles a login request, turns it over to the controller and, based on the server response, directs
-     * the response. It also assigns a random color to the player.
+     * the response.
      * @param nickname is the player who want to log in username
      * @param socket is the socket associated with the new player
      */
     public synchronized void loginRequest(String nickname, int requiredNumberOfPlayers, Socket socket) {
 
-        List<Error> errors = matchController.onNewPlayer(nickname);
+        if(inGameReconnectionHandler.hasDisconnectedBefore(nickname)){
+            ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
+            socketObjectOutputStreamMap.remove(socket);
+            inGameReconnectionHandler.playerReconnection(nickname,socket,outputStream);
+        }
+        else {
 
-        boolean isFirstPlayer = false;
-        if (errors.isEmpty()) {
-            if(requiredNumberOfPlayers != -1) {
-                setRequiredNumberOfPlayers(requiredNumberOfPlayers);
+            List<Error> errors = matchController.onNewPlayer(nickname);
+
+            boolean isFirstPlayer = false;
+            if (errors.isEmpty()) {
+                if (requiredNumberOfPlayers != -1) {
+                    setRequiredNumberOfPlayers(requiredNumberOfPlayers);
+                }
+                onLoginAcceptedRequest(nickname, socket);
+            } else {
+                if (requiredNumberOfPlayers != -1) isFirstPlayer = true;
+                onLoginRejectedRequest(nickname, errors, socket, isFirstPlayer);
             }
-            onLoginAcceptedRequest(nickname, socket);
-        } else {
-            if (requiredNumberOfPlayers != -1) isFirstPlayer = true;
-            onLoginRejectedRequest(nickname, errors, socket, isFirstPlayer);
         }
     }
 
@@ -152,6 +173,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param socket the new client socket
      */
     private void onLoginAcceptedRequest(String nickname, Socket socket){
+
 
         clients.put(nickname,socket);
         System.out.println(nickname + " logged in lobby number " + lobbyID );
@@ -263,7 +285,7 @@ public class VirtualView implements VirtualViewInterface{
         Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(user, resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
     /**
@@ -298,7 +320,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().moveDepositRequestAccepted(user,a, b);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
 
@@ -332,7 +354,7 @@ public class VirtualView implements VirtualViewInterface{
         for(Socket socket: clients.values())
             sendMessage(socket, message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
 
@@ -359,7 +381,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
 
         sendMessage(clients.get(user), message);
@@ -392,7 +414,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
 
@@ -421,7 +443,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
 
@@ -448,13 +470,13 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> card){
-        Message message = new UpdateWriter().productionLeaderAccepted(card);
+        Message message = new UpdateWriter().productionLeaderAccepted(user,card);
         sendMessage(clients.get(user), message);
 
     }
 
     private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> card){
-        Message message = new ErrorWriter().productionLeaderRejected(card);
+        Message message = new ErrorWriter().productionLeaderRejected(user,card);
         sendMessage(clients.get(user), message);
 
     }
@@ -542,7 +564,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param nickname the user's nickname
      */
     public void endTurn(String nickname){
-        System.out.println("end turn virtual view");
+        //sendMessage(clients.get(nickname, new MoveOnPopeRoadMessage());
         matchController.onEndTurn(nickname);
     }
 
@@ -606,7 +628,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate());
+        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
     }
 
@@ -631,6 +653,21 @@ public class VirtualView implements VirtualViewInterface{
     // I temporary save the resource and send them after the buy resources action is accepted
     public synchronized void sendResourcesBought(List<Resource> resources){
         boughtResources = resources;
+    }
+
+
+    public synchronized void reconnectPlayer(String disconnectedPlayer, Socket socket, ObjectOutputStream outputStream) {
+
+        clients.put(disconnectedPlayer,socket);
+        socketObjectOutputStreamMap.put(socket,outputStream);
+        System.out.println(disconnectedPlayer + " is back!");
+        //sendMessage(socket, new UpdateWriter().loginDone(disconnectedPlayer));
+        sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
+        matchController.onPlayerReconnection(disconnectedPlayer);
+    }
+
+    public ObjectOutputStream getOutputStream(Socket socket) {
+        return socketObjectOutputStreamMap.get(socket);
     }
 }
 

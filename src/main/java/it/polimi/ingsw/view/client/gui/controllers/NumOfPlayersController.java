@@ -44,4 +44,10 @@ public class NumOfPlayersController implements Initializable {
     public int getNumOfPlayers(){
         return numOfPlayers;
     }
+
+    public void showNumberOfPlayersButton() {
+    }
+
+    public void hideNumberOfPlayersButton() {
+    }
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.network.client.EchoClient;
+import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 
@@ -23,6 +24,8 @@ public abstract class View {
     protected EchoClient clientHandler;
     protected String myIp;
     protected int myPort;
+    protected ObjectOutputStream outputStream;
+    protected Socket socket;
 
     protected ClientPlayer player;
     protected ClientGameBoard gameBoard;
@@ -90,8 +93,6 @@ public abstract class View {
      */
     public abstract void setBuyResourceAction(boolean actionRejectedBefore);
 
-
-
     /**
      * Shows the login
      *
@@ -111,16 +112,6 @@ public abstract class View {
      * @param username: username of the newly logged in player
      */
     public abstract void showNewUserLogged(String username);
-
-    /**
-     * Shows the player's board
-     */
-    public abstract void showBoard(ClientGameBoard board, ClientPlayer player);
-
-    /**
-     * Shows to the player the game board
-     */
-    public abstract void showGameBoard(ClientGameBoard gameBoard);
 
     /**
      * Shows that the server has not been found
@@ -165,7 +156,10 @@ public abstract class View {
      * @param socket the client
      * @param outputStream client's output
      */
-    public abstract void setReceiver(Socket socket, ObjectOutputStream outputStream);
+    public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
+        this.socket = socket;
+        this.outputStream = outputStream;
+    }
 
     /**
      * This method tells the user that it has to play its turn
@@ -173,15 +167,6 @@ public abstract class View {
      */
     public abstract void showPlayTurn(String currentPlayer);
 
-    /**
-     * This method shows a list of leader cards
-     */
-    public  abstract void showLeaderCards(Map<LeaderCard, Boolean> status);
-
-    /**
-    *This method shows all existing resources
-     */
-    public abstract void showAllAvailableResources();
 
     /**
      * This method set the phase to choose where to place the resources after a buy resource action
@@ -210,9 +195,12 @@ public abstract class View {
 
     /**
      * This method add the leader cards to the user's hand
+     *
      * @param choice user choice
      */
-    public abstract void showLeaderCardsSelectionAccepted(List<LeaderCard> choice);
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
+    }
 
     /**
      * Shows the results of the move deposit request.
@@ -232,13 +220,20 @@ public abstract class View {
      * Sets the recently bought resources from market
      * @param resources the bought resources
      */
-    public abstract void setBoughtResources(List<Resource> resources);
-
+    public void setBoughtResources(List<Resource> resources) {
+        player.setBoughtResources(resources);
+    }
     /**
      * Show the results of the selection the initial resources
      * @param resourceChoice the user choice
      */
-    public abstract void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice);
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
+
+        ClientDeposit deposit = player.getDeposit();
+        for(ResourceType resourceType: resourceChoice.keySet()){
+            deposit.addResource(resourceChoice.get(resourceType), new Resource(resourceType));
+        }
+    }
 
     public abstract void showReconnectionToMatch();
 }

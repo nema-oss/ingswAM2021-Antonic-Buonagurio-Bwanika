@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChooseLeaderController implements Initializable {
@@ -58,4 +61,15 @@ public class ChooseLeaderController implements Initializable {
 
     }
 
+    public void hideFinalConfirmButton() {
+    }
+
+    public void setInstructionLabel(String infoMessage) {
+    }
+
+    public void setGui(Gui gui) {
+    }
+
+    public void initializeLeaderCards(List<LeaderCard> cardChoice) {
+    }
 }

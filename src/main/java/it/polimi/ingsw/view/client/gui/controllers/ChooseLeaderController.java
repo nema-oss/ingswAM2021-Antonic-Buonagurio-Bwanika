@@ -113,16 +113,15 @@ public class ChooseLeaderController{
 
     }
 
-    public void initialize(List<LeaderCard> leaderCards, AnchorPane gameBoard){
+    public void initialize(List<LeaderCard> leaderCards){
 
         givenCards = leaderCards;
 
-        l1.setImage(new Image("/Images/LeaderCardsFront/" + leaderCards.get(0).getId() + ".png"));
-        l2.setImage(new Image("/Images/LeaderCardsFront/" + leaderCards.get(1).getId() + ".png"));
-        l3.setImage(new Image("/Images/LeaderCardsFront/" + leaderCards.get(2).getId() + ".png"));
-        l4.setImage(new Image("/Images/LeaderCardsFront/" + leaderCards.get(3).getId() + ".png"));
+        l1.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(0).getId() + ".png"));
+        l2.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(1).getId() + ".png"));
+        l3.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(2).getId() + ".png"));
+        l4.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(3).getId() + ".png"));
 
-        mainPane.setCenter(gameBoard);
     }
 
 }

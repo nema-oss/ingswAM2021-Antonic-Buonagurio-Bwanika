@@ -43,8 +43,8 @@ public class GameBoardController implements Initializable{
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/WHITE.png" /* + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" */));
                 marble.setPreserveRatio(true);
-                marble.setFitHeight(28);
-                marble.setFitWidth(28);
+                marble.setFitHeight(40);
+                marble.setFitWidth(40);
                 marbleMarket.add(marble, j, i);
             }
 
@@ -61,7 +61,7 @@ public class GameBoardController implements Initializable{
 
     }
 
-    public void upddateCardMarket(ClientGameBoard clientGameBoard){
+    public void updateCardMarket(ClientGameBoard clientGameBoard){
 
         for(Node n : cardMarket.getChildren())
             n.setVisible(false);

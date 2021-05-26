@@ -36,9 +36,8 @@ public class Cli extends View {
 
     private final int MAX_SPACES = 15;
     private final Scanner scanner;
-    private Socket socket;
     private boolean disconnected;
-    private ObjectOutputStream outputStream;
+
     private final InputValidator inputValidator;
     private String playerColor = ANSI_CYAN.escape();
     ExecutorService inputExecutor;
@@ -51,11 +50,6 @@ public class Cli extends View {
         inputExecutor = Executors.newSingleThreadExecutor();
         this.disconnected = false;
         //gameSetup();
-    }
-
-    public void setReceiver(Socket socket, ObjectOutputStream outputStream) {
-        this.socket = socket;
-        this.outputStream = outputStream;
     }
 
 
@@ -115,7 +109,6 @@ public class Cli extends View {
     /**
      * This method shows the user's leader cards
      */
-    @Override
     public void showLeaderCards(Map<LeaderCard, Boolean> leaderCards) {
         String color;
         String activeColor = ANSI_GREEN.escape();
@@ -1226,7 +1219,6 @@ public class Cli extends View {
     /**
      * This method prints all the type of resources available in a match
      */
-    @Override
     public void showAllAvailableResources() {
         for (ResourceType resourceType : ResourceType.values()) {
             System.out.println(getResourceTypeColor(resourceType) +  RESOURCE.escape() +" " + resourceType.toString() + ANSI_RESET.escape());
@@ -1356,16 +1348,6 @@ public class Cli extends View {
     }
 
     /**
-     * This method add the leader cards to the user's hand
-     *
-     * @param choice user choice
-     */
-    @Override
-    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
-        player.setHand(choice);
-    }
-
-    /**
      * Shows the results of the move deposit request.
      * @param x,y the floors to swap
      * @param accepted true if the request has been accepted, false if rejected
@@ -1399,19 +1381,6 @@ public class Cli extends View {
         }
     }
 
-    @Override
-    public void setBoughtResources(List<Resource> resources) {
-        player.setBoughtResources(resources);
-    }
-
-    @Override
-    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
-
-        ClientDeposit deposit = player.getDeposit();
-        for(ResourceType resourceType: resourceChoice.keySet()){
-            deposit.addResource(resourceChoice.get(resourceType), new Resource(resourceType));
-        }
-    }
 
     @Override
     public void showReconnectionToMatch() {
@@ -1769,7 +1738,6 @@ public class Cli extends View {
     /**
      * This method shows the player personal board
      */
-    @Override
     public void showBoard(ClientGameBoard board, ClientPlayer player) {
         //first off draw the poperoad
         int cell_width = 6;
@@ -2431,7 +2399,6 @@ public class Cli extends View {
     /**
      * This method shows the common game board
      */
-    @Override
     public void showGameBoard(ClientGameBoard gameBoard) {
         String color;
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {

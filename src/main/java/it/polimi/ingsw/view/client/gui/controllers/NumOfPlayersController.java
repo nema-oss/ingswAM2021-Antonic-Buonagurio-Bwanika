@@ -42,4 +42,9 @@ public class NumOfPlayersController implements Initializable {
         this.gui = gui;
     }
 
+    public void showNumberOfPlayersButton() {
+    }
+
+    public void hideNumberOfPlayersButton() {
+    }
 }

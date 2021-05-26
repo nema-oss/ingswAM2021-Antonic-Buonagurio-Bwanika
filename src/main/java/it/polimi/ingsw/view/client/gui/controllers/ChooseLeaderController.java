@@ -137,4 +137,12 @@ public class ChooseLeaderController {
 
     }
 
+    public void hideFinalConfirmButton() {
+    }
+
+    public void setInstructionLabel(String infoMessage) {
+    }
+
+    public void initializeLeaderCards(List<LeaderCard> cardChoice) {
+    }
 }

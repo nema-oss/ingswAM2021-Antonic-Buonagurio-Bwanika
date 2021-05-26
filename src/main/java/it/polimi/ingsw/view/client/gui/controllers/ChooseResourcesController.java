@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.client.gui.controllers;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.model.gameboard.ResourceType;
-import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,10 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChooseResourcesController implements Initializable {
@@ -121,4 +117,8 @@ public class ChooseResourcesController implements Initializable {
         title.setText(("Choose a resource among these"));
         chosen = 0;
 ;    }
+
+    public void initializeResourceTypes(List<ResourceType> resourceTypes){
+
+    }
 }

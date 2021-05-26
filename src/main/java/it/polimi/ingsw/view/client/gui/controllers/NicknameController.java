@@ -28,7 +28,7 @@ public class NicknameController {
             notifyInvalidNickname();
 
         else {
-            //gui.sendLoginRequest(nickField.getText());
+            // gui.showLoginDone(nickname);
             GuiManager.changeScene("/gui/numOfPlayers");
         }
 

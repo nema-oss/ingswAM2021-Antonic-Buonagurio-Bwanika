@@ -43,11 +43,12 @@ public class ConnectionController{
             notifyInvalidPort();
 
         else{
-           /* GuiManager.executorService.submit(new Thread(() -> {
+           GuiManager.executorService.submit(new Thread(() -> {
                 Gui gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
                 gui.start();
-            })); */
-            GuiManager.changeScene("/gui/nickname");
+            }));
+
+           GuiManager.changeScene("/gui/nickname");
 
         }
     }

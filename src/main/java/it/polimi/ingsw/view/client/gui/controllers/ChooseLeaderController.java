@@ -126,7 +126,7 @@ public class ChooseLeaderController {
 
     }
 
-    public void initialize(List<LeaderCard> leaderCards){
+    public void initializeLeaderCards(List<LeaderCard> leaderCards){
 
         givenCards = leaderCards;
 
@@ -143,6 +143,5 @@ public class ChooseLeaderController {
     public void setInstructionLabel(String infoMessage) {
     }
 
-    public void initializeLeaderCards(List<LeaderCard> cardChoice) {
-    }
+
 }

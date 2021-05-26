@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.gameboard.CardMarket;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +28,17 @@ public class GameBoardController implements Initializable{
     @FXML
     private GridPane cardMarket, marbleMarket;
 
+    private Gui gui;
+
+    public void setGui(Gui gui){
+        this.gui = gui;
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //così la creo nuova ma non credo di dover fare così
         ClientGameBoard clientGameBoard = new ClientGameBoard();
         ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
         ClientMarbleMarket clientMarbleMarket = clientGameBoard.getMarket();
@@ -40,6 +49,7 @@ public class GameBoardController implements Initializable{
                 card.setFitWidth(129.0);
                 card.setFitHeight(174.0);
                 cardMarket.add(card, j, i);
+               // card.setOnMouseClicked(event -> buyDevelopmentCard());
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/WHITE.png" /* + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" */));
                 marble.setPreserveRatio(true);
@@ -69,5 +79,9 @@ public class GameBoardController implements Initializable{
             for(int j=0; j<4; j++)
                 cardMarket.add(new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j) + ".png")), j, i);
     }
+
+    public void buyDevelopmentCard(){
+    }
+
 
 }

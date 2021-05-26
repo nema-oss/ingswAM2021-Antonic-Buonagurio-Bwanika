@@ -97,23 +97,20 @@ public class GameController implements Initializable{
             leftBorder.setCenter(loader3.load());
             chooseLeaderController = loader3.getController();
 
-            List<LeaderCard> leaders = new CardFactory().getLeaderCards();
+          /*  List<LeaderCard> leaders = new CardFactory().getLeaderCards();
             List<LeaderCard> chosen = new ArrayList<>();
             chosen.add(leaders.get(0));
             chosen.add(leaders.get(1));
             chosen.add(leaders.get(2));
             chosen.add(leaders.get(3));
-            chooseLeaderController.initialize(chosen);
+            chooseLeaderController.initializeLeaderCards(chosen); */
+
 
             //nella gui devo chiamare initleaders
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-    public void leftPanelMultiplayer(List<ClientPlayer> otherPlayers) throws IOException {
 
     }
 

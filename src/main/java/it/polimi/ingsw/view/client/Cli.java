@@ -160,7 +160,11 @@ public class Cli extends View {
             for(ResourceType resourceType: leaderCard.getCostResource().keySet()){
                 System.out.print(getResourceTypeColor(resourceType)+ leaderCard.getCostResource().get(resourceType) + RESOURCE.escape()+ANSI_RESET.escape());
             }
-            System.out.print("\t\t\t"+BOLD_VERTICAL.escape() + "\t");
+            if(leaderCards.get(leaderCard))
+                color = activeColor;
+            else
+                color = ANSI_RESET.escape();
+            System.out.print(color + "\t\t\t"+BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
         }
         System.out.print("\n");
         for(LeaderCard leaderCard: leaderCards.keySet()) {
@@ -188,7 +192,7 @@ public class Cli extends View {
             else{
                 color = ANSI_RESET.escape();
             }
-            System.out.print(BOLD_VERTICAL.escape()+"\t\t" + leaderCard.getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t");
+            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t" + leaderCard.getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t" + ANSI_RESET.escape());
         }
         System.out.print("\n");
         for(LeaderCard leaderCard: leaderCards.keySet()) {
@@ -206,7 +210,7 @@ public class Cli extends View {
                 case DISCOUNT:
                     ResourceType resourceType = ((Discount) leaderCard).getDiscountType();
                     color = getResourceTypeColor(resourceType);
-                    if(leaderCards.containsKey(leaderCard)){
+                    if(leaderCards.get(leaderCard)){
                         System.out.print(activeColor + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t-" + ((Discount) leaderCard).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     }
                     else{
@@ -214,8 +218,8 @@ public class Cli extends View {
                     }
                     break;
                 case EXTRA_DEPOSIT:
-                    color = getResourceTypeColor(((ExtraDeposit) leaderCards).getStorageType());
-                    if(leaderCards.containsKey(leaderCard)){
+                    color = getResourceTypeColor(((ExtraDeposit) leaderCard).getStorageType());
+                    if(leaderCards.get(leaderCard)){
                         System.out.print(activeColor +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     }
                     else
@@ -223,7 +227,7 @@ public class Cli extends View {
                     break;
                 case EXTRA_PRODUCTION:
                     int spaces = MAX_SPACES;
-                    if(leaderCards.containsKey(leaderCard))
+                    if(leaderCards.get(leaderCard))
                         System.out.print(activeColor + BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     else
                         System.out.print(BOLD_VERTICAL.escape()+"\t");
@@ -239,7 +243,7 @@ public class Cli extends View {
                         if(producible instanceof Resource){
                             if(((Resource) producible).getType() == null){
                                 flag = JOLLY.escape();
-                                color = WHITE.escape();
+                                color = ANSI_RESET.escape();
                             }
                             else {
                                 flag = RESOURCE.escape();
@@ -254,13 +258,13 @@ public class Cli extends View {
                         System.out.print(color +"1" + flag + ANSI_RESET.escape());
                         spaces-=3;
                     }
-                    if(leaderCards.containsKey(leaderCard))
+                    if(leaderCards.get(leaderCard))
                         System.out.print(activeColor+"\t"+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     else
                         System.out.print("\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
                 case WHITE_TO_RESOURCE:
-                    if(leaderCards.containsKey(leaderCard))
+                    if(leaderCards.get(leaderCard))
                         System.out.print(activeColor+BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCard).getResult())
                                 + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     else

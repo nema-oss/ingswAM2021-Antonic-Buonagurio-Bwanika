@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.utils.InputValidator;
@@ -27,6 +29,7 @@ public class NicknameController {
 
         else {
             //gui.sendLoginRequest(nickField.getText());
+            GuiManager.changeScene("/gui/numOfPlayers");
         }
 
     }

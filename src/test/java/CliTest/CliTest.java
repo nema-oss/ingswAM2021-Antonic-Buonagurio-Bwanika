@@ -127,5 +127,22 @@ public class CliTest {
 
     }
 
+    @Test
+    public void showActiveLeaders(){
+        cardFactory = new CardFactory();
+        leaderCards = cardFactory.getLeaderCards();
+        Cli cli = new Cli();
+        ClientPlayer clientPlayer = new ClientPlayer("prova", new ClientGameBoard());
+        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand.add(leaderCards.get(12));
+        hand.add(leaderCards.get(13));
+        clientPlayer.setHand(hand);
+        HashMap<LeaderCard, Boolean> active = new HashMap<>();
+        active.put(hand.get(0), true);
+        active.put(hand.get(1), false);
+        cli.showLeaderCards(active);
+    }
+
+
 
 }

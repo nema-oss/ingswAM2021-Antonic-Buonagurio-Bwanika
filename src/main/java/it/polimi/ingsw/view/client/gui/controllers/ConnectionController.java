@@ -23,12 +23,20 @@ public class ConnectionController{
     @FXML
     AnchorPane anchorPane;
 
+    private Gui gui;
+
     @FXML
     public void onConnection(ActionEvent event) throws IOException {
         String ipAddress = ip.getText();
         String portNumber = port.getText();
 
-        if(!InputValidator.validateIP(ipAddress))
+
+        if(ipAddress.isEmpty())
+            ipAddress = "127.0.0.1";
+        if(portNumber.isEmpty())
+            portNumber = "1234";
+
+        if( !InputValidator.validateIP(ipAddress))
             notifyInvalidIp();
 
         else if(!InputValidator.validatePORT(portNumber))

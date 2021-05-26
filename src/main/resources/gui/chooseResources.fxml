@@ -42,7 +42,7 @@
                   </ImageView>
          </children></AnchorPane>
             <Button fx:id="resourcesOk" layoutX="368.0" layoutY="264.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="38.0" prefWidth="180.0" text="Confirm" />
-      <Label layoutX="248.0" prefHeight="68.0" prefWidth="439.0" text="Choose a resource among these">
+      <Label fx:id="title" layoutX="248.0" prefHeight="68.0" prefWidth="439.0">
          <font>
             <Font name="Old English Text MT" size="34.0" />
          </font>

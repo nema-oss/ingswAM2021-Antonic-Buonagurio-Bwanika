@@ -50,7 +50,7 @@
                                 <RowConstraints maxHeight="183.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="175.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="159.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                <children>
                   <ImageView fitHeight="154.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true" />

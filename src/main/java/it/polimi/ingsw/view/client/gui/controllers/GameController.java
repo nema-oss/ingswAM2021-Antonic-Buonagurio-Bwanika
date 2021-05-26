@@ -41,6 +41,8 @@ public class GameController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 
         try {
+            GuiManager.gameController = this;
+
             FXMLLoader loader1 = GuiManager.loadFXML("/gui/gameBoard");
             gameBoardController = loader1.getController();
             gameBoardPane.setLeft(loader1.load());
@@ -53,6 +55,7 @@ public class GameController implements Initializable{
             leftBorder.setCenter(loader3.load());
             chooseLeaderController = loader3.getController();
 
+            //
             List<LeaderCard> leaders = new CardFactory().getLeaderCards();
             List<LeaderCard> chosen = new ArrayList<>();
             chosen.add(leaders.get(0));
@@ -89,4 +92,5 @@ public class GameController implements Initializable{
         }
 
     }
+
 }

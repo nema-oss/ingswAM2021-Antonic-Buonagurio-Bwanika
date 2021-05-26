@@ -1,8 +1,11 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
@@ -14,33 +17,44 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ChooseResourcesController {
+public class ChooseResourcesController implements Initializable {
 
-
-    private ResourceType resource;
-
-    @FXML
-    private BorderPane gb;
 
     @FXML
     private AnchorPane coin, servant, shield, stone;
 
+    @FXML
+    private Label title;
+
+    private static int numOfResourcesToChoose, chosen;
     private boolean coinsel, servantsel, shieldsel, stonesel;
+    private Gui gui;
+    private List<Resource> resources;
 
-
+    public void setGui(Gui gui){
+        this.gui = gui;
+    }
 
     @FXML
     private void switchOnGame() throws IOException {
 
-        if(!coinsel && !servantsel && !shieldsel && !stonesel)
-            notifySelectResource();
+        if(chosen < numOfResourcesToChoose){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Not enough resources chosen!");
+        }
+
+        else if (chosen > numOfResourcesToChoose){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Too much resources chosen!");
+        }
 
         else {
             //Gui.tellOk();
-            GuiManager.changeGameScene("/gui/others");
+           GuiManager.changeGameScene("/gui/others");
         }
     }
 
@@ -48,12 +62,13 @@ public class ChooseResourcesController {
     private void goldChosen(){
         if(!coinsel) {
             coin.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            resource = ResourceType.COIN;
             coinsel = true;
+            chosen++;
         }
         else {
             coin.setStyle("");
             coinsel = false;
+            chosen--;
         }
     }
 
@@ -61,12 +76,13 @@ public class ChooseResourcesController {
     private void servantChosen(){
         if(!servantsel) {
             servant.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            resource = ResourceType.SERVANT;
             servantsel = true;
+            chosen++;
         }
         else {
             servant.setStyle("");
             servantsel = false;
+            chosen--;
         }
     }
 
@@ -74,12 +90,13 @@ public class ChooseResourcesController {
     private void shieldChosen(){
         if(!shieldsel) {
             shield.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            resource = ResourceType.SHIELD;
             shieldsel = true;
+            chosen++;
         }
         else {
             shield.setStyle("");
             shieldsel = false;
+            chosen--;
         }
     }
 
@@ -88,28 +105,23 @@ public class ChooseResourcesController {
 
         if(!stonesel) {
             stone.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            resource = ResourceType.STONE;
             stonesel = true;
+            chosen++;
         }
         else {
             stone.setStyle("");
             stonesel = false;
+            chosen--;
         }
 
     }
 
-    public void initialize(AnchorPane gameBoard) {
-        gb.setCenter(gameBoard);
-    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-    public ResourceType getResource(){
-
-        return resource;
-    }
-
-    public void notifySelectResource(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setHeaderText("You need to choose a resource before proceeding!");
-        alert.showAndWait();
+       // numOfResourcesToChoose = gui.getNumOfPlayers;
+        numOfResourcesToChoose = 2;
+        title.setText(("Please choose " + numOfResourcesToChoose + " among these resources."));
+        chosen = 0;
     }
 }

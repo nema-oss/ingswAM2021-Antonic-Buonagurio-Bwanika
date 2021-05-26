@@ -1,26 +1,21 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class ChooseLeaderController{
+public class ChooseLeaderController {
 
-   @FXML
-   BorderPane mainPane;
 
    @FXML
    ImageView l1, l2, l3, l4;
@@ -29,9 +24,13 @@ public class ChooseLeaderController{
    Button leadersOk;
 
    private boolean l1selected, l2selected, l3selected, l4selected;
-
    private List<LeaderCard> givenCards;
+   private Gui gui;
 
+
+    public void setGui(Gui gui){
+        this.gui = gui;
+    }
 
     @FXML
     private List<LeaderCard> switchOnChooseResources(ActionEvent event) throws IOException {
@@ -50,7 +49,24 @@ public class ChooseLeaderController{
             selected.add(givenCards.get(3));
         }
 
-        GuiManager.changeGameScene("/gui/chooseResources");
+        if(selected.size() < 2){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Not enough cards selected! You need to choose exactly two leader cards.");
+            alert.showAndWait();
+            selected.clear();
+        }
+        else if(selected.size() > 2){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Too much leader cards selected! You need to choose exactly two leader cards.");
+            alert.showAndWait();
+            selected.clear();
+        }
+
+        else {
+            GuiManager.changeGameScene("/gui/chooseResources");
+        }
+
+
         return selected;
 
 
@@ -73,7 +89,7 @@ public class ChooseLeaderController{
     @FXML
     private void l2Clicked(MouseEvent event){
 
-        if(!l1selected) {
+        if(!l2selected) {
             l2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #9c78d5");
             l2selected = true;
         }

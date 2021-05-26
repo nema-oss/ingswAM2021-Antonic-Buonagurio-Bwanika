@@ -8,7 +8,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.NumOfPlayersController">
    <children>
-      <AnchorPane layoutX="210.0" layoutY="124.0" prefHeight="653.0" prefWidth="543.0" styleClass="anchorPane" stylesheets="@logo.css" />
+      <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                  minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane"
+                  stylesheets="@logo.css"/>
       <AnchorPane layoutX="791.0" layoutY="214.0" prefHeight="387.0" prefWidth="392.0">
          <children>
             <Label alignment="CENTER" layoutX="29.0" layoutY="121.0" prefHeight="62.0" prefWidth="334.0" text="Select number of players">

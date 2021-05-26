@@ -11,10 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +46,12 @@ public class GameBoardController implements Initializable{
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
+                card.setId(clientCardMarket.getCard(i,j).getId());
                 card.setFitWidth(129.0);
                 card.setFitHeight(174.0);
                 cardMarket.add(card, j, i);
-               // card.setOnMouseClicked(event -> buyDevelopmentCard());
+
+                card.setOnMouseClicked(event -> buyDevelopmentCard(event));
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/WHITE.png" /* + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" */));
                 marble.setPreserveRatio(true);
@@ -76,11 +78,17 @@ public class GameBoardController implements Initializable{
             n.setVisible(false);
 
         for(int i=0; i<3; i++)
-            for(int j=0; j<4; j++)
-                cardMarket.add(new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j) + ".png")), j, i);
+            for(int j=0; j<4; j++) {
+                ImageView img =new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j).getId() + ".png"));
+                img.setId(clientGameBoard.getCardMarket().getCard(i,j).getId());
+                cardMarket.add(img, j, i);
+            }
     }
 
-    public void buyDevelopmentCard(){
+    public String buyDevelopmentCard(MouseEvent mouseEvent){
+
+        ImageView img = (ImageView) mouseEvent.getSource();
+        return img.getId();
     }
 
 

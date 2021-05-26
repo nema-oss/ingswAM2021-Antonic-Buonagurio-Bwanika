@@ -27,7 +27,7 @@ public class NumOfPlayersController implements Initializable {
     public void switchToLobby(ActionEvent event) throws IOException {
 
         numOfPlayers = comboBox.getValue();
-        //Gui.tellOk()
+        //giu.setNumOfPlayers(numOfPlayers)
         GuiManager.changeScene("/gui/game");
     }
 
@@ -42,7 +42,4 @@ public class NumOfPlayersController implements Initializable {
         this.gui = gui;
     }
 
-    public int getNumOfPlayers(){
-        return numOfPlayers;
-    }
 }

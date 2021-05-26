@@ -1,24 +1,17 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChooseResourcesController implements Initializable {
@@ -30,10 +23,10 @@ public class ChooseResourcesController implements Initializable {
     @FXML
     private Label title;
 
-    private static int numOfResourcesToChoose, chosen;
     private boolean coinsel, servantsel, shieldsel, stonesel;
     private Gui gui;
-    private List<Resource> resources;
+    private Resource chosenResource;
+    private int chosen;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -42,14 +35,16 @@ public class ChooseResourcesController implements Initializable {
     @FXML
     private void switchOnGame() throws IOException {
 
-        if(chosen < numOfResourcesToChoose){
+        if(chosen < 1){
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Not enough resources chosen!");
+            alert.setHeaderText("You must choose a resource first!");
+            alert.showAndWait();
         }
 
-        else if (chosen > numOfResourcesToChoose){
+        else if (chosen > 1){
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Too much resources chosen!");
+            alert.setHeaderText("Too much resources chosen! You can choose one resource at a time");
+            alert.showAndWait();
         }
 
         else {
@@ -119,9 +114,7 @@ public class ChooseResourcesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-       // numOfResourcesToChoose = gui.getNumOfPlayers;
-        numOfResourcesToChoose = 2;
-        title.setText(("Please choose " + numOfResourcesToChoose + " among these resources."));
+        title.setText(("Choose a resource among these"));
         chosen = 0;
-    }
+;    }
 }

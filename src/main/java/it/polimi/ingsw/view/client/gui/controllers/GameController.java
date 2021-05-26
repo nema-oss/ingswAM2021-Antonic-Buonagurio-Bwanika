@@ -72,24 +72,7 @@ public class GameController implements Initializable{
 
     }
 
-    public GameBoardController getGameBoardController() {
-        return gameBoardController;
-    }
-
-    public PlayerBoardController getPlayerBoardController() {
-        return playerBoardController;
-    }
-
     public void leftPanelMultiplayer(List<ClientPlayer> otherPlayers) throws IOException {
-
-        TabPane tabPane = new TabPane();
-        leftBorder.setTop(tabPane);
-
-        for(ClientPlayer other : otherPlayers) {
-            FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
-            Tab tab = new Tab(other.getNickname(), loader.load());
-            tabPane.getTabs().add(tab);
-        }
 
     }
 

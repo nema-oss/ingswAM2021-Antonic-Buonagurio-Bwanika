@@ -51,7 +51,6 @@ public class GameBoardController implements Initializable{
     }
 
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
-
         for(Node n : marbleMarket.getChildren())
             n.setVisible(false);
 

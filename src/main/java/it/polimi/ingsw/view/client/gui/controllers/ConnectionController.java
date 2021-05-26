@@ -48,6 +48,7 @@ public class ConnectionController{
                 gui.start();
             })); */
             GuiManager.changeScene("/gui/nickname");
+
         }
     }
 

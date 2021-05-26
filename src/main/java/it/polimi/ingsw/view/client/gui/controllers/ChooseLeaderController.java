@@ -33,7 +33,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private List<LeaderCard> switchOnChooseResources(ActionEvent event) throws IOException {
+    private void switchOnChooseResources(ActionEvent event) throws IOException {
 
         List<LeaderCard> selected = new ArrayList<>();
         if(l1selected){
@@ -65,9 +65,6 @@ public class ChooseLeaderController {
         else {
             GuiManager.changeGameScene("/gui/chooseResources");
         }
-
-
-        return selected;
 
 
     }

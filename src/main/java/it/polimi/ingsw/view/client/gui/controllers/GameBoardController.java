@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -12,18 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameBoardController implements Initializable{
-
-    @FXML
-    private AnchorPane gBoard;
 
     @FXML
     private GridPane cardMarket, marbleMarket;
@@ -51,7 +43,7 @@ public class GameBoardController implements Initializable{
                 card.setFitHeight(174.0);
                 cardMarket.add(card, j, i);
 
-                card.setOnMouseClicked(event -> buyDevelopmentCard(event));
+                card.setOnMouseClicked(this::buyDevelopmentCard);
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/WHITE.png" /* + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" */));
                 marble.setPreserveRatio(true);
@@ -85,10 +77,10 @@ public class GameBoardController implements Initializable{
             }
     }
 
-    public String buyDevelopmentCard(MouseEvent mouseEvent){
+    public void buyDevelopmentCard(MouseEvent mouseEvent){
 
         ImageView img = (ImageView) mouseEvent.getSource();
-        return img.getId();
+        // gui.buyCard( img.getId() );
     }
 
 

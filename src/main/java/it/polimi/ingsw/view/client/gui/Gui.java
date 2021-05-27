@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client.gui;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -26,9 +27,14 @@ public class Gui extends View {
 
     private Stage primaryStage;
     private Scene startingScene;
+
+
+
+    private NicknameController nicknameController;
     private Scene nicknameScene;
 
     private NumOfPlayersController numOfPlayersController;
+    private Scene numberOfPlayersScene;
 
     private Scene loginWaitScene;
     private LoginWaitController loginWaitController;
@@ -59,6 +65,7 @@ public class Gui extends View {
         this.primaryStage = stage;
         this.startingScene = scene;
         initLoginUsername();
+        initNumberOfPlayers();
         initGameScene();
         intEndGame();
         isGameScene = false;
@@ -72,13 +79,25 @@ public class Gui extends View {
             FXMLLoader loader = GuiManager.loadFXML("/gui/nickname");
             Parent root = loader.load();
             nicknameScene = new Scene(root);
-            NicknameController nicknameController = loader.getController();
+            nicknameController = loader.getController();
             nicknameController.setGui(this);
         }catch(IOException e){
             System.out.println("Could not initialize Nickname Scene");
         }
     }
 
+    private void initNumberOfPlayers() {
+
+        try{
+            FXMLLoader loader = GuiManager.loadFXML("/gui/numOfPlayers");
+            Parent root = loader.load();
+            numberOfPlayersScene = new Scene(root);
+            numOfPlayersController = loader.getController();
+            numOfPlayersController.setGui(this);
+        }catch(IOException e){
+            System.out.println("Could not initialize Number Of Players Scene");
+        }
+    }
 
     /**
      * This method loads the FXML of the lobby scene and initializes its controller
@@ -325,21 +344,15 @@ public class Gui extends View {
     public void showLogin(DoLoginMessage message) {
 
         boolean isFirstPlayer = message.isFirstPlayer();
+        nicknameController.setIsFirstPlayer(isFirstPlayer);
 
-        if(isFirstPlayer){
-            Platform.runLater(
-                    () -> {
-                        primaryStage.setScene(nicknameScene);
-                        //numOfPlayersController.showNumberOfPlayersButton();
-                        primaryStage.show();
-                    });
-        }else{
-            Platform.runLater(()-> {
-                primaryStage.setScene(nicknameScene);
-                //numOfPlayersController.hideNumberOfPlayersButton();
-                primaryStage.show();
-            });
-        }
+        //numOfPlayersController.hideNumberOfPlayersButton();
+        Platform.runLater(
+                () -> {
+                    primaryStage.setScene(nicknameScene);
+                    //numOfPlayersController.showNumberOfPlayersButton();
+                    primaryStage.show();
+                });
 
     }
 
@@ -464,6 +477,7 @@ public class Gui extends View {
                 isGameScene = true;
                 primaryStage.setScene(gameScene);
             }
+            /*
             if(currentPlayer.equals(player.getNickname())){
                 gameSceneController.showActionButtons();
                 gameSceneController.showYourTurnMessage();
@@ -471,6 +485,8 @@ public class Gui extends View {
                 gameSceneController.hideActionButtons();
                 gameSceneController.showOtherTurnMessage(currentPlayer);
             }
+
+             */
         });
     }
 
@@ -592,5 +608,13 @@ public class Gui extends View {
      */
     public void sendMessage(Message message){
         new MessageSender(socket,message).sendMsg(outputStream);
+    }
+
+    public void selectNumberOfPlayers(LoginRequest message) {
+
+        numOfPlayersController.setNicknameMessage(message);
+        Platform.runLater(()->{
+            primaryStage.setScene(numberOfPlayersScene);
+        });
     }
 }

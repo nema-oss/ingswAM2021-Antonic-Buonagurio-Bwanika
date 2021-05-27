@@ -35,6 +35,7 @@ public class GameController implements Initializable{
     public static GameBoardController gameBoardController;
     public static PlayerBoardController playerBoardController;
     public static ChooseLeaderController chooseLeaderController;
+    public static OthersController othersController;
 
     public void showActionButtons() {
     }
@@ -93,9 +94,10 @@ public class GameController implements Initializable{
             playerBoardController = loader2.getController();
             gameBoardPane.setRight(loader2.load());
 
-            FXMLLoader loader3 = GuiManager.loadFXML("/gui/chooseLeaders");
+
+            FXMLLoader loader3 = GuiManager.loadFXML("/gui/others");
             leftBorder.setCenter(loader3.load());
-            chooseLeaderController = loader3.getController();
+            othersController = loader3.getController();
 
           /*  List<LeaderCard> leaders = new CardFactory().getLeaderCards();
             List<LeaderCard> chosen = new ArrayList<>();

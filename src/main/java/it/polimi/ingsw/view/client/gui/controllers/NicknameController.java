@@ -34,10 +34,12 @@ public class NicknameController {
 
         else {
             LoginRequest message = new LoginRequest(nickname);
-            // big trouble with an entire scene just for number of players box, using 3 for testing
-            message.setNumberOfPlayers(2);
-            gui.sendMessage(message);
-            //GuiManager.changeScene("/gui/numOfPlayers");
+
+            if(isFirstPlayer){
+                gui.selectNumberOfPlayers(message);
+            }else{
+                gui.sendMessage(message);
+            }
         }
 
     }

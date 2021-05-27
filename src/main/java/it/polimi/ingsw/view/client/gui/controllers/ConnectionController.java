@@ -30,15 +30,6 @@ public class ConnectionController{
         String ipAddress = ip.getText();
         String portNumber = port.getText();
 
-
-        /*
-        if(ipAddress.isEmpty())
-            ipAddress = "127.0.0.1";
-        if(portNumber.isEmpty())
-            portNumber = "1235";
-
-         */
-
         if( !InputValidator.validateIP(ipAddress))
             notifyInvalidIp();
 
@@ -47,6 +38,15 @@ public class ConnectionController{
 
         else{
            GuiManager.executorService.execute(new Thread(() -> {
+               /*
+               String portN;
+               String location;
+               if(ip.getText().isEmpty())
+                   location = "127.0.0.1";
+               if(port.getText().isEmpty())
+                   portN = "1234";
+
+                */
                 gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
                 gui.start();
             }));

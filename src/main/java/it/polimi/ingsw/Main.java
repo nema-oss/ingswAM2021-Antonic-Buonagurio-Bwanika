@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.server.EchoServer;
 import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.gui.GuiManager;
 
 /**
  * Starting point of the game
@@ -26,6 +27,8 @@ public class Main {
     private static void clientMode(String[] args) {
         if(args.length == 2 && args[1].equals("-cli"))
             new Cli().gameSetup();
+        else if(args.length == 2 && args[1].equals("-gui"))
+            GuiManager.startGui();
 
     }
 

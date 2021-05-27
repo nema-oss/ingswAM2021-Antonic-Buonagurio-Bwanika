@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.client;
 
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -236,4 +238,13 @@ public abstract class View {
     }
 
     public abstract void showReconnectionToMatch();
+
+    /**
+     * This method send a message on the socket
+     * @param socket the receiver
+     * @param message the message to send
+     */
+    public void sendMessage(Socket socket, Message message){
+        new MessageSender(socket,message).sendMsg(outputStream);
+    }
 }

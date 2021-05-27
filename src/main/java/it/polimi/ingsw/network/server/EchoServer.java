@@ -64,6 +64,7 @@ public class EchoServer implements InGameReconnectionHandler {
         while (true) {
             try {
                 Socket client = server.accept();
+                System.out.println(client + "   arrived");
                 findAMatch(client);
             } catch(IOException e) {
                 break;

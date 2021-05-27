@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.utils.InputValidator;
@@ -23,12 +24,16 @@ public class NumOfPlayersController implements Initializable {
 
     private Gui gui;
 
+    private LoginRequest message;
+
     @FXML
     public void switchToLobby(ActionEvent event) throws IOException {
 
         numOfPlayers = comboBox.getValue();
+        message.setNumberOfPlayers(numOfPlayers);
+        gui.sendMessage(message);
         //giu.setNumOfPlayers(numOfPlayers)
-        GuiManager.changeScene("/gui/game");
+        //GuiManager.changeScene("/gui/game");
     }
 
 
@@ -46,5 +51,9 @@ public class NumOfPlayersController implements Initializable {
     }
 
     public void hideNumberOfPlayersButton() {
+    }
+
+    public void setNicknameMessage(LoginRequest message) {
+        this.message = message;
     }
 }

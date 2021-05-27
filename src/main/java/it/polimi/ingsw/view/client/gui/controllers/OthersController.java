@@ -72,8 +72,8 @@ public class OthersController implements Initializable {
         //progressindicator per l'attesa con scritta "tizio sta giocando il suo turno"
         wait.setStyle("-fx-progress-color: white");
         wait.setPrefWidth(80);
-        wait.setVisible(false);
-        waitingMessage.setVisible(false);
+        wait.setVisible(true);
+        waitingMessage.setVisible(true);
 
         //bottoni per decidere se standard action o leader action con scritta di spiegazione
         standardAction.setOnAction(event -> {
@@ -125,7 +125,7 @@ public class OthersController implements Initializable {
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         columnOk.setVisible(false);
-        rowIndex.setVisible(false);
+        columnIndex.setVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
             //TODO: comunica alla gui

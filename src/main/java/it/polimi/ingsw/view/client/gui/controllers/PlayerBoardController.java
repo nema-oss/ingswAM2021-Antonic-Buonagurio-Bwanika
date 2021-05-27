@@ -124,7 +124,7 @@ public class PlayerBoardController {
     }
 
 
-    private void updateDevelopmentCards(ClientPlayer clientPlayer){
+    public void updateDevelopmentCards(ClientPlayer clientPlayer){
 
         devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
@@ -137,7 +137,7 @@ public class PlayerBoardController {
         }
     }
 
-    private void updateStrongBox(ClientPlayer clientPlayer){
+    public void updateStrongBox(ClientPlayer clientPlayer){
 
         for(ResourceType resourceType : clientPlayer.getStrongbox().getAll().keySet()){
             for(Resource res : clientPlayer.getStrongbox().getAll().get(resourceType)){
@@ -146,7 +146,7 @@ public class PlayerBoardController {
         }
     }
 
-    private void updateDeposit(ClientPlayer clientPlayer){
+    public void updateDeposit(ClientPlayer clientPlayer){
 
         ClientDeposit deposit = clientPlayer.getPlayerBoard().getDeposit();
 
@@ -173,7 +173,7 @@ public class PlayerBoardController {
     }
 
 
-    private void initialize(ClientPlayer clientPlayer){
+    public void initialize(ClientPlayer clientPlayer){
 
 
         //setting leadercards
@@ -183,7 +183,6 @@ public class PlayerBoardController {
         inactive2.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(1).getId() + ".png"));
         active2.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(1).getId() + ".png"));
         active2.setVisible(false);
-
 
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();

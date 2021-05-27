@@ -52,6 +52,8 @@ public class Gui extends View {
 
     private PlayerBoardController playerBoardController;
 
+    private OthersController othersController;
+
     private GameController gameSceneController;
     private Scene gameScene;
     private List<Player> players;
@@ -118,26 +120,19 @@ public class Gui extends View {
 
     private void initChooseLeadersSelection(List<LeaderCard> leaderCards){
 
-        try {
-            FXMLLoader loader = GuiManager.loadFXML("/gui/chooseLeaders");
-            Parent root = loader.load();
-            chooseLeaderScene = new Scene(root);
-            chooseLeaderController = loader.getController();
+            chooseLeaderController = gameSceneController.getChooseLeaderController();
             chooseLeaderController.setGui(this);
             chooseLeaderController.initializeLeaderCards(leaderCards);
-        } catch (IOException e) {
-            System.out.println("Could not initialize Choose Leaders Scene");
-        }
     }
 
     private void initChooseResourcesSelection(){
 
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/chooseResources");
-            Parent root = loader.load();
-            chooseResourcesScene = new Scene(root);
+            gameSceneController.leftBorder.setCenter(loader.load());
             chooseResourcesController = loader.getController();
             chooseResourcesController.setGui(this);
+
         } catch (IOException e) {
             System.out.println("Could not initialize Choose Resources Scene");
         }
@@ -204,8 +199,9 @@ public class Gui extends View {
 
         Platform.runLater( () -> {
             String infoMessage = "Select two leader cards. ";
+            initGameScene();
             initChooseLeadersSelection(cardChoice);
-            primaryStage.setScene(chooseLeaderScene);
+            primaryStage.setScene(gameScene);
             primaryStage.show();
             chooseLeaderController.setInstructionLabel(infoMessage);
         });
@@ -221,11 +217,11 @@ public class Gui extends View {
 
 
         Platform.runLater( () -> {
-            String infoMessage = "Select " + numberOfResources + " resource type. ";
+            String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
-            chooseLeaderController.setInstructionLabel(infoMessage);
-            primaryStage.setScene(chooseResourcesScene);
-            primaryStage.show();
+            chooseResourcesController.setInstructionalLabel(infoMessage);
+           /* primaryStage.setScene(chooseResourcesScene);
+            primaryStage.show(); */
         });
     }
 
@@ -475,7 +471,20 @@ public class Gui extends View {
         Platform.runLater(()->{
             if(!isGameScene){
                 isGameScene = true;
+                try {
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/others");
+                    gameSceneController.leftBorder.setCenter(loader.load());
+                    othersController = loader.getController();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 primaryStage.setScene(gameScene);
+            }
+
+            if(currentPlayer.equals(player.getNickname())){
+                othersController.setWaitVisible(false);
+                othersController.setChooseActionTypeVisible(true);
             }
             /*
             if(currentPlayer.equals(player.getNickname())){

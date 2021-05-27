@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class ChooseResourcesController implements Initializable {
+public class ChooseResourcesController {
 
 
     @FXML
@@ -22,11 +22,9 @@ public class ChooseResourcesController implements Initializable {
     @FXML
     private Label title;
 
+
     private boolean coinSelected, servantSelected, shieldSelected, stoneSelected;
     private Gui gui;
-    private Resource chosenResource;
-    private int chosen;
-    private int numberOfResources;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -68,13 +66,6 @@ public class ChooseResourcesController implements Initializable {
         Message message = new ChooseResourcesMessage(gui.getPlayerNickname(),selectedResourceTypes,true);
         gui.sendMessage(message);
 
-        /*
-        else {
-            //Gui.tellOk();
-           GuiManager.changeGameScene("/gui/others");
-        }
-
-         */
     }
 
     @FXML
@@ -82,12 +73,10 @@ public class ChooseResourcesController implements Initializable {
         if(!coinSelected) {
             coin.setStyle("-fx-border-color: violet; -fx-border-width: 5");
             coinSelected = true;
-            //chosen++;
         }
         else {
             coin.setStyle("");
             coinSelected = false;
-            //chosen--;
         }
     }
 
@@ -96,12 +85,10 @@ public class ChooseResourcesController implements Initializable {
         if(!servantSelected) {
             servant.setStyle("-fx-border-color: violet; -fx-border-width: 5");
             servantSelected = true;
-            //chosen++;
         }
         else {
             servant.setStyle("");
             servantSelected = false;
-            //chosen--;
         }
     }
 
@@ -110,12 +97,10 @@ public class ChooseResourcesController implements Initializable {
         if(!shieldSelected) {
             shield.setStyle("-fx-border-color: violet; -fx-border-width: 5");
             shieldSelected = true;
-            //chosen++;
         }
         else {
             shield.setStyle("");
             shieldSelected = false;
-            //chosen--;
         }
     }
 
@@ -125,28 +110,16 @@ public class ChooseResourcesController implements Initializable {
         if(!stoneSelected) {
             stone.setStyle("-fx-border-color: violet; -fx-border-width: 5");
             stoneSelected = true;
-            //chosen++;
         }
         else {
             stone.setStyle("");
             stoneSelected = false;
-            //chosen--;
         }
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        title.setText(("Choose a resource among these"));
-        chosen = 0;
-;    }
-
-    public void initializeResourceTypes(List<ResourceType> resourceTypes){
-
+    public void setInstructionalLabel(String text){
+        title.setText(text);
     }
 
-    public void initializeNumberOfResources(int numberOfResources){
-        this.numberOfResources = numberOfResources;
-    }
 }

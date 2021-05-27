@@ -52,6 +52,7 @@ public class GameBoardController implements Initializable{
                 marbleMarket.add(marble, j, i);
             }
 
+
     }
 
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){

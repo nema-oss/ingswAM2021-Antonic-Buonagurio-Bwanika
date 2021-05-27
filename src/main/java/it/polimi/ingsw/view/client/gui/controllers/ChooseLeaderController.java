@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
@@ -62,9 +64,15 @@ public class ChooseLeaderController {
             selected.clear();
         }
 
+        Message message = new ChooseLeadersMessage(gui.getPlayerNickname(),selected,true);
+        gui.sendMessage(message);
+
+        /*
         else {
             GuiManager.changeGameScene("/gui/chooseResources");
         }
+
+         */
 
 
     }

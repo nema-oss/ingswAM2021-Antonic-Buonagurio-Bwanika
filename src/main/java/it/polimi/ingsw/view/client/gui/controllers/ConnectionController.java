@@ -31,10 +31,13 @@ public class ConnectionController{
         String portNumber = port.getText();
 
 
+        /*
         if(ipAddress.isEmpty())
             ipAddress = "127.0.0.1";
         if(portNumber.isEmpty())
-            portNumber = "1234";
+            portNumber = "1235";
+
+         */
 
         if( !InputValidator.validateIP(ipAddress))
             notifyInvalidIp();
@@ -43,12 +46,12 @@ public class ConnectionController{
             notifyInvalidPort();
 
         else{
-           GuiManager.executorService.submit(new Thread(() -> {
-                Gui gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
+           GuiManager.executorService.execute(new Thread(() -> {
+                gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
                 gui.start();
             }));
 
-           GuiManager.changeScene("/gui/nickname");
+           //GuiManager.changeScene("/gui/nickname");
 
         }
     }

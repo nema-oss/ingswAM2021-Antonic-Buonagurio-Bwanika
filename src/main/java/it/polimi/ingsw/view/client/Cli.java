@@ -2910,13 +2910,4 @@ public class Cli extends View {
     }
 
 
-    /**
-     * This method send a message on the socket
-     * @param socket the receiver
-     * @param message the message to send
-     */
-    public void sendMessage(Socket socket, Message message){
-        new MessageSender(socket,message).sendMsg(outputStream);
-    }
-
 }

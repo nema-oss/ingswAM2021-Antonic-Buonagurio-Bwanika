@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GuiManager extends Application {
 
@@ -24,6 +25,7 @@ public class GuiManager extends Application {
     public void start(Stage stage) throws IOException {
 
         GuiManager.stage = stage;
+        executorService = Executors.newCachedThreadPool();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/connection.fxml")));
         Scene scene = new Scene(root,1600,900);
         stage.setScene(scene);
@@ -49,7 +51,7 @@ public class GuiManager extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void startGui() {
         launch();
     }
 }

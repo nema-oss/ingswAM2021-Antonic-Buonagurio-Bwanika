@@ -1,19 +1,16 @@
 package it.polimi.ingsw.view.client.gui;
 
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
-import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
-import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,8 +19,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
@@ -54,17 +49,19 @@ public class Gui extends View {
     private GameController gameSceneController;
     private Scene gameScene;
     private List<Player> players;
+    private boolean isGameScene;
 
 
     public Gui(String ip, int port, Stage stage, Scene scene){
 
-        ip = ip;
-        port = port;
+        myIp = ip;
+        myPort = port;
         this.primaryStage = stage;
         this.startingScene = scene;
         initLoginUsername();
         initGameScene();
         intEndGame();
+        isGameScene = false;
 
 
     }
@@ -72,7 +69,7 @@ public class Gui extends View {
     private void initLoginUsername() {
 
         try{
-            FXMLLoader loader = GuiManager.loadFXML("nickname");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/nickname");
             Parent root = loader.load();
             nicknameScene = new Scene(root);
             NicknameController nicknameController = loader.getController();
@@ -89,7 +86,7 @@ public class Gui extends View {
 
     private void initLoginWait() {
         try {
-            FXMLLoader loader = GuiManager.loadFXML("waiting");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/loginWait");
             Parent root = loader.load();
             loginWaitScene = new Scene(root);
             loginWaitController = loader.getController();
@@ -103,22 +100,25 @@ public class Gui extends View {
     private void initChooseLeadersSelection(List<LeaderCard> leaderCards){
 
         try {
-            FXMLLoader loader = GuiManager.loadFXML("chooseLeaders");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/chooseLeaders");
             Parent root = loader.load();
             chooseLeaderScene = new Scene(root);
             chooseLeaderController = loader.getController();
+            chooseLeaderController.setGui(this);
+            chooseLeaderController.initializeLeaderCards(leaderCards);
         } catch (IOException e) {
             System.out.println("Could not initialize Choose Leaders Scene");
         }
     }
 
-    private void initChooseResourcesSelection(List<ResourceType> resourceTypeList){
+    private void initChooseResourcesSelection(){
 
         try {
-            FXMLLoader loader = GuiManager.loadFXML("chooseResources");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/chooseResources");
             Parent root = loader.load();
             chooseResourcesScene = new Scene(root);
             chooseResourcesController = loader.getController();
+            chooseResourcesController.setGui(this);
         } catch (IOException e) {
             System.out.println("Could not initialize Choose Resources Scene");
         }
@@ -128,7 +128,7 @@ public class Gui extends View {
     private void initGameScene() {
 
         try {
-            FXMLLoader loader = GuiManager.loadFXML("game");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/game");
             Parent root = loader.load();
             gameScene = new Scene(root);
             gameSceneController = loader.getController();
@@ -171,6 +171,10 @@ public class Gui extends View {
 
     }
 
+    public String getPlayerNickname(){
+        return player.getNickname();
+    }
+
     /**
      * Asks the users to choose its leader card
      *
@@ -181,17 +185,7 @@ public class Gui extends View {
 
         Platform.runLater( () -> {
             String infoMessage = "Select two leader cards. ";
-            try {
-                FXMLLoader loader = GuiManager.loadFXML("chooseLeaders");
-                Parent root = loader.load();
-                chooseLeaderScene = new Scene(root);
-                chooseLeaderController = loader.getController();
-                chooseLeaderController.setGui(this);
-                chooseLeaderController.initializeLeaderCards(cardChoice);
-                chooseLeaderController.hideFinalConfirmButton();
-            } catch (IOException e) {
-                System.out.println("Could not initialize Choose Leaders Scene");
-            }
+            initChooseLeadersSelection(cardChoice);
             primaryStage.setScene(chooseLeaderScene);
             primaryStage.show();
             chooseLeaderController.setInstructionLabel(infoMessage);
@@ -206,23 +200,13 @@ public class Gui extends View {
     @Override
     public void setResourceTypeChoice(int numberOfResources) {
 
+
         Platform.runLater( () -> {
             String infoMessage = "Select " + numberOfResources + " resource type. ";
-            List<ResourceType> resourceTypes = ResourceType.getAllResourceType();
-            try {
-                FXMLLoader loader = GuiManager.loadFXML("chooseResources");
-                Parent root = loader.load();
-                chooseResourcesScene = new Scene(root);
-                chooseResourcesController = loader.getController();
-                chooseResourcesController.setGui(this);
-                chooseResourcesController.initializeResourceTypes(resourceTypes);
-                chooseLeaderController.hideFinalConfirmButton();
-            } catch (IOException e) {
-                System.out.println("Could not initialize Choose Resources Scene");
-            }
-            primaryStage.setScene(chooseLeaderScene);
-            primaryStage.show();
+            initChooseResourcesSelection();
             chooseLeaderController.setInstructionLabel(infoMessage);
+            primaryStage.setScene(chooseResourcesScene);
+            primaryStage.show();
         });
     }
 
@@ -346,13 +330,15 @@ public class Gui extends View {
             Platform.runLater(
                     () -> {
                         primaryStage.setScene(nicknameScene);
-                        numOfPlayersController.showNumberOfPlayersButton();
+                        //numOfPlayersController.showNumberOfPlayersButton();
                         primaryStage.show();
                     });
         }else{
-            primaryStage.setScene(nicknameScene);
-            numOfPlayersController.hideNumberOfPlayersButton();
-            primaryStage.show();
+            Platform.runLater(()-> {
+                primaryStage.setScene(nicknameScene);
+                //numOfPlayersController.hideNumberOfPlayersButton();
+                primaryStage.show();
+            });
         }
 
     }
@@ -474,6 +460,10 @@ public class Gui extends View {
     public void showPlayTurn(String currentPlayer) {
 
         Platform.runLater(()->{
+            if(!isGameScene){
+                isGameScene = true;
+                primaryStage.setScene(gameScene);
+            }
             if(currentPlayer.equals(player.getNickname())){
                 gameSceneController.showActionButtons();
                 gameSceneController.showYourTurnMessage();
@@ -594,5 +584,13 @@ public class Gui extends View {
 
     public void start() {
         new EchoClient(myIp,myPort,this).start();
+    }
+
+    /**
+     * This method send a message on the socket
+     * @param message the message to send
+     */
+    public void sendMessage(Message message){
+        new MessageSender(socket,message).sendMsg(outputStream);
     }
 }

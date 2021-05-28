@@ -93,7 +93,7 @@ public class PlayerBoardController {
 
         inactiveMenu2.getItems().addAll(activate, discard);
 
-        inactiveMenu2.show(inactive2, event.getX(), event.getY());
+        inactiveMenu2.show(inactive2, event.getScreenX(), event.getScreenY());
     }
 
 

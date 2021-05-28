@@ -62,8 +62,8 @@
       <AnchorPane fx:id="strongbox" layoutX="130.0" layoutY="271.0" prefHeight="87.0" prefWidth="118.0" />
       <AnchorPane layoutY="2.0" prefHeight="372.0" prefWidth="130.0">
          <children>
-            <ImageView fx:id="inactive1" fitHeight="183.0" fitWidth="130.0" onContextMenuRequested="#showContextMenu1" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="inactive2" fitHeight="183.0" fitWidth="130.0" layoutY="183.0" onContextMenuRequested="#showContextMenu2" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="inactive1" fitHeight="183.0" fitWidth="130.0" onMouseClicked="#showContextMenu1" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="inactive2" fitHeight="183.0" fitWidth="130.0" layoutY="183.0" onMouseClicked="#showContextMenu2" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="650.0" layoutY="3.0" prefHeight="372.0" prefWidth="130.0">

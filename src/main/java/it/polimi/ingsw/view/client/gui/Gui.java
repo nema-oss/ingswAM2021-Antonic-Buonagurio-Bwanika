@@ -461,9 +461,9 @@ public class Gui extends View {
 
 
     /**
-     * This method tells the user that it has to play its turn
+     * This method tells the user that it has to play his turn
      *
-     * @param currentPlayer the player that it's playing now
+     * @param currentPlayer the player that is playing now
      */
     @Override
     public void showPlayTurn(String currentPlayer) {
@@ -480,11 +480,6 @@ public class Gui extends View {
                     e.printStackTrace();
                 }
                 primaryStage.setScene(gameScene);
-            }
-
-            if(currentPlayer.equals(player.getNickname())){
-                othersController.setWaitVisible(false);
-                othersController.setChooseActionTypeVisible(true);
             }
             /*
             if(currentPlayer.equals(player.getNickname())){

@@ -1177,6 +1177,16 @@ public class Cli extends View {
     }
 
     /**
+     * This method add the leader cards to the user's hand
+     *
+     * @param choice user choice
+     */
+    @Override
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
+    }
+
+    /**
      * Asks the user to choose its resource
      * @param numberOfResources number of resources the user can choose
      */

@@ -107,7 +107,7 @@ public class PlayerBoardController {
     }
 
 
-    private void initialize(ClientPlayer clientPlayer){
+    public void initialize(ClientPlayer clientPlayer){
 
 
         //setting leadercards

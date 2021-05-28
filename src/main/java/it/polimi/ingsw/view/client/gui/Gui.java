@@ -25,6 +25,9 @@ import java.util.Map;
 
 public class Gui extends View {
 
+    public PlayerBoardController playerBoardController;
+    public GameBoardController gameBoardController;
+
     private Stage primaryStage;
     private Scene startingScene;
 
@@ -47,10 +50,10 @@ public class Gui extends View {
 
     private ConnectionController connectionController;
 
-    private GameBoardController gameBoardController;
+
+    //private GameBoardController gameBoardController;
     private Scene gameBoardScene;
 
-    private PlayerBoardController playerBoardController;
 
     private GameController gameSceneController;
     private Scene gameScene;
@@ -548,6 +551,16 @@ public class Gui extends View {
         });
         setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
 
+    }
+
+    /**
+     * This method add the leader cards to the user's hand
+     *
+     * @param choice user choice
+     */
+    @Override
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
     }
 
 

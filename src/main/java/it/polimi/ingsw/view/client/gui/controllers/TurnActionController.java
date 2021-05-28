@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class OthersController implements Initializable {
+public class TurnActionController implements Initializable {
 
     @FXML
     private BorderPane leftPane;

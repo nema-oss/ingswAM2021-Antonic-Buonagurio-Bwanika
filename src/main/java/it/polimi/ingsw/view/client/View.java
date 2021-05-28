@@ -200,9 +200,7 @@ public abstract class View {
      *
      * @param choice user choice
      */
-    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
-        player.setHand(choice);
-    }
+    public abstract void showLeaderCardsSelectionAccepted(List<LeaderCard> choice);
 
     /**
      * Shows the results of the move deposit request.

@@ -4,26 +4,15 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.utils.TurnActions;
-import it.polimi.ingsw.model.cards.CardFactory;
-import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
-import it.polimi.ingsw.model.player.Effects;
-import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
-import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,7 +24,7 @@ public class GameController implements Initializable{
     public static GameBoardController gameBoardController;
     public static PlayerBoardController playerBoardController;
     public static ChooseLeaderController chooseLeaderController;
-    public static OthersController othersController;
+    public static TurnActionController turnActionController;
 
     public void showActionButtons() {
     }
@@ -87,17 +76,19 @@ public class GameController implements Initializable{
             GuiManager.gameController = this;
 
             FXMLLoader loader1 = GuiManager.loadFXML("/gui/gameBoard");
+            gui.gameBoardController = loader1.getController();
             gameBoardController = loader1.getController();
             gameBoardPane.setLeft(loader1.load());
 
             FXMLLoader loader2 = GuiManager.loadFXML("/gui/playerBoard");
+            gui.playerBoardController = loader2.getController();
             playerBoardController = loader2.getController();
             gameBoardPane.setRight(loader2.load());
 
 
             FXMLLoader loader3 = GuiManager.loadFXML("/gui/others");
             leftBorder.setCenter(loader3.load());
-            othersController = loader3.getController();
+            turnActionController = loader3.getController();
 
           /*  List<LeaderCard> leaders = new CardFactory().getLeaderCards();
             List<LeaderCard> chosen = new ArrayList<>();

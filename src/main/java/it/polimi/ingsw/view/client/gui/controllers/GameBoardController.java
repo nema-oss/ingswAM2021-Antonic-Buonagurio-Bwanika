@@ -1,33 +1,20 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class GameBoardController{
 
     @FXML
     private GridPane cardMarket, marbleMarket;
     @FXML
     private ImageView freeMarble;
-
-    private Gui gui;
-
-    public void setGui(Gui gui){
-        this.gui = gui;
-    }
-
 
     public void initialize(ClientGameBoard clientGameBoard) {
 

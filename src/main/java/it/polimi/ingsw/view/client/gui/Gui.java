@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -628,6 +630,10 @@ public class Gui extends View {
         Platform.runLater(()->{
             primaryStage.setScene(numberOfPlayersScene);
         });
+    }
+
+    public List<ClientPlayer> getPlayers(){
+        return new ArrayList<ClientPlayer>();
     }
 
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.utils.TurnActions;
 import it.polimi.ingsw.view.client.gui.GuiManager;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,17 +27,6 @@ public class GameController implements Initializable{
     public  ChooseLeaderController chooseLeaderController;
     public  OthersController othersController;
 
-    public void showActionButtons() {
-    }
-
-    public void showYourTurnMessage() {
-    }
-
-    public void hideActionButtons() {
-    }
-
-    public void showOtherTurnMessage(String currentPlayer) {
-    }
 
     public TurnActions getTurnAction() {
         return null;
@@ -114,6 +104,10 @@ public class GameController implements Initializable{
     }
 
     public void initializePlayerBoard() throws IOException {
+        /* for(ClientPlayer p : gui.getPlayers()) {
+           playerTabController.addPlayerBoard(p));
+        } */
+
         playerTabController.addPlayerBoard(gui.getClientPlayer());
     }
 

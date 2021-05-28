@@ -4,8 +4,6 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
-import it.polimi.ingsw.view.client.gui.GuiManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,7 +33,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void switchOnChooseResources(ActionEvent event) throws IOException {
+    private void switchOnChooseResources() throws IOException {
 
         List<LeaderCard> selected = new ArrayList<>();
         if(l1selected){
@@ -70,7 +68,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l1Clicked(MouseEvent event){
+    private void l1Clicked(){
 
         if(!l1selected) {
             l1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
@@ -84,7 +82,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l2Clicked(MouseEvent event){
+    private void l2Clicked(){
 
         if(!l2selected) {
             l2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
@@ -98,7 +96,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l3Clicked(MouseEvent event){
+    private void l3Clicked(){
 
         if(!l3selected) {
             l3.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
@@ -112,7 +110,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l4Clicked(MouseEvent event){
+    private void l4Clicked(){
 
         if(!l4selected) {
             l4.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");

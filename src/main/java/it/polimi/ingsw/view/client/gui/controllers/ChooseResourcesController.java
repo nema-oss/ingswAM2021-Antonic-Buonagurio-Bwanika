@@ -2,15 +2,11 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
-import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 public class ChooseResourcesController {
@@ -31,7 +27,7 @@ public class ChooseResourcesController {
     }
 
     @FXML
-    private void switchOnGame() throws IOException {
+    private void switchOnGame() {
 
         /*
         if(chosen < 1){

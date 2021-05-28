@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameBoardController implements Initializable{
+public class GameBoardController{
 
     @FXML
     private GridPane cardMarket, marbleMarket;
@@ -27,14 +27,11 @@ public class GameBoardController implements Initializable{
     }
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //così la creo nuova ma non credo di dover fare così
-        ClientGameBoard clientGameBoard = new ClientGameBoard();
-        ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
+    public void initialize(ClientGameBoard clientGameBoard) {
+
         ClientMarbleMarket clientMarbleMarket = clientGameBoard.getMarket();
-
+        ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {

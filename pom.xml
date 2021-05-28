@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>RELEASE</version>
+      <version>5.8.0-M1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -108,7 +108,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.4</version>
         <configuration>
-          <mainClass> it.polimi.ingsw/view/client/gui/GuiManager.java </mainClass>
+          <mainClass> it.polimi.ingsw.Launcher </mainClass>
         </configuration>
       </plugin>
       <plugin>

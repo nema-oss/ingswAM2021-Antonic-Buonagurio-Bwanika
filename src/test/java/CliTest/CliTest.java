@@ -38,7 +38,7 @@ public class CliTest {
         Formatting.clearScreen();
 
     }
-    @Test
+   /* @Test
     public void showTitle(){
         Cli cli = new Cli();
         Scanner scanner = new Scanner(System.in);
@@ -51,7 +51,7 @@ public class CliTest {
         Map<Resource,Integer> userChoice = InputValidator.isValidPlaceResourceAction(resources,input);
         System.out.println(userChoice);
 
-    }
+    } */
 
     @Test
     public void showLeaders(){
@@ -72,7 +72,7 @@ public class CliTest {
 
     }
 
-    @Test
+ /*   @Test
     public void showEmptyGameBoard() {
         ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
@@ -88,7 +88,7 @@ public class CliTest {
         cli.showGameBoard(gameBoard);
         cli.askTurnAction();
 
-    }
+    } */
 
     @Test
     public void showBoard() throws WrongDepositSwapException, FullDepositException, Exception, NonExistentCardException, InsufficientPaymentException {

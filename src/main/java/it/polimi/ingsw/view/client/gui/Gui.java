@@ -203,6 +203,11 @@ public class Gui extends View {
             initChooseLeadersSelection(cardChoice);
             primaryStage.setScene(gameScene);
             gameSceneController.initializeGameBoard();
+            try {
+                gameSceneController.initializePlayerBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             primaryStage.show();
             chooseLeaderController.setInstructionLabel(infoMessage);
         });
@@ -221,6 +226,7 @@ public class Gui extends View {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
+            gameSceneController.addLeadersToPlayer();
            /* primaryStage.setScene(chooseResourcesScene);
             primaryStage.show(); */
         });
@@ -473,9 +479,10 @@ public class Gui extends View {
             if(!isGameScene){
                 isGameScene = true;
                 try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/others");
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
                     gameSceneController.leftBorder.setCenter(loader.load());
                     othersController = loader.getController();
+                    gameSceneController.addLeadersToPlayer();
 
                 } catch (IOException e) {
                     e.printStackTrace();

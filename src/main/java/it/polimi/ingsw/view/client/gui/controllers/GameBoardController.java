@@ -19,6 +19,8 @@ public class GameBoardController{
 
     @FXML
     private GridPane cardMarket, marbleMarket;
+    @FXML
+    private ImageView freeMarble;
 
     private Gui gui;
 
@@ -36,8 +38,8 @@ public class GameBoardController{
             for(int j=0; j<4; j++) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
                 card.setId(clientCardMarket.getCard(i,j).getId());
-                card.setFitWidth(129.0);
-                card.setFitHeight(174.0);
+                card.setFitWidth(140.0);
+                card.setFitHeight(200.0);
                 cardMarket.add(card, j, i);
 
                 card.setOnMouseClicked(this::buyDevelopmentCard);
@@ -48,6 +50,10 @@ public class GameBoardController{
                 marble.setFitWidth(40);
                 marbleMarket.add(marble, j, i);
             }
+
+        freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientMarbleMarket.getFreeMarble().getColor().toString() + ".png"));
+            freeMarble.setFitWidth(40);
+            freeMarble.setFitHeight(40);
 
 
     }

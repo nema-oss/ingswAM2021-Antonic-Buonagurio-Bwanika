@@ -45,6 +45,7 @@ public class OthersController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        /*
         //tabpane degli altri giocatori sulla sinistra
         TabPane tabPane = new TabPane();
         leftPane.setLeft(tabPane);
@@ -65,7 +66,7 @@ public class OthersController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        } */
 
         //scelta delle azioni da fare
 

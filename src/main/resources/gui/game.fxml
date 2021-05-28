@@ -5,7 +5,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.GameController">
    <children>
-      <BorderPane fx:id="gameBoardPane" layoutX="7.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="1585.0" />
-      <BorderPane fx:id="leftBorder" layoutX="17.0" layoutY="553.0" prefHeight="342.0" prefWidth="1574.0" />
+      <BorderPane fx:id="gameBoardPane" layoutX="7.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="682.0" />
+      <BorderPane fx:id="leftBorder" layoutX="787.0" layoutY="530.0" prefHeight="370.0" prefWidth="799.0" />
+      <BorderPane fx:id="playerBoardPane" layoutX="690.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="912.0" />
    </children>
 </AnchorPane>

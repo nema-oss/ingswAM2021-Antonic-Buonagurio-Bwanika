@@ -7,42 +7,42 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="326.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ChooseResourcesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="326.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ChooseResourcesController">
    <children>
-            <AnchorPane fx:id="coin" layoutX="45.0" layoutY="97.0" prefHeight="135.0" prefWidth="150.0">
+            <AnchorPane fx:id="coin" layoutX="45.0" layoutY="97.0" prefHeight="68.0" prefWidth="93.0">
          <children>
-                  <ImageView fitHeight="135.0" fitWidth="150.0" onMouseClicked="#goldChosen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="106.0" fitWidth="119.0" onMouseClicked="#goldChosen" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/Resources/coin.png" />
                      </image>
                   </ImageView>
          </children></AnchorPane>
-            <AnchorPane fx:id="servant" layoutX="266.0" layoutY="97.0" prefHeight="128.0" prefWidth="150.0">
+            <AnchorPane fx:id="servant" layoutX="223.0" layoutY="97.0" prefHeight="102.0" prefWidth="119.0">
          <children>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" onMouseClicked="#servantChosen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="102.0" fitWidth="119.0" onMouseClicked="#servantChosen" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/Resources/servant.png" />
                      </image>
                   </ImageView>
          </children></AnchorPane>
-            <AnchorPane fx:id="shield" layoutX="493.0" layoutY="97.0" prefHeight="135.0" prefWidth="150.0">
+            <AnchorPane fx:id="shield" layoutX="410.0" layoutY="101.0" prefHeight="86.0" prefWidth="61.0">
          <children>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" onMouseClicked="#shieldChosen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="102.0" fitWidth="79.0" onMouseClicked="#shieldChosen" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/Resources/shield.png" />
                      </image>
                   </ImageView>
          </children></AnchorPane>
-            <AnchorPane fx:id="stone" layoutX="712.0" layoutY="97.0" prefHeight="135.0" prefWidth="150.0">
+            <AnchorPane fx:id="stone" layoutX="548.0" layoutY="97.0" prefHeight="94.0" prefWidth="97.0">
          <children>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" onMouseClicked="#stoneChosen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="102.0" fitWidth="113.0" onMouseClicked="#stoneChosen" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/Resources/stone.png" />
                      </image>
                   </ImageView>
          </children></AnchorPane>
-            <Button fx:id="resourcesOk" layoutX="368.0" layoutY="264.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="38.0" prefWidth="180.0" text="Confirm" />
-      <Label fx:id="title" layoutX="248.0" prefHeight="68.0" prefWidth="439.0" >
+            <Button fx:id="resourcesOk" layoutX="283.0" layoutY="252.0" mnemonicParsing="false" onAction="#switchOnGame" prefHeight="38.0" prefWidth="180.0" text="Confirm" />
+      <Label fx:id="title" layoutX="164.0" prefHeight="68.0" prefWidth="439.0">
          <font>
             <Font name="Old English Text MT" size="34.0" />
          </font>

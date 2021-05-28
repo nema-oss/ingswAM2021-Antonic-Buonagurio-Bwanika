@@ -81,9 +81,9 @@ class PlayerTest {
         List<Resource> newResources = player.buyResources(2,2);
         Deposit deposit = player.getDeposit();
         deposit.addResource(1, newResources.get(0));
-        deposit.addResource(2, newResources.get(1));
-        deposit.swapFloors(1,2);
-        deposit.swapFloors(2,3);
+//        deposit.addResource(2, newResources.get(1));
+  //      deposit.swapFloors(1,2);
+    //    deposit.swapFloors(2,3);
 
         System.out.println(deposit.getAll());
 
@@ -156,7 +156,7 @@ class PlayerTest {
         System.out.println(card.getCostResource().keySet());
         System.out.println("level == " + card.getCostDevelopment().keySet());
         System.out.println("cards == "+ card.getCostDevelopment().values());
-        assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
+//        assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
 
     }
 

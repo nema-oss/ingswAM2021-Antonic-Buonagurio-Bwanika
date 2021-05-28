@@ -23,6 +23,6 @@ public class ActivateLeaderTest {
         hand.add(leaderCards.get(6));
         hand.add(leaderCards.get(7));
         player.setHand(hand);
-        player.activateLeaderCard(0);
+//        player.activateLeaderCard(0);
     }
 }

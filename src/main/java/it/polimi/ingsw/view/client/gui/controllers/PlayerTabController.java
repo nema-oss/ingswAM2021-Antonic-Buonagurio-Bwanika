@@ -57,7 +57,7 @@ public class PlayerTabController implements Initializable {
         } */
     }
 
-    public void addPlayerBoard(ClientPlayer clientPlayer) throws IOException {
+    public void addPlayerBoard(ClientPlayer clientPlayer, boolean isCurrent) throws IOException {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
         Tab tab = new Tab(clientPlayer.getNickname(), loader.load());
@@ -65,6 +65,9 @@ public class PlayerTabController implements Initializable {
         playerBoardController = loader.getController();
         controllersMap.put(clientPlayer, loader.getController());
         tabPane.getTabs().add(tab);
+
+       if(!isCurrent)
+         tab.setDisable(true);
     }
 
     public void addLeadersChosen(ClientPlayer clientPlayer){

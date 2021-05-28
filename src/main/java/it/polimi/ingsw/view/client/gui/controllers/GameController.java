@@ -108,7 +108,7 @@ public class GameController implements Initializable{
            playerTabController.addPlayerBoard(p));
         } */
 
-        playerTabController.addPlayerBoard(gui.getClientPlayer());
+        playerTabController.addPlayerBoard(gui.getClientPlayer(), true);
     }
 
     public void addLeadersToPlayer(){

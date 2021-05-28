@@ -5,18 +5,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.view.client.gui.controllers.LoginWaitController">
-    <ProgressIndicator layoutX="1048.0" layoutY="306.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                       minWidth="-Infinity" prefHeight="84.0" prefWidth="80.0" stylesheets="@gameBoard.css"/>
-    <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane"
-                stylesheets="@logo.css"/>
-    <Label fx:id="waitingMessage" layoutX="927.0" layoutY="451.0" prefHeight="84.0" prefWidth="410.0"
-           text="Waiting for other players to join">
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.LoginWaitController">
+    <ProgressIndicator layoutX="1048.0" layoutY="306.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="80.0" stylesheets="@gameBoard.css" />
+    <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane" stylesheets="@logo.css" />
+    <Label fx:id="waitingMessage" alignment="CENTER" layoutX="864.0" layoutY="417.0" prefHeight="110.0" prefWidth="448.0" text="Waiting for other players to join">
         <font>
-    <Font name="Old English Text MT" size="25.0"/>
+    <Font name="Old English Text MT" size="33.0" />
         </font>
     </Label>
 </AnchorPane>

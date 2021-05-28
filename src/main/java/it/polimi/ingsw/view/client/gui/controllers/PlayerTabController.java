@@ -33,9 +33,11 @@ public class PlayerTabController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         tabPane = new TabPane();
-        tabPane.setTabMaxWidth(850);
 
-        tabSpace.setCenter(tabPane);
+        tabSpace.setTop(tabPane);
+        tabPane.setMaxWidth(744.0);
+        tabPane.setMaxHeight(475.0);
+        tabPane.setStyle("-fx-border-color: white");
 
         controllersMap = new HashMap<>();
 
@@ -59,6 +61,7 @@ public class PlayerTabController implements Initializable {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
         Tab tab = new Tab(clientPlayer.getNickname(), loader.load());
+        tab.setStyle("-fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%) ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
         playerBoardController = loader.getController();
         controllersMap.put(clientPlayer, loader.getController());
         tabPane.getTabs().add(tab);

@@ -15,3 +15,10 @@
 .gridPane {
     -fx-border-color: #ffffff;
 }
+.orange {
+    -fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%);
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-padding: 5 30 5 30;
+
+}

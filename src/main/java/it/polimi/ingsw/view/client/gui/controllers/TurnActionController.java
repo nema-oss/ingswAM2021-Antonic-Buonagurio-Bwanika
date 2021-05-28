@@ -29,7 +29,7 @@ public class TurnActionController implements Initializable {
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, activateLeader, discardLeader, rowOrColumnOk, rowOk, columnOk;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk;
      @FXML
      private ComboBox rowOrColumn, rowIndex, columnIndex;
 
@@ -72,8 +72,8 @@ public class TurnActionController implements Initializable {
         //progressindicator per l'attesa con scritta "tizio sta giocando il suo turno"
         wait.setStyle("-fx-progress-color: white");
         wait.setPrefWidth(80);
-        wait.setVisible(false);
-        waitingMessage.setVisible(false);
+        wait.setVisible(true);
+        waitingMessage.setVisible(true);
 
         //bottoni per decidere se standard action o leader action con scritta di spiegazione
         standardAction.setOnAction(event -> {
@@ -125,33 +125,21 @@ public class TurnActionController implements Initializable {
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         columnOk.setVisible(false);
-        rowIndex.setVisible(false);
+        columnIndex.setVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
             //TODO: comunica alla gui
         });
 
-        //se buyDevelopmentCard messaggio con clicca culla carta che vuoi
+        //se buyDevelopmentCard messaggio con clicca sulla carta che vuoi
         devMessage.setVisible(false);
 
         //se attiva produzione clicca sulle carteDev / plancia / carteLeader
         prodMessage.setVisible(false);
 
-        //se leader action bottoni per decidere se scartare o attivare
-        activateLeader.setOnAction(event -> {
-            setDiscardOrActivateLeaderVisible(true);
-            setChooseLeaderActionVisible(false);
-        });
-        discardLeader.setOnAction(event -> {
-            setDiscardOrActivateLeaderVisible(true);
-            setChooseLeaderActionVisible(false);
-        });
-        activateLeader.setVisible(false);
-        discardLeader.setVisible(false);
-
         //se scarta clicca su quale scartare
         //se attiva clicca su quale attivare
-        leaderMessage = new Label("choose the leader card you want to discard/activate");
+        leaderMessage .setVisible(false);
     }
 
 
@@ -172,8 +160,7 @@ public class TurnActionController implements Initializable {
     }
 
     public void setChooseLeaderActionVisible(boolean value){
-        activateLeader.setVisible(value);
-        discardLeader.setVisible(value);
+        leaderMessage.setVisible(value);
     }
 
     public void setBuyCardVisible(boolean value){
@@ -198,9 +185,6 @@ public class TurnActionController implements Initializable {
         startProd.setVisible(value);
     }
 
-    public void setDiscardOrActivateLeaderVisible(boolean value){
-        leaderMessage.setVisible(value);
-    }
 
 
 }

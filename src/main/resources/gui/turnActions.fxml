@@ -31,8 +31,6 @@
             <Button fx:id="columnOk" layoutX="315.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Confirm" />
             <Label fx:id="devMessage" layoutX="215.0" layoutY="126.0" prefHeight="29.0" prefWidth="328.0" text="Click on the development card you want to buy" />
             <Label fx:id="prodMessage" layoutX="224.0" layoutY="132.0" prefHeight="27.0" prefWidth="312.0" text="Click on the production cose" visible="false" />
-            <Button fx:id="activateLeader" layoutX="288.0" layoutY="98.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="182.0" text="Activate leader card" />
-            <Button fx:id="discardLeader" layoutX="288.0" layoutY="156.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="182.0" text="Discard leader card" />
             <Label fx:id="leaderMessage" layoutX="224.0" layoutY="125.0" prefHeight="31.0" prefWidth="339.0" text="Click on the leader card you want to perform the action on" />
          </children>
       </AnchorPane>

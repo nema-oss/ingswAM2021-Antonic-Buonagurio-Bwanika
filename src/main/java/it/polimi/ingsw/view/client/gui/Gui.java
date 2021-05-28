@@ -198,10 +198,11 @@ public class Gui extends View {
     public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
 
         Platform.runLater( () -> {
-            String infoMessage = "Select two leader cards. ";
+            String infoMessage = "Select two leader cards.";
             initGameScene();
             initChooseLeadersSelection(cardChoice);
             primaryStage.setScene(gameScene);
+            gameSceneController.initializeGameBoard();
             primaryStage.show();
             chooseLeaderController.setInstructionLabel(infoMessage);
         });
@@ -621,4 +622,5 @@ public class Gui extends View {
             primaryStage.setScene(numberOfPlayersScene);
         });
     }
+
 }

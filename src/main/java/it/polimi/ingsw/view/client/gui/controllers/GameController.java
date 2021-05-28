@@ -32,10 +32,10 @@ public class GameController implements Initializable{
     @FXML
     public BorderPane gameBoardPane, myPlayerPane, leftBorder;
 
-    public static GameBoardController gameBoardController;
-    public static PlayerBoardController playerBoardController;
-    public static ChooseLeaderController chooseLeaderController;
-    public static OthersController othersController;
+    public  GameBoardController gameBoardController;
+    public  PlayerBoardController playerBoardController;
+    public  ChooseLeaderController chooseLeaderController;
+    public  OthersController othersController;
 
     public void showActionButtons() {
     }
@@ -87,13 +87,12 @@ public class GameController implements Initializable{
             GuiManager.gameController = this;
 
             FXMLLoader loader1 = GuiManager.loadFXML("/gui/gameBoard");
-            gameBoardController = loader1.getController();
             gameBoardPane.setLeft(loader1.load());
+            gameBoardController = loader1.getController();
 
             FXMLLoader loader2 = GuiManager.loadFXML("/gui/playerBoard");
-            playerBoardController = loader2.getController();
             gameBoardPane.setRight(loader2.load());
-
+            playerBoardController = loader2.getController();
 
             FXMLLoader loader3 = GuiManager.loadFXML("/gui/chooseLeaders");
             leftBorder.setCenter(loader3.load());
@@ -121,11 +120,7 @@ public class GameController implements Initializable{
         return chooseLeaderController;
     }
 
-    public GameBoardController getGameBoardController() {
-        return gameBoardController;
-    }
-
-    public PlayerBoardController getPlayerBoardController() {
-        return playerBoardController;
+    public void initializeGameBoard(){
+        gameBoardController.initialize(gui.getClientGameBoard());
     }
 }

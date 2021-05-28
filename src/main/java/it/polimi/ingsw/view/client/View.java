@@ -247,4 +247,12 @@ public abstract class View {
     public void sendMessage(Socket socket, Message message){
         new MessageSender(socket,message).sendMsg(outputStream);
     }
+
+    public ClientPlayer getClientPlayer() {
+        return player;
+    }
+
+    public ClientGameBoard getClientGameBoard() {
+        return gameBoard;
+    }
 }

@@ -2,9 +2,11 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
@@ -879,6 +881,16 @@ public class MatchController implements ControllerInterface{
 
         game.reconnectPlayer(disconnectedPlayer);
 
+    }
+
+    @Override
+    public Marble[][] getMarbleMarket() {
+        return game.getGameBoard().getMarket().marbles();
+    }
+
+    @Override
+    public DevelopmentDeck[][] getCardMarket() {
+        return game.getGameBoard().getCardMarket().getCardMarket();
     }
 
 

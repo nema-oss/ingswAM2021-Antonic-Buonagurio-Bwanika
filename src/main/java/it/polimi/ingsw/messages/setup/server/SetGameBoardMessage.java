@@ -8,12 +8,12 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
-public class SetGameboardMessage implements SetupMessage, Serializable {
+public class SetGameBoardMessage implements SetupMessage, Serializable {
 
     private DevelopmentDeck[][] cardMarket;
     private Marble[][] market;
 
-    public SetGameboardMessage(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+    public SetGameBoardMessage(DevelopmentDeck[][] cardMarket, Marble[][] market) {
         this.cardMarket = cardMarket;
         this.market = market;
     }

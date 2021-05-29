@@ -3,8 +3,10 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
@@ -42,4 +44,8 @@ public interface ControllerInterface {
     Board sendBoardUpdate(String user);
 
     void onPlayerReconnection(String disconnectedPlayer);
+
+    Marble[][] getMarbleMarket();
+
+    DevelopmentDeck[][] getCardMarket();
 }

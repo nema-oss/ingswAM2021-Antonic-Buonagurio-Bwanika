@@ -4,8 +4,6 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
-import it.polimi.ingsw.view.client.gui.GuiManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,7 +33,7 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void switchOnChooseResources(ActionEvent event) throws IOException {
+    private void switchOnChooseResources() throws IOException {
 
         List<LeaderCard> selected = new ArrayList<>();
         if(l1selected){
@@ -67,21 +65,13 @@ public class ChooseLeaderController {
         Message message = new ChooseLeadersMessage(gui.getPlayerNickname(),selected,true);
         gui.sendMessage(message);
 
-        /*
-        else {
-            GuiManager.changeGameScene("/gui/chooseResources");
-        }
-
-         */
-
-
     }
 
     @FXML
-    private void l1Clicked(MouseEvent event){
+    private void l1Clicked(){
 
         if(!l1selected) {
-            l1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #9c78d5");
+            l1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             l1selected = true;
         }
 
@@ -92,10 +82,10 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l2Clicked(MouseEvent event){
+    private void l2Clicked(){
 
         if(!l2selected) {
-            l2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #9c78d5");
+            l2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             l2selected = true;
         }
 
@@ -106,10 +96,10 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l3Clicked(MouseEvent event){
+    private void l3Clicked(){
 
         if(!l3selected) {
-            l3.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #9c78d5");
+            l3.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             l3selected = true;
         }
 
@@ -120,10 +110,10 @@ public class ChooseLeaderController {
     }
 
     @FXML
-    private void l4Clicked(MouseEvent event){
+    private void l4Clicked(){
 
         if(!l4selected) {
-            l4.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #9c78d5");
+            l4.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             l4selected = true;
         }
 
@@ -139,13 +129,15 @@ public class ChooseLeaderController {
         givenCards = leaderCards;
 
         l1.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(0).getId() + ".png"));
+        l1.setPreserveRatio(false);
         l2.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(1).getId() + ".png"));
+        l2.setPreserveRatio(false);
         l3.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(2).getId() + ".png"));
+        l3.setPreserveRatio(false);
         l4.setImage(new Image("/gui/Images/LeaderCardsFront/" + leaderCards.get(3).getId() + ".png"));
+        l4.setPreserveRatio(false);
 
-    }
 
-    public void hideFinalConfirmButton() {
     }
 
     public void setInstructionLabel(String infoMessage) {

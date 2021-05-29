@@ -1,48 +1,32 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class GameBoardController implements Initializable{
+public class GameBoardController{
 
     @FXML
     private GridPane cardMarket, marbleMarket;
+    @FXML
+    private ImageView freeMarble;
 
-    private Gui gui;
+    public void initialize(ClientGameBoard clientGameBoard) {
 
-    public void setGui(Gui gui){
-        this.gui = gui;
-    }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-        //così la creo nuova ma non credo di dover fare così
-        ClientGameBoard clientGameBoard = new ClientGameBoard();
         ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
         ClientMarbleMarket clientMarbleMarket = clientGameBoard.getMarket();
-
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
                 card.setId(clientCardMarket.getCard(i,j).getId());
-                card.setFitWidth(129.0);
-                card.setFitHeight(174.0);
+                card.setFitWidth(140.0);
+                card.setFitHeight(200.0);
                 cardMarket.add(card, j, i);
 
                 card.setOnMouseClicked(this::buyDevelopmentCard);
@@ -53,6 +37,10 @@ public class GameBoardController implements Initializable{
                 marble.setFitWidth(40);
                 marbleMarket.add(marble, j, i);
             }
+
+        freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientMarbleMarket.getFreeMarble().getColor().toString() + ".png"));
+        freeMarble.setFitWidth(40);
+        freeMarble.setFitHeight(40);
 
 
     }

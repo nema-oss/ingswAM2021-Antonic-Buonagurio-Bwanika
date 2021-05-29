@@ -7,20 +7,22 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane cache="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.NicknameController">
-      <children>
-         <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane" stylesheets="@logo.css" />
-      <AnchorPane layoutX="894.0" layoutY="232.0" prefHeight="308.0" prefWidth="275.0">
-         <children>
-               <Button fx:id="nickOk" alignment="CENTER" contentDisplay="CENTER" layoutX="73.0" layoutY="195.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#sendNickname" prefHeight="30.0" prefWidth="138.0" text="Login" />
-               <TextField fx:id="nickField" layoutX="72.0" layoutY="139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="138.0" promptText="nickname" />
-               <Label alignment="CENTER" layoutX="4.0" layoutY="26.0" prefHeight="42.0" prefWidth="275.0" text="Insert your nickname">
-                  <font>
-                     <Font name="Old English Text MT" size="25.0" />
-                  </font>
-               </Label>
-               <Label layoutX="21.0" layoutY="68.0" prefHeight="21.0" prefWidth="240.0" text="nickname must be at least 3 characters long" />
-               <Label alignment="CENTER" layoutX="21.0" layoutY="89.0" prefHeight="21.0" prefWidth="240.0" text="characters allowed; a-z, A-Z, 0-9, _" />
-         </children>
-      </AnchorPane>
-      </children>
+    <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane" stylesheets="@logo.css" />
+    <AnchorPane layoutX="899.0" layoutY="233.0" prefHeight="361.0" prefWidth="322.0">
+        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="239.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#sendNickname" styleClass="orange" stylesheets="@gameBoard.css" text="Login">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+        <TextField fx:id="nickField" layoutX="94.0" layoutY="181.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="138.0" promptText="nickname" >
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+        <Label alignment="CENTER" layoutX="2.0" layoutY="7.0" prefHeight="73.0" prefWidth="322.0" text="Insert your nickname">
+            <font>
+                <Font name="Old English Text MT" size="35.0" />
+            </font>
+        </Label>
+        <Label layoutX="43.0" layoutY="90.0" prefHeight="21.0" prefWidth="240.0" text="nickname must be at least 3 characters long" />
+        <Label alignment="CENTER" layoutX="43.0" layoutY="125.0" prefHeight="21.0" prefWidth="240.0" text="characters allowed; a-z, A-Z, 0-9, _" />
+    </AnchorPane>
 </AnchorPane>

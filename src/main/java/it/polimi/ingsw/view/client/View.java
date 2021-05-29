@@ -246,8 +246,16 @@ public abstract class View {
         new MessageSender(socket,message).sendMsg(outputStream);
     }
 
-    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market){
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
         gameBoard.getMarket().update(market);
         gameBoard.getCardMarket().update(cardMarket);
+    }
+
+    public ClientPlayer getClientPlayer(){
+        return player;
+    }
+
+    public ClientGameBoard getClientGameBoard() {
+        return gameBoard;
     }
 }

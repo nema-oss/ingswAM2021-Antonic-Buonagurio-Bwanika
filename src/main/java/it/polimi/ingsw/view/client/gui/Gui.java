@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,11 +75,14 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         //initGameBoard();
+        initTurnActions();
         intEndGame();
         isGameScene = false;
 
 
     }
+
+
 
     private void initLoginUsername() {
 
@@ -153,10 +158,21 @@ public class Gui extends View {
             gameSceneController.setGui(this);
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
-            e.printStackTrace();
         }
     }
 
+    private void initTurnActions() {
+
+        try {
+            FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+            gameSceneController.leftBorder.setCenter(loader.load());
+            turnActionController = loader.getController();
+            //gameSceneController.addLeadersToPlayer();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void initGameBoard(){
 
         try{
@@ -211,10 +227,16 @@ public class Gui extends View {
     public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
 
         Platform.runLater( () -> {
-            String infoMessage = "Select two leader cards. ";
+            String infoMessage = "Select two leader cards.";
             initGameScene();
             initChooseLeadersSelection(cardChoice);
             primaryStage.setScene(gameScene);
+            gameSceneController.initializeGameBoard();
+            try {
+                gameSceneController.initializePlayerBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             primaryStage.show();
             chooseLeaderController.setInstructionLabel(infoMessage);
         });
@@ -233,6 +255,7 @@ public class Gui extends View {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
+            gameSceneController.addLeadersToPlayer();
            /* primaryStage.setScene(chooseResourcesScene);
             primaryStage.show(); */
         });
@@ -496,15 +519,14 @@ public class Gui extends View {
                 }
                 primaryStage.setScene(gameScene);
             }
-            /*
+
             if(currentPlayer.equals(player.getNickname())){
-                gameSceneController.showActionButtons();
-                gameSceneController.showYourTurnMessage();
+                turnActionController.setWaitVisible(false);
+                turnActionController.setChooseActionTypeVisible(true);
             }else{
-                gameSceneController.hideActionButtons();
-                gameSceneController.showOtherTurnMessage(currentPlayer);
+                turnActionController.setWaitVisible(true);
             }
-             */
+
         });
     }
 
@@ -645,4 +667,9 @@ public class Gui extends View {
             primaryStage.setScene(numberOfPlayersScene);
         });
     }
+
+    public List<ClientPlayer> getPlayers(){
+        return new ArrayList<ClientPlayer>();
+    }
+
 }

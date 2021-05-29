@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.gameboard;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /*
  *This class represents marbles
  * @author Chiara Buonagurio
  */
-public class Marble {
+public class Marble implements Serializable {
 
     MarbleType color;
     Producible product;

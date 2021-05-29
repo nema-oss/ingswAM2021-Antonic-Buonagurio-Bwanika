@@ -14,7 +14,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,7 +33,10 @@ import java.util.ResourceBundle;
 public class PlayerBoardController {
 
     @FXML
-    ImageView active1, active2, inactive1, inactive2, boardProduction;
+    ImageView leader1, leader2, res1, res2, result;
+
+    @FXML
+    Button boardProdButton;
 
     @FXML
     GridPane devCards, floor1, floor2, floor3, popeRoad;
@@ -43,72 +48,79 @@ public class PlayerBoardController {
     AnchorPane pBoard;
 
     @FXML
+    Label strongboxCoinCount, strongboxShieldCount, strongboxServantCount, strongboxStoneCount;
+
+    @FXML
     ImageView p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24;
 
     private Gui gui;
 
-
+    private boolean is1active, is2active;
     private List<Node> popeSpaces;
 
     @FXML
-    private void activateLeaderProduction(MouseEvent event){
-        ImageView card = (ImageView) event.getSource();
-        //TODO: tell gui to activateLeaderProduction on card.getId();
-    }
+    private void actionsOnLeader1(MouseEvent event){
 
-    @FXML
-    private void showContextMenu1(MouseEvent event){
-        ContextMenu inactiveMenu1= new ContextMenu();
+        if(!is1active){
+            ContextMenu inactiveMenu1= new ContextMenu();
 
-        MenuItem activate = new MenuItem("Activate leader card");
-        activate.setOnAction(event1 -> {
-            leaderActivated(active1.getId());
-            //TODO: tell gui to activate leader passing inactive1.getImage().getURL()
-        });
+            MenuItem activate = new MenuItem("Activate leader card");
+            activate.setOnAction(event1 -> {
+                is1active = true;
+                leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                //TODO: tell gui to activate leader passing inactive1.getImage().getURL()
+            });
 
-        MenuItem discard = new MenuItem("Discard leader card");
-        discard.setOnAction(event2 -> {
-            //TODO: tell gui to discard this leader passing inactive1.getImage().getUrl()
-        });
+            MenuItem discard = new MenuItem("Discard leader card");
+            discard.setOnAction(event2 -> {
+                //TODO: tell gui to discard this leader passing inactive1.getImage().getUrl()
+            });
 
-        inactiveMenu1.getItems().addAll(activate, discard);
+            inactiveMenu1.getItems().addAll(activate, discard);
 
-        inactiveMenu1.show(inactive1, event.getX(), event.getY());
-    }
-
-    @FXML
-    public void showContextMenu2(MouseEvent event){
-        ContextMenu inactiveMenu2= new ContextMenu();
-
-        MenuItem activate = new MenuItem("Activate leader card");
-        activate.setOnAction(event1 -> {
-            leaderActivated(active2.getId());
-            //TODO: tell gui to activate leader passing inactive2.getImage().getURL()
-        });
-
-        MenuItem discard = new MenuItem("Discard leader card");
-        discard.setOnAction(event2 -> {
-            //TODO: tell gui to discard this leader passing inactive2.getImage().getUrl()
-        });
-
-        inactiveMenu2.getItems().addAll(activate, discard);
-
-        inactiveMenu2.show(inactive2, event.getScreenX(), event.getScreenY());
-    }
-
-
-    private void leaderActivated(String leaderId){
-
-        if (active1.getId().equals(leaderId)){
-            active1.setVisible(true);
-            inactive1.setVisible(false);
+            inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
         }
-        else if(active2.getId().equals(leaderId)){
-            active2.setVisible(true);
-            inactive2.setVisible(false);
+
+        else{
+            ImageView card = (ImageView) event.getSource();
+            //TODO: tell gui to activateLeaderProduction on card.getId();
         }
     }
 
+    @FXML
+    private void actionsOnLeader2(MouseEvent event){
+
+        if(!is2active){
+            ContextMenu inactiveMenu2= new ContextMenu();
+
+            MenuItem activate = new MenuItem("Activate leader card");
+            activate.setOnAction(event1 -> {
+                is2active = true;
+                leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                //TODO: tell gui to activate leader passing inactive2.getImage().getURL()
+            });
+
+            MenuItem discard = new MenuItem("Discard leader card");
+            discard.setOnAction(event2 -> {
+                //TODO: tell gui to discard this leader passing inactive2.getImage().getUrl()
+            });
+
+            inactiveMenu2.getItems().addAll(activate, discard);
+
+            inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
+        }
+
+        else{
+            ImageView card = (ImageView) event.getSource();
+            //TODO: tell gui to activateLeaderProduction on card.getId();
+        }
+    }
+
+
+    public void updatePopeRoad(ClientPlayer clientPlayer){
+        int index = clientPlayer.getPositionIndex();
+        moveOnPopeRoad(index-(25-popeSpaces.size()));
+    }
 
     private void moveOnPopeRoad(Integer steps){
         popeSpaces.get(0).setVisible(false);
@@ -119,8 +131,31 @@ public class PlayerBoardController {
     }
 
     @FXML
-    public void activateBoardProduction(){
+    public void activateBoardProduction( MouseEvent event){
         //TODO: tell gui to activate board production
+    }
+
+    @FXML
+    public void switchOnNextResource(MouseEvent event){
+        if( event.getSource().equals(res1) )
+            setNextResource(res1, res1.getImage().getUrl());
+        if( event.getSource().equals(res2) )
+            setNextResource(res2, res2.getImage().getUrl());
+        if( event.getSource().equals(result) )
+            setNextResource(result, result.getImage().getUrl());
+
+    }
+
+    //coin -> servant -> shield -> stone
+    public void setNextResource(ImageView view, String url){
+        if(url.contains("coin"))
+            view.setImage(new Image("/gui/Images/Resources/servant.png"));
+        else if (url.contains("servant"))
+            view.setImage(new Image("/gui/Images/Resources/shield.png"));
+        else if (url.contains("shield"))
+            view.setImage(new Image("/gui/Images/Resources/stone.png"));
+        else if (url.contains("stone"))
+            view.setImage(new Image("/gui/Images/Resources/coin.png"));
     }
 
 
@@ -140,8 +175,17 @@ public class PlayerBoardController {
     public void updateStrongBox(ClientPlayer clientPlayer){
 
         for(ResourceType resourceType : clientPlayer.getStrongbox().getAll().keySet()){
-            for(Resource res : clientPlayer.getStrongbox().getAll().get(resourceType)){
-                strongbox.getChildren().add(new ImageView(new Image("/gui/Images/resources" + resourceType.label + ".png")));
+            if(resourceType.equals(ResourceType.COIN)){
+                strongboxCoinCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+            }
+            else if(resourceType.equals(ResourceType.SHIELD)){
+                strongboxShieldCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+            }
+            else if(resourceType.equals(ResourceType.SERVANT)){
+                strongboxServantCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+            }
+            else if(resourceType.equals(ResourceType.STONE)){
+                strongboxStoneCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
             }
         }
     }
@@ -150,23 +194,48 @@ public class PlayerBoardController {
 
         ClientDeposit deposit = clientPlayer.getPlayerBoard().getDeposit();
 
-        if(deposit.getNumberOfResourcesOnFloor(3)!=0)
-            floor3.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png")), 0, 0);
-
-        if(deposit.getNumberOfResourcesOnFloor(2)!=0) {
-            if(deposit.getNumberOfResourcesOnFloor(2)>=1)
-                floor2.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png")), 0, 0);
-            if(deposit.getNumberOfResourcesOnFloor(2)==2)
-                floor2.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png")), 0, 1);
+        if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
+            ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png"));
+            res.setFitHeight(30);
+            res.setFitWidth(30);
+            floor1.add(res, 0, 0);
         }
 
-        if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
-            if(deposit.getNumberOfResourcesOnFloor(1)>=1)
-                floor1.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png")), 0, 0);
-            if(deposit.getNumberOfResourcesOnFloor(1)>=2)
-                floor1.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png")), 0, 1);
-            if(deposit.getNumberOfResourcesOnFloor(1)==3)
-                floor1.add(new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png")), 0, 2);
+        if(deposit.getNumberOfResourcesOnFloor(2)!=0) {
+            if(deposit.getNumberOfResourcesOnFloor(2)>=1) {
+                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res.setFitHeight(30);
+                res.setFitWidth(30);
+                floor2.add(res, 0, 0);
+            }
+            if (deposit.getNumberOfResourcesOnFloor(2) == 2) {
+                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res.setFitHeight(30);
+                res.setFitWidth(30);
+                floor2.add(res, 0, 1);
+            }
+
+        }
+
+        if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
+            if(deposit.getNumberOfResourcesOnFloor(1)>=1) {
+                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res.setFitHeight(30);
+                res.setFitWidth(30);
+                floor3.add(res, 0, 0);
+            }
+            if(deposit.getNumberOfResourcesOnFloor(1)>=2) {
+                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res.setFitHeight(30);
+                res.setFitWidth(30);
+                floor3.add(res, 0, 1);
+            }
+            if(deposit.getNumberOfResourcesOnFloor(1)==3) {
+                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res.setFitHeight(30);
+                res.setFitWidth(30);
+                floor3.add(res, 0, 2);
+            }
         }
 
 
@@ -175,14 +244,9 @@ public class PlayerBoardController {
 
     public void initialize(ClientPlayer clientPlayer){
 
-
         //setting leadercards
-        inactive1.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(0).getId() + ".png"));
-        active1.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(0).getId() + ".png"));
-        active1.setVisible(false);
-        inactive2.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(1).getId() + ".png"));
-        active2.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(1).getId() + ".png"));
-        active2.setVisible(false);
+        leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(0).getId() + ".png"));
+        leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + clientPlayer.getHand().get(1).getId() + ".png"));
 
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();
@@ -192,15 +256,20 @@ public class PlayerBoardController {
             popeSpaces.remove(0);
         }
 
-
         //setting deposit
         updateDeposit(clientPlayer);
+
+    }
+
+    public void update(ClientPlayer clientPlayer){
+        updateDeposit(clientPlayer);
+        updateStrongBox(clientPlayer);
+        updateDevelopmentCards(clientPlayer);
 
     }
 
     public void setGui(Gui gui){
         this.gui = gui;
     }
-
 
 }

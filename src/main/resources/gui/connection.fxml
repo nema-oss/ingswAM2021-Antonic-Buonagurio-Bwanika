@@ -6,25 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane"
-            stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16"
-            fx:controller="it.polimi.ingsw.view.client.gui.controllers.ConnectionController">
-   <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-               minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane"
-               stylesheets="@logo.css"/>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ConnectionController">
+   <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane" stylesheets="@logo.css" />
    <AnchorPane layoutX="860.0" layoutY="200.0" prefHeight="477.0" prefWidth="389.0">
-      <TextField fx:id="ip" layoutX="113.0" layoutY="152.0" prefHeight="36.0" prefWidth="166.0"
-                 promptText="IP (default: 127.0.0.1)"/>
-      <TextField fx:id="port" layoutX="113.0" layoutY="225.0" prefHeight="36.0" prefWidth="166.0"
-                 promptText="Port (default: 1234)"/>
-      <Button layoutX="157.0" layoutY="301.0" mnemonicParsing="false" onAction="#onConnection" prefHeight="36.0"
-              prefWidth="76.0" text="Connect"/>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="59.0" prefHeight="60.0"
-             prefWidth="326.0" text="Insert Ip Address and Port">
+      <TextField fx:id="ip" layoutX="113.0" layoutY="152.0" prefHeight="36.0" prefWidth="201.0" promptText="IP (default: 127.0.0.1)"  />
+      <TextField fx:id="port" layoutX="113.0" layoutY="225.0" prefHeight="36.0" prefWidth="201.0" promptText="Port (default: 1234)"  />
+      <Button layoutX="150.0" layoutY="301.0" mnemonicParsing="false" onAction="#onConnection" styleClass="orange" stylesheets="@gameBoard.css" text="Connect" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="37.0" prefHeight="60.0" prefWidth="351.0" text="Insert Ip Address and Port">
          <font>
-            <Font name="Old English Text MT" size="25.0"/>
+            <Font name="Old English Text MT" size="29.0" />
          </font>
       </Label>
    </AnchorPane>

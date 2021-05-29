@@ -1,18 +1,12 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
-import it.polimi.ingsw.view.client.Cli;
-import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.Gui;
-import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.utils.InputValidator;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 
 public class NicknameController {
 
@@ -25,7 +19,7 @@ public class NicknameController {
     private boolean isFirstPlayer;
 
     @FXML
-    public void sendNickname(ActionEvent event) throws IOException {
+    public void sendNickname() {
 
         String nickname = nickField.getText();
 

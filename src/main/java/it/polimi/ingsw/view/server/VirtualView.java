@@ -215,9 +215,15 @@ public class VirtualView implements VirtualViewInterface{
      * @param username the nickname of the player that has to play
      */
     public void playTurn(String username){
-        for(Socket socket: clients.values())
+
+        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket());
+
+        for(Socket socket: clients.values()){
+            sendMessage(socket,message);
             sendMessage(socket, new PlayTurnMessage(username));
+        }
     }
+
     /**
      * This method manage the choose leaderCard request from client
      * @param leaderCards the chosen card
@@ -553,7 +559,6 @@ public class VirtualView implements VirtualViewInterface{
 
     public void inGameDisconnection(String disconnectedPlayer) {
         matchController.onPlayerDisconnection(disconnectedPlayer);
-
     }
 
     /**
@@ -655,7 +660,7 @@ public class VirtualView implements VirtualViewInterface{
     @Override
     public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
 
-        SetGameboardMessage message = new SetGameboardMessage(cardMarket,market);
+        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market);
         clients.values().forEach(p->sendMessage(p,message));
     }
 

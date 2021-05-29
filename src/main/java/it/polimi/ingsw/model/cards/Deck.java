@@ -6,7 +6,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 
-public interface Deck <T>{
+public interface Deck <T> {
 
     T drawCard() throws NonExistentCardException;
 

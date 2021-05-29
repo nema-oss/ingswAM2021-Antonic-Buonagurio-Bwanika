@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.exception.NonExistentCardException;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DevelopmentDeck implements Deck {
+public class DevelopmentDeck implements Deck, Serializable {
 
      private ArrayList<DevelopmentCard> developmentDeck;
 

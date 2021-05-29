@@ -26,7 +26,7 @@ public class OthersController implements Initializable {
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd;
      @FXML
      private ComboBox rowOrColumn, rowIndex, columnIndex;
 
@@ -69,6 +69,7 @@ public class OthersController implements Initializable {
             setChooseStandardActionVisible(true);
         });
         leaderAction.setOnAction(event -> {
+            gameController.setLeaderAction(true);
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
         });
@@ -97,9 +98,15 @@ public class OthersController implements Initializable {
             //TODO: da mettere altrove
             gameController.makeProductionClickable(true);
         });
+        endProd.setOnAction(event -> {
+            setActivateProductionVisible(false);
+
+            //TODO: e il messaggio per finire dov'è?
+        });
         buyResource.setVisible(false);
         buyCard.setVisible(false);
         startProd.setVisible(false);
+        endProd.setVisible(false);
 
         //se buyResource combo con riga/colonna + combo con numero riga/colonna
         rowOrColumn.setItems(FXCollections.observableArrayList("row", "column"));
@@ -184,7 +191,10 @@ public class OthersController implements Initializable {
     }
 
     public void setActivateProductionVisible(boolean value){
-        startProd.setVisible(value);
+
+        prodMessage.setVisible(value);
+        endProd.setVisible(value);
+
     }
 
 

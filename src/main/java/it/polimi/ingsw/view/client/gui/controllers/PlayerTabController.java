@@ -48,21 +48,6 @@ public class PlayerTabController implements Initializable {
         tabPane.setStyle("-fx-border-color: white");
 
         controllersMap = new HashMap<>();
-
-        /* List<ClientPlayer> otherPlayers = new ArrayList<>();
-        otherPlayers.add(new ClientPlayer("Paolo", new ClientGameBoard()));
-        otherPlayers.add(new ClientPlayer("Marco", new ClientGameBoard()));
-
-        for (ClientPlayer other : otherPlayers) {
-            try {
-                FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
-                playerBoardControllers.add(loader.getController());
-                Tab tab = new Tab(other.getNickname(), loader.load());
-                tabPane.getTabs().add(tab);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } */
     }
 
     /**
@@ -76,9 +61,12 @@ public class PlayerTabController implements Initializable {
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
         Tab tab = new Tab(clientPlayer.getNickname(), loader.load());
         tab.setStyle("-fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%) ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
+        tab.setClosable(false);
+
         PlayerBoardController controller = loader.getController();
         controllersMap.put(clientPlayer, controller);
         controller.setGui(gui);
+
         tabPane.getTabs().add(tab);
 
        if(!isCurrent) {
@@ -111,5 +99,9 @@ public class PlayerTabController implements Initializable {
 
     public void setProductionClickable(ClientPlayer clientPlayer, boolean bool){
         controllersMap.get(clientPlayer).setProductionClickable(bool);
+    }
+
+    public void setLeaderAction(ClientPlayer clientPlayer, boolean bool){
+        controllersMap.get(clientPlayer).setLeaderAction(bool);
     }
 }

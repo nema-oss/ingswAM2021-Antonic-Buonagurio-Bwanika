@@ -62,7 +62,7 @@ public class PlayerBoardController {
     private List<DevelopmentCard> prodCardsList;
     private List <LeaderCard> leaderCardsList;
 
-    private boolean is1active, is2active;
+    private boolean is1active, is2active, isLeaderAction;
     private List<Node> popeSpaces;
 
 
@@ -83,63 +83,63 @@ public class PlayerBoardController {
     @FXML
     private void actionsOnLeader1(MouseEvent event){
 
-        if(!is1active){
-            ContextMenu inactiveMenu1= new ContextMenu();
+        if(isLeaderAction) {
+            if (!is1active) {
+                ContextMenu inactiveMenu1 = new ContextMenu();
 
-            MenuItem activate = new MenuItem("Activate leader card");
-            activate.setOnAction(event1 -> {
-                is1active = true;
-                leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                MenuItem activate = new MenuItem("Activate leader card");
+                activate.setOnAction(event1 -> {
+                    is1active = true;
+                    leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                Message msg = new ActivateLeaderCardMessage(l1, false);
-                gui.sendMessage(msg);
+                    Message msg = new ActivateLeaderCardMessage(l1, false);
+                    gui.sendMessage(msg);
 
-            });
+                });
 
-            MenuItem discard = new MenuItem("Discard leader card");
-            discard.setOnAction(event2 -> {
-                Message msg = new DiscardLeaderCardMessage(l1);
-                gui.sendMessage(msg);
-            });
+                MenuItem discard = new MenuItem("Discard leader card");
+                discard.setOnAction(event2 -> {
+                    Message msg = new DiscardLeaderCardMessage(l1);
+                    gui.sendMessage(msg);
+                });
 
-            inactiveMenu1.getItems().addAll(activate, discard);
+                inactiveMenu1.getItems().addAll(activate, discard);
 
-            inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
-        }
-
-        else{
-            leaderCardsList.add(l1);
+                inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
+            } else {
+                leaderCardsList.add(l1);
+            }
         }
     }
 
     @FXML
     private void actionsOnLeader2(MouseEvent event){
 
-        if(!is2active){
-            ContextMenu inactiveMenu2= new ContextMenu();
+        if(isLeaderAction) {
+            if (!is2active) {
+                ContextMenu inactiveMenu2 = new ContextMenu();
 
-            MenuItem activate = new MenuItem("Activate leader card");
-            activate.setOnAction(event1 -> {
-                is2active = true;
-                leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                MenuItem activate = new MenuItem("Activate leader card");
+                activate.setOnAction(event1 -> {
+                    is2active = true;
+                    leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                Message msg = new ActivateLeaderCardMessage(l2, false);
-                gui.sendMessage(msg);
-            });
+                    Message msg = new ActivateLeaderCardMessage(l2, false);
+                    gui.sendMessage(msg);
+                });
 
-            MenuItem discard = new MenuItem("Discard leader card");
-            discard.setOnAction(event2 -> {
-                Message msg = new DiscardLeaderCardMessage(l2);
-                gui.sendMessage(msg);
-            });
+                MenuItem discard = new MenuItem("Discard leader card");
+                discard.setOnAction(event2 -> {
+                    Message msg = new DiscardLeaderCardMessage(l2);
+                    gui.sendMessage(msg);
+                });
 
-            inactiveMenu2.getItems().addAll(activate, discard);
+                inactiveMenu2.getItems().addAll(activate, discard);
 
-            inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
-        }
-
-        else{
-            leaderCardsList.add(l2);
+                inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
+            } else {
+                leaderCardsList.add(l2);
+            }
         }
     }
 
@@ -162,7 +162,7 @@ public class PlayerBoardController {
         if (steps > 0) {
             popeSpaces.subList(0, steps).clear();
         }
-        popeSpaces.get(0).setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+        popeSpaces.get(0).setStyle("-fx-background-color:  #51db51");
     }
 
     /**
@@ -371,11 +371,13 @@ public class PlayerBoardController {
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();
         if(clientPlayer.getPositionIndex() == 1 ) {
-            p1.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+            p1.setStyle("-fx-background-color:  #51db51");
             popeSpaces.remove(0);
         }
-        else
-            p0.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+        else {
+            p0.setImage(new Image("gui/Images/PopeRoadResources/354687.png"));
+            p0.setStyle("-fx-background-color:  #51db51");
+        }
 
         //setting deposit
         updateDeposit(clientPlayer);
@@ -401,5 +403,9 @@ public class PlayerBoardController {
         boardProdButton.setVisible(bool);
         cardProdButton.setVisible(bool);
         leaderProdButton.setVisible(bool);
+    }
+
+    public void setLeaderAction(Boolean bool){
+        isLeaderAction = bool;
     }
 }

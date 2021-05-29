@@ -149,8 +149,12 @@ public class GameController implements Initializable{
         gameBoardController.setCardMarketClickable(bool);
     }
 
-    public void makeProductionClickable(boolean bool){
+    public void makeProductionClickable(boolean bool) {
         playerTabController.setProductionClickable(gui.getClientPlayer(), bool);
+    }
+
+    public void setLeaderAction(boolean bool){
+        playerTabController.setLeaderAction(gui.getClientPlayer(), bool);
     }
 
 }

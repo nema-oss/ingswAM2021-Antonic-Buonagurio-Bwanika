@@ -24,13 +24,14 @@
          <Button fx:id="buyCard" layoutX="272.0" layoutY="157.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy development card" />
          <ComboBox fx:id="rowOrColumn" layoutX="304.0" layoutY="133.0" prefWidth="150.0" promptText="row or column?" />
          <Button fx:id="rowOrColumnOk" layoutX="328.0" layoutY="183.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="103.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
-         <ComboBox fx:id="rowIndex" layoutX="292.0" layoutY="115.0" prefWidth="150.0" promptText="choose row"  />
+         <ComboBox fx:id="rowIndex" layoutX="292.0" layoutY="115.0" prefWidth="150.0" promptText="choose row" />
          <ComboBox fx:id="columnIndex" layoutX="292.0" layoutY="115.0" prefWidth="150.0" promptText="choose column" />
          <Button fx:id="rowOk" layoutX="315.0" layoutY="172.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
          <Button fx:id="columnOk" layoutX="315.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
          <Label fx:id="devMessage" layoutX="215.0" layoutY="126.0" prefHeight="29.0" prefWidth="328.0" text="Click on the development card you want to buy" />
          <Label fx:id="prodMessage" layoutX="224.0" layoutY="132.0" prefHeight="27.0" prefWidth="312.0" text="Click on the production cose" visible="false" />
          <Label fx:id="leaderMessage" layoutX="210.0" layoutY="130.0" prefHeight="31.0" prefWidth="339.0" text="Click on the leader card you want to perform the action on" />
+         <Button fx:id="endProd" layoutX="259.0" layoutY="213.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="End production" />
       </AnchorPane>
    </right>
 </BorderPane>

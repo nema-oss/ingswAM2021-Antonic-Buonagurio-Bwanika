@@ -158,11 +158,11 @@ public class PlayerBoardController {
      * @param steps
      */
     private void moveOnPopeRoad(Integer steps){
-        popeSpaces.get(0).setStyle("");
+        popeSpaces.get(0).setVisible(false);
         if (steps > 0) {
             popeSpaces.subList(0, steps).clear();
         }
-        popeSpaces.get(0).setStyle("-fx-background-color:  #51db51");
+        popeSpaces.get(0).setVisible(true);
     }
 
     /**
@@ -371,12 +371,13 @@ public class PlayerBoardController {
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();
         if(clientPlayer.getPositionIndex() == 1 ) {
-            p1.setStyle("-fx-background-color:  #51db51");
+            p0.setVisible(false);
+            p1.setVisible(true);
             popeSpaces.remove(0);
         }
-        else {
-            p0.setImage(new Image("gui/Images/PopeRoadResources/354687.png"));
-            p0.setStyle("-fx-background-color:  #51db51");
+
+        else{
+            p0.setVisible(true);
         }
 
         //setting deposit

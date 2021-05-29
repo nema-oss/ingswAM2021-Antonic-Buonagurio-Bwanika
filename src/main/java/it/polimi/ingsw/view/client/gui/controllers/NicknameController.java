@@ -8,6 +8,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 
+/**
+ * this class is the controller for the "nickname.fxml" file
+ * @author chiara
+ */
 public class NicknameController {
 
     @FXML
@@ -18,6 +22,9 @@ public class NicknameController {
 
     private boolean isFirstPlayer;
 
+    /**
+     * this method validates the nickname's format and sends the message that a nickname has been chosen
+     */
     @FXML
     public void sendNickname() {
 
@@ -42,11 +49,15 @@ public class NicknameController {
         this.gui = gui;
     }
 
+    /**
+     * this method notifies the player that the nickname inserted does not have a valid format
+     */
     private void notifyInvalidNickname(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("Invalid nickname. Please remember that your nickname must be at least 3 characters long.");
         alert.showAndWait();
     }
+
 
     public void setIsFirstPlayer(boolean isFirstPlayer){
         this.isFirstPlayer = isFirstPlayer;

@@ -484,6 +484,9 @@ public class Gui extends View {
                     FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
                     gameSceneController.leftBorder.setCenter(loader.load());
                     othersController = loader.getController();
+                    othersController.setGui(this);
+                    othersController.setGameController(gameSceneController);
+                    gameSceneController.initializeActions();
                     gameSceneController.addLeadersToPlayer();
 
                 } catch (IOException e) {

@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * this class is the controller for the "connection.fxml" file
+ * @author chiara
+ */
 public class ConnectionController{
 
     @FXML
@@ -25,8 +29,11 @@ public class ConnectionController{
 
     private Gui gui;
 
+    /**
+     * this method starts the gui after reading Ip and port
+     */
     @FXML
-    public void onConnection(ActionEvent event) throws IOException {
+    public void onConnection() {
         String ipAddress = ip.getText();
         String portNumber = port.getText();
 
@@ -38,30 +45,26 @@ public class ConnectionController{
 
         else{
            GuiManager.executorService.execute(new Thread(() -> {
-               /*
-               String portN;
-               String location;
-               if(ip.getText().isEmpty())
-                   location = "127.0.0.1";
-               if(port.getText().isEmpty())
-                   portN = "1234";
 
-                */
                 gui = new Gui(ip.getText(), Integer.parseInt(port.getText()), (Stage) anchorPane.getScene().getWindow(), anchorPane.getScene());
                 gui.start();
             }));
 
-           //GuiManager.changeScene("/gui/nickname");
-
         }
     }
 
+    /**
+     * this method alerts that the ip inserted is not in a valid format
+     */
     private void notifyInvalidIp(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("Wrong IP address. Please insert a valid IP.");
         alert.showAndWait();
     }
 
+    /**
+     * this method alerts that the port inserted is not in a valid format
+     */
     private void notifyInvalidPort(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("Unavailable port. Please insert another port number.");

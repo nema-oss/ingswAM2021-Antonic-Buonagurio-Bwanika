@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.actions.ActivateProductionMessage;
+import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.view.client.gui.Gui;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -10,6 +13,10 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * this class is the controller for the "actions.fxml" file
+ * @author chiara
+ */
 public class OthersController implements Initializable {
 
     @FXML
@@ -26,12 +33,22 @@ public class OthersController implements Initializable {
      @FXML
      private Label waitingMessage, devMessage, prodMessage, leaderMessage;
 
-    private Gui gui;
+     private GameController gameController;
+     private Gui gui;
 
-    public void setGui(Gui gui){
+     public void setGui(Gui gui){
         this.gui = gui;
     }
 
+     public void setGameController(GameController gameController){
+         this.gameController = gameController;
+     }
+
+    /**
+     * this method creates all the buttons for the actions and sets them invisible
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -40,8 +57,11 @@ public class OthersController implements Initializable {
         //progressindicator per l'attesa con scritta "tizio sta giocando il suo turno"
         wait.setStyle("-fx-progress-color: white");
         wait.setPrefWidth(80);
-        wait.setVisible(true);
-        waitingMessage.setVisible(true);
+        waitingMessage.setVisible(false);
+        wait.setVisible(false);
+
+        //wait.setVisible(true);
+       // waitingMessage.setVisible(true);
 
         //bottoni per decidere se standard action o leader action con scritta di spiegazione
         standardAction.setOnAction(event -> {
@@ -52,22 +72,30 @@ public class OthersController implements Initializable {
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
         });
-        standardAction.setVisible(false);
-        leaderAction.setVisible(false);
+        standardAction.setVisible(true);
+        leaderAction.setVisible(true);
 
 
         //se standard action tre bottoni per i tre tipi di standard action
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);
-            setRowOrColumnVisible(false);
+            setRowOrColumnVisible(true);
         });
         buyCard.setOnAction(event -> {
+            gameController.makeCardMarketClickable(true);
             setChooseStandardActionVisible(false);
             setBuyCardVisible(true);
         });
         startProd.setOnAction(event -> {
+
             setChooseStandardActionVisible(false);
             setActivateProductionVisible(true);
+
+            Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
+            gui.sendMessage(msg);
+
+            //TODO: da mettere altrove
+            gameController.makeProductionClickable(true);
         });
         buyResource.setVisible(false);
         buyCard.setVisible(false);
@@ -79,24 +107,26 @@ public class OthersController implements Initializable {
         rowOrColumnOk.setVisible(false);
         rowOrColumnOk.setOnAction(event -> {
             if(rowOrColumn.getValue() == "row")
-                rowIndex.setVisible(true);
+                setRowIndexVisible(true);
             else if(rowOrColumn.getValue()=="column")
-                columnIndex.setVisible(true);
-            rowOrColumn.setVisible(false);
+                setColumnIndexVisible(true);
+            setRowOrColumnVisible(false);
         });
         rowIndex.setItems(FXCollections.observableArrayList(1,2,3));
         rowIndex.setVisible(false);
         rowOk.setVisible(false);
         rowOk.setOnAction(event -> {
             setRowIndexVisible(false);
-            //TODO: comunica alla gui
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),(Integer) rowIndex.getValue(), -1, false);
+            gui.sendMessage(msg);
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         columnOk.setVisible(false);
         columnIndex.setVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
-            //TODO: comunica alla gui
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1, (Integer) columnIndex.getValue(), false);
+            gui.sendMessage(msg);
         });
 
         //se buyDevelopmentCard messaggio con clicca sulla carta che vuoi
@@ -110,7 +140,10 @@ public class OthersController implements Initializable {
         leaderMessage .setVisible(false);
     }
 
-
+    /**
+     * these methods show or hide the action buttons
+     * @param value
+     */
     public void setWaitVisible(boolean value){
         wait.setVisible(value);
         waitingMessage.setVisible(value);
@@ -137,6 +170,7 @@ public class OthersController implements Initializable {
 
     public void setRowOrColumnVisible(boolean value){
         rowOrColumn.setVisible(value);
+        rowOrColumnOk.setVisible(value);
     }
 
     public void setColumnIndexVisible(boolean value) {

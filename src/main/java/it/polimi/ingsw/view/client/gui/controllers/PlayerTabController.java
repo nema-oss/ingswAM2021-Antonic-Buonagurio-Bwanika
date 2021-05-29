@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.fxml.FXML;
@@ -17,7 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
+/**
+ * this class is the controller for the "playerTab.fxml" file
+ * @author chiara
+ */
 public class PlayerTabController implements Initializable {
 
     @FXML
@@ -25,9 +29,13 @@ public class PlayerTabController implements Initializable {
 
     private TabPane tabPane;
 
-    PlayerBoardController playerBoardController;
-
     Map<ClientPlayer, PlayerBoardController> controllersMap;
+
+    public Gui gui;
+
+    public void setGui(Gui gui) {
+        this.gui = gui;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,23 +65,40 @@ public class PlayerTabController implements Initializable {
         } */
     }
 
+    /**
+     * this method adds a new tab containg the player's board
+     * @param clientPlayer the player the board belongs to
+     * @param isCurrent boolean which says if the player to add corresponds to the one playing or if he is an enemy
+     * @throws IOException
+     */
     public void addPlayerBoard(ClientPlayer clientPlayer, boolean isCurrent) throws IOException {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
         Tab tab = new Tab(clientPlayer.getNickname(), loader.load());
         tab.setStyle("-fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%) ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
-        playerBoardController = loader.getController();
-        controllersMap.put(clientPlayer, loader.getController());
+        PlayerBoardController controller = loader.getController();
+        controllersMap.put(clientPlayer, controller);
+        controller.setGui(gui);
         tabPane.getTabs().add(tab);
 
-       if(!isCurrent)
-         tab.setDisable(true);
+       if(!isCurrent) {
+           controllersMap.get(clientPlayer).hideInactiveLeaders();
+           tab.getContent().setDisable(true);
+       }
     }
 
+    /**
+     * shows the leader cards chosen
+     * @param clientPlayer the player to give the cards to
+     */
     public void addLeadersChosen(ClientPlayer clientPlayer){
-        playerBoardController.initialize(clientPlayer);
+        controllersMap.get(clientPlayer).initialize(clientPlayer);
     }
 
+    /**
+     * this method updates the player's board
+     * @param clientPlayer the player to update
+     */
     public void updatePlayerBoard(ClientPlayer clientPlayer){
 
         for(Tab t : tabPane.getTabs()){
@@ -82,5 +107,9 @@ public class PlayerTabController implements Initializable {
                 break;
             }
         }
+    }
+
+    public void setProductionClickable(ClientPlayer clientPlayer, boolean bool){
+        controllersMap.get(clientPlayer).setProductionClickable(bool);
     }
 }

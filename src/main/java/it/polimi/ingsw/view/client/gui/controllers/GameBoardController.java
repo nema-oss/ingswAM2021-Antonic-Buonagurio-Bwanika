@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.actions.BuyDevelopmentCardMessage;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
@@ -9,6 +12,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+
+/**
+ * this class is the controller for the "gameBoard.fxml" file
+ * @author chiara
+ */
 public class GameBoardController{
 
     @FXML
@@ -16,6 +24,16 @@ public class GameBoardController{
     @FXML
     private ImageView freeMarble;
 
+    private Gui gui;
+
+    public void setGui(Gui gui){
+        this.gui = gui;
+    }
+
+    /**
+     * this method initializes the general gameboard
+     * @param clientGameBoard the game's gameboard
+     */
     public void initialize(ClientGameBoard clientGameBoard) {
 
         ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
@@ -29,7 +47,12 @@ public class GameBoardController{
                 card.setFitHeight(200.0);
                 cardMarket.add(card, j, i);
 
-                card.setOnMouseClicked(this::buyDevelopmentCard);
+                int finalJ = j;
+                int finalI = i;
+                card.setOnMouseClicked(event -> {
+                    buyDevelopmentCard(finalJ, finalI);
+                });
+                card.setDisable(true);
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/" + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" ));
                 marble.setPreserveRatio(true);
@@ -45,16 +68,33 @@ public class GameBoardController{
 
     }
 
+    /**
+     * this method updates the gameboard's marble market
+     * @param clientGameBoard
+     */
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
         for(Node n : marbleMarket.getChildren())
             n.setVisible(false);
 
         for(int i=0; i<3; i++)
-            for(int j=0; j<4; j++)
-                marbleMarket.add(new ImageView(new Image("/gui/Images/Marbles/" +clientGameBoard.getMarket().getMarble(i,j).getColor() + ".png")), j, i);
+            for(int j=0; j<4; j++){
+                ImageView marble = new ImageView(new Image("gui/Images/Marbles/" + clientGameBoard.getMarket().getMarble(i,j).getColor().toString() +  ".png" ));
+                marble.setPreserveRatio(true);
+                marble.setFitHeight(40);
+                marble.setFitWidth(40);
+                marbleMarket.add(marble, j, i);
+            }
+        freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientGameBoard.getMarket().getFreeMarble().getColor().toString() + ".png"));
+        freeMarble.setFitWidth(40);
+        freeMarble.setFitHeight(40);
+
 
     }
 
+    /**
+     * this method updates the gameboard's card market
+     * @param clientGameBoard
+     */
     public void updateCardMarket(ClientGameBoard clientGameBoard){
 
         for(Node n : cardMarket.getChildren())
@@ -62,16 +102,35 @@ public class GameBoardController{
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
-                ImageView img =new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i,j).getId() + ".png"));
-                img.setId(clientGameBoard.getCardMarket().getCard(i,j).getId());
-                cardMarket.add(img, j, i);
+                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
+                card.setId(clientGameBoard.getCardMarket().getCard(i,j).getId());
+                card.setFitWidth(140.0);
+                card.setFitHeight(200.0);
+                cardMarket.add(card, j, i);
+
+                int finalI = i;
+                int finalJ = j;
+                card.setOnMouseClicked(event -> {
+                    buyDevelopmentCard(finalJ, finalI);
+                });
             }
     }
 
-    public void buyDevelopmentCard(MouseEvent mouseEvent){
+    /**
+     * this method sends the message that the layer wants to buy a developmentCard
+     */
+    public void buyDevelopmentCard(int i, int j){
 
-        ImageView img = (ImageView) mouseEvent.getSource();
-        // gui.buyCard( img.getId() );
+        Message msg = new BuyDevelopmentCardMessage(gui.getPlayerNickname(), i, j, false);
+        gui.sendMessage(msg);
+
+    }
+
+    public void setCardMarketClickable(boolean bool){
+
+        for(Node img : cardMarket.getChildren())
+            img.setDisable(bool);
+
     }
 
 

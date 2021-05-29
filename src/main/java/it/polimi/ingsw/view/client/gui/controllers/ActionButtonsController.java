@@ -3,36 +3,60 @@ package it.polimi.ingsw.view.client.gui.controllers;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.ActivateProductionMessage;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.MoveDepositMessage;
+import it.polimi.ingsw.messages.actions.PlaceResourcesMessage;
+import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.Gui;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
  * this class is the controller for the "actions.fxml" file
  * @author chiara
  */
-public class OthersController implements Initializable {
+public class ActionButtonsController implements Initializable {
 
     @FXML
     private BorderPane leftPane;
 
     @FXML
+    private AnchorPane resourcePane, swapPane;
+
+    @FXML
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk;
+
      @FXML
-     private ComboBox rowOrColumn, rowIndex, columnIndex;
+     private CheckBox discard1, discard2, discard3, discard4;
+     @FXML
+     private ComboBox<String> rowOrColumn;
+
+     @FXML
+     private ComboBox<Integer> rowIndex, columnIndex, floorComboBox1, floorComboBox2, floorComboBox3, floorComboBox4, firstSwap, secondSwap;
 
      @FXML
      private Label waitingMessage, devMessage, prodMessage, leaderMessage;
 
+     @FXML
+     private ImageView firstRes, secondRes, thirdRes, fourthRes;
+
+
+     private ResourceType toPut1, toPut2, toPut3, toPut4;
      private GameController gameController;
      private Gui gui;
 
@@ -57,8 +81,7 @@ public class OthersController implements Initializable {
         //progressindicator per l'attesa con scritta "tizio sta giocando il suo turno"
         wait.setStyle("-fx-progress-color: white");
         wait.setPrefWidth(80);
-        waitingMessage.setVisible(false);
-        wait.setVisible(false);
+        setWaitVisible(false);
 
         //wait.setVisible(true);
        // waitingMessage.setVisible(true);
@@ -73,8 +96,7 @@ public class OthersController implements Initializable {
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
         });
-        standardAction.setVisible(true);
-        leaderAction.setVisible(true);
+        setChooseActionTypeVisible(true);
 
 
         //se standard action tre bottoni per i tre tipi di standard action
@@ -103,38 +125,48 @@ public class OthersController implements Initializable {
 
             //TODO: e il messaggio per finire dov'è?
         });
-        buyResource.setVisible(false);
-        buyCard.setVisible(false);
-        startProd.setVisible(false);
+        setChooseStandardActionVisible(false);
         endProd.setVisible(false);
 
         //se buyResource combo con riga/colonna + combo con numero riga/colonna
         rowOrColumn.setItems(FXCollections.observableArrayList("row", "column"));
-        rowOrColumn.setVisible(false);
-        rowOrColumnOk.setVisible(false);
+        setRowOrColumnVisible(false);
         rowOrColumnOk.setOnAction(event -> {
-            if(rowOrColumn.getValue() == "row")
+            if(rowOrColumn.getValue().equals("row"))
                 setRowIndexVisible(true);
-            else if(rowOrColumn.getValue()=="column")
+            else if(rowOrColumn.getValue().equals("column"))
                 setColumnIndexVisible(true);
             setRowOrColumnVisible(false);
         });
         rowIndex.setItems(FXCollections.observableArrayList(1,2,3));
-        rowIndex.setVisible(false);
-        rowOk.setVisible(false);
+        setRowIndexVisible(false);
         rowOk.setOnAction(event -> {
             setRowIndexVisible(false);
             Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),(Integer) rowIndex.getValue(), -1, false);
             gui.sendMessage(msg);
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
-        columnOk.setVisible(false);
-        columnIndex.setVisible(false);
+        setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
             Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1, (Integer) columnIndex.getValue(), false);
             gui.sendMessage(msg);
         });
+
+        //placing resources
+        floorComboBox1.setItems(FXCollections.observableArrayList(1,2,3));
+        floorComboBox2.setItems(FXCollections.observableArrayList(1,2,3));
+        floorComboBox3.setItems(FXCollections.observableArrayList(1,2,3));
+        floorComboBox4.setItems(FXCollections.observableArrayList(1,2,3));
+        placeResourcesOk.setOnAction(event -> {
+            sendPlaceResources();
+        });
+        setResourcePaneVisible(false);
+
+        swapOk.setOnAction(event -> sendSwapFloors());
+        firstSwap.setItems(FXCollections.observableArrayList(1,2,3));
+        secondSwap.setItems(FXCollections.observableArrayList(1,2,3));
+        setSwapPaneVisible(false);
 
         //se buyDevelopmentCard messaggio con clicca sulla carta che vuoi
         devMessage.setVisible(false);
@@ -197,6 +229,82 @@ public class OthersController implements Initializable {
 
     }
 
+    public void setResourcePaneVisible(boolean value){
+
+        resourcePane.setVisible(value);
+    }
+
+    public void setSwapPaneVisible(boolean value){
+        swapPane.setVisible(value);
+    }
+
+    /**
+     * this method prepares the pane to place the resources
+     * @param resources
+     */
+    public void setPlaceResources(List<ResourceType> resources){
+
+        int size = resources.size();
+
+        if(size!=0) {
+
+            firstRes.setImage(new Image("/gui/Images/Resources" +resources.get(0).label + ".png"));
+            firstRes.setVisible(true);
+            floorComboBox1.setVisible(true);
+            discard1.setVisible(true);
+            toPut1 = resources.get(0);
+
+            if (size >= 2) {
+                secondRes.setImage(new Image("/gui/Images/Resources" +resources.get(1).label + ".png"));
+                floorComboBox2.setVisible(true);
+                discard2.setVisible(false);
+                toPut2 = resources.get(1);
+            }
+
+            if (size == 3) {
+                thirdRes.setImage(new Image("/gui/Images/Resources" +resources.get(2).label + ".png"));
+                floorComboBox3.setVisible(true);
+                discard3.setVisible(false);
+                toPut3 = resources.get(2);
+            }
+
+            if (size == 4) {
+                fourthRes.setImage(new Image("/gui/Images/Resources" +resources.get(3).label + ".png"));
+                floorComboBox4.setVisible(true);
+                discard4.setVisible(false);
+                toPut4 = resources.get(3);
+            }
+        }
+    }
 
 
+    /**
+     * this method sends the message with the resources chosen and where to put them
+     */
+    public void sendPlaceResources(){
+
+        Map<Resource, Integer> map = new HashMap<>();
+
+        if(floorComboBox1.isVisible() && !discard1.isSelected()) {
+            map.put(new Resource(toPut1), floorComboBox1.getValue());
+        }
+        if(floorComboBox2.isVisible() && !discard2.isSelected()) {
+            map.put(new Resource(toPut2), floorComboBox2.getValue());
+        }
+        if(floorComboBox3.isVisible() && !discard3.isSelected()) {
+            map.put(new Resource(toPut3), floorComboBox3.getValue());
+        }
+        if(floorComboBox4.isVisible() && !discard4.isSelected()) {
+            map.put(new Resource(toPut4), floorComboBox4.getValue());
+        }
+
+        Message msg = new PlaceResourcesMessage(gui.getPlayerNickname(), map);
+        gui.sendMessage(msg);
+    }
+
+    public void sendSwapFloors(){
+
+        Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
+        gui.sendMessage(msg);
+    }
 }

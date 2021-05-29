@@ -54,7 +54,7 @@ public class Gui extends View {
 
     private PlayerBoardController playerBoardController;
 
-    private OthersController othersController;
+    private ActionButtonsController actionButtonsController;
 
     private GameController gameSceneController;
     private Scene gameScene;
@@ -483,9 +483,9 @@ public class Gui extends View {
                 try {
                     FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
                     gameSceneController.leftBorder.setCenter(loader.load());
-                    othersController = loader.getController();
-                    othersController.setGui(this);
-                    othersController.setGameController(gameSceneController);
+                    actionButtonsController = loader.getController();
+                    actionButtonsController.setGui(this);
+                    actionButtonsController.setGameController(gameSceneController);
                     gameSceneController.initializeActions();
                     gameSceneController.addLeadersToPlayer();
 

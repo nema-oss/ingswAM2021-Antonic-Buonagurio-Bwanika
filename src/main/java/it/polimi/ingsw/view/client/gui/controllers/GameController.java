@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.utils.TurnActions;
 import it.polimi.ingsw.view.client.gui.GuiManager;
-import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +28,7 @@ public class GameController implements Initializable{
     public  GameBoardController gameBoardController;
     public  PlayerTabController playerTabController;
     public  ChooseLeaderController chooseLeaderController;
-    public  OthersController othersController;
+    public ActionButtonsController actionButtonsController;
 
 
     public TurnActions getTurnAction() {

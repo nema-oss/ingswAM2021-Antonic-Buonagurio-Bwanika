@@ -1398,6 +1398,7 @@ public class Cli extends View {
     }
 
 
+
     /**
      * Asks the user to play its turn action
      */

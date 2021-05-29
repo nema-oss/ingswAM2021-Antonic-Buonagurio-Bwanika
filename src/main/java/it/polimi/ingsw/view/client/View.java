@@ -4,9 +4,9 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -244,5 +244,10 @@ public abstract class View {
      */
     public void sendMessage(Socket socket, Message message){
         new MessageSender(socket,message).sendMsg(outputStream);
+    }
+
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market){
+        gameBoard.getMarket().update(market);
+        gameBoard.getCardMarket().update(cardMarket);
     }
 }

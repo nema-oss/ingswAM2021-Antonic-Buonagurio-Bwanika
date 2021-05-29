@@ -99,6 +99,7 @@ public class MatchController implements ControllerInterface{
 
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
 
+        viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles());
         sendChooseLeaderCards(); // per il numero di giocatori
 
         return errors;

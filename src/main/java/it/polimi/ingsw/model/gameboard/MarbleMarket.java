@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameboard;
 
+import java.io.Serializable;
 import java.util.*;
 
 /*
@@ -7,7 +8,7 @@ import java.util.*;
  * @author Chiara Buonagurio
  */
 
-public class MarbleMarket {
+public class MarbleMarket implements Serializable {
 
     private final Marble[][] marbleMarket;
     private Marble freeMarble;
@@ -94,5 +95,9 @@ public class MarbleMarket {
 
     public Marble getMarble(int row, int column){
         return marbleMarket[row][column];
+    }
+
+    public Marble[][] marbles(){
+        return marbleMarket;
     }
 }

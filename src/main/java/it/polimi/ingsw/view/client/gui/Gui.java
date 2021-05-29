@@ -72,6 +72,7 @@ public class Gui extends View {
         initLoginUsername();
         initNumberOfPlayers();
         initGameScene();
+        //initGameBoard();
         intEndGame();
         isGameScene = false;
 
@@ -156,6 +157,14 @@ public class Gui extends View {
         }
     }
 
+    private void initGameBoard(){
+
+        try{
+            gameSceneController.initializeGameBoard(player,gameBoard);
+        }catch (NullPointerException e){
+            System.out.println("Could not initialize Game Board Scene");
+        }
+    }
 
     private void intEndGame() {
     }
@@ -472,13 +481,15 @@ public class Gui extends View {
     @Override
     public void showPlayTurn(String currentPlayer) {
 
+
         Platform.runLater(()->{
             if(!isGameScene){
                 isGameScene = true;
                 try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/turnActions");
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
                     gameSceneController.leftBorder.setCenter(loader.load());
                     turnActionController = loader.getController();
+                    gameSceneController.addLeadersToPlayer();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -493,7 +504,6 @@ public class Gui extends View {
                 gameSceneController.hideActionButtons();
                 gameSceneController.showOtherTurnMessage(currentPlayer);
             }
-
              */
         });
     }

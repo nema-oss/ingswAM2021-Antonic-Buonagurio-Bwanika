@@ -128,4 +128,9 @@ public class GameController implements Initializable{
     public PlayerBoardController getPlayerBoardController() {
         return playerBoardController;
     }
+
+    public void initializeGameBoard(ClientPlayer player, ClientGameBoard gameBoard) {
+        gameBoardController.updateCardMarket(gameBoard);
+        gameBoardController.updateMarbleMarket(gameBoard);
+    }
 }

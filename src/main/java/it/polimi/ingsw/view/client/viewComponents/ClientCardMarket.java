@@ -5,13 +5,17 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
+import it.polimi.ingsw.model.gameboard.CardMarket;
+import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClientCardMarket {
 
-    private final DevelopmentDeck[][] cardMarket;
+    private DevelopmentDeck[][] cardMarket;
+    private static final int CARD_MARKET_ROW = 3;
+    private static final int CARD_MARKET_COLUMNS = 4;
     private final int nRow;
     private final int nCol;
 
@@ -71,4 +75,9 @@ public class ClientCardMarket {
     public DevelopmentDeck getStack(int i, int j){
         return cardMarket[i][j];
     }
+
+    public void update(DevelopmentDeck[][] market) {
+        cardMarket = market;
+    }
+
 }

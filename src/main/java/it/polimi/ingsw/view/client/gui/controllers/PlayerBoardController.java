@@ -131,7 +131,7 @@ public class PlayerBoardController {
             ImageView card =new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
             card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
             card.setOnMouseClicked(event -> {
-               //TODO tell gui passing card.getId() [activate production]
+                //TODO tell gui passing card.getId() [activate production]
             });
             devCards.add(card,0,i);
         }

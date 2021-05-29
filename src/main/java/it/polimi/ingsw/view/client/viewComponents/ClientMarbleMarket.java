@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
+import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Marble;
+import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +10,7 @@ import java.util.List;
 
 public class ClientMarbleMarket {
 
-    private final Marble[][] marbleMarket;
+    private Marble[][] marbleMarket;
     private Marble freeMarble;
     private final int nRow;
     private final int nCol;
@@ -53,5 +55,9 @@ public class ClientMarbleMarket {
             marbles[i] = marbleMarket[i][nCol];
         }
         return marbles;
+    }
+
+    public void update(Marble[][] marbleMarket) {
+        this.marbleMarket = marbleMarket;
     }
 }

@@ -3,22 +3,19 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
-import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.utils.UpdateWriter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -653,6 +650,13 @@ public class VirtualView implements VirtualViewInterface{
     // I temporary save the resource and send them after the buy resources action is accepted
     public synchronized void sendResourcesBought(List<Resource> resources){
         boughtResources = resources;
+    }
+
+    @Override
+    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+
+        SetGameboardMessage message = new SetGameboardMessage(cardMarket,market);
+        clients.values().forEach(p->sendMessage(p,message));
     }
 
 

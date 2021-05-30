@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.server;
 
 
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.player.Board;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +20,8 @@ public interface VirtualViewInterface {
 
     /**
      * Asks the user to choose its resources
-     * @param nickname the user's nickname
+     *
+     * @param nickname          the user's nickname
      * @param numberOfResources the amount of resources to select
      */
     void toDoChooseResources(String nickname, int numberOfResources);
@@ -37,16 +38,23 @@ public interface VirtualViewInterface {
 
     /**
      * This method asks a user to play its turn
+     *
      * @param nickname the user's nickname
      */
     void playTurn(String nickname);
 
     /**
      * This method alerts a user that its turn is finished
+     *
      * @param nickname the user's nickname
      */
     void endTurn(String nickname);
 
     void sendResourcesBought(List<Resource> resources);
 
+    void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+
+    public void updatePlayerPosition(String nickname);
+
 }
+

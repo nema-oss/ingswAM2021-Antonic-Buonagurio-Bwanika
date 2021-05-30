@@ -4,11 +4,12 @@ import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ClientDeposit {
+public class ClientDeposit implements Serializable {
 
     private List<List<Resource>> warehouse;
     private static final int NUMBER_OF_FLOORS = 3;

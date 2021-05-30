@@ -91,16 +91,19 @@ public class PlayerBoardController {
                 activate.setOnAction(event1 -> {
                     is1active = true;
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-
-                    Message msg = new ActivateLeaderCardMessage(l1, false);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     leader1.setVisible(false);
-                    Message msg = new DiscardLeaderCardMessage(l1);
                     gui.sendMessage(msg);
                 });
 
@@ -125,14 +128,18 @@ public class PlayerBoardController {
                     is2active = true;
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                    Message msg = new ActivateLeaderCardMessage(l2, false);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     leader2.setVisible(false);
-                    Message msg = new DiscardLeaderCardMessage(l2);
                     gui.sendMessage(msg);
                 });
 

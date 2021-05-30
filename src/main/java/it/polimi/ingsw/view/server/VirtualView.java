@@ -5,20 +5,19 @@ import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.utils.UpdateWriter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -218,9 +217,15 @@ public class VirtualView implements VirtualViewInterface{
      * @param username the nickname of the player that has to play
      */
     public void playTurn(String username){
-        for(Socket socket: clients.values())
+
+        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket());
+
+        for(Socket socket: clients.values()){
+            sendMessage(socket,message);
             sendMessage(socket, new PlayTurnMessage(username));
+        }
     }
+
     /**
      * This method manage the choose leaderCard request from client
      * @param leaderCards the chosen card
@@ -378,11 +383,15 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedBuyResources(String user, int x, int y) {
+
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
-
+        updatePlayerPosition(user);
+        /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
+
+         */
 
         sendMessage(clients.get(user), message);
 
@@ -411,11 +420,13 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
+
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
+        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
+        //sendMessage(clients.get(user), boardUpdate);
     }
 
     private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
@@ -442,9 +453,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
-
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
+        updatePlayerPosition(user);
+        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
+        //sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -472,6 +483,7 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> card){
         Message message = new UpdateWriter().productionLeaderAccepted(user,card);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
 
     }
 
@@ -530,6 +542,7 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedDiscardLeaderCard(String user, LeaderCard card){
         Message message = new UpdateWriter().discardLeaderAccepted(card);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
     }
 
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
@@ -556,7 +569,6 @@ public class VirtualView implements VirtualViewInterface{
 
     public void inGameDisconnection(String disconnectedPlayer) {
         matchController.onPlayerDisconnection(disconnectedPlayer);
-
     }
 
     /**
@@ -634,11 +646,12 @@ public class VirtualView implements VirtualViewInterface{
 
 
     /**
-     * This metho
-     * @param user
-     * @param resources
+     * This method manage a discard resources request from client
+     * @param user the player
+     * @param numberOfResourcesToDiscard the number of resources to discard
      */
-    public void discardResources(String user, List<Resource> resources) {
+    public void discardResources(String user, int numberOfResourcesToDiscard) {
+        matchController.onDiscardResource(user,numberOfResourcesToDiscard);
     }
 
     /**
@@ -655,6 +668,13 @@ public class VirtualView implements VirtualViewInterface{
         boughtResources = resources;
     }
 
+    @Override
+    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+
+        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market);
+        clients.values().forEach(p->sendMessage(p,message));
+    }
+
 
     public synchronized void reconnectPlayer(String disconnectedPlayer, Socket socket, ObjectOutputStream outputStream) {
 
@@ -668,6 +688,23 @@ public class VirtualView implements VirtualViewInterface{
 
     public ObjectOutputStream getOutputStream(Socket socket) {
         return socketObjectOutputStreamMap.get(socket);
+    }
+
+
+    public void updatePlayerPosition(String nickname){
+
+        Message message = new MoveOnPopeRoadMessage(matchController.getPlayerCurrentPosition(nickname));
+        sendMessage(clients.get(nickname), message);
+    }
+
+    public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {
+
+        String sender = updateClientPlayerBoardsMessage.getUser();
+        for(String user: clients.keySet()){
+            if(!user.equals(sender))
+                sendMessage(clients.get(user), updateClientPlayerBoardsMessage);
+        }
+
     }
 }
 

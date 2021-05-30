@@ -20,10 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+
 /**
  * this class is the controller for the "actions.fxml" file
  * @author chiara
  */
+
 public class ActionButtonsController implements Initializable {
 
     @FXML
@@ -56,8 +58,9 @@ public class ActionButtonsController implements Initializable {
      private ResourceType toPut1, toPut2, toPut3, toPut4;
      private GameController gameController;
      private Gui gui;
+    private List<Resource> boughtResources;
 
-     public void setGui(Gui gui){
+    public void setGui(Gui gui){
         this.gui = gui;
     }
 
@@ -100,6 +103,7 @@ public class ActionButtonsController implements Initializable {
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);
             setRowOrColumnVisible(true);
+
         });
         buyCard.setOnAction(event -> {
             gameController.makeCardMarketClickable(true);
@@ -270,40 +274,39 @@ public class ActionButtonsController implements Initializable {
      * this method prepares the pane to place the resources
      * @param resources
      */
-    public void setPlaceResources(List<ResourceType> resources){
+    public void setPlaceResources(List<Resource> resources){
 
         int size = resources.size();
-
+        this.boughtResources = resources;
         if(size!=0) {
-
-            firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).label + ".png"));
+            firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).getType().label + ".png"));
             firstRes.setVisible(true);
             floorComboBox1.setVisible(true);
             discard1.setVisible(true);
-            toPut1 = resources.get(0);
+            toPut1 = resources.get(0).getType();
 
             if (size >= 2) {
-                secondRes.setImage(new Image("/gui/Images/Resources/" +resources.get(1).label + ".png"));
+                secondRes.setImage(new Image("/gui/Images/Resources/" +resources.get(1).getType().label + ".png"));
                 secondRes.setVisible(true);
                 floorComboBox2.setVisible(true);
                 discard2.setVisible(true);
-                toPut2 = resources.get(1);
+                toPut2 = resources.get(1).getType();
             }
 
             if (size >= 3) {
-                thirdRes.setImage(new Image("/gui/Images/Resources/" +resources.get(2).label + ".png"));
+                thirdRes.setImage(new Image("/gui/Images/Resources/" +resources.get(2).getType().label + ".png"));
                 thirdRes.setVisible(true);
                 floorComboBox3.setVisible(true);
                 discard3.setVisible(true);
-                toPut3 = resources.get(2);
+                toPut3 = resources.get(2).getType();
             }
 
             if (size == 4) {
-                fourthRes.setImage(new Image("/gui/Images/Resources/" +resources.get(3).label + ".png"));
+                fourthRes.setImage(new Image("/gui/Images/Resources/" +resources.get(3).getType().label + ".png"));
                 fourthRes.setVisible(true);
                 floorComboBox4.setVisible(true);
                 discard4.setVisible(true);
-                toPut4 = resources.get(3);
+                toPut4 = resources.get(3).getType();
             }
         }
     }
@@ -329,7 +332,10 @@ public class ActionButtonsController implements Initializable {
             map.put(new Resource(toPut4), floorComboBox4.getValue());
         }
 
-        Message msg = new PlaceResourcesMessage(gui.getPlayerNickname(), map);
+        gui.alertUser("Information", "The other resources will be discarded.", Alert.AlertType.INFORMATION);
+        PlaceResourcesMessage msg = new PlaceResourcesMessage(gui.getPlayerNickname(), map);
+        System.out.println(map);
+        msg.setDiscardedResources(Math.abs(boughtResources.size() - map.size()));
         gui.sendMessage(msg);
     }
 

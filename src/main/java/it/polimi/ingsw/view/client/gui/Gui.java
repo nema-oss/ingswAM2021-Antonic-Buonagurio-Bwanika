@@ -5,7 +5,9 @@ import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
@@ -26,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Gui extends View {
+
+    public PlayerBoardController playerBoardController;
+    public GameBoardController gameBoardController;
 
     private Stage primaryStage;
     private Scene startingScene;
@@ -49,10 +54,12 @@ public class Gui extends View {
 
     private ConnectionController connectionController;
 
-    private GameBoardController gameBoardController;
+
     private Scene gameBoardScene;
 
-    private PlayerBoardController playerBoardController;
+    private Scene turnActionScene;
+
+
 
     private ActionButtonsController actionButtonsController;
 
@@ -71,11 +78,15 @@ public class Gui extends View {
         initLoginUsername();
         initNumberOfPlayers();
         initGameScene();
+        //initGameBoard();
+        initTurnActions();
         intEndGame();
         isGameScene = false;
 
 
     }
+
+
 
     private void initLoginUsername() {
 
@@ -149,11 +160,32 @@ public class Gui extends View {
             gameScene = new Scene(root);
             gameSceneController = loader.getController();
             gameSceneController.setGui(this);
+            gameBoardController = gameSceneController.gameBoardController;
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
         }
     }
 
+    private void initTurnActions() {
+
+        try {
+            FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+            gameSceneController.leftBorder.setCenter(loader.load());
+            actionButtonsController = loader.getController();
+            //gameSceneController.addLeadersToPlayer();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void initGameBoard(){
+
+        try{
+            gameSceneController.initializeGameBoard(player,gameBoard);
+        }catch (NullPointerException e){
+            System.out.println("Could not initialize Game Board Scene");
+        }
+    }
 
     private void intEndGame() {
     }
@@ -234,6 +266,17 @@ public class Gui extends View {
         });
     }
 
+
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+        gameBoard.getMarket().update(market);
+        gameBoard.getCardMarket().update(cardMarket);
+        Platform.runLater(()->{
+            gameBoardController.updateMarbleMarket(gameBoard);
+            gameBoardController.updateCardMarket(gameBoard);
+        });
+
+    }
+
     /**
      * Asks the user to play its turn action
      */
@@ -276,6 +319,7 @@ public class Gui extends View {
                 gameSceneController.setProductionLeaderCard(leaderCards);
             }else{
                 //game.restore();
+                String informationMessage = "Production action rejected. Try again. ";
                 alertUser("Warning", "Try again.", Alert.AlertType.WARNING);
             }
         });
@@ -296,7 +340,7 @@ public class Gui extends View {
                 gameSceneController.setLeaderCardHand(player.getHand());
             }else{
                 //gameSceneController.restore();
-                String informationMessage = "Try again. ";
+                String informationMessage = "Leader card action rejected. Try again. ";
                 alertUser("Warning!", informationMessage, Alert.AlertType.WARNING);
 
             }
@@ -390,7 +434,7 @@ public class Gui extends View {
     @Override
     public void showNewUserLogged(String username) {
 
-        String infoMessage = loginWaitController.getInformationBox() + "\n" + username + " is a new player!";
+        String infoMessage = loginWaitController.getInformationBox() + "\n" + username + " joined the match!";
         Platform.runLater(()->{
                     loginWaitController.setInformationBox(infoMessage);
                 });
@@ -403,6 +447,9 @@ public class Gui extends View {
     @Override
     public void serverNotFound() {
 
+        Platform.runLater(()->{
+            alertUser("Error", "No server found", Alert.AlertType.ERROR);
+        });
     }
 
     /**
@@ -413,6 +460,9 @@ public class Gui extends View {
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
 
+        Platform.runLater(()->{
+            alertUser("Information", otherClient+"has disconnected from the match!", Alert.AlertType.INFORMATION);
+        });
     }
 
     /**
@@ -420,7 +470,10 @@ public class Gui extends View {
      */
     @Override
     public void showServerDisconnection() {
-
+        Platform.runLater(()->{
+            alertUser("Error", "Server disconnected. Try again later", Alert.AlertType.ERROR);
+            primaryStage.setScene(startingScene);
+        });
     }
 
     /**
@@ -459,11 +512,6 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             alertUser("Error","Login failed. Try again with a different username", Alert.AlertType.ERROR);
-            /*
-            DoLoginMessage doLoginMessage = new DoLoginMessage();
-            doLoginMessage.setFirstPlayer(isFirstPlayer);
-            showLogin(doLoginMessage);
-             */
         });
 
     }
@@ -477,12 +525,14 @@ public class Gui extends View {
     @Override
     public void showPlayTurn(String currentPlayer) {
 
+
         Platform.runLater(()->{
             if(!isGameScene){
                 isGameScene = true;
                 try {
                     FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    gameSceneController.leftBorder.setCenter(loader.load());
+                    Parent root = loader.load();
+                    gameSceneController.leftBorder.setCenter(root);
                     actionButtonsController = loader.getController();
                     actionButtonsController.setGui(this);
                     actionButtonsController.setGameController(gameSceneController);
@@ -494,16 +544,15 @@ public class Gui extends View {
                 }
                 primaryStage.setScene(gameScene);
             }
-            /*
+
             if(currentPlayer.equals(player.getNickname())){
-                gameSceneController.showActionButtons();
-                gameSceneController.showYourTurnMessage();
+                actionButtonsController.setWaitVisible(false);
+                actionButtonsController.setChooseActionTypeVisible(true);
             }else{
-                gameSceneController.hideActionButtons();
-                gameSceneController.showOtherTurnMessage(currentPlayer);
+                actionButtonsController.setWaitVisible(true);
+                actionButtonsController.setChooseActionTypeVisible(false);
             }
 
-             */
         });
     }
 
@@ -515,7 +564,10 @@ public class Gui extends View {
     public void setPlaceResourcesAction() {
 
         Platform.runLater(()->{
-            gameSceneController.showPlaceResourcesButton();
+            //actionButtonsController.setSwapPaneVisible(true);
+            actionButtonsController.setPlaceResources(player.getBoughtResources());
+            actionButtonsController.setResourcePaneVisible(true);
+            actionButtonsController.setResourcePaneVisible(true);
         });
     }
 
@@ -547,12 +599,23 @@ public class Gui extends View {
      */
     @Override
     public void showAcceptedBuyDevelopmentCard(int x, int y) {
-        /*
+
+        player.buyDevelopmentCard(x,y);
+        playerBoardController.update(player);
+
         Platform.runLater(()->{
-            alertUser("Warning", "Leader card action rejected.", Alert.AlertType.WARNING);
+            try {
+                FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                Parent root = loader.load();
+                gameSceneController.leftBorder.setCenter(root);
+                actionButtonsController.setChooseStandardActionVisible(false);
+                actionButtonsController.setChooseLeaderActionVisible(true);
+            }catch (IOException e){
+                System.out.println("Can't load Turn Action Scene");
+                e.printStackTrace();
+            }
         });
 
-         */
     }
 
     /**
@@ -567,6 +630,16 @@ public class Gui extends View {
 
     }
 
+    /**
+     * This method add the leader cards to the user's hand
+     *
+     * @param choice user choice
+     */
+    @Override
+    public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
+        player.setHand(choice);
+    }
+
 
     /**
      * Shows the results of the move deposit request.
@@ -578,6 +651,7 @@ public class Gui extends View {
 
         if(accepted) {
             player.getDeposit().swapFloors(x, y);
+            playerBoardController.update(player);
         }
         else {
             Platform.runLater(()->{
@@ -595,24 +669,44 @@ public class Gui extends View {
      */
     @Override
     public void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice) {
-        if(accepted){
 
+        if(accepted){
             Platform.runLater(()->{
-                gameSceneController.setInstructionLabel("The other resources will be discarded.");
+                try {
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                    Parent root = loader.load();
+                    gameSceneController.leftBorder.setCenter(root);
+                    actionButtonsController.setChooseLeaderActionVisible(true);
+                    actionButtonsController.setChooseStandardActionVisible(false);
+                }catch (IOException e){
+                    System.out.println("Can't load Turn Action Scene");
+                    e.printStackTrace();
+                }
                 //gameSceneController.nextTurnAction();
             });
-            player.addResource(userChoice);
+
             //askTurnAction();
         }
         else{
-            alertUser("Warning","Incorrect place resources. Try again.", Alert.AlertType.WARNING);
-            setPlaceResourcesAction();
+            Platform.runLater(()->{
+                alertUser("Warning","Incorrect place resources. Try again.", Alert.AlertType.WARNING);
+                setPlaceResourcesAction();
+            });
         }
     }
 
     @Override
     public void showReconnectionToMatch() {
 
+    }
+
+    @Override
+    public void updatePlayerPosition(int position) {
+
+        Platform.runLater(()->{
+            player.updateCurrentPosition(position);
+            playerBoardController.updatePopeRoad(player);
+        });
     }
 
     public void start() {
@@ -639,4 +733,7 @@ public class Gui extends View {
         return new ArrayList<ClientPlayer>();
     }
 
+    public void setPlayerBoardController(PlayerBoardController controller) {
+        playerBoardController = controller;
+    }
 }

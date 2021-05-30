@@ -397,10 +397,6 @@ public class Player{
         }
     }
 
-    /**
-     * this method allows to discard the resources.
-     */
-    public void discardResources(){}
 
 
 

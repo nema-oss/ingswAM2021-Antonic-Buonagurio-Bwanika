@@ -18,6 +18,8 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
     private final String user;
     private final Map<Resource,Integer> userChoice;
     private boolean accepted;
+    private int discardResources;
+
     /**
      * Server-side constructor to create the message
      */
@@ -40,6 +42,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
      */
     public void execute(VirtualView virtualView){
         virtualView.placeResource(user,userChoice);
+        //virtualView.discardResources(user,discardResources);
     }
     /**
      * Get the message type
@@ -51,5 +54,9 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public void setDiscardedResources(int discardResources){
+        this.discardResources = discardResources;
     }
 }

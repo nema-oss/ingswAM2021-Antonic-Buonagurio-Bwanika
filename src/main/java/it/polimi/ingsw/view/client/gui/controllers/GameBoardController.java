@@ -64,8 +64,8 @@ public class GameBoardController{
             }
 
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientMarbleMarket.getFreeMarble().getColor().toString() + ".png"));
-            freeMarble.setFitWidth(40);
-            freeMarble.setFitHeight(40);
+        freeMarble.setFitWidth(40);
+        freeMarble.setFitHeight(40);
 
 
     }
@@ -125,7 +125,7 @@ public class GameBoardController{
      */
     public void buyDevelopmentCard(int i, int j){
 
-        Message msg = new BuyDevelopmentCardMessage(gui.getPlayerNickname(), i, j, false);
+        Message msg = new BuyDevelopmentCardMessage(gui.getPlayerNickname(), i, j, true);
         gui.sendMessage(msg);
 
     }

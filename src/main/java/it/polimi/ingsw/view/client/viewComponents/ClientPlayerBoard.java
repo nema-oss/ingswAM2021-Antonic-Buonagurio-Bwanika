@@ -1,12 +1,14 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.*;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ClientPlayerBoard {
+public class ClientPlayerBoard implements Serializable {
 
     private final ClientPopeRoad popeRoad;
     private final ClientDeposit deposit;
@@ -84,4 +86,7 @@ public class ClientPlayerBoard {
     }
 
 
+    public List<LeaderCard> getActiveLeaderCards() {
+        return null;
+    }
 }

@@ -14,14 +14,14 @@ import java.io.Serializable;
  */
 public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
-    int moves;
+    int position;
 
     /**
      * Server-side constructor to create the message
-     * @param moves: number of moves to advance on the PopeRoad
+     * @param position: current player position
      */
-    public MoveOnPopeRoadMessage(int moves) {
-        this.moves = moves;
+    public MoveOnPopeRoadMessage(int position) {
+        this.position = position;
         messageType = ActionMessageType.MOVE_ON_POPEROAD;
     }
     /**
@@ -29,7 +29,7 @@ public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in view to show the choice
+        view.updatePlayerPosition(position);
     }
     /**
      * Execute the request server side

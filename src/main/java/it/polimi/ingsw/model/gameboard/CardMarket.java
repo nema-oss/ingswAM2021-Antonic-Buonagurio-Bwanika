@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameboard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -13,7 +14,7 @@ import it.polimi.ingsw.model.exception.NonExistentCardException;
 * @author Chiara Buonagurio
 */
 
-public class CardMarket {
+public class CardMarket implements Serializable {
 
     private final DevelopmentDeck[][] cardMarket;
     private final int nRow;
@@ -133,6 +134,10 @@ public class CardMarket {
         }catch (NonExistentCardException e){e.printStackTrace();}
 
         return false;
+    }
+
+    public DevelopmentDeck[][] getCardMarket(){
+        return cardMarket;
     }
 }
 

@@ -2,9 +2,11 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
@@ -99,6 +101,7 @@ public class MatchController implements ControllerInterface{
 
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
 
+        viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles());
         sendChooseLeaderCards(); // per il numero di giocatori
 
         return errors;
@@ -200,10 +203,12 @@ public class MatchController implements ControllerInterface{
         else if (size >= 3 && currentPlayer.equals(game.getListOfPlayers().get(2))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
             currentPlayer.moveOnPopeRoad();
+            viewInterface.updatePlayerPosition(currentPlayer.getNickname());
         }
         else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
+            viewInterface.updatePlayerPosition(currentPlayer.getNickname());
         }
         else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))){
             game.setGamePhase(GamePhase.PLAY_TURN);
@@ -702,17 +707,16 @@ public class MatchController implements ControllerInterface{
     /**
      * this method calls the player's method discardResources
      * @param nickname the player's nickname
-     * @param resourceType the resourceType of the resource to discard
+     * @param numberOfResourcesToDiscard the number of resources to discard
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onDiscardResource(String nickname, ResourceType resourceType){
+    public List<Error> onDiscardResource(String nickname, int numberOfResourcesToDiscard){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
         if(errors.isEmpty()) {
-            game.getCurrentPlayer().discardResources(); //va rivisto
-            game.movePlayersDiscard(1);
+            game.movePlayersDiscard(numberOfResourcesToDiscard);
         }
 
         return errors;
@@ -883,5 +887,17 @@ public class MatchController implements ControllerInterface{
 
     }
 
+    @Override
+    public Marble[][] getMarbleMarket() {
+        return game.getGameBoard().getMarket().marbles();
+    }
 
+    @Override
+    public DevelopmentDeck[][] getCardMarket() {
+        return game.getGameBoard().getCardMarket().getCardMarket();
+    }
+
+    public int getPlayerCurrentPosition(String nickname){
+        return game.getPlayerByNickname(nickname).getPositionIndex();
+    }
 }

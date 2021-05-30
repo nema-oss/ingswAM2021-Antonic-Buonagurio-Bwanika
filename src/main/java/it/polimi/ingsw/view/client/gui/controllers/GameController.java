@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.utils.TurnActions;
 import it.polimi.ingsw.view.client.gui.GuiManager;
+import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +26,7 @@ public class GameController implements Initializable{
 
     @FXML
     public BorderPane gameBoardPane, playerBoardPane, leftBorder;
+
 
     public  GameBoardController gameBoardController;
     public  PlayerTabController playerTabController;
@@ -134,6 +137,11 @@ public class GameController implements Initializable{
 
     public void initializeActions(){
 
+    }
+
+    public void initializeGameBoard(ClientPlayer player, ClientGameBoard gameBoard) {
+        gameBoardController.updateCardMarket(gameBoard);
+        gameBoardController.updateMarbleMarket(gameBoard);
     }
 
     /**

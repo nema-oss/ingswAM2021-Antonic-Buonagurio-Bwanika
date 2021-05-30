@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +161,10 @@ public class ClientPlayer {
         ClientPopeRoad popeRoad = playerBoard.getPopeRoad();
         popeRoad.setCurrentPositionIndex(position);
         popeRoad.setCurrentPosition(position);
+    }
+
+    public void activateLeaderCard(LeaderCard card){
+        activeLeaderCards.add(card);
     }
 }
 

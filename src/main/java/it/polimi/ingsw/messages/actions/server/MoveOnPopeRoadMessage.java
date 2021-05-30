@@ -18,7 +18,7 @@ public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
 
     /**
      * Server-side constructor to create the message
-     * @param moves: number of moves to advance on the PopeRoad
+     * @param position: current player position
      */
     public MoveOnPopeRoadMessage(int position) {
         this.position = position;

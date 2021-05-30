@@ -3,12 +3,13 @@ package it.polimi.ingsw.view.client.viewComponents;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClientStrongbox {
+public class ClientStrongbox implements Serializable {
 
     private HashMap<ResourceType, List<Resource>> strongbox;
     private List<Resource> temporaryResourceStorage;

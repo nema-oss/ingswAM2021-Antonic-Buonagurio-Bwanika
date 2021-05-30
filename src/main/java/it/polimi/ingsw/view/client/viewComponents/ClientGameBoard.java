@@ -7,9 +7,10 @@ import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.MarbleFactory;
 import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ClientGameBoard {
+public class ClientGameBoard implements Serializable {
 
     private final ClientCardMarket cardMarket;
     private final ClientMarbleMarket market;

@@ -8,10 +8,11 @@ import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ClientCardMarket {
+public class ClientCardMarket implements Serializable {
 
     private DevelopmentDeck[][] cardMarket;
     private static final int CARD_MARKET_ROW = 3;

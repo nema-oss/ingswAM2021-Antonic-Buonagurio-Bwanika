@@ -2,9 +2,10 @@ package it.polimi.ingsw.view.client.viewComponents;
 
 import it.polimi.ingsw.model.player.Cell;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ClientPopeRoad {
+public class ClientPopeRoad implements Serializable {
 
     private List<Cell> popeRoad;
     private List<Cell> popeSpaces;

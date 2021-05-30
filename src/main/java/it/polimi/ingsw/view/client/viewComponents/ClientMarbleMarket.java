@@ -4,11 +4,12 @@ import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ClientMarbleMarket {
+public class ClientMarbleMarket implements Serializable {
 
     private Marble[][] marbleMarket;
     private Marble freeMarble;

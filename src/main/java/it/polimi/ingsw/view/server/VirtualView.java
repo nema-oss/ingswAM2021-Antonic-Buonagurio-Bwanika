@@ -5,6 +5,7 @@ import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -693,6 +694,16 @@ public class VirtualView implements VirtualViewInterface{
 
         Message message = new MoveOnPopeRoadMessage(matchController.getPlayerCurrentPosition(nickname));
         sendMessage(clients.get(nickname), message);
+    }
+
+    public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {
+
+        String sender = updateClientPlayerBoardsMessage.getUser();
+        for(String user: clients.keySet()){
+            if(!user.equals(sender))
+                sendMessage(clients.get(user), updateClientPlayerBoardsMessage);
+        }
+
     }
 }
 

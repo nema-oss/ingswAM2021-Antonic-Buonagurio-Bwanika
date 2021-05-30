@@ -19,6 +19,7 @@ import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -97,14 +98,19 @@ public class Cli extends View {
     public void showPlayTurn(String currentPlayer) {
 
         Formatting.clearScreen();
+
         showBoard(gameBoard, player);
+
+        otherPlayerBoards.forEach((k,v) -> showOtherPlayerBoard(k,v));
 
         if(currentPlayer.equals(player.getNickname())){
             askTurnAction();
         }else {
             System.out.println(currentPlayer + " is playing its turn...");
         }
+
     }
+
 
     /**
      * This method shows the user's leader cards
@@ -295,10 +301,10 @@ public class Cli extends View {
         System.out.print("\n");
     }
 
-    public void showLowerBoard(ClientPlayer player){
+    public void showLowerBoard(ClientPlayerBoard clientPlayerBoard){
         System.out.print("\n");
-        if(player.getDeposit().getNumberOfResourcesOnFloor(1) ==1)
-            System.out.println("\t\t\t"+ ANSI_RESET.escape() + getResourceTypeColor(player.getDeposit().get(1).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+        if(clientPlayerBoard.getDeposit().getNumberOfResourcesOnFloor(1) ==1)
+            System.out.println("\t\t\t"+ ANSI_RESET.escape() + getResourceTypeColor(clientPlayerBoard.getDeposit().get(1).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
         else{
             System.out.println("\t\t\t" + ANSI_RESET.escape()+ JOLLY.escape() + ANSI_RESET.escape());
 
@@ -308,14 +314,14 @@ public class Cli extends View {
         System.out.println("   \t\t\t"+JOLLY.escape());
 
         int z=0;
-        for(z=0; z<player.getDeposit().getNumberOfResourcesOnFloor(2); z++)
-            System.out.print("\t\t" + getResourceTypeColor(player.getDeposit().get(2).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+        for(z=0; z<clientPlayerBoard.getDeposit().getNumberOfResourcesOnFloor(2); z++)
+            System.out.print("\t\t" + getResourceTypeColor(clientPlayerBoard.getDeposit().get(2).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
         for(; z<2; z++){
             System.out.print("\t\t"  + JOLLY.escape() + ANSI_RESET.escape());
         }
         System.out.print("\t\t\t\t-> "+JOLLY.escape());
         String color= ANSI_RESET.escape();
-        for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
+        for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
                 //if there is at least a card i'll get its outline color
@@ -341,7 +347,7 @@ public class Cli extends View {
 
         System.out.print("\t\t\t"+JOLLY.escape()+"   \t");
 
-        for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
+        for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
                 //if there is at least a card i'll get its outline color
@@ -369,14 +375,14 @@ public class Cli extends View {
 
 
         System.out.print("\n");
-        for(z=0; z<player.getDeposit().getNumberOfResourcesOnFloor(3); z++)
-            System.out.print("   \t" + getResourceTypeColor(player.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+        for(z=0; z<clientPlayerBoard.getDeposit().getNumberOfResourcesOnFloor(3); z++)
+            System.out.print("   \t" + getResourceTypeColor(clientPlayerBoard.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
         for(; z<3; z++){
             System.out.print("   \t" +  JOLLY.escape() + ANSI_RESET.escape());
 
         }
         System.out.print("\t\t\t\t");
-        for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
+        for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
                 //if there is at least a card i'll get its outline color
@@ -406,7 +412,7 @@ public class Cli extends View {
         for(int i=0; i<16; i++)
             System.out.print(HORIZ_POPE.escape());
         System.out.print("\t\t\t\t");
-        for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
+        for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
                 color = getDevelopmentTypeColor(stack.peek().getType());
@@ -421,7 +427,7 @@ public class Cli extends View {
         ArrayList<HashMap<ResourceType, Integer>> results = new ArrayList<>();
         ArrayList<Integer> faithResults = new ArrayList<>();//maps of results for every card in the first row
         //first of all i fill the map with card information so that i can use them later
-        for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
+        for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             //check if a card has faithpoint production
             HashMap<ResourceType, Integer> map = new HashMap<>();
             if(stack.size()>0){
@@ -446,15 +452,15 @@ public class Cli extends View {
         }
 
         for(int i=0; i<3; i++){
-            if(player.getPlayerBoard().getDevelopmentCards().get(i).size()>0) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getType());
+            if(clientPlayerBoard.getDevelopmentCards().get(i).size()>0) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape());
-                for (ResourceType resourceType : player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet()) {
-                    System.out.print(getResourceTypeColor(resourceType) + player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getProductionRequirements().get(resourceType) +
+                for (ResourceType resourceType : clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet()) {
+                    System.out.print(getResourceTypeColor(resourceType) + clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().get(resourceType) +
                             RESOURCE.escape() + ANSI_RESET.escape() + " ");
                 }
                 showGameBoardCardUtil(results, faithResults, i);
-                if (player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet().size() > 1)
+                if (clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet().size() > 1)
                     System.out.print(color+"\t" + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
                 else
                     System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
@@ -464,7 +470,7 @@ public class Cli extends View {
             }
         }
         System.out.print("\n\t");
-        Map<ResourceType,List<Resource>> strongbox = player.getStrongbox().getAll();
+        Map<ResourceType,List<Resource>> strongbox = clientPlayerBoard.getStrongbox().getAll();
         for(ResourceType resourceType: ResourceType.values()){
             if(strongbox.containsKey(resourceType))
                 System.out.print(getResourceTypeColor(resourceType) + strongbox.get(resourceType).size() + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
@@ -474,8 +480,8 @@ public class Cli extends View {
         }
         System.out.print("\t\t\t\t\t\t");
         for(int i=0; i<3; i++) {
-            if(player.getPlayerBoard().getDevelopmentCards().get(i).size()>0) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getType());
+            if(clientPlayerBoard.getDevelopmentCards().get(i).size()>0) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
@@ -497,8 +503,8 @@ public class Cli extends View {
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
 
         for(int i=0; i<3; i++) {
-            if(player.getPlayerBoard().getDevelopmentCards().get(i).size()>0) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getType());
+            if(clientPlayerBoard.getDevelopmentCards().get(i).size()>0) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
@@ -520,10 +526,10 @@ public class Cli extends View {
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
-            if(player.getPlayerBoard().getDevelopmentCards().get(j).size()>0) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getType());
+            if(clientPlayerBoard.getDevelopmentCards().get(j).size()>0) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
-                System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
                 System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
@@ -534,8 +540,8 @@ public class Cli extends View {
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++){
-            if(player.getPlayerBoard().getDevelopmentCards().get(j).size()>0) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getType());
+            if(clientPlayerBoard.getDevelopmentCards().get(j).size()>0) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
@@ -552,17 +558,17 @@ public class Cli extends View {
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
-            if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(1).getType());
+            if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
-                System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
                 System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
-            if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(1).getType());
+            if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
@@ -571,17 +577,17 @@ public class Cli extends View {
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
-            if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 2) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(2).getType());
+            if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
-                System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
                 System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
-            if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 2) {
-                color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(2).getType());
+            if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
@@ -592,15 +598,16 @@ public class Cli extends View {
 
     /**
      * Shows a simplified version of the otherPlayer's board where the popeRoad is not shown
-     * @param otherPlayer: the player of whom to show the board without the popeRoad
+     * @param nickname: the player of whom to show the board without the popeRoad
+     * @param clientPlayerBoard the player board
      */
-    public void showOtherPlayerBoard(ClientPlayer otherPlayer){
-        int position = otherPlayer.getPositionIndex();
-        System.out.println(otherPlayer.getNickname() + " is on cell number " + position);
+    public void showOtherPlayerBoard(String nickname, ClientPlayerBoard clientPlayerBoard){
+        int position = clientPlayerBoard.getPopeRoad().getCurrentPositionIndex();
+        System.out.println(nickname + " is on cell number " + position);
 
-        showLowerBoard(otherPlayer);
+        showLowerBoard(clientPlayerBoard);
         Map<LeaderCard, Boolean> map = new HashMap<>();
-        for(LeaderCard leaderCard: otherPlayer.getActiveLeaderCards()){
+        for(LeaderCard leaderCard: clientPlayerBoard.getActiveLeaderCards()){
             map.put(leaderCard, true);
         }
         showLeaderCards(map);

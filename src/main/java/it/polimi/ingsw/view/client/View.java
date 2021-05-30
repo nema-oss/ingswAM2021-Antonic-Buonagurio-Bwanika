@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -11,9 +13,11 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +35,14 @@ public abstract class View {
 
     protected ClientPlayer player;
     protected ClientGameBoard gameBoard;
+    protected Map<String,ClientPlayerBoard> otherPlayerBoards;
 
     public void newMatch(String nickname){
         this.gameBoard = new ClientGameBoard();
         this.player = new ClientPlayer(nickname,this.gameBoard);
+        otherPlayerBoards = new HashMap<>();
+        Message message = new UpdateClientPlayerBoardsMessage(nickname,this.player.getPlayerBoard());
+        sendMessage(socket,message);
     }
 
 
@@ -261,6 +269,13 @@ public abstract class View {
 
     public void updatePlayerPosition(int position) {
         player.updateCurrentPosition(position);
+    }
 
+    public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard){
+        otherPlayerBoards.put(user,clientPlayerBoard);
+    }
+
+    public void showAcceptedActivateLeaderCard(LeaderCard choice){
+        player.activateLeaderCard(choice);
     }
 }

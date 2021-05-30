@@ -277,7 +277,7 @@ public class ActionButtonsController implements Initializable {
                 toPut2 = resources.get(1);
             }
 
-            if (size == 3) {
+            if (size >= 3) {
                 thirdRes.setImage(new Image("/gui/Images/Resources/" +resources.get(2).label + ".png"));
                 thirdRes.setVisible(true);
                 floorComboBox3.setVisible(true);

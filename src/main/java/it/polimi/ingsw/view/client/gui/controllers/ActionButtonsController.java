@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.actions.ActivateProductionMessage;
-import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
-import it.polimi.ingsw.messages.actions.MoveDepositMessage;
-import it.polimi.ingsw.messages.actions.PlaceResourcesMessage;
+import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.Gui;
@@ -41,7 +38,7 @@ public class ActionButtonsController implements Initializable {
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton;
 
      @FXML
      private CheckBox discard1, discard2, discard3, discard4;
@@ -181,6 +178,12 @@ public class ActionButtonsController implements Initializable {
         //se scarta clicca su quale scartare
         //se attiva clicca su quale attivare
         leaderMessage .setVisible(false);
+
+        endTurnButton.setOnAction(event -> {
+            Message msg = new EndTurnMessage(gui.getPlayerNickname());
+            gui.sendMessage(msg);
+        });
+        setEndTurnVisible(false);
     }
 
     /**
@@ -194,6 +197,14 @@ public class ActionButtonsController implements Initializable {
 
     public void setChooseActionTypeVisible(boolean value){
         standardAction.setVisible(value);
+        leaderAction.setVisible(value);
+    }
+
+    public void setStandardActionVisible(boolean value){
+        standardAction.setVisible(value);
+    }
+
+    public void setLeaderActionVisible(boolean value){
         leaderAction.setVisible(value);
     }
 
@@ -242,6 +253,10 @@ public class ActionButtonsController implements Initializable {
         swapPane.setVisible(value);
     }
 
+    public void setEndTurnVisible(boolean value){
+        endTurnButton.setVisible(value);
+    }
+
     /**
      * this method prepares the pane to place the resources
      * @param resources
@@ -251,7 +266,6 @@ public class ActionButtonsController implements Initializable {
         int size = resources.size();
         this.boughtResources = resources;
         if(size!=0) {
-
             firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).getType().label + ".png"));
             firstRes.setVisible(true);
             floorComboBox1.setVisible(true);
@@ -304,6 +318,7 @@ public class ActionButtonsController implements Initializable {
 
         gui.alertUser("Information", "The other resources will be discarded.", Alert.AlertType.INFORMATION);
         PlaceResourcesMessage msg = new PlaceResourcesMessage(gui.getPlayerNickname(), map);
+        System.out.println(map);
         msg.setDiscardedResources(Math.abs(boughtResources.size() - map.size()));
         gui.sendMessage(msg);
     }

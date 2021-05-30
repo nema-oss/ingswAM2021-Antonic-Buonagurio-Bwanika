@@ -238,9 +238,12 @@ public class MatchController implements ControllerInterface{
             return errors;
         }
 
+        int j=3;
         for(ResourceType r : resourcesChosen.keySet()) {
             try {
-                game.getCurrentPlayer().addResourceToDeposit(resourcesChosen.get(r), new Resource(r));
+                for(int i=0; i<resourcesChosen.get(r); i++)
+                    game.getCurrentPlayer().addResourceToDeposit(j, new Resource(r));
+                j--;
             }catch(Exception | FullDepositException e){
                 errors.add(Error.DEPOSIT_IS_FULL);
             }

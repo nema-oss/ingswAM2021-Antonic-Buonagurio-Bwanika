@@ -103,6 +103,7 @@ public class PlayerBoardController {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l1,false);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    leader1.setVisible(false);
                     gui.sendMessage(msg);
                 });
 
@@ -138,6 +139,8 @@ public class PlayerBoardController {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l2,false);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    leader2.setVisible(false);
+                    gui.sendMessage(msg);
                 });
 
                 inactiveMenu2.getItems().addAll(activate, discard);

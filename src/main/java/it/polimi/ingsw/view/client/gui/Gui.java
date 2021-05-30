@@ -669,6 +669,7 @@ public class Gui extends View {
      */
     @Override
     public void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice) {
+
         if(accepted){
             Platform.runLater(()->{
                 try {
@@ -687,8 +688,10 @@ public class Gui extends View {
             //askTurnAction();
         }
         else{
-            alertUser("Warning","Incorrect place resources. Try again.", Alert.AlertType.WARNING);
-            setPlaceResourcesAction();
+            Platform.runLater(()->{
+                alertUser("Warning","Incorrect place resources. Try again.", Alert.AlertType.WARNING);
+                setPlaceResourcesAction();
+            });
         }
     }
 

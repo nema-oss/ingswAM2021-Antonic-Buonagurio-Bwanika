@@ -133,7 +133,7 @@ public class GameBoardController{
     public void setCardMarketClickable(boolean bool){
 
         for(Node img : cardMarket.getChildren())
-            img.setDisable(bool);
+            img.setDisable(!bool);
 
     }
 

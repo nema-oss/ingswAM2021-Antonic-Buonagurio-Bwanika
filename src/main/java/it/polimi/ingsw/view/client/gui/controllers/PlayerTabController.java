@@ -51,7 +51,7 @@ public class PlayerTabController implements Initializable {
     }
 
     /**
-     * this method adds a new tab containg the player's board
+     * this method adds a new tab containing the player's board
      * @param clientPlayer the player the board belongs to
      * @param isCurrent boolean which says if the player to add corresponds to the one playing or if he is an enemy
      * @throws IOException

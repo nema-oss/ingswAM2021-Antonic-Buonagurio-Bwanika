@@ -704,17 +704,16 @@ public class MatchController implements ControllerInterface{
     /**
      * this method calls the player's method discardResources
      * @param nickname the player's nickname
-     * @param resourceType the resourceType of the resource to discard
+     * @param numberOfResourcesToDiscard the number of resources to discard
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onDiscardResource(String nickname, ResourceType resourceType){
+    public List<Error> onDiscardResource(String nickname, int numberOfResourcesToDiscard){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
         if(errors.isEmpty()) {
-            game.getCurrentPlayer().discardResources(); //va rivisto
-            game.movePlayersDiscard(1);
+            game.movePlayersDiscard(numberOfResourcesToDiscard);
         }
 
         return errors;

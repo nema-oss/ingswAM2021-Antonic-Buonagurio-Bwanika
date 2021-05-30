@@ -254,10 +254,6 @@ public abstract class View {
         new MessageSender(socket,message).sendMsg(outputStream);
     }
 
-    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
-        gameBoard.getMarket().update(market);
-        gameBoard.getCardMarket().update(cardMarket);
-    }
 
     public ClientPlayer getClientPlayer(){
         return player;
@@ -267,9 +263,7 @@ public abstract class View {
         return gameBoard;
     }
 
-    public void updatePlayerPosition(int position) {
-        player.updateCurrentPosition(position);
-    }
+    public  abstract void updatePlayerPosition(int position);
 
     public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard){
         otherPlayerBoards.put(user,clientPlayerBoard);
@@ -278,4 +272,7 @@ public abstract class View {
     public void showAcceptedActivateLeaderCard(LeaderCard choice){
         player.activateLeaderCard(choice);
     }
-}
+
+    public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+
+    }

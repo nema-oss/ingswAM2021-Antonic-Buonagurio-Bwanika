@@ -41,18 +41,20 @@ public class GameBoardController{
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
-                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
-                card.setId(clientCardMarket.getCard(i,j).getId());
-                card.setFitWidth(140.0);
-                card.setFitHeight(200.0);
-                cardMarket.add(card, j, i);
+                if(clientCardMarket.getStack(i,j).getListOfCards().size()!=0) {
+                    ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
+                    card.setId(clientCardMarket.getCard(i, j).getId());
+                    card.setFitWidth(140.0);
+                    card.setFitHeight(200.0);
+                    cardMarket.add(card, j, i);
 
-                int finalJ = j;
-                int finalI = i;
-                card.setOnMouseClicked(event -> {
-                    buyDevelopmentCard(finalJ, finalI);
-                });
-                card.setDisable(true);
+                    int finalJ = j;
+                    int finalI = i;
+                    card.setOnMouseClicked(event -> {
+                        buyDevelopmentCard(finalJ, finalI);
+                    });
+                    card.setDisable(true);
+                }
 
                 ImageView marble = new ImageView(new Image("gui/Images/Marbles/" + clientMarbleMarket.getMarble(i,j).getColor().toString() +  ".png" ));
                 marble.setPreserveRatio(true);
@@ -102,17 +104,19 @@ public class GameBoardController{
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
-                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
-                card.setId(clientGameBoard.getCardMarket().getCard(i,j).getId());
-                card.setFitWidth(140.0);
-                card.setFitHeight(200.0);
-                cardMarket.add(card, j, i);
+                if(clientGameBoard.getCardMarket().getStack(i,j).getListOfCards().size()!=0) {
+                    ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
+                    card.setId(clientGameBoard.getCardMarket().getCard(i, j).getId());
+                    card.setFitWidth(140.0);
+                    card.setFitHeight(200.0);
+                    cardMarket.add(card, j, i);
 
-                int finalI = i;
-                int finalJ = j;
-                card.setOnMouseClicked(event -> {
-                    buyDevelopmentCard(finalJ, finalI);
-                });
+                    int finalI = i;
+                    int finalJ = j;
+                    card.setOnMouseClicked(event -> {
+                        buyDevelopmentCard(finalJ, finalI);
+                    });
+                }
             }
     }
 

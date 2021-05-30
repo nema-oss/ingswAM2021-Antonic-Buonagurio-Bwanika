@@ -9,6 +9,7 @@ import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.*;
@@ -1404,7 +1405,16 @@ public class Cli extends View {
         System.out.println("Reconnection to match...");
     }
 
+    @Override
+    public void updatePlayerPosition(int position) {
+        player.updateCurrentPosition(position);
+    }
 
+
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+        gameBoard.getMarket().update(market);
+        gameBoard.getCardMarket().update(cardMarket);
+    }
 
     /**
      * Asks the user to play its turn action

@@ -27,12 +27,11 @@ public class GameController implements Initializable{
     @FXML
     public BorderPane gameBoardPane, playerBoardPane, leftBorder;
 
-    public static TurnActionController othersController;
 
     public  GameBoardController gameBoardController;
     public  PlayerTabController playerTabController;
     public  ChooseLeaderController chooseLeaderController;
-    public  TurnActionController turnActionController;
+    public ActionButtonsController actionButtonsController;
 
 
     public TurnActions getTurnAction() {

@@ -91,15 +91,18 @@ public class PlayerBoardController {
                 activate.setOnAction(event1 -> {
                     is1active = true;
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-
-                    Message msg = new ActivateLeaderCardMessage(l1, true);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
-                    Message msg = new DiscardLeaderCardMessage(l1);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
                 });
 
@@ -124,14 +127,17 @@ public class PlayerBoardController {
                     is2active = true;
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                    Message msg = new ActivateLeaderCardMessage(l2, true);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
-                    Message msg = new DiscardLeaderCardMessage(l2);
-                    gui.sendMessage(msg);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                 });
 
                 inactiveMenu2.getItems().addAll(activate, discard);
@@ -158,11 +164,11 @@ public class PlayerBoardController {
      * @param steps
      */
     private void moveOnPopeRoad(Integer steps){
-        popeSpaces.get(0).setStyle("");
+        popeSpaces.get(0).setVisible(false);
         if (steps > 0) {
             popeSpaces.subList(0, steps).clear();
         }
-        popeSpaces.get(0).setStyle("-fx-background-color:  #51db51");
+        popeSpaces.get(0).setVisible(true);
     }
 
     /**
@@ -265,15 +271,17 @@ public class PlayerBoardController {
 
         devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
-            ImageView card =new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
-            card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
+            if(clientPlayer.getPlayerBoard().getDevelopmentCards().get(i).size() != 0) {
+                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
+                card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
 
-            int finalI = i;
-            card.setOnMouseClicked(event -> {
-
-               prodCardsList.add(clientPlayer.getPlayerBoard().getDevelopmentCard(finalI));
-            });
-            devCards.add(card,0,i);
+                int finalI = i;
+                card.setOnMouseClicked(event -> {
+                    card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                    prodCardsList.add(clientPlayer.getPlayerBoard().getDevelopmentCard(finalI));
+                });
+                devCards.add(card, 0, i);
+            }
         }
     }
 
@@ -325,29 +333,29 @@ public class PlayerBoardController {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor2.add(res, 0, 1);
+                floor2.add(res, 1, 0);
             }
 
         }
 
         if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
-            if(deposit.getNumberOfResourcesOnFloor(1)>=1) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=1) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
                 floor3.add(res, 0, 0);
             }
-            if(deposit.getNumberOfResourcesOnFloor(1)>=2) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=2) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor3.add(res, 0, 1);
+                floor3.add(res, 1, 0);
             }
-            if(deposit.getNumberOfResourcesOnFloor(1)==3) {
+            if(deposit.getNumberOfResourcesOnFloor(3)==3) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor3.add(res, 0, 2);
+                floor3.add(res, 2, 0);
             }
         }
 
@@ -372,12 +380,13 @@ public class PlayerBoardController {
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();
         if(clientPlayer.getPositionIndex() == 1 ) {
-            p1.setStyle("-fx-background-color:  #51db51");
+            p0.setVisible(false);
+            p1.setVisible(true);
             popeSpaces.remove(0);
         }
-        else {
-            p0.setImage(new Image("gui/Images/PopeRoadResources/354687.png"));
-            p0.setStyle("-fx-background-color:  #51db51");
+
+        else{
+            p0.setVisible(true);
         }
 
         //setting deposit

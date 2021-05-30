@@ -5,7 +5,9 @@ import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
@@ -53,11 +55,13 @@ public class Gui extends View {
     private ConnectionController connectionController;
 
 
-    //private GameBoardController gameBoardController;
     private Scene gameBoardScene;
 
+    private Scene turnActionScene;
 
-    private TurnActionController turnActionController;
+
+
+    private ActionButtonsController actionButtonsController;
 
     private GameController gameSceneController;
     private Scene gameScene;
@@ -156,6 +160,7 @@ public class Gui extends View {
             gameScene = new Scene(root);
             gameSceneController = loader.getController();
             gameSceneController.setGui(this);
+            gameBoardController = gameSceneController.gameBoardController;
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
         }
@@ -166,7 +171,7 @@ public class Gui extends View {
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
             gameSceneController.leftBorder.setCenter(loader.load());
-            turnActionController = loader.getController();
+            actionButtonsController = loader.getController();
             //gameSceneController.addLeadersToPlayer();
 
         } catch (IOException e) {
@@ -259,6 +264,17 @@ public class Gui extends View {
            /* primaryStage.setScene(chooseResourcesScene);
             primaryStage.show(); */
         });
+    }
+
+
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+        gameBoard.getMarket().update(market);
+        gameBoard.getCardMarket().update(cardMarket);
+        Platform.runLater(()->{
+            gameBoardController.updateMarbleMarket(gameBoard);
+            gameBoardController.updateCardMarket(gameBoard);
+        });
+
     }
 
     /**
@@ -454,7 +470,10 @@ public class Gui extends View {
      */
     @Override
     public void showServerDisconnection() {
-
+        Platform.runLater(()->{
+            alertUser("Error", "Server disconnected. Try again later", Alert.AlertType.ERROR);
+            primaryStage.setScene(startingScene);
+        });
     }
 
     /**
@@ -512,10 +531,13 @@ public class Gui extends View {
                 isGameScene = true;
                 try {
                     FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    gameSceneController.leftBorder.setCenter(loader.load());
-                    turnActionController = loader.getController();
+                    Parent root = loader.load();
+                    gameSceneController.leftBorder.setCenter(root);
+                    actionButtonsController = loader.getController();
+                    actionButtonsController.setGui(this);
+                    actionButtonsController.setGameController(gameSceneController);
+                    gameSceneController.initializeActions();
                     gameSceneController.addLeadersToPlayer();
-                    turnActionController.setGui(this);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -524,11 +546,11 @@ public class Gui extends View {
             }
 
             if(currentPlayer.equals(player.getNickname())){
-                turnActionController.setWaitVisible(false);
-                turnActionController.setChooseActionTypeVisible(true);
+                actionButtonsController.setWaitVisible(false);
+                actionButtonsController.setChooseActionTypeVisible(true);
             }else{
-                turnActionController.setWaitVisible(true);
-                turnActionController.setChooseActionTypeVisible(false);
+                actionButtonsController.setWaitVisible(true);
+                actionButtonsController.setChooseActionTypeVisible(false);
             }
 
         });
@@ -542,7 +564,10 @@ public class Gui extends View {
     public void setPlaceResourcesAction() {
 
         Platform.runLater(()->{
-            gameSceneController.showPlaceResourcesButton();
+            //actionButtonsController.setSwapPaneVisible(true);
+            actionButtonsController.setPlaceResources(player.getBoughtResources());
+            actionButtonsController.setResourcePaneVisible(true);
+            actionButtonsController.setResourcePaneVisible(true);
         });
     }
 
@@ -577,12 +602,20 @@ public class Gui extends View {
 
         player.buyDevelopmentCard(x,y);
         playerBoardController.update(player);
-        /*
+
         Platform.runLater(()->{
-            alertUser("Warning", "Leader card action rejected.", Alert.AlertType.WARNING);
+            try {
+                FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                Parent root = loader.load();
+                gameSceneController.leftBorder.setCenter(root);
+                actionButtonsController.setChooseStandardActionVisible(false);
+                actionButtonsController.setChooseLeaderActionVisible(true);
+            }catch (IOException e){
+                System.out.println("Can't load Turn Action Scene");
+                e.printStackTrace();
+            }
         });
 
-         */
     }
 
     /**
@@ -637,13 +670,20 @@ public class Gui extends View {
     @Override
     public void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice) {
         if(accepted){
-
             Platform.runLater(()->{
-                gameSceneController.setInstructionLabel("The other resources will be discarded.");
+                try {
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                    Parent root = loader.load();
+                    gameSceneController.leftBorder.setCenter(root);
+                    actionButtonsController.setChooseLeaderActionVisible(true);
+                    actionButtonsController.setChooseStandardActionVisible(false);
+                }catch (IOException e){
+                    System.out.println("Can't load Turn Action Scene");
+                    e.printStackTrace();
+                }
                 //gameSceneController.nextTurnAction();
             });
-            player.addResource(userChoice);
-            playerBoardController.update(player);
+
             //askTurnAction();
         }
         else{
@@ -655,6 +695,15 @@ public class Gui extends View {
     @Override
     public void showReconnectionToMatch() {
 
+    }
+
+    @Override
+    public void updatePlayerPosition(int position) {
+
+        Platform.runLater(()->{
+            player.updateCurrentPosition(position);
+            playerBoardController.updatePopeRoad(player);
+        });
     }
 
     public void start() {
@@ -681,4 +730,7 @@ public class Gui extends View {
         return new ArrayList<ClientPlayer>();
     }
 
+    public void setPlayerBoardController(PlayerBoardController controller) {
+        playerBoardController = controller;
+    }
 }

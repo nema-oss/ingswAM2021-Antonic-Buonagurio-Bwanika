@@ -1,18 +1,15 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +49,7 @@ public interface ControllerInterface {
 
     List<Error> onMoveDeposit(String nickname, int x, int y);
 
-    List<Error> onDiscardResource(String nickname, ResourceType res);
+    List<Error> onDiscardResource(String nickname, int numberOfResourceToDiscard);
 
     void sendPlayTurn();
 

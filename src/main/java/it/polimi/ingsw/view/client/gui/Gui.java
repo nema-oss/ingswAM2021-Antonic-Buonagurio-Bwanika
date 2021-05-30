@@ -566,8 +566,6 @@ public class Gui extends View {
         Platform.runLater(()->{
             //actionButtonsController.setSwapPaneVisible(true);
             actionButtonsController.setPlaceResources(player.getBoughtResources());
-            actionButtonsController.setResourcePaneVisible(true);
-            actionButtonsController.setResourcePaneVisible(true);
         });
     }
 

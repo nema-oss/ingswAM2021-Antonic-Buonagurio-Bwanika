@@ -49,7 +49,7 @@ public class ActionButtonsController implements Initializable {
      private ComboBox<Integer> rowIndex, columnIndex, floorComboBox1, floorComboBox2, floorComboBox3, floorComboBox4, firstSwap, secondSwap;
 
      @FXML
-     private Label waitingMessage, devMessage, prodMessage, leaderMessage;
+     private Label waitingMessage, devMessage, prodMessage, leaderMessage, placeResourcesMessage;
 
      @FXML
      private ImageView firstRes, secondRes, thirdRes, fourthRes;
@@ -258,7 +258,9 @@ public class ActionButtonsController implements Initializable {
         discard2.setVisible(value);
         discard3.setVisible(value);
         discard4.setVisible(value);
-        resourcePane.setVisible(value);
+        placeResourcesMessage.setVisible(false);
+        placeResourcesOk.setVisible(false);
+        resourcePane.setVisible(false);
 
     }
 
@@ -278,7 +280,13 @@ public class ActionButtonsController implements Initializable {
 
         int size = resources.size();
         this.boughtResources = resources;
+
         if(size!=0) {
+
+            resourcePane.setVisible(true);
+            placeResourcesOk.setVisible(true);
+            placeResourcesMessage.setVisible(true);
+
             firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).getType().label + ".png"));
             firstRes.setVisible(true);
             floorComboBox1.setVisible(true);

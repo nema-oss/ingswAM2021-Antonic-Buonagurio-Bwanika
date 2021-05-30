@@ -333,19 +333,19 @@ public class PlayerBoardController {
         }
 
         if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
-            if(deposit.getNumberOfResourcesOnFloor(1)>=1) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=1) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
                 floor3.add(res, 0, 0);
             }
-            if(deposit.getNumberOfResourcesOnFloor(1)>=2) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=2) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
                 floor3.add(res, 0, 1);
             }
-            if(deposit.getNumberOfResourcesOnFloor(1)==3) {
+            if(deposit.getNumberOfResourcesOnFloor(3)==3) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);

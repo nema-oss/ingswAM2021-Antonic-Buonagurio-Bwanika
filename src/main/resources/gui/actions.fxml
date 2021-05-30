@@ -50,12 +50,12 @@
                      <Font size="20.0" />
                   </font>
                </Label>
-               <Button fx:id="placeResourcesOk" layoutX="74.0" layoutY="317.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="116.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
+               <Button fx:id="placeResourcesOk" layoutX="118.0" layoutY="309.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="116.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
                <CheckBox fx:id="discard1" layoutX="257.0" layoutY="55.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard2" layoutX="257.0" layoutY="123.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard3" layoutX="257.0" layoutY="192.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard4" layoutX="257.0" layoutY="260.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
-               <AnchorPane fx:id="swapPane" layoutX="33.0" layoutY="48.0" prefHeight="212.0" prefWidth="260.0" styleClass="cardPane" stylesheets="@gameBoard.css">
+               <AnchorPane fx:id="swapPane" layoutX="33.0" layoutY="48.0" prefHeight="212.0" prefWidth="260.0" styleClass="cardPane">
                   <children>
                      <Label alignment="CENTER" layoutX="29.0" layoutY="14.0" prefHeight="36.0" prefWidth="202.0" text="Choose floors to swap">
                         <font>
@@ -72,6 +72,7 @@
                      <ComboBox fx:id="secondSwap" layoutX="175.0" layoutY="82.0" prefHeight="49.0" prefWidth="65.0" />
                   </children>
                </AnchorPane>
+               <Button fx:id="endTurnButton" alignment="CENTER" layoutX="104.0" layoutY="257.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
             </children>
          </AnchorPane>
       </AnchorPane>

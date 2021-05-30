@@ -242,7 +242,20 @@ public class ActionButtonsController implements Initializable {
 
     public void setResourcePaneVisible(boolean value){
 
+        firstRes.setVisible(value);
+        secondRes.setVisible(value);
+        thirdRes.setVisible(value);
+        fourthRes.setVisible(value);
+        floorComboBox1.setVisible(value);
+        floorComboBox2.setVisible(value);
+        floorComboBox3.setVisible(value);
+        floorComboBox4.setVisible(value);
+        discard1.setVisible(value);
+        discard2.setVisible(value);
+        discard3.setVisible(value);
+        discard4.setVisible(value);
         resourcePane.setVisible(value);
+
     }
 
     public void setSwapPaneVisible(boolean value){

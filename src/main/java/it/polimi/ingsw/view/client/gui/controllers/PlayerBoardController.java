@@ -327,7 +327,7 @@ public class PlayerBoardController {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor2.add(res, 0, 1);
+                floor2.add(res, 1, 0);
             }
 
         }
@@ -343,13 +343,13 @@ public class PlayerBoardController {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor3.add(res, 0, 1);
+                floor3.add(res, 1, 0);
             }
             if(deposit.getNumberOfResourcesOnFloor(3)==3) {
                 ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res.setFitHeight(30);
                 res.setFitWidth(30);
-                floor3.add(res, 0, 2);
+                floor3.add(res, 2, 0);
             }
         }
 

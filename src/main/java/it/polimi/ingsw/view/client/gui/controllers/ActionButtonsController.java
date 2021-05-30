@@ -274,22 +274,25 @@ public class ActionButtonsController implements Initializable {
 
             if (size >= 2) {
                 secondRes.setImage(new Image("/gui/Images/Resources/" +resources.get(1).getType().label + ".png"));
+                secondRes.setVisible(true);
                 floorComboBox2.setVisible(true);
-                discard2.setVisible(false);
+                discard2.setVisible(true);
                 toPut2 = resources.get(1).getType();
             }
 
-            if (size == 3) {
+            if (size >= 3) {
                 thirdRes.setImage(new Image("/gui/Images/Resources/" +resources.get(2).getType().label + ".png"));
+                thirdRes.setVisible(true);
                 floorComboBox3.setVisible(true);
-                discard3.setVisible(false);
+                discard3.setVisible(true);
                 toPut3 = resources.get(2).getType();
             }
 
             if (size == 4) {
                 fourthRes.setImage(new Image("/gui/Images/Resources/" +resources.get(3).getType().label + ".png"));
+                fourthRes.setVisible(true);
                 floorComboBox4.setVisible(true);
-                discard4.setVisible(false);
+                discard4.setVisible(true);
                 toPut4 = resources.get(3).getType();
             }
         }

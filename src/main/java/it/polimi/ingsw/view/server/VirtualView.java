@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
@@ -381,11 +382,15 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedBuyResources(String user, int x, int y) {
+
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
-
+        updatePlayerPosition(user);
+        /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
+
+         */
 
         sendMessage(clients.get(user), message);
 
@@ -414,11 +419,13 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
+
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
+        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
+        //sendMessage(clients.get(user), boardUpdate);
     }
 
     private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
@@ -445,9 +452,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
-
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
+        updatePlayerPosition(user);
+        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
+        //sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -475,6 +482,7 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> card){
         Message message = new UpdateWriter().productionLeaderAccepted(user,card);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
 
     }
 
@@ -533,6 +541,7 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedDiscardLeaderCard(String user, LeaderCard card){
         Message message = new UpdateWriter().discardLeaderAccepted(card);
         sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
     }
 
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
@@ -677,6 +686,13 @@ public class VirtualView implements VirtualViewInterface{
 
     public ObjectOutputStream getOutputStream(Socket socket) {
         return socketObjectOutputStreamMap.get(socket);
+    }
+
+
+    public void updatePlayerPosition(String nickname){
+
+        Message message = new MoveOnPopeRoadMessage(matchController.getPlayerCurrentPosition(nickname));
+        sendMessage(clients.get(nickname), message);
     }
 }
 

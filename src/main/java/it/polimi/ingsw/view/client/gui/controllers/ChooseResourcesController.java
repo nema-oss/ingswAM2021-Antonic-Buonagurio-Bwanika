@@ -9,6 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import java.util.*;
 
+/**
+ * this class is the controller for the "chooseResources.fxml" file
+ * @author chiara
+ */
 public class ChooseResourcesController {
 
 
@@ -26,23 +30,12 @@ public class ChooseResourcesController {
         this.gui = gui;
     }
 
+
+    /**
+     * this method sends the message with the resources chosen by the player
+     */
     @FXML
     private void switchOnGame() {
-
-        /*
-        if(chosen < 1){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("You must choose a resource first!");
-            alert.showAndWait();
-        }
-
-        else if (chosen > 1){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Too much resources chosen! You can choose one resource at a time");
-            alert.showAndWait();
-        }
-
-         */
 
         Map<ResourceType,Integer> selectedResourceTypes = new HashMap<>();
 
@@ -64,6 +57,9 @@ public class ChooseResourcesController {
 
     }
 
+    /**
+     * this method changes the images's style if it is clicked
+     */
     @FXML
     private void goldChosen(){
         if(!coinSelected) {
@@ -114,6 +110,10 @@ public class ChooseResourcesController {
 
     }
 
+    /**
+     * this method updates the label, writing how many resources the client can choose
+     * @param text
+     */
     public void setInstructionalLabel(String text){
         title.setText(text);
     }

@@ -14,8 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseLeaderController {
 
+/**
+ * this class represents the javafx scene "chooseLeaders" controller
+ * @author chiara
+ */
+public class ChooseLeaderController {
 
    @FXML
    ImageView l1, l2, l3, l4;
@@ -28,10 +32,18 @@ public class ChooseLeaderController {
    private Gui gui;
 
 
+    /**
+     * this method sets the gui
+     * @param gui
+     */
     public void setGui(Gui gui){
         this.gui = gui;
     }
 
+    /**
+     * this method sends the message with the chosen leader cards
+     * @throws IOException
+     */
     @FXML
     private void switchOnChooseResources() throws IOException {
 
@@ -67,6 +79,9 @@ public class ChooseLeaderController {
 
     }
 
+    /**
+     * this method changes the card's style if it is selected, adding a green border to it
+     */
     @FXML
     private void l1Clicked(){
 
@@ -81,6 +96,9 @@ public class ChooseLeaderController {
         }
     }
 
+    /**
+     * this method changes the card's style if it is selected, adding a green border to it
+     */
     @FXML
     private void l2Clicked(){
 
@@ -95,6 +113,9 @@ public class ChooseLeaderController {
         }
     }
 
+    /**
+     * this method changes the card's style if it is selected, adding a green border to it
+     */
     @FXML
     private void l3Clicked(){
 
@@ -109,6 +130,9 @@ public class ChooseLeaderController {
         }
     }
 
+    /**
+     * this method changes the card's style if it is selected, adding a green border to it
+     */
     @FXML
     private void l4Clicked(){
 
@@ -124,6 +148,11 @@ public class ChooseLeaderController {
 
     }
 
+
+    /**
+     * this method initializes the images representing the leadercards to choose
+     * @param leaderCards to choose from
+     */
     public void initializeLeaderCards(List<LeaderCard> leaderCards){
 
         givenCards = leaderCards;
@@ -139,6 +168,7 @@ public class ChooseLeaderController {
 
 
     }
+
 
     public void setInstructionLabel(String infoMessage) {
     }

@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="pBoard" prefHeight="441.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.PlayerBoardController">
-    <ImageView fitHeight="609.0" fitWidth="614.0" layoutX="130.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="609.0" fitWidth="614.0" layoutX="131.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/Boards/MastersofRenaissance_PlayerBoard(11_2020)-1.png" />
     </ImageView>
     <GridPane fx:id="devCards" layoutX="367.0" layoutY="175.0" prefHeight="232.0" prefWidth="350.0">
@@ -91,12 +91,13 @@
         </Label>
     </AnchorPane>
     <AnchorPane layoutY="2.0" prefHeight="439.0" prefWidth="130.0">
-        <AnchorPane layoutY="14.0" prefHeight="183.0" prefWidth="130.0">
+        <AnchorPane prefHeight="183.0" prefWidth="130.0">
             <ImageView fx:id="leader1" fitHeight="168.0" fitWidth="110.0" layoutX="10.0" layoutY="8.0" onMouseClicked="#actionsOnLeader1" pickOnBounds="true" preserveRatio="true" />
         </AnchorPane>
-        <AnchorPane layoutY="231.0" prefHeight="183.0" prefWidth="130.0">
+        <AnchorPane layoutY="191.0" prefHeight="183.0" prefWidth="130.0">
             <ImageView fx:id="leader2" fitHeight="168.0" fitWidth="110.0" layoutX="10.0" layoutY="8.0" onMouseClicked="#actionsOnLeader2" pickOnBounds="true" preserveRatio="true" />
         </AnchorPane>
+      <Button fx:id="leaderProdButton" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#activateLeaderProduction" prefHeight="30.0" prefWidth="130.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Leader Production" visible="false" />
     </AnchorPane>
     <GridPane fx:id="popeRoad" layoutX="149.0" layoutY="22.0" prefHeight="95.0" prefWidth="578.0">
         <columnConstraints>
@@ -174,5 +175,6 @@
             <Image url="@Images/Resources/shield.png" />
         </ImageView>
     </AnchorPane>
-    <Button fx:id="boardProdButton" layoutX="277.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#activateBoardProduction" prefHeight="16.0" prefWidth="76.0" text="Activate Board Production" visible="false" />
+    <Button fx:id="boardProdButton" layoutX="278.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateBoardProduction" prefHeight="16.0" prefWidth="76.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Board Production" visible="false" />
+   <Button fx:id="cardProdButton" layoutX="374.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateCardsProduction" prefHeight="25.0" prefWidth="342.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Cards Production" visible="false" />
 </AnchorPane>

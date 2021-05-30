@@ -303,6 +303,7 @@ public class Gui extends View {
                 gameSceneController.setProductionLeaderCard(leaderCards);
             }else{
                 //game.restore();
+                String informationMessage = "Production action rejected. Try again. ";
                 alertUser("Warning", "Try again.", Alert.AlertType.WARNING);
             }
         });
@@ -323,7 +324,7 @@ public class Gui extends View {
                 gameSceneController.setLeaderCardHand(player.getHand());
             }else{
                 //gameSceneController.restore();
-                String informationMessage = "Try again. ";
+                String informationMessage = "Leader card action rejected. Try again. ";
                 alertUser("Warning!", informationMessage, Alert.AlertType.WARNING);
 
             }
@@ -417,7 +418,7 @@ public class Gui extends View {
     @Override
     public void showNewUserLogged(String username) {
 
-        String infoMessage = loginWaitController.getInformationBox() + "\n" + username + " is a new player!";
+        String infoMessage = loginWaitController.getInformationBox() + "\n" + username + " joined the match!";
         Platform.runLater(()->{
                     loginWaitController.setInformationBox(infoMessage);
                 });
@@ -430,6 +431,9 @@ public class Gui extends View {
     @Override
     public void serverNotFound() {
 
+        Platform.runLater(()->{
+            alertUser("Error", "No server found", Alert.AlertType.ERROR);
+        });
     }
 
     /**
@@ -440,6 +444,9 @@ public class Gui extends View {
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
 
+        Platform.runLater(()->{
+            alertUser("Information", otherClient+"has disconnected from the match!", Alert.AlertType.INFORMATION);
+        });
     }
 
     /**
@@ -486,11 +493,6 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             alertUser("Error","Login failed. Try again with a different username", Alert.AlertType.ERROR);
-            /*
-            DoLoginMessage doLoginMessage = new DoLoginMessage();
-            doLoginMessage.setFirstPlayer(isFirstPlayer);
-            showLogin(doLoginMessage);
-             */
         });
 
     }
@@ -513,6 +515,7 @@ public class Gui extends View {
                     gameSceneController.leftBorder.setCenter(loader.load());
                     turnActionController = loader.getController();
                     gameSceneController.addLeadersToPlayer();
+                    turnActionController.setGui(this);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -525,6 +528,7 @@ public class Gui extends View {
                 turnActionController.setChooseActionTypeVisible(true);
             }else{
                 turnActionController.setWaitVisible(true);
+                turnActionController.setChooseActionTypeVisible(false);
             }
 
         });
@@ -570,6 +574,9 @@ public class Gui extends View {
      */
     @Override
     public void showAcceptedBuyDevelopmentCard(int x, int y) {
+
+        player.buyDevelopmentCard(x,y);
+        playerBoardController.update(player);
         /*
         Platform.runLater(()->{
             alertUser("Warning", "Leader card action rejected.", Alert.AlertType.WARNING);
@@ -611,6 +618,7 @@ public class Gui extends View {
 
         if(accepted) {
             player.getDeposit().swapFloors(x, y);
+            playerBoardController.update(player);
         }
         else {
             Platform.runLater(()->{
@@ -635,6 +643,7 @@ public class Gui extends View {
                 //gameSceneController.nextTurnAction();
             });
             player.addResource(userChoice);
+            playerBoardController.update(player);
             //askTurnAction();
         }
         else{

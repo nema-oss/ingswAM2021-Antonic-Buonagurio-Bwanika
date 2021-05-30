@@ -20,7 +20,8 @@ public interface VirtualViewInterface {
 
     /**
      * Asks the user to choose its resources
-     * @param nickname the user's nickname
+     *
+     * @param nickname          the user's nickname
      * @param numberOfResources the amount of resources to select
      */
     void toDoChooseResources(String nickname, int numberOfResources);
@@ -37,12 +38,14 @@ public interface VirtualViewInterface {
 
     /**
      * This method asks a user to play its turn
+     *
      * @param nickname the user's nickname
      */
     void playTurn(String nickname);
 
     /**
      * This method alerts a user that its turn is finished
+     *
      * @param nickname the user's nickname
      */
     void endTurn(String nickname);
@@ -50,4 +53,8 @@ public interface VirtualViewInterface {
     void sendResourcesBought(List<Resource> resources);
 
     void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+
+    public void updatePlayerPosition(String nickname);
+
 }
+

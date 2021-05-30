@@ -258,4 +258,9 @@ public abstract class View {
     public ClientGameBoard getClientGameBoard() {
         return gameBoard;
     }
+
+    public void updatePlayerPosition(int position) {
+        player.updateCurrentPosition(position);
+
+    }
 }

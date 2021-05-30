@@ -203,10 +203,12 @@ public class MatchController implements ControllerInterface{
         else if (size >= 3 && currentPlayer.equals(game.getListOfPlayers().get(2))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 1);
             currentPlayer.moveOnPopeRoad();
+            viewInterface.updatePlayerPosition(currentPlayer.getNickname());
         }
         else if(size >= 4 && currentPlayer.equals(game.getListOfPlayers().get(3))) {
             viewInterface.toDoChooseResources(currentPlayer.getNickname(), 2);
             game.getCurrentPlayer().moveOnPopeRoad();
+            viewInterface.updatePlayerPosition(currentPlayer.getNickname());
         }
         else if(game.getCurrentPlayer().equals(game.getListOfPlayers().get(0))){
             game.setGamePhase(GamePhase.PLAY_TURN);
@@ -893,5 +895,7 @@ public class MatchController implements ControllerInterface{
         return game.getGameBoard().getCardMarket().getCardMarket();
     }
 
-
+    public int getPlayerCurrentPosition(String nickname){
+        return game.getPlayerByNickname(nickname).getPositionIndex();
+    }
 }

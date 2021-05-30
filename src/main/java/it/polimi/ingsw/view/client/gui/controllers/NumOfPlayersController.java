@@ -10,6 +10,10 @@ import javafx.scene.control.ComboBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * this class is the controller for the "numOfPlayers.fxml" file
+ * @author chiara
+ */
 public class NumOfPlayersController implements Initializable {
 
     @FXML
@@ -21,6 +25,9 @@ public class NumOfPlayersController implements Initializable {
 
     private LoginRequest message;
 
+    /**
+     * this method sens the message with the number of players chosen
+     */
     @FXML
     public void switchToLobby() {
 
@@ -28,7 +35,6 @@ public class NumOfPlayersController implements Initializable {
         message.setNumberOfPlayers(numOfPlayers);
         gui.sendMessage(message);
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

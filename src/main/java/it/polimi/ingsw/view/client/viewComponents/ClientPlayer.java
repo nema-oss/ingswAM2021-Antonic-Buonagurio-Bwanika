@@ -154,5 +154,12 @@ public class ClientPlayer {
             clientDeposit.addResource(userChoice.get(resource), resource);
         }
     }
+
+    public void updateCurrentPosition(int position) {
+
+        ClientPopeRoad popeRoad = playerBoard.getPopeRoad();
+        popeRoad.setCurrentPositionIndex(position);
+        popeRoad.setCurrentPosition(position);
+    }
 }
 

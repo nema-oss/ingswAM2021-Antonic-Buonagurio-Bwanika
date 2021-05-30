@@ -265,14 +265,17 @@ public class PlayerBoardController {
 
         devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
-            ImageView card =new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
-            card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
+            if(clientPlayer.getPlayerBoard().getDevelopmentCards().get(i).size() != 0) {
+                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
+                card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
 
-            int finalI = i;
-            card.setOnMouseClicked(event -> {
-               prodCardsList.add(clientPlayer.getPlayerBoard().getDevelopmentCard(finalI));
-            });
-            devCards.add(card,0,i);
+                int finalI = i;
+                card.setOnMouseClicked(event -> {
+                    card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                    prodCardsList.add(clientPlayer.getPlayerBoard().getDevelopmentCard(finalI));
+                });
+                devCards.add(card, 0, i);
+            }
         }
     }
 

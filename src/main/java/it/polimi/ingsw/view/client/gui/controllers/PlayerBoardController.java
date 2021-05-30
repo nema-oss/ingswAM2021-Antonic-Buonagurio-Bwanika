@@ -99,6 +99,7 @@ public class PlayerBoardController {
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
+                    leader1.setVisible(false);
                     Message msg = new DiscardLeaderCardMessage(l1);
                     gui.sendMessage(msg);
                 });
@@ -130,6 +131,7 @@ public class PlayerBoardController {
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
+                    leader2.setVisible(false);
                     Message msg = new DiscardLeaderCardMessage(l2);
                     gui.sendMessage(msg);
                 });

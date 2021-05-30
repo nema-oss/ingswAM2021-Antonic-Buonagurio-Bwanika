@@ -232,8 +232,12 @@ public abstract class View {
     public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
 
         ClientDeposit deposit = player.getDeposit();
+
+        int j=3;
         for(ResourceType resourceType: resourceChoice.keySet()){
-            deposit.addResource(resourceChoice.get(resourceType), new Resource(resourceType));
+            for(int i=0; i<resourceChoice.get(resourceType); i++)
+                deposit.addResource(j, new Resource(resourceType));
+            j--;
         }
     }
 

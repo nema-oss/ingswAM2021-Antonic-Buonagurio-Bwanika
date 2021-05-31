@@ -71,4 +71,5 @@ public interface ControllerInterface {
 
     int getPlayerCurrentPosition(String nickname);
 
+    Marble getFreeMarble();
 }

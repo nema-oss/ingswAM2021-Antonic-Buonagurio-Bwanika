@@ -12,10 +12,12 @@ public class SetGameBoardMessage implements SetupMessage, Serializable {
 
     private DevelopmentDeck[][] cardMarket;
     private Marble[][] market;
+    private Marble freeMarble;
 
-    public SetGameBoardMessage(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+    public SetGameBoardMessage(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
         this.cardMarket = cardMarket;
         this.market = market;
+        this.freeMarble = freeMarble;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class SetGameBoardMessage implements SetupMessage, Serializable {
 
     @Override
     public void execute(View view) {
-        view.updateGameBoard(cardMarket,market);
+        view.updateGameBoard(cardMarket,market,freeMarble);
     }
 
     public DevelopmentDeck[][] getCardMarket() {
@@ -36,5 +38,7 @@ public class SetGameBoardMessage implements SetupMessage, Serializable {
     public Marble[][] getMarket() {
         return market;
     }
+
+
 
 }

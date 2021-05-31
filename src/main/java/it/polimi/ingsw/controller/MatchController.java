@@ -101,7 +101,7 @@ public class MatchController implements ControllerInterface{
 
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
 
-        viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles());
+        viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles(), game.getGameBoard().getMarket().getFreeMarble());
         sendChooseLeaderCards(); // per il numero di giocatori
 
         return errors;
@@ -899,5 +899,10 @@ public class MatchController implements ControllerInterface{
 
     public int getPlayerCurrentPosition(String nickname){
         return game.getPlayerByNickname(nickname).getPositionIndex();
+    }
+
+    @Override
+    public Marble getFreeMarble() {
+        return game.getGameBoard().getMarket().getFreeMarble();
     }
 }

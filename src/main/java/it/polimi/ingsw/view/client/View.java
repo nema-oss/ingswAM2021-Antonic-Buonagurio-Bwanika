@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
@@ -41,7 +40,7 @@ public abstract class View {
         this.gameBoard = new ClientGameBoard();
         this.player = new ClientPlayer(nickname,this.gameBoard);
         otherPlayerBoards = new HashMap<>();
-        Message message = new UpdateClientPlayerBoardsMessage(nickname,this.player.getPlayerBoard());
+        Message message = new UpdateClientPlayerBoardsMessage(nickname, player.getPlayerBoard());
         sendMessage(socket,message);
     }
 
@@ -263,6 +262,10 @@ public abstract class View {
         return player;
     }
 
+    public Map<String, ClientPlayerBoard> getOtherPlayerBoards() {
+        return otherPlayerBoards;
+    }
+
     public ClientGameBoard getClientGameBoard() {
         return gameBoard;
     }
@@ -277,6 +280,6 @@ public abstract class View {
         player.activateLeaderCard(choice);
     }
 
-    public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+    public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
     }

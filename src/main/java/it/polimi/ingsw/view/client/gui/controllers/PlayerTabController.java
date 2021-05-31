@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +30,7 @@ public class PlayerTabController implements Initializable {
 
     private TabPane tabPane;
 
-    Map<ClientPlayer, PlayerBoardController> controllersMap;
+    Map<String, PlayerBoardController> controllersMap;
 
     public Gui gui;
 
@@ -56,10 +57,10 @@ public class PlayerTabController implements Initializable {
      * @param isCurrent boolean which says if the player to add corresponds to the one playing or if he is an enemy
      * @throws IOException
      */
-    public void addPlayerBoard(ClientPlayer clientPlayer, boolean isCurrent) throws IOException {
+    public void addPlayerBoard(String clientPlayer, ClientPlayerBoard clientPlayerBoard, boolean isCurrent) throws IOException {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
-        Tab tab = new Tab(clientPlayer.getNickname(), loader.load());
+        Tab tab = new Tab(clientPlayer, loader.load());
         tab.setStyle("-fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%) ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
         tab.setClosable(false);
 
@@ -81,7 +82,7 @@ public class PlayerTabController implements Initializable {
      * @param clientPlayer the player to give the cards to
      */
     public void addLeadersChosen(ClientPlayer clientPlayer){
-        controllersMap.get(clientPlayer).initialize(clientPlayer);
+        controllersMap.get(clientPlayer.getNickname()).initialize(clientPlayer);
     }
 
     /**
@@ -92,17 +93,17 @@ public class PlayerTabController implements Initializable {
 
         for(Tab t : tabPane.getTabs()){
             if (t.getId().equals(clientPlayer.getNickname())) {
-                controllersMap.get(clientPlayer).update(clientPlayer);
+                controllersMap.get(clientPlayer.getNickname()).update(clientPlayer);
                 break;
             }
         }
     }
 
     public void setProductionClickable(ClientPlayer clientPlayer, boolean bool){
-        controllersMap.get(clientPlayer).setProductionClickable(bool);
+        controllersMap.get(clientPlayer.getNickname()).setProductionClickable(bool);
     }
 
     public void setLeaderAction(ClientPlayer clientPlayer, boolean bool){
-        controllersMap.get(clientPlayer).setLeaderAction(bool);
+        controllersMap.get(clientPlayer.getNickname()).setLeaderAction(bool);
     }
 }

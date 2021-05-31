@@ -52,7 +52,7 @@ public interface VirtualViewInterface {
 
     void sendResourcesBought(List<Resource> resources);
 
-    void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+    void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
     public void updatePlayerPosition(String nickname);
 

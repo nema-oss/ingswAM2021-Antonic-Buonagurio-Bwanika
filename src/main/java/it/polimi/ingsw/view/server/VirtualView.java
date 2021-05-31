@@ -218,7 +218,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void playTurn(String username){
 
-        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket());
+        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
 
         for(Socket socket: clients.values()){
             sendMessage(socket,message);
@@ -669,9 +669,9 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     @Override
-    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
 
-        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market);
+        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market,freeMarble);
         clients.values().forEach(p->sendMessage(p,message));
     }
 

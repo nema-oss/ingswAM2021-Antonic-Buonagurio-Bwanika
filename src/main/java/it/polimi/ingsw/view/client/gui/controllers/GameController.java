@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.client.utils.TurnActions;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -126,13 +127,12 @@ public class GameController implements Initializable{
      * @throws IOException
      */
     public void initializePlayerBoard() throws IOException {
-        /* for(ClientPlayer p : gui.getPlayers()) {
-           playerTabController.addPlayerBoard(p));
-        } */
 
         playerTabController.setGui(gui);
-        playerTabController.addPlayerBoard(gui.getClientPlayer(), true);
-
+        for(String playerNickname : gui.getOtherPlayerBoards().keySet()) {
+           playerTabController.addPlayerBoard(playerNickname,gui.getOtherPlayerBoards().get(playerNickname),true);
+        }
+        playerTabController.addPlayerBoard(gui.getPlayerNickname(),gui.getClientPlayer().getPlayerBoard(),true);
     }
 
     public void initializeActions(){

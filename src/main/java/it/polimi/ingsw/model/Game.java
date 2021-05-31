@@ -146,7 +146,9 @@ public class Game {
         for(Player player : listOfPlayers)
             if(p.getNickname().equals(player.getNickname()))
                 errors.add(Error.NICKNAME_ALREADY_EXISTS);
-        listOfPlayers.add(p);
+        if(errors.isEmpty())
+          listOfPlayers.add(p);
+
         return errors;
     }
 
@@ -214,12 +216,13 @@ public class Game {
     /**
      * * this method play the turn of the CPU in an single player match the actions of the CPU in a single player match
     */
-    public void lorenzoTurn(){
+    public ActionToken lorenzoTurn(){
 
         ActionToken actionToken = actionDeck.drawCard();
         if(actionToken.useEffect(lorenzoPopeRoad, gameBoard.getCardMarket(), actionDeck)) lostGame();
         if(lorenzoPopeRoad.getCurrentPosition().isPopeSpace())
             checkLorenzoPosition(lorenzoPopeRoad.getCurrentPositionIndex());
+        return actionToken;
     }
 
     /**
@@ -357,6 +360,10 @@ public class Game {
             Player p = disconnectedPlayers.get(disconnectedPlayer);
             listOfPlayers.add(p);
         }
+    }
+
+    public PopeRoad getLorenzoPopeRoad() {
+        return lorenzoPopeRoad;
     }
 }
 

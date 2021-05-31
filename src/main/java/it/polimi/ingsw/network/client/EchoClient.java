@@ -78,6 +78,7 @@ public class EchoClient {
                 server.close();
             } catch (IOException e) {
                 serverDisconnection();
+                e.printStackTrace();
             }
 
         }
@@ -130,6 +131,7 @@ public class EchoClient {
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
             if (!server.isClosed()) {
                 serverDisconnection();
+                e.printStackTrace();
             }
         }
     }

@@ -7,6 +7,10 @@ import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.model.ActionToken;
+import it.polimi.ingsw.model.ActionTokenDiscard;
+import it.polimi.ingsw.model.ActionTokenFactory;
+import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
@@ -1410,6 +1414,23 @@ public class Cli extends View {
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
         gameBoard.getMarket().update(market,freeMarble);
         gameBoard.getCardMarket().update(cardMarket);
+    }
+
+    @Override
+    public void showLorenzoAction(ActionToken lorenzoAction) {
+
+        if(lorenzoAction instanceof ActionTokenDiscard){
+            int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
+            DevelopmentCardType developmentCardType = ((ActionTokenDiscard) lorenzoAction).getType();
+            Formatting.clearScreen();
+            showTitle();
+            System.out.println("Lorenzo discarded " + amount + " card of type " + developmentCardType + " from the market");
+        }else if(lorenzoAction instanceof ActionTokenMove){
+            int steps = ((ActionTokenMove) lorenzoAction).getSteps();
+            Formatting.clearScreen();
+            showTitle();
+            System.out.println("Lorenzo moved " + steps +  " forward on his Poperoad");
+        }
     }
 
     /**

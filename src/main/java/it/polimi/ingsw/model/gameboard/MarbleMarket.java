@@ -47,7 +47,7 @@ public class MarbleMarket implements Serializable {
         return freeMarble;
     }
 
-    /*
+    /**
     * this method returns the list of marbles selected to the player; they cabn correspond to a row or a column of the market.
     * this method also rearranges the marble market after purchase
     * @param row : if the player wants to buy a row, it is the index of that row. if the player wants to buy a column it's -1;

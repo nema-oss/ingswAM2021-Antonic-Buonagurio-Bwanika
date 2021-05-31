@@ -23,6 +23,7 @@
          <Button fx:id="standardAction" layoutX="253.0" layoutY="125.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="141.0" styleClass="orange" stylesheets="@gameBoard.css" text="Standard action" />
          <Button fx:id="leaderAction" layoutX="258.0" layoutY="186.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="141.0" styleClass="orange" stylesheets="@gameBoard.css" text="Leader action" />
          <Button fx:id="buyResource" layoutX="241.0" layoutY="115.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy resources" />
+         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="104.0" layoutY="257.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
          <Button fx:id="startProd" layoutX="246.0" layoutY="157.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Production" />
          <Button fx:id="buyCard" layoutX="246.0" layoutY="201.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy development card" />
          <ComboBox fx:id="rowOrColumn" layoutX="240.0" layoutY="120.0" prefWidth="150.0" promptText="row or column?" />
@@ -55,7 +56,6 @@
                <CheckBox fx:id="discard2" layoutX="257.0" layoutY="123.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard3" layoutX="257.0" layoutY="192.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard4" layoutX="257.0" layoutY="260.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
-               <Button fx:id="endTurnButton" alignment="CENTER" layoutX="104.0" layoutY="257.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
             </children>
          </AnchorPane>
          <AnchorPane fx:id="swapPane" layoutX="368.0" layoutY="65.0" prefHeight="212.0" prefWidth="260.0" styleClass="cardPane">

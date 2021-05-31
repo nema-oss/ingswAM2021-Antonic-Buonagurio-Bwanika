@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
@@ -645,8 +646,9 @@ public class MatchController implements ControllerInterface{
 
             controlEndOfGame();
             game.nextPlayer();
-            if (game.getListOfPlayers().size() == 1)
-                game.lorenzoTurn();
+            if (game.getListOfPlayers().size() == 1) {
+                onLorenzoTurn();
+            }
             sendPlayTurn();
         }
 
@@ -654,6 +656,16 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+    /**
+     * Manages the Lorenzo turn
+     */
+    public void onLorenzoTurn(){
+
+        ActionToken lorenzoAction = game.lorenzoTurn();
+        if(game.getLorenzoPopeRoad().getCurrentPosition().isPopeSpace())
+            game.checkLorenzoPosition(game.getLorenzoPopeRoad().getCurrentPositionIndex());
+        viewInterface.sendLorenzoTurn(lorenzoAction);
+    }
 
     /**
      * this method adds the resources just bought from the marbleMarket to the player's deposit

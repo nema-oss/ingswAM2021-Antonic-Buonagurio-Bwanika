@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.server;
 
 
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
@@ -56,5 +57,6 @@ public interface VirtualViewInterface {
 
     public void updatePlayerPosition(String nickname);
 
+    void sendLorenzoTurn(ActionToken lorenzoAction);
 }
 

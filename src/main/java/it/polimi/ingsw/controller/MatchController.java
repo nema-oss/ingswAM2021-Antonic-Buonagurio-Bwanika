@@ -16,6 +16,7 @@ import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -728,7 +729,8 @@ public class MatchController implements ControllerInterface{
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
         if(errors.isEmpty()) {
-            game.movePlayersDiscard(numberOfResourcesToDiscard);
+            game.movePlayersDiscard(nickname,numberOfResourcesToDiscard);
+            game.getListOfPlayers().stream().map(Player::getNickname).filter(pNickname -> !pNickname.equals(nickname)).collect(Collectors.toList()).forEach(viewInterface::updatePlayerPosition);
         }
 
         return errors;

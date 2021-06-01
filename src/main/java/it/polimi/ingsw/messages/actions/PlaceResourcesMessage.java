@@ -42,7 +42,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
      */
     public void execute(VirtualView virtualView){
         virtualView.placeResource(user,userChoice);
-        //virtualView.discardResources(user,discardResources);
+        virtualView.discardResources(user,discardResources);
     }
     /**
      * Get the message type

@@ -75,8 +75,9 @@ public class GameBoardController{
      * @param clientGameBoard
      */
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
-        for(Node n : marbleMarket.getChildren())
-            n.setVisible(false);
+
+        //for(Node n : marbleMarket.getChildren())
+            //n.setVisible(false);
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++){
@@ -89,6 +90,7 @@ public class GameBoardController{
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientGameBoard.getMarket().getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
         freeMarble.setFitHeight(40);
+
 
 
     }

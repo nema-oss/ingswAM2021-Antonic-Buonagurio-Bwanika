@@ -658,9 +658,8 @@ public class VirtualView implements VirtualViewInterface{
      * @param numberOfResourcesToDiscard the number of resources to discard
      */
     public void discardResources(String user, int numberOfResourcesToDiscard) {
-        matchController.onDiscardResource(user,numberOfResourcesToDiscard);
+        matchController.onDiscardResource(user, numberOfResourcesToDiscard);
     }
-
     /**
      * This method manage an activate production request from the client
      * @param user the current player

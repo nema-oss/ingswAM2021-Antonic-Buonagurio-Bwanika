@@ -306,12 +306,13 @@ public class Game {
     /**
      * this method move the other players after current player discard resources
      * and distributes the faith points
+     * @param nickname the current player that discarded the resources
      * @param steps the number of steps forward for each player
      */
-    public void movePlayersDiscard(int steps){
+    public void movePlayersDiscard(String nickname, int steps){
 
         listOfPlayers.stream()
-                        .filter(p -> !p.equals(currentPlayer))
+                        .filter(p -> !p.getNickname().equals(nickname))
                         .forEach(p-> p.moveOnPopeRoadDiscard(steps));
         listOfPlayers
                 .stream()

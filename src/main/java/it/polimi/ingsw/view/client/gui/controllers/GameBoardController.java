@@ -36,7 +36,7 @@ public class GameBoardController{
      */
     public void initialize(ClientGameBoard clientGameBoard) {
 
-        /*ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
+        ClientCardMarket clientCardMarket = clientGameBoard.getCardMarket();
         ClientMarbleMarket clientMarbleMarket = clientGameBoard.getMarket();
 
         for(int i=0; i<3; i++)
@@ -65,10 +65,7 @@ public class GameBoardController{
 
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientMarbleMarket.getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
-        freeMarble.setFitHeight(40); */
-
-        updateCardMarket(clientGameBoard);
-        updateMarbleMarket(clientGameBoard);
+        freeMarble.setFitHeight(40);
 
 
     }
@@ -92,6 +89,7 @@ public class GameBoardController{
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientGameBoard.getMarket().getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
         freeMarble.setFitHeight(40);
+
 
 
     }
@@ -118,7 +116,6 @@ public class GameBoardController{
                     });
                 }
             }
-
     }
 
     /**

@@ -96,6 +96,8 @@ public class PlayerBoardController {
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
+                    leaderActivationResult(l1);
+
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -132,6 +134,8 @@ public class PlayerBoardController {
                     userChoice.put(l2,true);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
+
+                    leaderActivationResult(l2);
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -148,6 +152,20 @@ public class PlayerBoardController {
                 inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
             } else {
                 leaderCardsList.add(l2);
+            }
+        }
+    }
+
+    public void leaderActivationResult(LeaderCard l){
+
+        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l)){
+            if(l.equals(l1)){
+                is1active = false;
+                leader1.getParent().setStyle("");
+            }
+            else if(l.equals(l2)){
+                is2active = false;
+                leader2.getParent().setStyle("");
             }
         }
     }

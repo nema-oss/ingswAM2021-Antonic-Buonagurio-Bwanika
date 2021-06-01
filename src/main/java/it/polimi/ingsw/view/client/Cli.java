@@ -2,28 +2,26 @@ package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
-import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.model.ActionToken;
+import it.polimi.ingsw.model.ActionTokenDiscard;
+import it.polimi.ingsw.model.ActionTokenFactory;
+import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
-import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.*;
-import it.polimi.ingsw.model.player.Board;
-import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
-import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1192,6 +1190,8 @@ public class Cli extends View {
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
         player.setHand(choice);
+        Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+        sendMessage(socket,message);
     }
 
     /**
@@ -1411,9 +1411,26 @@ public class Cli extends View {
     }
 
 
-    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
-        gameBoard.getMarket().update(market);
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
+        gameBoard.getMarket().update(market,freeMarble);
         gameBoard.getCardMarket().update(cardMarket);
+    }
+
+    @Override
+    public void showLorenzoAction(ActionToken lorenzoAction) {
+
+        if(lorenzoAction instanceof ActionTokenDiscard){
+            int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
+            DevelopmentCardType developmentCardType = ((ActionTokenDiscard) lorenzoAction).getType();
+            Formatting.clearScreen();
+            showTitle();
+            System.out.println("Lorenzo discarded " + amount + " card of type " + developmentCardType + " from the market");
+        }else if(lorenzoAction instanceof ActionTokenMove){
+            int steps = ((ActionTokenMove) lorenzoAction).getSteps();
+            Formatting.clearScreen();
+            showTitle();
+            System.out.println("Lorenzo moved " + steps +  " forward on his Poperoad");
+        }
     }
 
     /**

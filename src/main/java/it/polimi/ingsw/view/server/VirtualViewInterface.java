@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.server;
 
 
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
@@ -52,9 +53,10 @@ public interface VirtualViewInterface {
 
     void sendResourcesBought(List<Resource> resources);
 
-    void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market);
+    void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
     public void updatePlayerPosition(String nickname);
 
+    void sendLorenzoTurn(ActionToken lorenzoAction);
 }
 

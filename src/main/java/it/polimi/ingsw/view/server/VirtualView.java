@@ -10,6 +10,7 @@ import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.messages.utils.UpdateWriter;
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -218,7 +219,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void playTurn(String username){
 
-        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket());
+        SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
 
         for(Socket socket: clients.values()){
             sendMessage(socket,message);
@@ -387,6 +388,8 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
         updatePlayerPosition(user);
+        sendGameBoard(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
+
         /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         sendMessage(clients.get(user), boardUpdate);
@@ -491,6 +494,10 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new ErrorWriter().productionLeaderRejected(user,card);
         sendMessage(clients.get(user), message);
 
+    }
+
+    public void endProduction(String user){
+        matchController.onEndProduction(user);
     }
 
 
@@ -669,9 +676,9 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     @Override
-    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
+    public void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
 
-        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market);
+        SetGameBoardMessage message = new SetGameBoardMessage(cardMarket,market,freeMarble);
         clients.values().forEach(p->sendMessage(p,message));
     }
 
@@ -695,6 +702,12 @@ public class VirtualView implements VirtualViewInterface{
 
         Message message = new MoveOnPopeRoadMessage(matchController.getPlayerCurrentPosition(nickname));
         sendMessage(clients.get(nickname), message);
+    }
+
+    @Override
+    public void sendLorenzoTurn(ActionToken lorenzoAction) {
+
+
     }
 
     public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {

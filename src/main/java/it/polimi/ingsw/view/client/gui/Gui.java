@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.client.gui;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
@@ -267,13 +269,18 @@ public class Gui extends View {
     }
 
 
-    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market) {
-        gameBoard.getMarket().update(market);
+    public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
+        gameBoard.getMarket().update(market, freeMarble);
         gameBoard.getCardMarket().update(cardMarket);
         Platform.runLater(()->{
             gameBoardController.updateMarbleMarket(gameBoard);
             gameBoardController.updateCardMarket(gameBoard);
         });
+
+    }
+
+    @Override
+    public void showLorenzoAction(ActionToken lorenzoAction) {
 
     }
 
@@ -564,7 +571,7 @@ public class Gui extends View {
     public void setPlaceResourcesAction() {
 
         Platform.runLater(()->{
-            //actionButtonsController.setSwapPaneVisible(true);
+            actionButtonsController.setSwapPaneVisible(true);
             actionButtonsController.setPlaceResources(player.getBoughtResources());
         });
     }
@@ -636,6 +643,8 @@ public class Gui extends View {
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
         player.setHand(choice);
+        Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+        sendMessage(message);
     }
 
 
@@ -670,20 +679,28 @@ public class Gui extends View {
 
         if(accepted){
             Platform.runLater(()->{
+                player.addResource(userChoice);
+                playerBoardController.update(player);
+                actionButtonsController.setLeaderActionVisible(true);
+                actionButtonsController.setStandardActionVisible(false);
+                actionButtonsController.setResourcePaneVisible(false);
+                actionButtonsController.setSwapPaneVisible(false);
+                actionButtonsController.setEndTurnVisible(true);
+                /*
                 try {
                     FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
                     Parent root = loader.load();
                     gameSceneController.leftBorder.setCenter(root);
-                    actionButtonsController.setChooseLeaderActionVisible(true);
-                    actionButtonsController.setChooseStandardActionVisible(false);
+                    actionButtonsController.setLeaderActionVisible(true);
+                    actionButtonsController.setStandardActionVisible(false);
+                    actionButtonsController.setEndTurnVisible(true);
                 }catch (IOException e){
                     System.out.println("Can't load Turn Action Scene");
                     e.printStackTrace();
                 }
-                //gameSceneController.nextTurnAction();
-            });
 
-            //askTurnAction();
+                 */
+            });
         }
         else{
             Platform.runLater(()->{

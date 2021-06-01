@@ -1,13 +1,10 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
-import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.Marble;
-import it.polimi.ingsw.model.gameboard.MarbleMarket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class ClientMarbleMarket implements Serializable {
 
@@ -58,7 +55,8 @@ public class ClientMarbleMarket implements Serializable {
         return marbles;
     }
 
-    public void update(Marble[][] marbleMarket) {
+    public void update(Marble[][] marbleMarket, Marble freeMarble) {
         this.marbleMarket = marbleMarket;
+        this.freeMarble = freeMarble;
     }
 }

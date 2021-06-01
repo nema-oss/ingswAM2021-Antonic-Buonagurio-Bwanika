@@ -35,6 +35,7 @@ public class GameBoard {
         return market;
     }
 
+
     public static int getCardMarketRow() {
         return CARD_MARKET_ROW;
     }

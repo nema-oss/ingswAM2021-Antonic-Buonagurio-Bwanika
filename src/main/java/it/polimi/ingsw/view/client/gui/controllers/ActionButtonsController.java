@@ -124,8 +124,8 @@ public class ActionButtonsController implements Initializable {
         });
         endProd.setOnAction(event -> {
             setActivateProductionVisible(false);
-
-            //TODO: e il messaggio per finire dov'è?
+            EndProductionMessage endProductionMessage = new EndProductionMessage(gui.getPlayerNickname());
+            gui.sendMessage(endProductionMessage);
         });
         setChooseStandardActionVisible(false);
         endProd.setVisible(false);
@@ -144,14 +144,14 @@ public class ActionButtonsController implements Initializable {
         setRowIndexVisible(false);
         rowOk.setOnAction(event -> {
             setRowIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),(Integer) rowIndex.getValue(), -1, false);
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),(Integer) rowIndex.getValue()-1, -1, false);
             gui.sendMessage(msg);
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1, (Integer) columnIndex.getValue(), false);
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1, (Integer) columnIndex.getValue()-1, false);
             gui.sendMessage(msg);
         });
 

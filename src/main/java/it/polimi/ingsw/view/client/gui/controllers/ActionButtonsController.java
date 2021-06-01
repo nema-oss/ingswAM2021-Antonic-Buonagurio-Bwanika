@@ -261,9 +261,9 @@ public class ActionButtonsController implements Initializable {
         discard2.setVisible(value);
         discard3.setVisible(value);
         discard4.setVisible(value);
-        placeResourcesMessage.setVisible(false);
-        placeResourcesOk.setVisible(false);
-        resourcePane.setVisible(false);
+        placeResourcesMessage.setVisible(value);
+        placeResourcesOk.setVisible(value);
+        resourcePane.setVisible(value);
 
     }
 
@@ -359,6 +359,7 @@ public class ActionButtonsController implements Initializable {
     public void setLorenzoVisible(boolean value){
         lorenzoLabel.setVisible(value);
         actionToken.setVisible(value);
+        lorenzoPane.setVisible(value);
     }
 
     public void showLorenzoTurn(ActionToken tokenDrawn, String text){

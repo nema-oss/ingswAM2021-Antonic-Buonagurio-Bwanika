@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -78,13 +79,16 @@ public class GameBoardController{
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++){
-                ImageView marble = new ImageView(new Image("gui/Images/Marbles/" + clientGameBoard.getMarket().getMarble(i,j).getColor().toString() +  ".png" ));
+
+                removeNodeByRowColumnIndex(i,j, marbleMarket);
+
+                ImageView marble = new ImageView(new Image("gui/Images/Marbles/" +  clientGameBoard.getMarket().getMarble(i,j).getColor().toString() +  ".png" ));
                 marble.setPreserveRatio(true);
                 marble.setFitHeight(40);
                 marble.setFitWidth(40);
                 marbleMarket.add(marble, j, i);
-
                 marble.setVisible(true);
+
             }
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientGameBoard.getMarket().getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
@@ -94,6 +98,19 @@ public class GameBoardController{
 
     }
 
+    public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
+
+        ObservableList<Node> children = gridPane.getChildren();
+        for(Node node : children) {
+            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView= (ImageView) node;
+                gridPane.getChildren().remove(imageView);
+                break;
+            }
+        }
+    }
+
+
     /**
      * this method updates the gameboard's card market
      * @param clientGameBoard
@@ -102,6 +119,9 @@ public class GameBoardController{
 
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
+
+                removeNodeByRowColumnIndex(i,j, cardMarket);
+
                 if(clientGameBoard.getCardMarket().getStack(i,j).getListOfCards().size()!=0) {
                     ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
                     card.setId(clientGameBoard.getCardMarket().getCard(i, j).getId());

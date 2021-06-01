@@ -81,7 +81,6 @@
                <Label fx:id="lorenzoLabel" layoutX="21.0" layoutY="12.0" prefHeight="47.0" prefWidth="242.0" text="Label" />
             </children>
          </AnchorPane>
-         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="331.0" layoutY="277.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
       </AnchorPane>
    </right>
    <center>

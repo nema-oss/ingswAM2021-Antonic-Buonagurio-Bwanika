@@ -55,7 +55,6 @@
                <CheckBox fx:id="discard2" layoutX="257.0" layoutY="123.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard3" layoutX="257.0" layoutY="192.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
                <CheckBox fx:id="discard4" layoutX="257.0" layoutY="260.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
-               <Button fx:id="endTurnButton" alignment="CENTER" layoutX="104.0" layoutY="257.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
             </children>
          </AnchorPane>
          <AnchorPane fx:id="swapPane" layoutX="368.0" layoutY="65.0" prefHeight="212.0" prefWidth="260.0" styleClass="cardPane">
@@ -75,6 +74,13 @@
                <ComboBox fx:id="secondSwap" layoutX="175.0" layoutY="82.0" prefHeight="49.0" prefWidth="65.0" />
             </children>
          </AnchorPane>
+         <AnchorPane fx:id="lorenzoPane" layoutX="179.0" layoutY="45.0" prefHeight="262.0" prefWidth="289.0">
+            <children>
+               <ImageView fx:id="actionToken" fitHeight="140.0" fitWidth="147.0" layoutX="71.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+               <Label fx:id="lorenzoLabel" layoutX="21.0" layoutY="12.0" prefHeight="47.0" prefWidth="242.0" text="Label" />
+            </children>
+         </AnchorPane>
+         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="331.0" layoutY="277.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
       </AnchorPane>
    </right>
    <center>

@@ -295,6 +295,9 @@ public class PlayerBoardController {
             if(clientPlayer.getPlayerBoard().getDevelopmentCards().get(i).size() != 0) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
                 card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
+                card.setFitWidth(118);
+                card.setFitHeight(210);
+                card.setPreserveRatio(true);
 
                 int finalI = i;
                 card.setOnMouseClicked(event -> {
@@ -381,6 +384,18 @@ public class PlayerBoardController {
         }
 
 
+    }
+
+    public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
+
+        ObservableList<Node> children = gridPane.getChildren();
+        for(Node node : children) {
+            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView= (ImageView) node;
+                imageView.getImage().cancel();
+                break;
+            }
+        }
     }
 
     /**

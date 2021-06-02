@@ -119,7 +119,6 @@ public class ActionButtonsController implements Initializable {
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
             gui.sendMessage(msg);
 
-            //TODO: da mettere altrove
             gameController.makeProductionClickable(true);
         });
         endProd.setOnAction(event -> {

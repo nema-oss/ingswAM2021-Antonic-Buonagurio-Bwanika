@@ -300,7 +300,7 @@ public class PlayerBoardController {
                     card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                     prodCardsList.add(clientPlayerBoard.getDevelopmentCard(finalI));
                 });
-                devCards.add(card, 0, i);
+                devCards.add(card, i, 0);
             }
         }
     }

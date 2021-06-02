@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.Gui;
@@ -32,7 +33,7 @@ public class ActionButtonsController implements Initializable {
     private BorderPane leftPane;
 
     @FXML
-    private AnchorPane resourcePane, swapPane;
+    private AnchorPane resourcePane, swapPane, lorenzoPane;
 
     @FXML
     private ProgressIndicator wait;
@@ -49,10 +50,10 @@ public class ActionButtonsController implements Initializable {
      private ComboBox<Integer> rowIndex, columnIndex, floorComboBox1, floorComboBox2, floorComboBox3, floorComboBox4, firstSwap, secondSwap;
 
      @FXML
-     private Label waitingMessage, devMessage, prodMessage, leaderMessage, placeResourcesMessage;
+     private Label waitingMessage, devMessage, prodMessage, leaderMessage, placeResourcesMessage, lorenzoLabel;
 
      @FXML
-     private ImageView firstRes, secondRes, thirdRes, fourthRes;
+     private ImageView firstRes, secondRes, thirdRes, fourthRes, actionToken;
 
 
      private ResourceType toPut1, toPut2, toPut3, toPut4;
@@ -184,6 +185,8 @@ public class ActionButtonsController implements Initializable {
             gui.sendMessage(msg);
         });
         setEndTurnVisible(false);
+
+        setLorenzoVisible(false);
     }
 
     /**
@@ -258,9 +261,9 @@ public class ActionButtonsController implements Initializable {
         discard2.setVisible(value);
         discard3.setVisible(value);
         discard4.setVisible(value);
-        placeResourcesMessage.setVisible(false);
-        placeResourcesOk.setVisible(false);
-        resourcePane.setVisible(false);
+        placeResourcesMessage.setVisible(value);
+        placeResourcesOk.setVisible(value);
+        resourcePane.setVisible(value);
 
     }
 
@@ -350,5 +353,19 @@ public class ActionButtonsController implements Initializable {
 
         Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
         gui.sendMessage(msg);
+    }
+
+    public void setLorenzoVisible(boolean value){
+        lorenzoLabel.setVisible(value);
+        actionToken.setVisible(value);
+        lorenzoPane.setVisible(value);
+    }
+
+    public void showLorenzoTurn(ActionToken tokenDrawn, String text){
+
+        actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
+        lorenzoLabel.setText(text);
+
+        setLorenzoVisible(true);
     }
 }

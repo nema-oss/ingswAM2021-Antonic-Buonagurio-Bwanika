@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.ClientCardMarket;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -53,7 +54,9 @@ public class GameBoardController{
                     int finalJ = j;
                     int finalI = i;
                     card.setOnMouseClicked(event -> {
-                        buyDevelopmentCard(finalJ, finalI);
+                        card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                        buyDevelopmentCard(finalI, finalJ);
+                        card.setStyle("");
                     });
                     card.setDisable(true);
                 }
@@ -79,29 +82,39 @@ public class GameBoardController{
      */
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
 
-        //for(Node n : marbleMarket.getChildren())
-            //n.setVisible(false);
+        for(int i=0; i<3; i++)
+            for(int j=0; j<4; j++){
 
-        GridPane newMarket = new GridPane();
-        for(int i=0; i<3; i++) {
-            for (int j = 0; j < 4; j++) {
-                ImageView marble = new ImageView(new Image("gui/Images/Marbles/" + clientGameBoard.getMarket().getMarble(i, j).getColor().toString() + ".png"));
+                removeNodeByRowColumnIndex(i,j, marbleMarket);
+
+                ImageView marble = new ImageView(new Image("gui/Images/Marbles/" +  clientGameBoard.getMarket().getMarble(i,j).getColor().toString() +  ".png" ));
                 marble.setPreserveRatio(true);
                 marble.setFitHeight(40);
                 marble.setFitWidth(40);
-                newMarket.add(marble, j, i);
-            }
-        }
+                marbleMarket.add(marble, j, i);
+                marble.setVisible(true);
 
+            }
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientGameBoard.getMarket().getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
         freeMarble.setFitHeight(40);
 
 
 
-
-
     }
+
+    public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
+
+        ObservableList<Node> children = gridPane.getChildren();
+        for(Node node : children) {
+            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView= (ImageView) node;
+                gridPane.getChildren().remove(imageView);
+                break;
+            }
+        }
+    }
+
 
     /**
      * this method updates the gameboard's card market
@@ -109,11 +122,11 @@ public class GameBoardController{
      */
     public void updateCardMarket(ClientGameBoard clientGameBoard){
 
-        for(Node n : cardMarket.getChildren())
-            n.setVisible(false);
-
         for(int i=0; i<3; i++)
             for(int j=0; j<4; j++) {
+
+                removeNodeByRowColumnIndex(i,j, cardMarket);
+
                 if(clientGameBoard.getCardMarket().getStack(i,j).getListOfCards().size()!=0) {
                     ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
                     card.setId(clientGameBoard.getCardMarket().getCard(i, j).getId());
@@ -124,7 +137,9 @@ public class GameBoardController{
                     int finalI = i;
                     int finalJ = j;
                     card.setOnMouseClicked(event -> {
+                        card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                         buyDevelopmentCard(finalI, finalJ);
+                        card.setStyle("");
                     });
                 }
             }

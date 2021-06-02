@@ -8,6 +8,14 @@ import java.io.Serializable;
 
 public abstract class ActionToken implements Serializable {
 
+    public String id;
     abstract boolean useEffect(PopeRoad popeRoad, CardMarket cardMarket, ActionTokenDeck actionTokenDeck);
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

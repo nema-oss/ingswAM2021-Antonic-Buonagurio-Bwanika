@@ -96,6 +96,8 @@ public class PlayerBoardController {
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
+                    leaderActivationResult(l1);
+
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -132,6 +134,8 @@ public class PlayerBoardController {
                     userChoice.put(l2,true);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
+
+                    leaderActivationResult(l2);
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -148,6 +152,20 @@ public class PlayerBoardController {
                 inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
             } else {
                 leaderCardsList.add(l2);
+            }
+        }
+    }
+
+    public void leaderActivationResult(LeaderCard l){
+
+        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l)){
+            if(l.equals(l1)){
+                is1active = false;
+                leader1.getParent().setStyle("");
+            }
+            else if(l.equals(l2)){
+                is2active = false;
+                leader2.getParent().setStyle("");
             }
         }
     }
@@ -272,11 +290,13 @@ public class PlayerBoardController {
      */
     public void updateDevelopmentCards(ClientPlayerBoard clientPlayerBoard){
 
-        devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
             if(clientPlayerBoard.getDevelopmentCards().get(i).size() != 0) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayerBoard.getDevelopmentCard(i).getId() + ".png"));
                 card.setId(clientPlayerBoard.getDevelopmentCard(i).getId());
+                card.setFitWidth(115);
+                card.setFitHeight(205);
+                card.setPreserveRatio(true);
 
                 int finalI = i;
                 card.setOnMouseClicked(event -> {
@@ -317,55 +337,82 @@ public class PlayerBoardController {
     public void updateDeposit(ClientDeposit deposit){
 
 
-        floor1.getChildren().clear();
-        floor2.getChildren().clear();
-        floor3.getChildren().clear();
+        removeNodeByRowColumnIndex(0,0,floor1);
+        removeNodeByRowColumnIndex(0,0,floor2);
+        removeNodeByRowColumnIndex(0,1,floor2);
+        removeNodeByRowColumnIndex(0,0,floor3);
+        removeNodeByRowColumnIndex(0,1,floor3);
+        removeNodeByRowColumnIndex(0,2,floor3);
 
         if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
             ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png"));
             res.setFitHeight(30);
             res.setFitWidth(30);
+
             floor1.add(res, 0, 0);
         }
+        else{
+            floor1.add(new ImageView(), 0, 0);
+        }
+
+        ImageView res1 = new ImageView();
+        ImageView res2 = new ImageView();
 
         if(deposit.getNumberOfResourcesOnFloor(2)!=0) {
             if(deposit.getNumberOfResourcesOnFloor(2)>=1) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor2.add(res, 0, 0);
+                res1.setImage(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res1.setFitHeight(30);
+                res1.setFitWidth(30);
+
             }
             if (deposit.getNumberOfResourcesOnFloor(2) == 2) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor2.add(res, 1, 0);
+                res2.setImage(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res2.setFitHeight(30);
+                res2.setFitWidth(30);
             }
-
         }
+        floor2.add(res1, 0, 0);
+        floor2.add(res2, 1, 0);
+
+        ImageView res3 = new ImageView();
+        ImageView res4 = new ImageView();
+        ImageView res5 = new ImageView();
 
         if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
             if(deposit.getNumberOfResourcesOnFloor(3)>=1) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 0, 0);
+                res3.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res3.setFitHeight(30);
+                res3.setFitWidth(30);
+
             }
             if(deposit.getNumberOfResourcesOnFloor(3)>=2) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 1, 0);
+                res4.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res4.setFitHeight(30);
+                res4.setFitWidth(30);
+
             }
             if(deposit.getNumberOfResourcesOnFloor(3)==3) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 2, 0);
+                res5.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res5.setFitHeight(30);
+                res5.setFitWidth(30);
             }
         }
+        floor3.add(res3, 0, 0);
+        floor3.add(res4, 1, 0);
+        floor3.add(res5, 2, 0);
 
+    }
 
+    public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
+
+        ObservableList<Node> children = gridPane.getChildren();
+        for(Node node : children) {
+            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView= (ImageView) node;
+                gridPane.getChildren().remove(imageView);
+                break;
+            }
+        }
     }
 
     /**

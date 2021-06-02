@@ -268,20 +268,20 @@ public class PlayerBoardController {
 
     /**
      * this method updates the player's developmentCards
-     * @param clientPlayer the player to update
+     * @param clientPlayerBoard the player board to update
      */
-    public void updateDevelopmentCards(ClientPlayer clientPlayer){
+    public void updateDevelopmentCards(ClientPlayerBoard clientPlayerBoard){
 
         devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
-            if(clientPlayer.getPlayerBoard().getDevelopmentCards().get(i).size() != 0) {
-                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
-                card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
+            if(clientPlayerBoard.getDevelopmentCards().get(i).size() != 0) {
+                ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayerBoard.getDevelopmentCard(i).getId() + ".png"));
+                card.setId(clientPlayerBoard.getDevelopmentCard(i).getId());
 
                 int finalI = i;
                 card.setOnMouseClicked(event -> {
                     card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    prodCardsList.add(clientPlayer.getPlayerBoard().getDevelopmentCard(finalI));
+                    prodCardsList.add(clientPlayerBoard.getDevelopmentCard(finalI));
                 });
                 devCards.add(card, 0, i);
             }
@@ -290,33 +290,32 @@ public class PlayerBoardController {
 
     /**
      * this method updates the player's strongbox content
-     * @param clientPlayer the player to update
+     * @param clientStrongbox the player strongbox to update
      */
-    public void updateStrongBox(ClientPlayer clientPlayer){
+    public void updateStrongBox(ClientStrongbox clientStrongbox){
 
-        for(ResourceType resourceType : clientPlayer.getStrongbox().getAll().keySet()){
+        for(ResourceType resourceType : clientStrongbox.getAll().keySet()){
             if(resourceType.equals(ResourceType.COIN)){
-                strongboxCoinCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+                strongboxCoinCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
             else if(resourceType.equals(ResourceType.SHIELD)){
-                strongboxShieldCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+                strongboxShieldCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
             else if(resourceType.equals(ResourceType.SERVANT)){
-                strongboxServantCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+                strongboxServantCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
             else if(resourceType.equals(ResourceType.STONE)){
-                strongboxStoneCount.setText(String.valueOf(clientPlayer.getStrongbox().getAll().get(resourceType).size()));
+                strongboxStoneCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
         }
     }
 
     /**
      * this method updates the player's deposit content
-     * @param clientPlayer the player to update
+     * @param deposit the player deposit
      */
-    public void updateDeposit(ClientPlayer clientPlayer){
+    public void updateDeposit(ClientDeposit deposit){
 
-        ClientDeposit deposit = clientPlayer.getPlayerBoard().getDeposit();
 
         floor1.getChildren().clear();
         floor2.getChildren().clear();
@@ -397,18 +396,18 @@ public class PlayerBoardController {
         }
 
         //setting deposit
-        updateDeposit(clientPlayer);
+        updateDeposit(clientPlayer.getDeposit());
 
     }
 
     /**
      * this method updates the whole player board
-     * @param clientPlayer the player to update
+     * @param clientPlayerBoard the player to update
      */
-    public void update(ClientPlayer clientPlayer){
-        updateDeposit(clientPlayer);
-        updateStrongBox(clientPlayer);
-        updateDevelopmentCards(clientPlayer);
+    public void update(ClientPlayerBoard clientPlayerBoard){
+        updateDeposit(clientPlayerBoard.getDeposit());
+        updateStrongBox(clientPlayerBoard.getStrongbox());
+        updateDevelopmentCards(clientPlayerBoard);
 
     }
 
@@ -424,5 +423,12 @@ public class PlayerBoardController {
 
     public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
+    }
+
+    public void updateOtherPlayers(ClientPlayerBoard clientPlayerBoard) {
+
+        updateDeposit(clientPlayerBoard.getDeposit());
+        updateStrongBox(clientPlayerBoard.getStrongbox());
+        updateDevelopmentCards(clientPlayerBoard);
     }
 }

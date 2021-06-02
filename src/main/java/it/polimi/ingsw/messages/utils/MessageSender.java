@@ -48,7 +48,7 @@ public class MessageSender {
     public synchronized boolean sendMsg(ObjectOutputStream outputStream) {
         if(!socket.isClosed()){
             try{
-                outputStream.writeUnshared( messageOutput);
+                outputStream.writeObject( messageOutput);
                 outputStream.reset();
                 return true;
             }catch (IOException e){

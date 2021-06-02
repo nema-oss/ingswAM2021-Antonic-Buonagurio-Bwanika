@@ -1410,6 +1410,11 @@ public class Cli extends View {
         player.updateCurrentPosition(position);
     }
 
+    @Override
+    public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
+        otherPlayerBoards.put(user,clientPlayerBoard);
+    }
+
 
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
         gameBoard.getMarket().update(market,freeMarble);

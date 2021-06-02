@@ -160,8 +160,14 @@ public class GameController implements Initializable{
         playerTabController.setProductionClickable(gui.getClientPlayer(), bool);
     }
 
+    public void updatePlayerBoard(String clientPlayer, ClientPlayerBoard clientPlayerBoard) {
+        playerTabController.updatePlayerBoard(clientPlayer,clientPlayerBoard);
+    }
+
+
     public void setLeaderAction(boolean bool){
         playerTabController.setLeaderAction(gui.getClientPlayer(), bool);
     }
+
 
 }

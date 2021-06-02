@@ -87,13 +87,14 @@ public class PlayerTabController implements Initializable {
 
     /**
      * this method updates the player's board
-     * @param clientPlayer the player to update
+     * @param clientPlayerBoard the player board to update
+     * @param clientPlayer player name
      */
-    public void updatePlayerBoard(ClientPlayer clientPlayer){
+    public void updatePlayerBoard(String clientPlayer, ClientPlayerBoard clientPlayerBoard){
 
         for(Tab t : tabPane.getTabs()){
-            if (t.getText().equals(clientPlayer.getNickname())) {
-                controllersMap.get(clientPlayer.getNickname()).update(clientPlayer);
+            if (t.getText().equals(clientPlayer)) {
+                controllersMap.get(clientPlayer).updateOtherPlayers(clientPlayerBoard);
                 break;
             }
         }

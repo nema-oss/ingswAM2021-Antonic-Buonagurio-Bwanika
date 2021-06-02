@@ -17,6 +17,7 @@ import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
+import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -271,9 +272,10 @@ public class Gui extends View {
 
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
 
-        gameBoard.getMarket().update(market, freeMarble);
-        gameBoard.getCardMarket().update(cardMarket);
+
         Platform.runLater(()->{
+            gameBoard.getMarket().update(market, freeMarble);
+            gameBoard.getCardMarket().update(cardMarket);
             gameBoardController.updateMarbleMarket(gameBoard);
             gameBoardController.updateCardMarket(gameBoard);
         });
@@ -607,7 +609,7 @@ public class Gui extends View {
             for(DevelopmentCard card: developmentCards){
                 System.out.println(card.getLevel());
             }
-            playerBoardController.update(player);
+            playerBoardController.update(player.getPlayerBoard());
             alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
             actionButtonsController.setBuyCardVisible(false);
             actionButtonsController.setLeaderActionVisible(true);
@@ -653,14 +655,14 @@ public class Gui extends View {
         if(accepted) {
             Platform.runLater(()->{
                 player.getDeposit().swapFloors(x, y);
-                playerBoardController.update(player);
+                playerBoardController.update(player.getPlayerBoard());
             });
         }
         else {
             Platform.runLater(()->{
                 alertUser("Warning","Move deposit request rejected. Try again", Alert.AlertType.WARNING);
             });
-            setPlaceResourcesAction();
+            //setPlaceResourcesAction();
         }
     }
 
@@ -676,7 +678,7 @@ public class Gui extends View {
         if(accepted){
             Platform.runLater(()->{
                 player.addResource(userChoice);
-                playerBoardController.update(player);
+                playerBoardController.update(player.getPlayerBoard());
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setResourcePaneVisible(false);
@@ -717,6 +719,15 @@ public class Gui extends View {
         Platform.runLater(()->{
             player.updateCurrentPosition(position);
             playerBoardController.updatePopeRoad(player);
+        });
+    }
+
+    @Override
+    public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
+
+        Platform.runLater(()->{
+            otherPlayerBoards.put(user,clientPlayerBoard);
+            //otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
         });
     }
 

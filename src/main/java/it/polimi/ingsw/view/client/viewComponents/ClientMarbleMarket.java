@@ -57,17 +57,25 @@ public class ClientMarbleMarket implements Serializable {
 
     public void update(Marble[][] marbleMarket, Marble freeMarble) {
 
-        if(this.freeMarble.getColor().equals(freeMarble.getColor()))
-            System.out.println("Non ho modificato le bibl");
+        System.out.println("prima");
+        System.out.println(marbleMarket[0][0].getColor());
+        System.out.println(marbleMarket[0][0]);
         for(int i= 0 ; i < nRow; i++) {
             for (int j = 0; j < nCol; j++) {
                 if (this.marbleMarket[i][j].getColor().equals(marbleMarket[i][j].getColor())){
-                    System.out.println("Non ho aggiornato il mercato");
                     break;
                 }
             }
         }
+
+
         this.marbleMarket = marbleMarket;
+
+        System.out.println("dopo");
+        System.out.println(this.marbleMarket[0][0].getColor());
+        System.out.println(this.marbleMarket[0][0]);
+        System.out.println("=================");
+
         this.freeMarble = freeMarble;
     }
 }

@@ -273,9 +273,7 @@ public abstract class View {
 
     public  abstract void updatePlayerPosition(int position);
 
-    public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard){
-        otherPlayerBoards.put(user,clientPlayerBoard);
-    }
+    public abstract void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard);
 
     public void showAcceptedActivateLeaderCard(LeaderCard choice){
         player.activateLeaderCard(choice);

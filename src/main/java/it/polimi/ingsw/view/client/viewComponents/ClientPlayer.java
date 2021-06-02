@@ -134,7 +134,9 @@ public class ClientPlayer {
     public void buyDevelopmentCard(int x, int y) {
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x, y);
         playerBoard.addDevelopmentCard(developmentCard);
+        getDeposit().removeResourcesFromDeposit(developmentCard);
     }
+
 
     public void setBoughtResources(List<Resource> resources) {
         this.boughtResources = resources;
@@ -167,5 +169,6 @@ public class ClientPlayer {
     public void activateLeaderCard(LeaderCard card){
         activeLeaderCards.add(card);
     }
+
 }
 

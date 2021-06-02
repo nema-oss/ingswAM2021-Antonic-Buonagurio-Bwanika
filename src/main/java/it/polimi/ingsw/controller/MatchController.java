@@ -920,6 +920,7 @@ public class MatchController implements ControllerInterface{
 
     @Override
     public Marble getFreeMarble() {
+
         return game.getGameBoard().getMarket().getFreeMarble();
     }
 }

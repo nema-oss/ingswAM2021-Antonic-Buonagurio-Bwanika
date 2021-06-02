@@ -660,7 +660,7 @@ public class Gui extends View {
             Platform.runLater(()->{
                 alertUser("Warning","Move deposit request rejected. Try again", Alert.AlertType.WARNING);
             });
-            setPlaceResourcesAction();
+            //setPlaceResourcesAction();
         }
     }
 

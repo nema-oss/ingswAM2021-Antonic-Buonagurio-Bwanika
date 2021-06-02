@@ -124,7 +124,7 @@ public class GameBoardController{
                     int finalI = i;
                     int finalJ = j;
                     card.setOnMouseClicked(event -> {
-                        buyDevelopmentCard(finalJ, finalI);
+                        buyDevelopmentCard(finalI, finalJ);
                     });
                 }
             }

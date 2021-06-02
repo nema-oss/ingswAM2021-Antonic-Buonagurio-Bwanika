@@ -1,13 +1,16 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ClientDeposit implements Serializable {
 
@@ -62,6 +65,26 @@ public class ClientDeposit implements Serializable {
         if((1 <= x && x <= 3) && (1 <= y && y <= 3)) {
             Collections.swap(warehouse, x - 1, y - 1);
 
+        }
+
+    }
+
+    public void removeResourcesFromDeposit(DevelopmentCard developmentCard) {
+
+        Map<ResourceType, Integer> cost = developmentCard.getCost();
+
+        for (ResourceType resourceType : cost.keySet()) {
+            for (List<Resource> resources : warehouse) {
+                if (resources.size() > 0) {
+                    if (resources.get(0).getType() == resourceType) {
+                        int amount = cost.get(resourceType);
+                        while (amount > 0) {
+                            resources.remove(0);
+                            amount--;
+                        }
+                    }
+                }
+            }
         }
 
     }

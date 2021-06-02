@@ -6,7 +6,10 @@ import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.ActionToken;
+import it.polimi.ingsw.model.ActionTokenDiscard;
+import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
@@ -285,6 +288,21 @@ public class Gui extends View {
     @Override
     public void showLorenzoAction(ActionToken lorenzoAction) {
 
+        Platform.runLater(()-> {
+            String lorenzoMessage = "";
+            int amount;
+            if(lorenzoAction instanceof ActionTokenDiscard){
+                DevelopmentCardType type = ((ActionTokenDiscard) lorenzoAction).getType();
+                amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
+                lorenzoMessage = "Lorenzo discarded " + amount + " card of type: " + type.toString();
+            }else if(lorenzoAction instanceof ActionTokenMove){
+                amount = ((ActionTokenMove) lorenzoAction).getSteps();
+                lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
+            }
+            actionButtonsController.setLorenzoVisible(true);
+            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
+        });
+
     }
 
     /**
@@ -551,9 +569,11 @@ public class Gui extends View {
             }
 
             if(currentPlayer.equals(player.getNickname())){
+                actionButtonsController.setLorenzoVisible(false);
                 actionButtonsController.setWaitVisible(false);
                 actionButtonsController.setChooseActionTypeVisible(true);
             }else{
+                actionButtonsController.setLorenzoVisible(false);
                 actionButtonsController.setWaitVisible(true);
                 actionButtonsController.setChooseActionTypeVisible(false);
             }

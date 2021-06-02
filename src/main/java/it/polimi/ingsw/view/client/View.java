@@ -41,8 +41,9 @@ public abstract class View {
         this.gameBoard = new ClientGameBoard();
         this.player = new ClientPlayer(nickname,this.gameBoard);
         otherPlayerBoards = new HashMap<>();
-        Message message = new UpdateClientPlayerBoardsMessage(nickname, player.getPlayerBoard());
-        sendMessage(socket,message);
+
+        //Message message = new UpdateClientPlayerBoardsMessage(nickname, player.getPlayerBoard());
+        //sendMessage(socket,message);
     }
 
 

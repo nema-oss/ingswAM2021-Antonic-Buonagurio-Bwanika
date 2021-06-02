@@ -359,8 +359,9 @@ public class VirtualView implements VirtualViewInterface{
 
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
-        for(Socket socket: clients.values())
-            sendMessage(socket, message);
+      //  for(Socket socket: clients.values())
+        //    sendMessage(socket, message);
+        sendMessage(clients.get(user), message);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {

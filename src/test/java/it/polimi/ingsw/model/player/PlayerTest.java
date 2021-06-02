@@ -160,4 +160,12 @@ class PlayerTest {
 
     }
 
+    @Test
+    void test() throws NonExistentCardException {
+
+        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
+        player.getPlayerBoard().addDevelopmentCard(developmentCard);
+        System.out.println(player.getPlayerBoard().getDevelopmentCards().get(1).size());
+    }
+
 }

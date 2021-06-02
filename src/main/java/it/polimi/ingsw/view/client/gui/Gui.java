@@ -270,6 +270,7 @@ public class Gui extends View {
 
 
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
+
         gameBoard.getMarket().update(market, freeMarble);
         gameBoard.getCardMarket().update(cardMarket);
         Platform.runLater(()->{
@@ -363,13 +364,8 @@ public class Gui extends View {
     public void setBuyCardAction(boolean actionRejectedBefore) {
 
         Platform.runLater(()->{
-            if(!actionRejectedBefore){
-                gameSceneController.setInstructionLabel("Select which card you want to buy");
-                gameSceneController.showCardMarket();
-            }else{
                 //gameSceneController.restore();
                 alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
-            }
         });
     }
 
@@ -599,26 +595,24 @@ public class Gui extends View {
     /**
      * This method tells the user that the buy card action has been accepted
      *
-     * @param x
-     * @param y
+     * @param x, y card coordinates
      */
     @Override
     public void showAcceptedBuyDevelopmentCard(int x, int y) {
 
-        player.buyDevelopmentCard(x,y);
-        playerBoardController.update(player);
-
         Platform.runLater(()->{
-            try {
-                FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                Parent root = loader.load();
-                gameSceneController.leftBorder.setCenter(root);
-                actionButtonsController.setChooseStandardActionVisible(false);
-                actionButtonsController.setChooseLeaderActionVisible(true);
-            }catch (IOException e){
-                System.out.println("Can't load Turn Action Scene");
-                e.printStackTrace();
+            player.buyDevelopmentCard(x,y);
+            List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
+            System.out.println(developmentCards.size());
+            for(DevelopmentCard card: developmentCards){
+                System.out.println(card.getLevel());
             }
+            playerBoardController.update(player);
+            alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
+            actionButtonsController.setBuyCardVisible(false);
+            actionButtonsController.setLeaderActionVisible(true);
+            actionButtonsController.setStandardActionVisible(false);
+            actionButtonsController.setEndTurnVisible(true);
         });
 
     }
@@ -657,8 +651,10 @@ public class Gui extends View {
     public void showMoveDepositResult(int x, int y, boolean accepted) {
 
         if(accepted) {
-            player.getDeposit().swapFloors(x, y);
-            playerBoardController.update(player);
+            Platform.runLater(()->{
+                player.getDeposit().swapFloors(x, y);
+                playerBoardController.update(player);
+            });
         }
         else {
             Platform.runLater(()->{

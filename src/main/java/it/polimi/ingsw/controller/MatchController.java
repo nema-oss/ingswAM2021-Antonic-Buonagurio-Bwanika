@@ -493,6 +493,9 @@ public class MatchController implements ControllerInterface{
             }
 
             try {
+                System.out.println("row = " + row + "col = " + column);
+                DevelopmentCard card = game.getGameBoard().getCardMarket().getCard(row,column);
+                System.out.println(card.getCost());
                 game.getCurrentPlayer().buyDevelopmentCard(row, column);
                 game.getCurrentPlayer().setStandardActionPlayed(true);
                 controlEndOfGame();

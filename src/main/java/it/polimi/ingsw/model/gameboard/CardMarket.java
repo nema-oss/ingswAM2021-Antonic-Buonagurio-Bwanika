@@ -85,7 +85,7 @@ public class CardMarket implements Serializable {
         
     }
 
-    /*
+    /**
      * this method returns the developmentCard chosen by the player without removing it from the Market
      * @param row,column : indexes of the selected card in the cardMarket
      * @return development card (type: DevelopmentCard)

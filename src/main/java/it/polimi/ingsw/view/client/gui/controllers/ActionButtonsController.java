@@ -365,7 +365,6 @@ public class ActionButtonsController implements Initializable {
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);
-
-        setLorenzoVisible(true);
+        //setLorenzoVisible(true);
     }
 }

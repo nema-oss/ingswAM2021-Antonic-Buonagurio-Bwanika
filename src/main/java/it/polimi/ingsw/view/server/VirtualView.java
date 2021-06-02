@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.server.LorenzoTurnMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
@@ -705,8 +706,8 @@ public class VirtualView implements VirtualViewInterface{
 
     @Override
     public void sendLorenzoTurn(ActionToken lorenzoAction) {
-
-
+        Message message = new LorenzoTurnMessage(lorenzoAction);
+        clients.values().forEach(p->sendMessage(p,message));
     }
 
     public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {

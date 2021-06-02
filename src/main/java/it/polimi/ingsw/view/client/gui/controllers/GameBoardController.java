@@ -55,7 +55,7 @@ public class GameBoardController{
                     int finalI = i;
                     card.setOnMouseClicked(event -> {
                         card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                        buyDevelopmentCard(finalJ, finalI);
+                        buyDevelopmentCard(finalI, finalJ);
                         card.setStyle("");
                     });
                     card.setDisable(true);
@@ -138,7 +138,7 @@ public class GameBoardController{
                     int finalJ = j;
                     card.setOnMouseClicked(event -> {
                         card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                        buyDevelopmentCard(finalJ, finalI);
+                        buyDevelopmentCard(finalI, finalJ);
                         card.setStyle("");
                     });
                 }

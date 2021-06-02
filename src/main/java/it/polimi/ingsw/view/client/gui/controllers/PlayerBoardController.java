@@ -290,13 +290,12 @@ public class PlayerBoardController {
      */
     public void updateDevelopmentCards(ClientPlayer clientPlayer){
 
-        devCards.getChildren().removeAll();
         for(int i=0; i<3; i++){
             if(clientPlayer.getPlayerBoard().getDevelopmentCards().get(i).size() != 0) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId() + ".png"));
                 card.setId(clientPlayer.getPlayerBoard().getDevelopmentCard(i).getId());
-                card.setFitWidth(118);
-                card.setFitHeight(210);
+                card.setFitWidth(115);
+                card.setFitHeight(205);
                 card.setPreserveRatio(true);
 
                 int finalI = i;
@@ -339,54 +338,69 @@ public class PlayerBoardController {
 
         ClientDeposit deposit = clientPlayer.getPlayerBoard().getDeposit();
 
-        floor1.getChildren().clear();
-        floor2.getChildren().clear();
-        floor3.getChildren().clear();
+        removeNodeByRowColumnIndex(0,0,floor1);
+        removeNodeByRowColumnIndex(0,0,floor2);
+        removeNodeByRowColumnIndex(0,1,floor2);
+        removeNodeByRowColumnIndex(0,0,floor3);
+        removeNodeByRowColumnIndex(0,1,floor3);
+        removeNodeByRowColumnIndex(0,2,floor3);
 
         if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
             ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png"));
             res.setFitHeight(30);
             res.setFitWidth(30);
+
             floor1.add(res, 0, 0);
         }
+        else{
+            floor1.add(new ImageView(), 0, 0);
+        }
+
+        ImageView res1 = new ImageView();
+        ImageView res2 = new ImageView();
 
         if(deposit.getNumberOfResourcesOnFloor(2)!=0) {
             if(deposit.getNumberOfResourcesOnFloor(2)>=1) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor2.add(res, 0, 0);
+                res1.setImage(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res1.setFitHeight(30);
+                res1.setFitWidth(30);
+
             }
             if (deposit.getNumberOfResourcesOnFloor(2) == 2) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor2.add(res, 1, 0);
+                res2.setImage(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
+                res2.setFitHeight(30);
+                res2.setFitWidth(30);
             }
-
         }
+        floor2.add(res1, 0, 0);
+        floor2.add(res2, 1, 0);
+
+        ImageView res3 = new ImageView();
+        ImageView res4 = new ImageView();
+        ImageView res5 = new ImageView();
 
         if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
             if(deposit.getNumberOfResourcesOnFloor(3)>=1) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 0, 0);
+                res3.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res3.setFitHeight(30);
+                res3.setFitWidth(30);
+
             }
             if(deposit.getNumberOfResourcesOnFloor(3)>=2) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 1, 0);
+                res4.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res4.setFitHeight(30);
+                res4.setFitWidth(30);
+
             }
             if(deposit.getNumberOfResourcesOnFloor(3)==3) {
-                ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
-                res.setFitHeight(30);
-                res.setFitWidth(30);
-                floor3.add(res, 2, 0);
+                res5.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
+                res5.setFitHeight(30);
+                res5.setFitWidth(30);
             }
         }
-
+        floor3.add(res3, 0, 0);
+        floor3.add(res4, 1, 0);
+        floor3.add(res5, 2, 0);
 
     }
 
@@ -396,7 +410,7 @@ public class PlayerBoardController {
         for(Node node : children) {
             if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 ImageView imageView= (ImageView) node;
-                imageView.getImage().cancel();
+                gridPane.getChildren().remove(imageView);
                 break;
             }
         }

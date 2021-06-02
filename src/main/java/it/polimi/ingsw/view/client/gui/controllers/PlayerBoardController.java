@@ -37,7 +37,7 @@ import java.util.*;
 public class PlayerBoardController {
 
     @FXML
-    ImageView leader1, leader2, res1, res2, result;
+    ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b;
 
     @FXML
     Button boardProdButton, cardProdButton, leaderProdButton;
@@ -46,10 +46,7 @@ public class PlayerBoardController {
     GridPane devCards, floor1, floor2, floor3, popeRoad;
 
     @FXML
-    AnchorPane strongbox;
-
-    @FXML
-    AnchorPane pBoard;
+    AnchorPane strongbox, pBoard, extraDeposit1, extraDeposit2;
 
     @FXML
     Label strongboxCoinCount, strongboxShieldCount, strongboxServantCount, strongboxStoneCount;
@@ -428,8 +425,10 @@ public class PlayerBoardController {
         //setting leadercards
         l1 = clientPlayer.getHand().get(0);
         leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
+        checkExtraDeposit(l1);
         l2=clientPlayer.getHand().get(1);
         leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
+        checkExtraDeposit(l2);
 
         //setting popeSpace
         popeSpaces = popeRoad.getChildren();
@@ -438,7 +437,6 @@ public class PlayerBoardController {
             p1.setVisible(true);
             popeSpaces.remove(0);
         }
-
         else{
             p0.setVisible(true);
         }
@@ -471,5 +469,43 @@ public class PlayerBoardController {
 
     public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
+    }
+
+    public void checkExtraDeposit(LeaderCard leaderCard){
+
+        if(leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_DEPOSIT)){
+            String resource;
+            switch (leaderCard.getId()) {
+                case "l5":
+                    resource = "stone";
+                    break;
+                case "l6":
+                    resource = "servant";
+                    break;
+                case "l7":
+                    resource = "shield";
+                    break;
+                default:
+                    resource = "coin";
+                    break;
+            }
+
+            if(leaderCard.equals(l1)){
+                extraDeposit1.setVisible(true);
+                dep1a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
+                dep1a.setVisible(false);
+                dep1b.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
+                dep1b.setVisible(false);
+                extraDeposit1.toFront();
+            }
+            else {
+                extraDeposit2.setVisible(true);
+                dep2a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
+                dep2a.setVisible(false);
+                dep2b.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
+                dep2b.setVisible(false);
+                extraDeposit2.toFront();
+            }
+        }
     }
 }

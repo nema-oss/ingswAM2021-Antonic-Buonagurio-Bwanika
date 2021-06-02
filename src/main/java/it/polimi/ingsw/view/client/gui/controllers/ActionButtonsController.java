@@ -39,7 +39,7 @@ public class ActionButtonsController implements Initializable {
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton, actionTokenOk;
 
      @FXML
      private CheckBox discard1, discard2, discard3, discard4;
@@ -187,6 +187,10 @@ public class ActionButtonsController implements Initializable {
         setEndTurnVisible(false);
 
         setLorenzoVisible(false);
+        actionTokenOk.setOnAction(event -> {
+            setLorenzoVisible(false);
+            setChooseActionTypeVisible(true);
+        });
     }
 
     /**
@@ -359,6 +363,7 @@ public class ActionButtonsController implements Initializable {
         lorenzoLabel.setVisible(value);
         actionToken.setVisible(value);
         lorenzoPane.setVisible(value);
+        actionTokenOk.setVisible(value);
     }
 
     public void showLorenzoTurn(ActionToken tokenDrawn, String text){
@@ -366,6 +371,7 @@ public class ActionButtonsController implements Initializable {
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);
 
+        setChooseActionTypeVisible(false);
         setLorenzoVisible(true);
     }
 }

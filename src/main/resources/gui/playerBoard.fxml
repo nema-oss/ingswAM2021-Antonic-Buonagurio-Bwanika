@@ -106,7 +106,7 @@
             </children>
          </AnchorPane>
         </AnchorPane>
-      <Button fx:id="leaderProdButton" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#activateLeaderProduction" prefHeight="30.0" prefWidth="130.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Leader Production" visible="false" />
+      <Button fx:id="leaderProdButton" layoutY="402.0" mnemonicParsing="false" onMouseClicked="#activateLeaderProduction" prefHeight="31.0" prefWidth="130.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate" />
     </AnchorPane>
     <GridPane fx:id="popeRoad" layoutX="152.0" layoutY="22.0" prefHeight="94.0" prefWidth="575.0">
         <columnConstraints>
@@ -258,6 +258,6 @@
             <Image url="@Images/Resources/shield.png" />
         </ImageView>
     </AnchorPane>
-    <Button fx:id="boardProdButton" layoutX="278.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateBoardProduction" prefHeight="16.0" prefWidth="76.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Board Production" visible="false" />
-   <Button fx:id="cardProdButton" layoutX="374.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateCardsProduction" prefHeight="25.0" prefWidth="342.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Cards Production" visible="false" />
+    <Button fx:id="boardProdButton" layoutX="259.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateBoardProduction" prefHeight="30.0" prefWidth="110.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate" />
+   <Button fx:id="cardProdButton" layoutX="374.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#activateCardsProduction" prefHeight="25.0" prefWidth="342.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate" />
 </AnchorPane>

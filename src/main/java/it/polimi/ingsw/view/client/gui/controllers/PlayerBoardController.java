@@ -318,6 +318,10 @@ public class PlayerBoardController {
 
         ClientDeposit deposit = clientPlayer.getPlayerBoard().getDeposit();
 
+        floor1.getChildren().clear();
+        floor2.getChildren().clear();
+        floor3.getChildren().clear();
+
         if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
             ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png"));
             res.setFitHeight(30);

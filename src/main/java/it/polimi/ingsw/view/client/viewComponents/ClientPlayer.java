@@ -100,6 +100,7 @@ public class ClientPlayer {
     }
 
     public List<DevelopmentCard> getDevelopmentCards() {
+
         List<DevelopmentCard> developmentCards = new ArrayList<>();
         for (Stack<DevelopmentCard> s : playerBoard.getDevelopmentCards())
             developmentCards.addAll(s);

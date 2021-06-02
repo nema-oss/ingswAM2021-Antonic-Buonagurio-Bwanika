@@ -346,6 +346,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void buyDevelopmentCards(String user, int x, int y){
         List<Error> errors = matchController.onBuyDevelopmentCards(user, x,y);
+        errors.forEach(System.out::println);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedBuyDevelopmentCards(user,x,y);
@@ -359,12 +360,10 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
         for(Socket socket: clients.values())
             sendMessage(socket, message);
-
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
 
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
+
         Message message = new ErrorWriter().buyCardRejected(user,x, y);
         sendMessage(clients.get(user), message);
     }
@@ -388,7 +387,6 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
         updatePlayerPosition(user);
-        sendGameBoard(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
 
         /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
@@ -397,6 +395,8 @@ public class VirtualView implements VirtualViewInterface{
          */
 
         sendMessage(clients.get(user), message);
+
+        sendGameBoard(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
 
 
     }

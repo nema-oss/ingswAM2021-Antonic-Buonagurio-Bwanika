@@ -342,7 +342,6 @@ public class ActionButtonsController implements Initializable {
 
         gui.alertUser("Information", "The other resources will be discarded.", Alert.AlertType.INFORMATION);
         PlaceResourcesMessage msg = new PlaceResourcesMessage(gui.getPlayerNickname(), map);
-        System.out.println(map);
         msg.setDiscardedResources(Math.abs(boughtResources.size() - map.size()));
         gui.sendMessage(msg);
     }

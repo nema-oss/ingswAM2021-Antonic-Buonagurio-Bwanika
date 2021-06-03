@@ -112,7 +112,7 @@ public class PlayerTabController implements Initializable {
 
         for(Tab t : tabPane.getTabs()){
             if (t.getText().equals(playerNickname)) {
-                controllersMap.get(playerNickname).updatePopeRoad(clientPlayer);
+                controllersMap.get(playerNickname).updatePopeRoad(clientPlayer.getPlayerBoard());
                 break;
             }
         }

@@ -60,7 +60,7 @@ public class ActionButtonsController implements Initializable {
      private ResourceType toPut1, toPut2, toPut3, toPut4;
      private GameController gameController;
      private Gui gui;
-    private List<Resource> boughtResources;
+     private List<Resource> boughtResources;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -231,6 +231,8 @@ public class ActionButtonsController implements Initializable {
     public void setWaitVisible(boolean value){
         wait.setVisible(value);
         waitingMessage.setVisible(value);
+        endTurnButton.setVisible(false);
+        backButton.setVisible(false);
     }
 
     public void setChooseActionTypeVisible(boolean value){
@@ -300,6 +302,7 @@ public class ActionButtonsController implements Initializable {
         placeResourcesMessage.setVisible(value);
         placeResourcesOk.setVisible(value);
         resourcePane.setVisible(value);
+        endTurnButton.setVisible(false);
 
     }
 

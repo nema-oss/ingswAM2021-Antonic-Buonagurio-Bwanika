@@ -91,11 +91,13 @@ public class ActionButtonsController implements Initializable {
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
             setChooseStandardActionVisible(true);
+            setBackButtonVisible(true);
         });
         leaderAction.setOnAction(event -> {
             gameController.setLeaderAction(true);
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
+            setBackButtonVisible(true);
         });
         setChooseActionTypeVisible(true);
 
@@ -114,7 +116,8 @@ public class ActionButtonsController implements Initializable {
         startProd.setOnAction(event -> {
 
             setChooseStandardActionVisible(false);
-            setLeaderActionVisible(false);
+            setChooseActionTypeVisible(false);
+            setEndTurnVisible(false);
             setActivateProductionVisible(true);
 
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
@@ -124,6 +127,8 @@ public class ActionButtonsController implements Initializable {
         });
         endProd.setOnAction(event -> {
             setActivateProductionVisible(false);
+            gameController.makeProductionClickable(false);
+            setEndTurnVisible(true);
             EndProductionMessage endProductionMessage = new EndProductionMessage(gui.getPlayerNickname());
             gui.sendMessage(endProductionMessage);
         });
@@ -194,6 +199,20 @@ public class ActionButtonsController implements Initializable {
 
         backButton.setVisible(false);
         backButton.setOnAction(event -> {
+            setStandardActionVisible(false);
+            setLorenzoVisible(false);
+            setChooseStandardActionVisible(false);
+            setChooseLeaderActionVisible(false);
+            setLorenzoVisible(false);
+            setRowOrColumnVisible(false);
+            setRowIndexVisible(false);
+            setColumnIndexVisible(false);
+            setSwapPaneVisible(false);
+            setResourcePaneVisible(false);
+            setActivateProductionVisible(false);
+            setBuyCardVisible(false);
+            setChooseActionTypeVisible(true);
+            setBackButtonVisible(false);
         });
     }
 
@@ -201,6 +220,10 @@ public class ActionButtonsController implements Initializable {
      * these methods show or hide the action buttons
      * @param value
      */
+    public void setBackButtonVisible(boolean value){
+        backButton.setVisible(value);
+    }
+
     public void setWaitVisible(boolean value){
         wait.setVisible(value);
         waitingMessage.setVisible(value);
@@ -250,7 +273,6 @@ public class ActionButtonsController implements Initializable {
 
     public void setActivateProductionVisible(boolean value){
 
-        prodMessage.setVisible(value);
         endProd.setVisible(value);
 
     }

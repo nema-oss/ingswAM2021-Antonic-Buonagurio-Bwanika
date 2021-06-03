@@ -93,7 +93,7 @@ public class PlayerTabController implements Initializable {
     public void updatePlayerBoard(String clientPlayer, ClientPlayerBoard clientPlayerBoard){
 
         for(Tab t : tabPane.getTabs()){
-            if (t.getId().equals(clientPlayer)) {
+            if (t.getText().equals(clientPlayer)) {
                 controllersMap.get(clientPlayer).updateOtherPlayers(clientPlayerBoard);
                 break;
             }

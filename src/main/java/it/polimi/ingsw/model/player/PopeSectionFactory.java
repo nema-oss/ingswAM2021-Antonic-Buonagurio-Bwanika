@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.player;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.model.cards.CardFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,15 +16,13 @@ public class PopeSectionFactory implements Serializable {
 
     public List<PopeSection> getPopeSections() {
 
-        try {
-            Reader reader = new FileReader("src/main/resources/popesections.json");
+
+            //Reader reader = new FileReader("src/main/resources/popesections.json");
+            Reader reader = new InputStreamReader(CardFactory.class.getResourceAsStream("/popesections.json"));
             Gson gson = new Gson();
             PopeSection[] popeSectionArray = gson.fromJson(reader, PopeSection[].class);
             popeSections = new ArrayList<>(Arrays.asList(popeSectionArray));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
         return popeSections;
     }

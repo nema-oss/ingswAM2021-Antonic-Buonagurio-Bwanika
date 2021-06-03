@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.gameboard;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.model.cards.CardFactory;
+
 /*
  * this class is used to create the marbles by parsing the json file marbles.json
  * @autor Chiara Buonagurio
@@ -25,9 +24,8 @@ public class MarbleFactory implements Serializable {
      */
 
     public ArrayList<Marble> getMarbles() {
-        try {
-            Reader reader = new FileReader("src/main/resources/marbles.json");
-
+            //Reader reader = new FileReader("src/main/resources/marbles.json");
+            Reader reader = new InputStreamReader(CardFactory.class.getResourceAsStream("/marbles.json"));
             final GsonBuilder builder = new GsonBuilder();
 
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
@@ -35,9 +33,6 @@ public class MarbleFactory implements Serializable {
 
             marbles = gson.fromJson(reader, Marble[].class);
 
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
 
         return new ArrayList<>(Arrays.asList(marbles));
 

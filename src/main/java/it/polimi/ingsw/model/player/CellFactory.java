@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.player;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.model.cards.CardFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.Serializable;
+import java.io.*;
 
 public class CellFactory implements Serializable {
 
@@ -19,14 +17,13 @@ public class CellFactory implements Serializable {
     public Cell[] getCells() {
 
 
-        try {
-            Reader reader = new FileReader("src/main/resources/cells.json");
+
+            //Reader reader = new FileReader("src/main/resources/cells.json");
+            Reader reader = new InputStreamReader(CardFactory.class.getResourceAsStream("/cells.json"));
             Gson gson = new Gson();
             cells = gson.fromJson(reader, Cell[].class);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
 
 
         return cells;

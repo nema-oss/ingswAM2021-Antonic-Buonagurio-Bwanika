@@ -64,7 +64,8 @@ public class PlayerBoardController {
     private List <LeaderCard> leaderCardsList;
 
     private boolean is1active, is2active, isLeaderAction, isDev1Selected, isDev2Selected, isDev3Selected, isL1Selected, isL2Selected;
-    private List<Node> popeSpaces;
+    private int currentPosition;
+    public List<Node> popeSpaces;
 
 
     /**
@@ -192,31 +193,36 @@ public class PlayerBoardController {
 
     /**
      * this method updates the pope road
-     * @param clientPlayer
+     * @param clientPlayerBoard the player's board
      */
-    public void updatePopeRoad(ClientPlayer clientPlayer){
-        int index = clientPlayer.getPositionIndex();
-        moveOnPopeRoad(index-(25-popeSpaces.size()));
+    public void updatePopeRoad(ClientPlayerBoard clientPlayerBoard){
+        int index = clientPlayerBoard.getPopeRoad().getCurrentPositionIndex();
+        popeRoad.getChildren().get(currentPosition).setVisible(false);
+        popeRoad.getChildren().get(index).setVisible(true);
+        currentPosition = index;
+
+        //moveOnPopeRoad(index-(25-popeSpaces.size()));
     }
+
 
     /**
      * this method moves the player on the poperoad
-     * @param steps
+     * @param steps number of steps to move
      */
-    private void moveOnPopeRoad(Integer steps){
+  /*  private void moveOnPopeRoad(Integer steps){
         popeSpaces.get(0).setVisible(false);
         if (steps > 0) {
             popeSpaces.subList(0, steps).clear();
         }
         popeSpaces.get(0).setVisible(true);
-    }
+    } */
 
     /**
      * this method activates board production
      */
     @FXML
     public void activateBoardProduction(){
-        Map<ResourceType, List<ResourceType>> map = new HashMap<>();
+        Map<Resource, List<ResourceType>> map = new HashMap<>();
         List<ResourceType> toGive = new ArrayList<>();
 
         String url = res1.getImage().getUrl();
@@ -253,7 +259,8 @@ public class PlayerBoardController {
         else if(url.contains("stone"))
             key = ResourceType.STONE;
 
-        map.put(key, toGive);
+
+        map.put(new Resource(key), toGive);
 
         Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, false);
         gui.sendMessage(msg);
@@ -262,7 +269,7 @@ public class PlayerBoardController {
     @FXML
     public void activateCardsProduction (){
         if(prodCardsList.size()!=0) {
-            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
+            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, true);
             gui.sendMessage(msg);
             prodCardsList.clear();
             dev1.setStyle("");
@@ -277,7 +284,7 @@ public class PlayerBoardController {
     @FXML
     public void activateLeaderProduction(){
         if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, true);
             gui.sendMessage(msg);
             leaderCardsList.clear();
             isL1Selected = false;
@@ -527,14 +534,16 @@ public class PlayerBoardController {
         checkExtraDeposit(l2);
 
         //setting popeSpace
-        popeSpaces = popeRoad.getChildren();
+       // popeSpaces = popeRoad.getChildren();
         if(clientPlayer.getPositionIndex() == 1 ) {
             p0.setVisible(false);
             p1.setVisible(true);
-            popeSpaces.remove(0);
+            currentPosition = 1;
+           // popeSpaces.remove(0);
         }
         else{
             p0.setVisible(true);
+            currentPosition = 0;
         }
 
         //setting deposit
@@ -550,6 +559,7 @@ public class PlayerBoardController {
         updateDeposit(clientPlayerBoard.getDeposit());
         updateStrongBox(clientPlayerBoard.getStrongbox());
         updateDevelopmentCards(clientPlayerBoard);
+        updatePopeRoad(clientPlayerBoard);
 
     }
 

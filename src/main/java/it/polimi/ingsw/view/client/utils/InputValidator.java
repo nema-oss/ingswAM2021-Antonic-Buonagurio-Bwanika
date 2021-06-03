@@ -232,7 +232,7 @@ public class InputValidator {
         return userChoice;
     }
 
-    public static Map<ResourceType, List<ResourceType>> isValidBoardProductionChoice(String input) {
+    public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
         if(rawList.size() != 2) return null;
@@ -247,7 +247,7 @@ public class InputValidator {
         List<String> resourcesToGiveString = Arrays.asList(list.get(0).split("\\s*,\\s*"));
         if(resourcesToGiveString.size() != 2) return null;
 
-        Map<ResourceType, List<ResourceType>> userChoice = new HashMap<>();
+        Map<Resource, List<ResourceType>> userChoice = new HashMap<>();
         ResourceType resourceTypeToReceive = isResourceType(list.get(1));
         List<ResourceType> listOfResourcesToGive = new ArrayList<>();
         if(resourceTypeToReceive == null) return null;
@@ -260,7 +260,7 @@ public class InputValidator {
                 return null;
         }
 
-        userChoice.put(resourceTypeToReceive,listOfResourcesToGive);
+        userChoice.put(new Resource(resourceTypeToReceive) ,listOfResourcesToGive);
         return userChoice;
     }
 
@@ -304,8 +304,8 @@ public class InputValidator {
             Resource resource = resourceList.stream().filter(p -> p.getType() == resourceType).findAny().get();
             try{
                 int floor = Integer.parseInt(singleAction.get(1));
-                userChoice.put(resource,floor);
-            }catch (NumberFormatException e){
+                userChoice.put(new Resource(resource.getType()),floor);
+            }catch (NumberFormatException | NullPointerException e){
                 return null;
             }
 
@@ -314,7 +314,7 @@ public class InputValidator {
 
     }
 
-    public static Map<ResourceType, Integer> isValidChooseResourceType(String input) {
+    public static Map<ResourceType, Integer> isValidChooseResourceType(String input, int numberOfResources) {
 
         List<String> actions = Arrays.asList(input.split("\\s*,\\s*"));
         Map<ResourceType, Integer> userChoice = new HashMap<>();
@@ -323,8 +323,10 @@ public class InputValidator {
             ResourceType resourceType = isResourceType(singleAction.get(0));
             if(resourceType == null) return null;
             try{
-                int floor = Integer.parseInt(singleAction.get(1));
-                userChoice.put(resourceType,floor);
+                int amount = Integer.parseInt(singleAction.get(1));
+                if(numberOfResources - amount < 0) return null;
+                userChoice.put(resourceType,amount);
+                numberOfResources -= amount;
             }catch (NumberFormatException e){
                 return null;
             }

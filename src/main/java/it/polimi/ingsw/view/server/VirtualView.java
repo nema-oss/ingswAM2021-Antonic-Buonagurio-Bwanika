@@ -430,7 +430,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
-
+        System.out.println("Production accepted");
         //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         //sendMessage(clients.get(user), boardUpdate);
     }
@@ -443,7 +443,7 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * This method manage the activate production board request from client
      */
-    public void activateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice){
+    public void activateProductionBoard(String user, Map<Resource,List<ResourceType>> userChoice){
 
         List<Error> errors = matchController.onActivateBoardProduction(user, userChoice);
         if(isActive){
@@ -456,7 +456,7 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
-    private void onAcceptedActivateProductionBoard(String user, Map<ResourceType,List<ResourceType>> userChoice) {
+    private void onAcceptedActivateProductionBoard(String user, Map<Resource,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
@@ -465,7 +465,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
-    private void onRejectedActivateProductionBoard(String user,  Map<ResourceType,List<ResourceType>> userChoice) {
+    private void onRejectedActivateProductionBoard(String user,  Map<Resource,List<ResourceType>> userChoice) {
         Message message = new ErrorWriter().productionBoardRejected(user,userChoice);
         sendMessage(clients.get(user), message);
     }
@@ -712,8 +712,8 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     @Override
-    public void sendLorenzoTurn(ActionToken lorenzoAction) {
-        Message message = new LorenzoTurnMessage(lorenzoAction);
+    public void sendLorenzoTurn(ActionToken lorenzoAction, int lorenzoPosition) {
+        Message message = new LorenzoTurnMessage(lorenzoAction, lorenzoPosition);
         clients.values().forEach(p->sendMessage(p,message));
     }
 

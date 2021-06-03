@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class ActivateBoardProductionMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     private final String user;
-    private Map<ResourceType, List<ResourceType>> choice;
+    private Map<Resource, List<ResourceType>> choice;
     boolean accepted;
 
     /**
@@ -23,7 +24,7 @@ public class ActivateBoardProductionMessage implements Serializable, ActionMessa
      * @param choice : resource to get
      * @param accepted : result of request
      */
-    public ActivateBoardProductionMessage(String user, Map<ResourceType, List<ResourceType>> choice, boolean accepted) {
+    public ActivateBoardProductionMessage(String user, Map<Resource, List<ResourceType>> choice, boolean accepted) {
         this.choice = choice;
         this.user = user;
         this.accepted=accepted;

@@ -29,7 +29,7 @@ public interface ControllerInterface {
 
     List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards);
 
-    List<Error> onActivateBoardProduction(String nickname, Map<ResourceType, List<ResourceType>> userChoice);
+    List<Error> onActivateBoardProduction(String nickname, Map<Resource, List<ResourceType>> userChoice);
 
     List<Error> onEndProduction(String nickname);
 

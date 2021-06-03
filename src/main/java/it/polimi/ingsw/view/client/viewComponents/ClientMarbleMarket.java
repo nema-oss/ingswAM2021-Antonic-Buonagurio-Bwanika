@@ -65,14 +65,7 @@ public class ClientMarbleMarket implements Serializable {
             }
         }
 
-
         this.marbleMarket = marbleMarket;
-
-        System.out.println("dopo");
-        System.out.println(this.marbleMarket[0][0].getColor());
-        System.out.println(this.marbleMarket[0][0]);
-        System.out.println("=================");
-
         this.freeMarble = freeMarble;
     }
 }

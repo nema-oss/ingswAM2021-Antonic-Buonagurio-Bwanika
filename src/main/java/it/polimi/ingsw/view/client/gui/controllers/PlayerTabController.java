@@ -67,13 +67,13 @@ public class PlayerTabController implements Initializable {
         PlayerBoardController controller = loader.getController();
         controllersMap.put(clientPlayer, controller);
         controller.setGui(gui);
-        gui.setPlayerBoardController(controller);
+        //gui.setPlayerBoardController(controller);
 
         tabPane.getTabs().add(tab);
 
        if(!isCurrent) {
            controllersMap.get(clientPlayer).hideInactiveLeaders();
-           tab.getContent().setDisable(true);
+           tab.getContent().setDisable(false);
        }
     }
 
@@ -94,7 +94,7 @@ public class PlayerTabController implements Initializable {
 
         for(Tab t : tabPane.getTabs()){
             if (t.getText().equals(clientPlayer)) {
-                controllersMap.get(clientPlayer).updateOtherPlayers(clientPlayerBoard);
+                controllersMap.get(clientPlayer).update(clientPlayerBoard);
                 break;
             }
         }
@@ -106,5 +106,15 @@ public class PlayerTabController implements Initializable {
 
     public void setLeaderAction(ClientPlayer clientPlayer, boolean bool){
         controllersMap.get(clientPlayer.getNickname()).setLeaderAction(bool);
+    }
+
+    public void updatePlayerPosition(String playerNickname, ClientPlayer clientPlayer) {
+
+        for(Tab t : tabPane.getTabs()){
+            if (t.getText().equals(playerNickname)) {
+                controllersMap.get(playerNickname).updatePopeRoad(clientPlayer.getPlayerBoard());
+                break;
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -1204,9 +1205,8 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showGameBoard(new ClientGameBoard());
+        showGameBoard(gameBoard);
         showAllAvailableResources();
-
 
 
         AtomicBoolean correct = new AtomicBoolean(true);
@@ -1221,7 +1221,7 @@ public class Cli extends View {
 
             do{
                 String input = inputWithTimeout();
-                resourceTypesChoice = InputValidator.isValidChooseResourceType(input);
+                resourceTypesChoice = InputValidator.isValidChooseResourceType(input, numberOfResources);
                 correct.set(resourceTypesChoice != null);
                 if(!correct.get())
                     System.out.println("Incorrect resource type name");
@@ -1272,7 +1272,7 @@ public class Cli extends View {
 
             List<Resource> resourceList = player.getBoughtResources();
 
-            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
+            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Write 'done' to finish. Press " +
                     "Enter to continue.");
 
             showAllAvailableResources(resourceList);
@@ -1300,10 +1300,10 @@ public class Cli extends View {
                 Formatting.clearScreen();
                 showBoard(gameBoard,player);
 
-                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
-                        "the first floor.");
+                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1, stone 2' to place a shield in " +
+                        "the first floor and a stone in the second floor. ");
 
-                resourceList.stream().map(resource -> resource.getType() + "---" + "\n").forEach(System.out::print);
+                showAllAvailableResources(resourceList);
 
                 input = inputWithTimeout();
                 boolean correct = false;
@@ -1318,9 +1318,11 @@ public class Cli extends View {
                     }
                     if(Thread.interrupted()) return;
                 }
-                if(!Thread.interrupted())
-                    sendMessage(socket, new PlaceResourcesMessage(player.getNickname(),userChoice));
-
+                if(!Thread.interrupted()) {
+                    PlaceResourcesMessage message = new PlaceResourcesMessage(player.getNickname(), userChoice);
+                    message.setDiscardedResources(Math.abs(userChoice.size() - resourceList.size()));
+                    sendMessage(socket,message);
+                }
 
             }
 
@@ -1354,6 +1356,7 @@ public class Cli extends View {
         player.buyDevelopmentCard(x,y);
         Formatting.clearScreen();
         showBoard(gameBoard,player);
+        askTurnAction();
         System.out.println("Buy development card request accepted");
     }
 
@@ -1390,7 +1393,6 @@ public class Cli extends View {
     public void showPlaceResourcesResult(boolean accepted, Map<Resource,Integer> userChoice) {
         if(accepted){
             System.out.println("The other resources will be discarded. Press Enter to continue");
-
             player.addResource(userChoice);
             inputWithTimeout();
             askTurnAction();
@@ -1424,7 +1426,7 @@ public class Cli extends View {
     }
 
     @Override
-    public void showLorenzoAction(ActionToken lorenzoAction) {
+    public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
         if(lorenzoAction instanceof ActionTokenDiscard){
             int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
@@ -1490,6 +1492,8 @@ public class Cli extends View {
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
+                                Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+                                sendMessage(socket, message);
                                 sendMessage(socket, new EndTurnMessage(player.getNickname()));
                                 return;
                         }
@@ -1528,7 +1532,7 @@ public class Cli extends View {
             inputWithTimeout();
             List<DevelopmentCard> developmentCardChoice;
             List<LeaderCard> leaderCardChoice;
-            Map<ResourceType,List<ResourceType>> boardProductionChoice;
+            Map<Resource,List<ResourceType>> boardProductionChoice;
 
             if(!Thread.interrupted()) {
                 do {
@@ -2890,7 +2894,7 @@ public class Cli extends View {
 
     @Override
     public void serverNotFound() {
-
+        System.out.println("Server is not at home now. Try again later.");
     }
 
     /**

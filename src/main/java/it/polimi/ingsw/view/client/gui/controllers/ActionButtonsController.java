@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -59,7 +60,7 @@ public class ActionButtonsController implements Initializable {
      private ResourceType toPut1, toPut2, toPut3, toPut4;
      private GameController gameController;
      private Gui gui;
-    private List<Resource> boughtResources;
+     private List<Resource> boughtResources;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -91,11 +92,13 @@ public class ActionButtonsController implements Initializable {
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
             setChooseStandardActionVisible(true);
+            setBackButtonVisible(true);
         });
         leaderAction.setOnAction(event -> {
             gameController.setLeaderAction(true);
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
+            setBackButtonVisible(true);
         });
         setChooseActionTypeVisible(true);
 
@@ -114,7 +117,8 @@ public class ActionButtonsController implements Initializable {
         startProd.setOnAction(event -> {
 
             setChooseStandardActionVisible(false);
-            setLeaderActionVisible(false);
+            setChooseActionTypeVisible(false);
+            setEndTurnVisible(false);
             setActivateProductionVisible(true);
 
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
@@ -124,6 +128,8 @@ public class ActionButtonsController implements Initializable {
         });
         endProd.setOnAction(event -> {
             setActivateProductionVisible(false);
+            gameController.makeProductionClickable(false);
+            setEndTurnVisible(true);
             EndProductionMessage endProductionMessage = new EndProductionMessage(gui.getPlayerNickname());
             gui.sendMessage(endProductionMessage);
         });
@@ -182,6 +188,8 @@ public class ActionButtonsController implements Initializable {
 
         endTurnButton.setOnAction(event -> {
             Message msg = new EndTurnMessage(gui.getPlayerNickname());
+            UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
+            gui.sendMessage(updateClientPlayerBoardsMessage);
             gui.sendMessage(msg);
         });
         setEndTurnVisible(false);
@@ -190,10 +198,25 @@ public class ActionButtonsController implements Initializable {
         actionTokenOk.setOnAction(event -> {
             setLorenzoVisible(false);
             setChooseActionTypeVisible(true);
+            setEndTurnVisible(true);
         });
 
         backButton.setVisible(false);
         backButton.setOnAction(event -> {
+            setStandardActionVisible(false);
+            setLorenzoVisible(false);
+            setChooseStandardActionVisible(false);
+            setChooseLeaderActionVisible(false);
+            setLorenzoVisible(false);
+            setRowOrColumnVisible(false);
+            setRowIndexVisible(false);
+            setColumnIndexVisible(false);
+            setSwapPaneVisible(false);
+            setResourcePaneVisible(false);
+            setActivateProductionVisible(false);
+            setBuyCardVisible(false);
+            setChooseActionTypeVisible(true);
+            setBackButtonVisible(false);
         });
     }
 
@@ -201,14 +224,22 @@ public class ActionButtonsController implements Initializable {
      * these methods show or hide the action buttons
      * @param value
      */
+    public void setBackButtonVisible(boolean value){
+        backButton.setVisible(value);
+    }
+
     public void setWaitVisible(boolean value){
         wait.setVisible(value);
         waitingMessage.setVisible(value);
+        endTurnButton.setVisible(false);
+        backButton.setVisible(false);
     }
 
     public void setChooseActionTypeVisible(boolean value){
-        standardAction.setVisible(value);
-        leaderAction.setVisible(value);
+        if(!lorenzoPane.isVisible()) {
+            standardAction.setVisible(value);
+            leaderAction.setVisible(value);
+        }
     }
 
     public void setStandardActionVisible(boolean value){
@@ -250,7 +281,6 @@ public class ActionButtonsController implements Initializable {
 
     public void setActivateProductionVisible(boolean value){
 
-        prodMessage.setVisible(value);
         endProd.setVisible(value);
 
     }
@@ -272,6 +302,7 @@ public class ActionButtonsController implements Initializable {
         placeResourcesMessage.setVisible(value);
         placeResourcesOk.setVisible(value);
         resourcePane.setVisible(value);
+        endTurnButton.setVisible(false);
 
     }
 
@@ -370,13 +401,17 @@ public class ActionButtonsController implements Initializable {
         actionTokenOk.setVisible(value);
     }
 
-    public void showLorenzoTurn(ActionToken tokenDrawn, String text){
+    public void showLorenzoTurn(ActionToken tokenDrawn, int lorenzoPosition, String text){
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);
 
         setLorenzoVisible(true);
-        setChooseActionTypeVisible(false);
+
+        standardAction.setVisible(false);
+        leaderAction.setVisible(false);
+        endTurnButton.setVisible(false);
+        backButton.setVisible(false);
 
     }
 }

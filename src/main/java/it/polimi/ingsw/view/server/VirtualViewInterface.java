@@ -59,7 +59,7 @@ public interface VirtualViewInterface {
 
     public void updatePlayerPosition(String nickname);
 
-    void sendLorenzoTurn(ActionToken lorenzoAction);
+    void sendLorenzoTurn(ActionToken lorenzoAction, int lorenzoPosition);
 
     void setProductionResult(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
 }

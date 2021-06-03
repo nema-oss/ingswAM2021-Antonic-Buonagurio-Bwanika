@@ -19,7 +19,6 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +28,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +62,7 @@ public class Gui extends View {
     private Scene gameBoardScene;
 
     private Scene turnActionScene;
-
+    private boolean isPlayingTurn;
 
 
     private ActionButtonsController actionButtonsController;
@@ -72,6 +70,8 @@ public class Gui extends View {
     private GameController gameSceneController;
     private Scene gameScene;
     private boolean isGameScene;
+
+    private PlayerTabController playerTabController;
 
 
     public Gui(String ip, int port, Stage stage, Scene scene){
@@ -166,6 +166,7 @@ public class Gui extends View {
             gameSceneController = loader.getController();
             gameSceneController.setGui(this);
             gameBoardController = gameSceneController.gameBoardController;
+            playerTabController = gameSceneController.playerTabController;
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
         }
@@ -285,7 +286,7 @@ public class Gui extends View {
     }
 
     @Override
-    public void showLorenzoAction(ActionToken lorenzoAction) {
+    public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
         Platform.runLater(()-> {
             String lorenzoMessage = "";
@@ -298,7 +299,7 @@ public class Gui extends View {
                 amount = ((ActionTokenMove) lorenzoAction).getSteps();
                 lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
             }
-            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
+            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoPosition, lorenzoMessage);
         });
 
     }
@@ -308,7 +309,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateDeposit(updatedStrongbox,updatedWarehouse);
-            playerBoardController.update(player.getPlayerBoard());
+            playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
             actionButtonsController.setStandardActionVisible(false);
             actionButtonsController.setResourcePaneVisible(false);
@@ -560,37 +561,36 @@ public class Gui extends View {
     @Override
     public void showPlayTurn(String currentPlayer) {
 
+            Platform.runLater(() -> {
+                if (!isGameScene) {
+                    isGameScene = true;
+                    try {
+                        FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                        Parent root = loader.load();
+                        gameSceneController.leftBorder.setCenter(root);
+                        actionButtonsController = loader.getController();
+                        actionButtonsController.setGui(this);
+                        actionButtonsController.setGameController(gameSceneController);
+                        gameSceneController.initializeActions();
+                        gameSceneController.addLeadersToPlayer();
 
-        Platform.runLater(()->{
-            if(!isGameScene){
-                isGameScene = true;
-                try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    Parent root = loader.load();
-                    gameSceneController.leftBorder.setCenter(root);
-                    actionButtonsController = loader.getController();
-                    actionButtonsController.setGui(this);
-                    actionButtonsController.setGameController(gameSceneController);
-                    gameSceneController.initializeActions();
-                    gameSceneController.addLeadersToPlayer();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    primaryStage.setScene(gameScene);
                 }
-                primaryStage.setScene(gameScene);
-            }
 
-            if(currentPlayer.equals(player.getNickname())){
-                actionButtonsController.setLorenzoVisible(false);
-                actionButtonsController.setWaitVisible(false);
-                actionButtonsController.setChooseActionTypeVisible(true);
-            }else{
-                actionButtonsController.setLorenzoVisible(false);
-                actionButtonsController.setWaitVisible(true);
-                actionButtonsController.setChooseActionTypeVisible(false);
-            }
+                if (currentPlayer.equals(player.getNickname())) {
+                    //actionButtonsController.setLorenzoVisible(false);
+                    actionButtonsController.setWaitVisible(false);
+                    actionButtonsController.setChooseActionTypeVisible(true);
+                } else {
+                    actionButtonsController.setLorenzoVisible(false);
+                    actionButtonsController.setWaitVisible(true);
+                    actionButtonsController.setChooseActionTypeVisible(false);
+                }
 
-        });
+            });
     }
 
 
@@ -643,7 +643,7 @@ public class Gui extends View {
                 for (DevelopmentCard card : developmentCards) {
                     System.out.println(card.getLevel());
                 }
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
@@ -696,7 +696,7 @@ public class Gui extends View {
         if(accepted) {
             Platform.runLater(()->{
                 player.getDeposit().swapFloors(x, y);
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
             });
         }
         else {
@@ -719,7 +719,7 @@ public class Gui extends View {
         if(accepted){
             Platform.runLater(()->{
                 player.addResource(userChoice);
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setResourcePaneVisible(false);
@@ -759,7 +759,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateCurrentPosition(position);
-            playerBoardController.updatePopeRoad(player);
+            playerTabController.updatePlayerPosition(player.getNickname(), player);
         });
     }
 
@@ -767,10 +767,16 @@ public class Gui extends View {
     public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
 
         Platform.runLater(()->{
-            otherPlayerBoards.put(user,clientPlayerBoard);
-            //otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+            if(!otherPlayerBoards.containsKey(user)){
+                otherPlayerBoards.put(user,clientPlayerBoard);
+                gameSceneController.addPlayerBoard(user,clientPlayerBoard);
+            }else {
+                otherPlayerBoards.put(user, clientPlayerBoard);
+                otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+            }
         });
     }
+
 
     public void start() {
         new EchoClient(myIp,myPort,this).start();
@@ -790,10 +796,6 @@ public class Gui extends View {
         Platform.runLater(()->{
             primaryStage.setScene(numberOfPlayersScene);
         });
-    }
-
-    public List<ClientPlayer> getPlayers(){
-        return new ArrayList<ClientPlayer>();
     }
 
     public void setPlayerBoardController(PlayerBoardController controller) {

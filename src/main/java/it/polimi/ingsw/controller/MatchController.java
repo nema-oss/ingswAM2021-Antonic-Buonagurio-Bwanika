@@ -277,8 +277,9 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty())
             errors = controlStandardAction();
 
-        if(errors.isEmpty())
-            viewInterface.playTurn(nickname);
+        //if(errors.isEmpty())
+            //viewInterface.playTurn(nickname);
+
 
         return errors;
     }

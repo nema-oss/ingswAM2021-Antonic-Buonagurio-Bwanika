@@ -16,6 +16,7 @@ public class ClientPlayerBoard implements Serializable {
     private final List<Stack<DevelopmentCard>> developmentCards;
     private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
     private final CellFactory cellFactory;
+    private List<LeaderCard> activeLeaderCard;
 
 
     public ClientPlayerBoard(){
@@ -29,6 +30,7 @@ public class ClientPlayerBoard implements Serializable {
         developmentCards.add(new Stack<DevelopmentCard>());
         developmentCards.add(new Stack<DevelopmentCard>());
         developmentCards.add(new Stack<DevelopmentCard>());
+        activeLeaderCard = new ArrayList<>();
     }
 
     public ClientPopeRoad getPopeRoad() {
@@ -86,6 +88,10 @@ public class ClientPlayerBoard implements Serializable {
 
 
     public List<LeaderCard> getActiveLeaderCards() {
-        return null;
+        return activeLeaderCard;
+    }
+
+    public void addActiveLeaderCard(LeaderCard card) {
+        activeLeaderCard.add(card);
     }
 }

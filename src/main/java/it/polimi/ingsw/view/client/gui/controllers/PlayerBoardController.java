@@ -17,11 +17,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -46,6 +50,9 @@ public class PlayerBoardController {
     AnchorPane strongbox, pBoard, extraDeposit1, extraDeposit2;
 
     @FXML
+    BorderPane dev1, dev2, dev3;
+
+    @FXML
     Label strongboxCoinCount, strongboxShieldCount, strongboxServantCount, strongboxStoneCount;
 
     @FXML
@@ -56,7 +63,7 @@ public class PlayerBoardController {
     private List<DevelopmentCard> prodCardsList;
     private List <LeaderCard> leaderCardsList;
 
-    private boolean is1active, is2active, isLeaderAction;
+    private boolean is1active, is2active, isLeaderAction, isDev1Selected, isDev2Selected, isDev3Selected, isL1Selected, isL2Selected;
     private List<Node> popeSpaces;
 
 
@@ -107,7 +114,16 @@ public class PlayerBoardController {
 
                 inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
             } else {
-                leaderCardsList.add(l1);
+                if(!isL1Selected) {
+                    leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
+                    leaderCardsList.add(l1);
+                    isL1Selected = true;
+                }
+                else {
+                    leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                    leaderCardsList.remove(l1);
+                    isL1Selected = false;
+                }
             }
         }
     }
@@ -145,7 +161,16 @@ public class PlayerBoardController {
 
                 inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
             } else {
-                leaderCardsList.add(l2);
+                if(!isL2Selected) {
+                    leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
+                    leaderCardsList.add(l2);
+                    isL1Selected = true;
+                }
+                else {
+                    leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+                    leaderCardsList.remove(l2);
+                    isL1Selected = false;
+                }
             }
         }
     }
@@ -236,16 +261,34 @@ public class PlayerBoardController {
 
     @FXML
     public void activateCardsProduction (){
-        gui.alertUser("CARD PRODUCTION", "Card selected.", Alert.AlertType.INFORMATION);
-        Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
-        gui.sendMessage(msg);
+        if(prodCardsList.size()!=0) {
+            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
+            gui.sendMessage(msg);
+            prodCardsList.clear();
+            dev1.setStyle("");
+            dev2.setStyle("");
+            dev3.setStyle("");
+            isDev1Selected = false;
+            isDev2Selected = false;
+            isDev3Selected = false;
+        }
     }
 
     @FXML
     public void activateLeaderProduction(){
-        gui.alertUser("CARD PRODUCTION", "Card selected.", Alert.AlertType.INFORMATION);
-        Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
-        gui.sendMessage(msg);
+        if(leaderCardsList.size()!=0) {
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
+            gui.sendMessage(msg);
+            leaderCardsList.clear();
+            isL1Selected = false;
+            isL2Selected = false;
+            if(is1active){
+                leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+            }
+            if(is2active){
+                leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+            }
+        }
     }
 
     /**
@@ -290,17 +333,72 @@ public class PlayerBoardController {
             if(clientPlayerBoard.getDevelopmentCards().get(i).size() != 0) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayerBoard.getDevelopmentCard(i).getId() + ".png"));
                 card.setId(clientPlayerBoard.getDevelopmentCard(i).getId());
-                card.setFitWidth(115);
-                card.setFitHeight(205);
-                card.setPreserveRatio(true);
+                card.setFitWidth(110);
+                card.setFitHeight(168);
 
                 int finalI = i;
                 card.setOnMouseClicked(event -> {
-                    card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    prodCardsList.add(clientPlayerBoard.getDevelopmentCard(finalI));
+                    boolean bool = controlDevelopmentCard(card);
+
+                    if(bool)
+                        prodCardsList.add(clientPlayerBoard.getDevelopmentCard(finalI));
+                    else
+                        prodCardsList.remove(clientPlayerBoard.getDevelopmentCard(finalI));
                 });
-                devCards.add(card, i, 0);
+
+                if(i==0) {
+                    dev1.setCenter(card);
+                }
+                else if(i==1) {
+                    dev2.setCenter(card);
+                }
+                else{
+                    dev3.setCenter(card);
+                }
+
+                //devCards.add(card, i, 0);
             }
+        }
+    }
+
+    public boolean controlDevelopmentCard(ImageView card){
+        if(card.getParent().equals(dev1)){
+            if(!isDev1Selected){
+                isDev1Selected = true;
+                dev1.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev1Selected = false;
+                dev1.setStyle("");
+                return false;
+            }
+        }
+        else if(card.getParent().equals(dev2)){
+            if(!isDev2Selected){
+                isDev2Selected = true;
+                dev2.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev2Selected = false;
+                dev2.setStyle("");
+                return false;
+            }
+
+        }
+        else {
+            if(!isDev3Selected){
+                isDev3Selected = true;
+                dev3.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev3Selected = false;
+                dev3.setStyle("");
+                return false;
+            }
+
         }
     }
 

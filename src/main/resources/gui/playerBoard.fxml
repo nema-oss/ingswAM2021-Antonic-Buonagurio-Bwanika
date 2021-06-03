@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -14,15 +15,20 @@
     <ImageView fitHeight="609.0" fitWidth="614.0" layoutX="131.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/Boards/MastersofRenaissance_PlayerBoard(11_2020)-1.png" />
     </ImageView>
-    <GridPane fx:id="devCards" layoutX="367.0" layoutY="175.0" prefHeight="232.0" prefWidth="350.0">
+    <GridPane fx:id="devCards" layoutX="370.0" layoutY="204.0" prefHeight="183.0" prefWidth="348.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="118.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="108.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="122.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="120.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
         </rowConstraints>
+      <children>
+         <BorderPane fx:id="dev3" GridPane.columnIndex="2" />
+         <BorderPane fx:id="dev1" />
+         <BorderPane fx:id="dev2" GridPane.columnIndex="1" />
+      </children>
     </GridPane>
     <AnchorPane layoutX="146.0" layoutY="158.0" prefHeight="156.0" prefWidth="118.0">
         <GridPane fx:id="floor1" layoutX="50.0" layoutY="29.0" prefHeight="30.0" prefWidth="28.0">

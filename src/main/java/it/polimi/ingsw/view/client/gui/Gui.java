@@ -766,11 +766,7 @@ public class Gui extends View {
         Platform.runLater(()->{
             if(!otherPlayerBoards.containsKey(user)){
                 otherPlayerBoards.put(user,clientPlayerBoard);
-                try {
-                    gameSceneController.initializePlayerBoard();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                gameSceneController.addPlayerBoard(user,clientPlayerBoard);
             }else {
                 otherPlayerBoards.put(user, clientPlayerBoard);
                 otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));

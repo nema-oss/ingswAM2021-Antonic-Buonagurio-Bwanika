@@ -130,9 +130,17 @@ public class GameController implements Initializable{
 
         playerTabController.setGui(gui);
         for(String playerNickname : gui.getOtherPlayerBoards().keySet()) {
-           playerTabController.addPlayerBoard(playerNickname,gui.getOtherPlayerBoards().get(playerNickname),true);
+           playerTabController.addPlayerBoard(playerNickname,gui.getOtherPlayerBoards().get(playerNickname),false);
         }
         playerTabController.addPlayerBoard(gui.getPlayerNickname(),gui.getClientPlayer().getPlayerBoard(),true);
+    }
+
+    public void addPlayerBoard(String user, ClientPlayerBoard clientPlayerBoard){
+        try {
+            playerTabController.addPlayerBoard(user, clientPlayerBoard, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initializeActions(){

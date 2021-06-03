@@ -187,6 +187,7 @@ public class ActionButtonsController implements Initializable {
 
         endTurnButton.setOnAction(event -> {
             Message msg = new EndTurnMessage(gui.getPlayerNickname());
+            gui.updateOtherPlayerBoards(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
             gui.sendMessage(msg);
         });
         setEndTurnVisible(false);

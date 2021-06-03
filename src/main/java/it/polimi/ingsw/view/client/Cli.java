@@ -1488,6 +1488,7 @@ public class Cli extends View {
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
+                                updateOtherPlayerBoards(player.getNickname(), player.getPlayerBoard());
                                 sendMessage(socket, new EndTurnMessage(player.getNickname()));
                                 return;
                         }

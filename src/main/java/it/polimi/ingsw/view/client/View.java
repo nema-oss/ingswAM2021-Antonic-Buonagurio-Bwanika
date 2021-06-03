@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.ActionToken;
@@ -41,8 +42,8 @@ public abstract class View {
         this.player = new ClientPlayer(nickname,this.gameBoard);
         otherPlayerBoards = new HashMap<>();
 
-        //Message message = new UpdateClientPlayerBoardsMessage(nickname, player.getPlayerBoard());
-        //sendMessage(socket,message);
+        Message message = new UpdateClientPlayerBoardsMessage(nickname, player.getPlayerBoard());
+        sendMessage(socket,message);
     }
 
 

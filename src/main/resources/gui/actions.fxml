@@ -91,6 +91,7 @@
                <Button fx:id="actionTokenOk" layoutX="85.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
             </children>
          </AnchorPane>
+         <Button fx:id="BackButton" layoutX="547.0" layoutY="301.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="92.0" styleClass="orange" stylesheets="@gameBoard.css" text="Back" />
       </AnchorPane>
    </right>
    <center>

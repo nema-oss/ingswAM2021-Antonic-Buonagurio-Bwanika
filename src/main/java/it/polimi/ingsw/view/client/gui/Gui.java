@@ -299,7 +299,6 @@ public class Gui extends View {
                 amount = ((ActionTokenMove) lorenzoAction).getSteps();
                 lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
             }
-            actionButtonsController.setLorenzoVisible(true);
             actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
         });
 

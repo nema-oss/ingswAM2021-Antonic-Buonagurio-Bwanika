@@ -169,6 +169,7 @@ public class ClientPlayer {
 
     public void activateLeaderCard(LeaderCard card){
         activeLeaderCards.add(card);
+        playerBoard.addActiveLeaderCard(card);
     }
 
     public void updateDeposit(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {

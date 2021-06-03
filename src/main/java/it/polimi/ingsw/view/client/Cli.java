@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -1202,9 +1203,8 @@ public class Cli extends View {
 
         Formatting.clearScreen();
 
-        showGameBoard(new ClientGameBoard());
+        showGameBoard(gameBoard);
         showAllAvailableResources();
-
 
 
         AtomicBoolean correct = new AtomicBoolean(true);
@@ -1219,7 +1219,7 @@ public class Cli extends View {
 
             do{
                 String input = inputWithTimeout();
-                resourceTypesChoice = InputValidator.isValidChooseResourceType(input);
+                resourceTypesChoice = InputValidator.isValidChooseResourceType(input, numberOfResources);
                 correct.set(resourceTypesChoice != null);
                 if(!correct.get())
                     System.out.println("Incorrect resource type name");
@@ -1316,9 +1316,11 @@ public class Cli extends View {
                     }
                     if(Thread.interrupted()) return;
                 }
-                if(!Thread.interrupted())
-                    sendMessage(socket, new PlaceResourcesMessage(player.getNickname(),userChoice));
-
+                if(!Thread.interrupted()) {
+                    PlaceResourcesMessage message = new PlaceResourcesMessage(player.getNickname(), userChoice);
+                    message.setDiscardedResources(Math.abs(userChoice.size() - resourceList.size()));
+                    sendMessage(socket,message);
+                }
 
             }
 
@@ -1352,6 +1354,7 @@ public class Cli extends View {
         player.buyDevelopmentCard(x,y);
         Formatting.clearScreen();
         showBoard(gameBoard,player);
+        askTurnAction();
         System.out.println("Buy development card request accepted");
     }
 
@@ -1388,7 +1391,6 @@ public class Cli extends View {
     public void showPlaceResourcesResult(boolean accepted, Map<Resource,Integer> userChoice) {
         if(accepted){
             System.out.println("The other resources will be discarded. Press Enter to continue");
-
             player.addResource(userChoice);
             inputWithTimeout();
             askTurnAction();
@@ -1488,7 +1490,8 @@ public class Cli extends View {
                                 break;
                             case END_TURN:
                                 player.resetTurnActionCounter();
-                                updateOtherPlayerBoards(player.getNickname(), player.getPlayerBoard());
+                                Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+                                sendMessage(socket, message);
                                 sendMessage(socket, new EndTurnMessage(player.getNickname()));
                                 return;
                         }

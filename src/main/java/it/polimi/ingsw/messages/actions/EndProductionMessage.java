@@ -1,14 +1,20 @@
 package it.polimi.ingsw.messages.actions;
 
 import it.polimi.ingsw.messages.actions.ActionMessage;
+import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class EndProductionMessage implements ActionMessage, Serializable {
 
     private final String user;
+    private Map<ResourceType, List<Resource>> updatedStrongbox;
+    private List<List<Resource>> updatedWarehouse;
 
     public EndProductionMessage(String user){
         this.user = user;
@@ -20,5 +26,12 @@ public class EndProductionMessage implements ActionMessage, Serializable {
 
     @Override
     public void execute(View view) {
+        view.showProductionResult(updatedStrongbox,updatedWarehouse);
     }
+
+    public void setProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+        this.updatedStrongbox = updatedStrongbox;
+        this.updatedWarehouse = updatedWarehouse;
+    }
+
 }

@@ -35,7 +35,7 @@ public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
      */
     public void execute(View view){
         if(isAccepted())
-            view.showAcceptedBuyDevelopmentCard(x,y);
+            view.showAcceptedBuyDevelopmentCard(user,x,y);
         else
             view.setBuyCardAction(accepted);
     }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ClientStrongbox implements Serializable {
 
-    private HashMap<ResourceType, List<Resource>> strongbox;
+    private Map<ResourceType, List<Resource>> strongbox;
     private List<Resource> temporaryResourceStorage;
 
     public ClientStrongbox(){
@@ -41,5 +41,10 @@ public class ClientStrongbox implements Serializable {
     public Map<ResourceType, List<Resource>> getAll() {
 
         return strongbox;
+    }
+
+    public void update(Map<ResourceType, List<Resource>> updatedStrongbox) {
+
+        strongbox = updatedStrongbox;
     }
 }

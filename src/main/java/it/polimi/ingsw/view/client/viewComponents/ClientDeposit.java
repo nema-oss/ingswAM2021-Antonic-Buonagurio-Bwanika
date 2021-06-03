@@ -88,4 +88,8 @@ public class ClientDeposit implements Serializable {
         }
 
     }
+
+    public void update(List<List<Resource>> updatedWarehouse){
+        warehouse = updatedWarehouse;
+    }
 }

@@ -59,9 +59,6 @@ public class MarbleMarket implements Serializable {
         Marble[] marbles;
         Marble tempFreeMarble;
 
-        System.out.println("=============");
-        System.out.println("prima");
-        System.out.println(marbleMarket[0][0].getColor());
 
         if (row == -1) {
 
@@ -89,10 +86,6 @@ public class MarbleMarket implements Serializable {
             marbleMarket[row][nCol-1]=freeMarble;
             freeMarble= tempFreeMarble;
         }
-
-        System.out.println("dopo");
-        System.out.println(marbleMarket[0][0].getColor());
-        System.out.println("=============");
 
         return Arrays.asList(marbles);
 

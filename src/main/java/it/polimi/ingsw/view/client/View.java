@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.client;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.ActionToken;
@@ -197,12 +196,13 @@ public abstract class View {
     /**
      * This method tells the user that the buy card action has been accepted
      */
-    public abstract void showAcceptedBuyDevelopmentCard(int x, int y);
+    public abstract void showAcceptedBuyDevelopmentCard(String user, int x, int y);
 
     /**
      * This method tells the user that the activate production request has been rejected
+     * @param accepted
      */
-    public abstract void showProductionError();
+    public abstract void showProductionRequestResults(boolean accepted);
 
     /**
      * This method add the leader cards to the user's hand
@@ -283,4 +283,6 @@ public abstract class View {
     public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
     public abstract void showLorenzoAction(ActionToken lorenzoAction);
+
+    public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse);
 }

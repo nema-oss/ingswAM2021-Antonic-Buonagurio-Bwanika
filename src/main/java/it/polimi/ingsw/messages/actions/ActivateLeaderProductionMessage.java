@@ -40,7 +40,7 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
      * @param view: receiver view
      */
     public void execute(View view){
-
+        view.showProductionRequestResults(accepted);
     }
     /**
      * Get the message type

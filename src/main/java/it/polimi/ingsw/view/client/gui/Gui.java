@@ -14,7 +14,7 @@ import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
@@ -71,7 +71,6 @@ public class Gui extends View {
 
     private GameController gameSceneController;
     private Scene gameScene;
-    private List<Player> players;
     private boolean isGameScene;
 
 
@@ -302,6 +301,20 @@ public class Gui extends View {
             actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
         });
 
+    }
+
+    @Override
+    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+
+        Platform.runLater(()->{
+            player.updateDeposit(updatedStrongbox,updatedWarehouse);
+            playerBoardController.update(player.getPlayerBoard());
+            actionButtonsController.setLeaderActionVisible(true);
+            actionButtonsController.setStandardActionVisible(false);
+            actionButtonsController.setResourcePaneVisible(false);
+            actionButtonsController.setSwapPaneVisible(false);
+            actionButtonsController.setEndTurnVisible(true);
+        });
     }
 
     /**
@@ -617,37 +630,46 @@ public class Gui extends View {
      * This method tells the user that the buy card action has been accepted
      *
      * @param x, y card coordinates
+     * @param user
      */
     @Override
-    public void showAcceptedBuyDevelopmentCard(int x, int y) {
+    public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
 
         Platform.runLater(()->{
-            player.buyDevelopmentCard(x,y);
-            List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
-            System.out.println(developmentCards.size());
-            for(DevelopmentCard card: developmentCards){
-                System.out.println(card.getLevel());
+            if(player.getNickname().equals(user)) {
+                player.buyDevelopmentCard(x, y);
+                List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
+                System.out.println(developmentCards.size());
+                for (DevelopmentCard card : developmentCards) {
+                    System.out.println(card.getLevel());
+                }
+                playerBoardController.update(player.getPlayerBoard());
+                alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
+                actionButtonsController.setBuyCardVisible(false);
+                actionButtonsController.setLeaderActionVisible(true);
+                actionButtonsController.setStandardActionVisible(false);
+                actionButtonsController.setEndTurnVisible(true);
+            }else{
+                alertUser("Information", user + "has bought a card from market.", Alert.AlertType.INFORMATION);
             }
-            playerBoardController.update(player.getPlayerBoard());
-            alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
-            actionButtonsController.setBuyCardVisible(false);
-            actionButtonsController.setLeaderActionVisible(true);
-            actionButtonsController.setStandardActionVisible(false);
-            actionButtonsController.setEndTurnVisible(true);
         });
 
     }
 
     /**
-     * This method tells the user that the activate production request has been rejected
+     * Show the results of a card production request
+     * @param accepted true if request accepted, false if not
      */
     @Override
-    public void showProductionError() {
-        Platform.runLater(()->{
-            alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
-        });
-        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
+    public void showProductionRequestResults(boolean accepted) {
 
+        Platform.runLater(()->{
+            if(!accepted) {
+                alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
+            }else{
+                alertUser("Information", "Production activated. End the production to see your new resources", Alert.AlertType.INFORMATION);
+            }
+        });
     }
 
     /**

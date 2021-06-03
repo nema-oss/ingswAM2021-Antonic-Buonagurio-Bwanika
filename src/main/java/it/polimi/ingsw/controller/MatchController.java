@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
@@ -299,9 +300,13 @@ public class MatchController implements ControllerInterface{
         if(!errors.isEmpty())
             return errors;
 
+        if(developmentCards.isEmpty()) {
+            errors.add(Error.GENERIC);
+            return errors;
+        }
+
         if(developmentProductionActivated)
             errors.add(Error.INVALID_ACTION);
-
         else {
             for (DevelopmentCard c : developmentCards) {
                 try {
@@ -453,16 +458,25 @@ public class MatchController implements ControllerInterface{
     public List<Error> onEndProduction(String nickname){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
+        System.out.println(game.getGamePhase());
+        errors.forEach(System.out::println);
 
         if(errors.isEmpty()) {
             if (developmentProductionActivated || leaderProductionActivated || boardProductionActivated) {
-                game.getCurrentPlayer().getStrongbox().moveFromTemporary();
+                System.out.println("correct turn");
+                Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
+                strongbox.moveFromTemporary();
+                List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+                viewInterface.setProductionResult(game.getCurrentPlayer().getNickname(), strongbox.getAll(), warehouse);
                 developmentProductionActivated = false;
                 leaderProductionActivated = false;
                 boardProductionActivated = false;
 
-            } else
+            } else {
                 errors.add(Error.INVALID_ACTION);
+                System.out.println("nel end production");
+            }
+
         }
 
         nextTurn();

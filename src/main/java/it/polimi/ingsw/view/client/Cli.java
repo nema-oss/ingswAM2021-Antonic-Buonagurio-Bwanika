@@ -9,7 +9,6 @@ import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.ActionTokenDiscard;
-import it.polimi.ingsw.model.ActionTokenFactory;
 import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
@@ -1349,7 +1348,7 @@ public class Cli extends View {
      * This method tells the user that the buy card action has been accepted
      */
     @Override
-    public void showAcceptedBuyDevelopmentCard(int x, int y) {
+    public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
         player.buyDevelopmentCard(x,y);
         Formatting.clearScreen();
         showBoard(gameBoard,player);
@@ -1358,9 +1357,10 @@ public class Cli extends View {
 
     /**
      * This method tells the user that the activate production request has been rejected
+     * @param accepted
      */
     @Override
-    public void showProductionError() {
+    public void showProductionRequestResults(boolean accepted) {
         System.out.println("Production request rejected. Try again.");
         setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
     }
@@ -1436,6 +1436,12 @@ public class Cli extends View {
             showTitle();
             System.out.println("Lorenzo moved " + steps +  " forward on his Poperoad");
         }
+    }
+
+    @Override
+    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+        player.updateDeposit(updatedStrongbox,updatedWarehouse);
+
     }
 
     /**

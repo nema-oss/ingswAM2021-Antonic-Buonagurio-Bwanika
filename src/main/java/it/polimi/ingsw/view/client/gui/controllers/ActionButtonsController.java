@@ -114,6 +114,7 @@ public class ActionButtonsController implements Initializable {
         startProd.setOnAction(event -> {
 
             setChooseStandardActionVisible(false);
+            setLeaderActionVisible(false);
             setActivateProductionVisible(true);
 
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());

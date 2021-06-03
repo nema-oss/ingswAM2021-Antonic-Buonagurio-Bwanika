@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.server;
 import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
+import it.polimi.ingsw.messages.actions.EndProductionMessage;
 import it.polimi.ingsw.messages.actions.server.LorenzoTurnMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
 import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
@@ -498,7 +499,12 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void endProduction(String user){
-        matchController.onEndProduction(user);
+
+        List<Error> errors = matchController.onEndProduction(user);
+        if(!errors.isEmpty()) {
+            System.out.println("End production not successful");
+            errors.forEach(System.out::println);
+        }
     }
 
 
@@ -708,6 +714,15 @@ public class VirtualView implements VirtualViewInterface{
     public void sendLorenzoTurn(ActionToken lorenzoAction) {
         Message message = new LorenzoTurnMessage(lorenzoAction);
         clients.values().forEach(p->sendMessage(p,message));
+    }
+
+    @Override
+    public void setProductionResult(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse) {
+
+        EndProductionMessage message = new EndProductionMessage(user);
+        message.setProductionResult(updateStrongbox, updatedWarehouse);
+        sendMessage(clients.get(user), message);
+        updatePlayerPosition(user);
     }
 
     public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {

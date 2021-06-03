@@ -40,8 +40,7 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
      * @param view: receiver view
      */
     public void execute(View view){
-        if(!isAccepted())
-            view.showProductionError();
+        view.showProductionRequestResults(accepted);
     }
     /**
      * Get the message type
@@ -57,4 +56,5 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
     public boolean isAccepted() {
         return accepted;
     }
+
 }

@@ -6,8 +6,10 @@ import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Virtual view interface with the methods that controller can call
@@ -58,5 +60,7 @@ public interface VirtualViewInterface {
     public void updatePlayerPosition(String nickname);
 
     void sendLorenzoTurn(ActionToken lorenzoAction);
+
+    void setProductionResult(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
 }
 

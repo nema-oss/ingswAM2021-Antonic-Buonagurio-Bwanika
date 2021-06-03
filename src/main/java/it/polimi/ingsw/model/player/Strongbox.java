@@ -87,7 +87,6 @@ public class Strongbox implements Serializable {
 
 
     public Map<ResourceType, List<Resource>> getAll() {
-
         return strongbox;
     }
 }

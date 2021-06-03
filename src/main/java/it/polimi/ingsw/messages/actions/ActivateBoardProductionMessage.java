@@ -41,8 +41,7 @@ public class ActivateBoardProductionMessage implements Serializable, ActionMessa
      * @param view: receiver view
      */
     public void execute(View view){
-        if(!isAccepted())
-            view.showProductionError();
+       view.showProductionRequestResults(accepted);
     }
     /**
      * Get the message type

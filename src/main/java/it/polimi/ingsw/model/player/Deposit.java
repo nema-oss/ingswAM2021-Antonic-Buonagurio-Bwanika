@@ -128,10 +128,13 @@ public class Deposit implements Serializable {
         return warehouse.get(floor).get(0);
     }
 
-    public int getNumberOfResourcesOnFloor(int floor){
+    public int getNumberOfResourcesOnFloor(int floor) {
         floor--;
         return warehouse.get(floor).size();
     }
 
+    public List<List<Resource>> getWarehouse() {
+        return warehouse;
+    }
 }
 

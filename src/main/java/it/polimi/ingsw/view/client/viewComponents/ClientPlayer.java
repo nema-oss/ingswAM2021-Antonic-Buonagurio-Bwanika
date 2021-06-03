@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.*;
 
 import java.io.Serializable;
@@ -170,5 +171,13 @@ public class ClientPlayer {
         activeLeaderCards.add(card);
     }
 
+    public void updateDeposit(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+
+        ClientStrongbox strongbox = playerBoard.getStrongbox();
+        ClientDeposit deposit = playerBoard.getDeposit();
+
+        strongbox.update(updatedStrongbox);
+        deposit.update(updatedWarehouse);
+    }
 }
 

@@ -315,7 +315,7 @@ public class MatchController implements ControllerInterface{
 
                     for (Stack<DevelopmentCard> s : currPlayer.getPlayerBoard().getDevelopmentCards()) {
 
-                        if (s.peek().getId().equals(c.getId())) {
+                        if (!s.isEmpty() && s.peek().getId().equals(c.getId())) {
                             currPlayer.activateProduction(i);
                             game.getCurrentPlayer().setStandardActionPlayed(true);
                             developmentProductionActivated = true;
@@ -325,11 +325,10 @@ public class MatchController implements ControllerInterface{
                         i++;
                     }
 
-                } catch (FullDepositException e) {
-                    errors.add(Error.DEPOSIT_IS_FULL);
-                } catch (InsufficientPaymentException e) {
+                } catch (InsufficientPaymentException | InsufficientResourcesException e) {
                     errors.add(Error.INSUFFICIENT_PAYMENT);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     errors.add(Error.GENERIC);
                 }
             }
@@ -439,7 +438,7 @@ public class MatchController implements ControllerInterface{
                         game.getCurrentPlayer().setStandardActionPlayed(true);
                         boardProductionActivated = true;
 
-                    } catch(InsufficientPaymentException e){
+                    } catch(InsufficientPaymentException | InsufficientResourcesException e){
                         errors.add(Error.INSUFFICIENT_PAYMENT);
                         return errors;
                     }

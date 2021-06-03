@@ -136,7 +136,7 @@ public class Player{
 
     }
 
-    public void takeResourceForAction(Map<ResourceType, Integer> cost) throws Exception {
+    public void takeResourceForAction(Map<ResourceType, Integer> cost) throws InsufficientResourcesException {
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
@@ -232,7 +232,7 @@ public class Player{
      * @param positionIndex coordinates
      */
 
-    public void activateProduction(int positionIndex) throws FullDepositException, Exception, InsufficientPaymentException {
+    public void activateProduction(int positionIndex) throws InsufficientPaymentException, InsufficientResourcesException {
 
         DevelopmentCard card = getPlayerBoard().getDevelopmentCard(positionIndex);
         checkCardRequirements(card.getProductionRequirements());

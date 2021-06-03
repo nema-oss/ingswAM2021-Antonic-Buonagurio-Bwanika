@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import javax.naming.InsufficientResourcesException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,9 +74,9 @@ public class Strongbox implements Serializable {
      * @return set of resources (type:ArrayList<Resource)
      */
 
-    public List<Resource> getResource(ResourceType type, int amount) throws Exception{
+    public List<Resource> getResource(ResourceType type, int amount) throws InsufficientResourcesException{
 
-        if(amount > strongbox.get(type).size()) throw new Exception();
+        if(amount > strongbox.get(type).size()) throw new InsufficientResourcesException();
         ArrayList<Resource> result = new ArrayList<Resource>();
         while(amount > 0){
             result.add(strongbox.get(type).get(0));

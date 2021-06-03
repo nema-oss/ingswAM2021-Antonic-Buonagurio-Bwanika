@@ -412,7 +412,7 @@ public class VirtualView implements VirtualViewInterface{
 
     /**
      * This method manage the activate production development card request from client
-     * @param developmentCards the card to use
+     * @param developmentCards the cards  to use
      * @param user the current user
      */
     public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards) {
@@ -430,7 +430,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
-        System.out.println("Production accepted");
+
         //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         //sendMessage(clients.get(user), boardUpdate);
     }

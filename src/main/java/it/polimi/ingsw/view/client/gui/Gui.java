@@ -578,7 +578,7 @@ public class Gui extends View {
                 }
 
                 if (currentPlayer.equals(player.getNickname())) {
-                    actionButtonsController.setLorenzoVisible(false);
+                    //actionButtonsController.setLorenzoVisible(false);
                     actionButtonsController.setWaitVisible(false);
                     actionButtonsController.setChooseActionTypeVisible(true);
                 } else {
@@ -756,6 +756,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateCurrentPosition(position);
+
             playerBoardController.updatePopeRoad(player);
         });
     }
@@ -774,6 +775,7 @@ public class Gui extends View {
             System.out.println(otherPlayerBoards.keySet());
         });
     }
+
 
     public void start() {
         new EchoClient(myIp,myPort,this).start();

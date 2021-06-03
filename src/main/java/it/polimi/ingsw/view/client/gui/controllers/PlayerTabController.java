@@ -73,7 +73,7 @@ public class PlayerTabController implements Initializable {
 
        if(!isCurrent) {
            controllersMap.get(clientPlayer).hideInactiveLeaders();
-           tab.getContent().setDisable(true);
+           tab.getContent().setDisable(false);
        }
     }
 
@@ -94,7 +94,7 @@ public class PlayerTabController implements Initializable {
 
         for(Tab t : tabPane.getTabs()){
             if (t.getText().equals(clientPlayer)) {
-                controllersMap.get(clientPlayer).updateOtherPlayers(clientPlayerBoard);
+                controllersMap.get(clientPlayer).update(clientPlayerBoard);
                 break;
             }
         }

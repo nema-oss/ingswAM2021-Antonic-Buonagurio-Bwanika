@@ -606,10 +606,12 @@ public class Cli extends View {
 
         showLowerBoard(clientPlayerBoard);
         Map<LeaderCard, Boolean> map = new HashMap<>();
-        for(LeaderCard leaderCard: clientPlayerBoard.getActiveLeaderCards()){
-            map.put(leaderCard, true);
+        if(clientPlayerBoard.getActiveLeaderCards()!=null) {
+            for (LeaderCard leaderCard : clientPlayerBoard.getActiveLeaderCards()) {
+                map.put(leaderCard, true);
+            }
+            showLeaderCards(map);
         }
-        showLeaderCards(map);
     }
 
 

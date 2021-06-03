@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCardDeserializer;
 import it.polimi.ingsw.model.gameboard.InterfaceAdapter;
 import it.polimi.ingsw.model.gameboard.Producible;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +29,8 @@ public class CardFactory {
         try {
             // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-            Reader file = new FileReader("src/main/resources/developmentCards.json");
+            //Reader file = new FileReader("src/main/resources/developmentCards.json");
+            Reader file = new InputStreamReader(CardFactory.class.getResourceAsStream("/developmentCards.json"));
             final GsonBuilder builder = new GsonBuilder();
 
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
@@ -51,10 +49,11 @@ public class CardFactory {
 
     public List<LeaderCard> getLeaderCards() {
 
-        try {
+
             // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-            Reader file = new FileReader("src/main/resources/leaderCards.json");
+            //Reader file = new FileReader("src/main/resources/leaderCards.json");
+            Reader file = new InputStreamReader(CardFactory.class.getResourceAsStream("/leaderCards.json"));
             final GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
             builder.registerTypeAdapter(LeaderCard.class ,new LeaderCardDeserializer());
@@ -63,9 +62,7 @@ public class CardFactory {
             leaderCards = gson.fromJson(file, LeaderCard[].class);
 
 
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
+
 
         return new ArrayList<>(Arrays.asList(leaderCards));
 

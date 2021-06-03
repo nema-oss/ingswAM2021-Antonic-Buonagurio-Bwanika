@@ -20,12 +20,12 @@
                <Font size="18.0" />
             </font>
          </Label>
-         <Button fx:id="standardAction" layoutX="258.0" layoutY="125.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="141.0" styleClass="orange" stylesheets="@gameBoard.css" text="Standard action" />
-         <Button fx:id="leaderAction" layoutX="258.0" layoutY="186.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="141.0" styleClass="orange" stylesheets="@gameBoard.css" text="Leader action" />
-         <Button fx:id="buyResource" layoutX="246.0" layoutY="110.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy resources" />
-         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="269.0" layoutY="262.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
-         <Button fx:id="startProd" layoutX="246.0" layoutY="157.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Production" />
-         <Button fx:id="buyCard" layoutX="246.0" layoutY="201.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy development card" />
+         <Button fx:id="standardAction" layoutX="248.0" layoutY="126.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Standard action" />
+         <Button fx:id="leaderAction" layoutX="248.0" layoutY="186.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="165.0" styleClass="orange" stylesheets="@gameBoard.css" text="Leader action" />
+         <Button fx:id="buyResource" layoutX="217.0" layoutY="113.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy resources" />
+         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="264.0" layoutY="262.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="orange" stylesheets="@gameBoard.css" text="end turn" />
+         <Button fx:id="startProd" layoutX="218.0" layoutY="157.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="221.0" styleClass="orange" stylesheets="@gameBoard.css" text="Activate Production" />
+         <Button fx:id="buyCard" layoutX="217.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="orange" stylesheets="@gameBoard.css" text="Buy development card" />
          <ComboBox fx:id="rowOrColumn" layoutX="253.0" layoutY="128.0" prefWidth="150.0" promptText="row or column?" />
          <Button fx:id="rowOrColumnOk" layoutX="267.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
          <ComboBox fx:id="rowIndex" layoutX="254.0" layoutY="120.0" prefWidth="150.0" promptText="choose row" />
@@ -36,7 +36,7 @@
             <font>
                <Font size="15.0" />
             </font></Label>
-         <Label fx:id="prodMessage" alignment="CENTER" layoutX="167.0" layoutY="144.0" prefHeight="27.0" prefWidth="312.0" text="Click on the production cose" visible="false">
+         <Label fx:id="prodMessage" alignment="CENTER" layoutX="167.0" layoutY="144.0" prefHeight="27.0" prefWidth="312.0" text="Click on the production cose">
             <font>
                <Font size="15.0" />
             </font></Label>
@@ -86,10 +86,10 @@
          </AnchorPane>
          <AnchorPane fx:id="lorenzoPane" layoutX="179.0" layoutY="45.0" prefHeight="289.0" prefWidth="289.0">
             <children>
-               <ImageView fx:id="actionToken" fitHeight="140.0" fitWidth="147.0" layoutX="71.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
-               <Label fx:id="lorenzoLabel" alignment="CENTER" layoutX="21.0" layoutY="12.0" prefHeight="47.0" prefWidth="242.0" text="Label">
+               <ImageView fx:id="actionToken" fitHeight="140.0" fitWidth="147.0" layoutX="69.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" />
+               <Label fx:id="lorenzoLabel" alignment="CENTER" layoutY="12.0" prefHeight="47.0" prefWidth="288.0" text="Label">
                   <font>
-                     <Font size="16.0" />
+                     <Font size="14.0" />
                   </font></Label>
                <Button fx:id="actionTokenOk" layoutX="85.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
             </children>

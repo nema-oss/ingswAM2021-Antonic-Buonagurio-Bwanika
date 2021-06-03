@@ -430,7 +430,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
-
+        System.out.println("Production accepted");
         //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
         //sendMessage(clients.get(user), boardUpdate);
     }

@@ -70,7 +70,6 @@ public class ClientPlayerBoard implements Serializable {
 
     public void addDevelopmentCard(DevelopmentCard card){
 
-
         for (Stack<DevelopmentCard> developmentCard : developmentCards) {
             if (developmentCard.empty()) {
                 developmentCard.push(card);

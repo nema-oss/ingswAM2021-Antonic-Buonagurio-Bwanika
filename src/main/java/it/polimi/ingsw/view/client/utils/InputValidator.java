@@ -304,8 +304,8 @@ public class InputValidator {
             Resource resource = resourceList.stream().filter(p -> p.getType() == resourceType).findAny().get();
             try{
                 int floor = Integer.parseInt(singleAction.get(1));
-                userChoice.put(resource,floor);
-            }catch (NumberFormatException e){
+                userChoice.put(new Resource(resource.getType()),floor);
+            }catch (NumberFormatException | NullPointerException e){
                 return null;
             }
 

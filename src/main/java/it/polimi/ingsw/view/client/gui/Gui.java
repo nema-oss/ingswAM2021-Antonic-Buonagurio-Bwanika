@@ -768,8 +768,18 @@ public class Gui extends View {
     public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
 
         Platform.runLater(()->{
-            otherPlayerBoards.put(user,clientPlayerBoard);
-            //otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+            if(!otherPlayerBoards.containsKey(user)){
+                otherPlayerBoards.put(user,clientPlayerBoard);
+                try {
+                    gameSceneController.initializePlayerBoard();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                otherPlayerBoards.put(user, clientPlayerBoard);
+                otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+            }
+            System.out.println(otherPlayerBoards.keySet());
         });
     }
 
@@ -791,10 +801,6 @@ public class Gui extends View {
         Platform.runLater(()->{
             primaryStage.setScene(numberOfPlayersScene);
         });
-    }
-
-    public List<ClientPlayer> getPlayers(){
-        return new ArrayList<ClientPlayer>();
     }
 
     public void setPlayerBoardController(PlayerBoardController controller) {

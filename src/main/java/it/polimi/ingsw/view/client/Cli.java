@@ -1270,7 +1270,7 @@ public class Cli extends View {
 
             List<Resource> resourceList = player.getBoughtResources();
 
-            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Press " +
+            System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Write 'done' to finish. Press " +
                     "Enter to continue.");
 
             showAllAvailableResources(resourceList);
@@ -1298,10 +1298,10 @@ public class Cli extends View {
                 Formatting.clearScreen();
                 showBoard(gameBoard,player);
 
-                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1' to place a shield in " +
-                        "the first floor.");
+                System.out.println("Place you resources in the deposit. Write e.g. 'shield 1, stone 2' to place a shield in " +
+                        "the first floor and a stone in the second floor. ");
 
-                resourceList.stream().map(resource -> resource.getType() + "---" + "\n").forEach(System.out::print);
+                showAllAvailableResources(resourceList);
 
                 input = inputWithTimeout();
                 boolean correct = false;

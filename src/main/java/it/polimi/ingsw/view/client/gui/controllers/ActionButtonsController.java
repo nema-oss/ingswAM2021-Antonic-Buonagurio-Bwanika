@@ -198,6 +198,7 @@ public class ActionButtonsController implements Initializable {
         actionTokenOk.setOnAction(event -> {
             setLorenzoVisible(false);
             setChooseActionTypeVisible(true);
+            setEndTurnVisible(true);
         });
 
         backButton.setVisible(false);
@@ -233,8 +234,10 @@ public class ActionButtonsController implements Initializable {
     }
 
     public void setChooseActionTypeVisible(boolean value){
-        standardAction.setVisible(value);
-        leaderAction.setVisible(value);
+        if(!lorenzoPane.isVisible()) {
+            standardAction.setVisible(value);
+            leaderAction.setVisible(value);
+        }
     }
 
     public void setStandardActionVisible(boolean value){
@@ -401,7 +404,11 @@ public class ActionButtonsController implements Initializable {
         lorenzoLabel.setText(text);
 
         setLorenzoVisible(true);
-        setChooseActionTypeVisible(false);
+
+        standardAction.setVisible(false);
+        leaderAction.setVisible(false);
+        endTurnButton.setVisible(false);
+        backButton.setVisible(false);
 
     }
 }

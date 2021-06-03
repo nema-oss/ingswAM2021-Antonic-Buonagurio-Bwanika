@@ -71,6 +71,8 @@ public class Gui extends View {
     private Scene gameScene;
     private boolean isGameScene;
 
+    private PlayerTabController playerTabController;
+
 
     public Gui(String ip, int port, Stage stage, Scene scene){
 
@@ -164,6 +166,7 @@ public class Gui extends View {
             gameSceneController = loader.getController();
             gameSceneController.setGui(this);
             gameBoardController = gameSceneController.gameBoardController;
+            playerTabController = gameSceneController.playerTabController;
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
         }
@@ -306,7 +309,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateDeposit(updatedStrongbox,updatedWarehouse);
-            playerBoardController.update(player.getPlayerBoard());
+            playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
             actionButtonsController.setStandardActionVisible(false);
             actionButtonsController.setResourcePaneVisible(false);
@@ -640,7 +643,7 @@ public class Gui extends View {
                 for (DevelopmentCard card : developmentCards) {
                     System.out.println(card.getLevel());
                 }
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
@@ -693,7 +696,7 @@ public class Gui extends View {
         if(accepted) {
             Platform.runLater(()->{
                 player.getDeposit().swapFloors(x, y);
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
             });
         }
         else {
@@ -716,7 +719,7 @@ public class Gui extends View {
         if(accepted){
             Platform.runLater(()->{
                 player.addResource(userChoice);
-                playerBoardController.update(player.getPlayerBoard());
+                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setResourcePaneVisible(false);
@@ -756,7 +759,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateCurrentPosition(position);
-            playerBoardController.updatePopeRoad(player);
+            playerTabController.updatePlayerPosition(player.getNickname(), player);
         });
     }
 
@@ -771,7 +774,6 @@ public class Gui extends View {
                 otherPlayerBoards.put(user, clientPlayerBoard);
                 otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
             }
-            System.out.println(otherPlayerBoards.keySet());
         });
     }
 

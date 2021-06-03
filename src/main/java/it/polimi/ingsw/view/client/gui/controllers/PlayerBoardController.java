@@ -216,7 +216,7 @@ public class PlayerBoardController {
      */
     @FXML
     public void activateBoardProduction(){
-        Map<ResourceType, List<ResourceType>> map = new HashMap<>();
+        Map<Resource, List<ResourceType>> map = new HashMap<>();
         List<ResourceType> toGive = new ArrayList<>();
 
         String url = res1.getImage().getUrl();
@@ -253,7 +253,8 @@ public class PlayerBoardController {
         else if(url.contains("stone"))
             key = ResourceType.STONE;
 
-        map.put(key, toGive);
+
+        map.put(new Resource(key), toGive);
 
         Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, false);
         gui.sendMessage(msg);

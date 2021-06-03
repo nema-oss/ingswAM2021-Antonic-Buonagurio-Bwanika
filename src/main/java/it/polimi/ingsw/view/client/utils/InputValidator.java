@@ -232,7 +232,7 @@ public class InputValidator {
         return userChoice;
     }
 
-    public static Map<ResourceType, List<ResourceType>> isValidBoardProductionChoice(String input) {
+    public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
         if(rawList.size() != 2) return null;
@@ -247,7 +247,7 @@ public class InputValidator {
         List<String> resourcesToGiveString = Arrays.asList(list.get(0).split("\\s*,\\s*"));
         if(resourcesToGiveString.size() != 2) return null;
 
-        Map<ResourceType, List<ResourceType>> userChoice = new HashMap<>();
+        Map<Resource, List<ResourceType>> userChoice = new HashMap<>();
         ResourceType resourceTypeToReceive = isResourceType(list.get(1));
         List<ResourceType> listOfResourcesToGive = new ArrayList<>();
         if(resourceTypeToReceive == null) return null;
@@ -260,7 +260,7 @@ public class InputValidator {
                 return null;
         }
 
-        userChoice.put(resourceTypeToReceive,listOfResourcesToGive);
+        userChoice.put(new Resource(resourceTypeToReceive) ,listOfResourcesToGive);
         return userChoice;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -187,7 +188,8 @@ public class ActionButtonsController implements Initializable {
 
         endTurnButton.setOnAction(event -> {
             Message msg = new EndTurnMessage(gui.getPlayerNickname());
-            gui.updateOtherPlayerBoards(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
+            UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
+            gui.sendMessage(updateClientPlayerBoardsMessage);
             gui.sendMessage(msg);
         });
         setEndTurnVisible(false);

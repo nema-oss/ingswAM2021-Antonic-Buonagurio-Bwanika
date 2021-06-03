@@ -51,7 +51,7 @@ public class UpdateWriter {
         return new ActivateCardProductionMessage(user,cards,true);
     }
 
-    public Message productionBoardAccepted(String user,Map<ResourceType,List<ResourceType>> userChoice) {
+    public Message productionBoardAccepted(String user, Map<Resource, List<ResourceType>> userChoice) {
         return new ActivateBoardProductionMessage(user,userChoice,true);
     }
 

@@ -395,11 +395,18 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates the board production
      * @param nickname the player's nickname
-     * @param userChoice a map containing the resource the player wants to get e the ones to put in the production
+     * @param userChoiceMap a map containing the resource the player wants to get e the ones to put in the production
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateBoardProduction(String nickname, Map<ResourceType, List<ResourceType>> userChoice){
+    public List<Error> onActivateBoardProduction(String nickname, Map<Resource, List<ResourceType>> userChoiceMap){
+
+
+        Map<ResourceType, List<ResourceType>> userChoice = new HashMap<>();
+
+        for(Resource resource: userChoiceMap.keySet()){
+            userChoice.put(resource.getType(), userChoiceMap.get(resource));
+        }
 
         Player currPlayer = game.getCurrentPlayer();
         ResourceType toGet = null;

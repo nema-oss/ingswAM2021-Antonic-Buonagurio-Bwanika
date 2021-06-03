@@ -1527,7 +1527,7 @@ public class Cli extends View {
             inputWithTimeout();
             List<DevelopmentCard> developmentCardChoice;
             List<LeaderCard> leaderCardChoice;
-            Map<ResourceType,List<ResourceType>> boardProductionChoice;
+            Map<Resource,List<ResourceType>> boardProductionChoice;
 
             if(!Thread.interrupted()) {
                 do {

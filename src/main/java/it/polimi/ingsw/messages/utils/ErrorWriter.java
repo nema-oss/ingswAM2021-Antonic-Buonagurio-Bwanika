@@ -63,7 +63,7 @@ public class ErrorWriter {
         return new ActivateCardProductionMessage(user,cards,false);
     }
 
-    public Message productionBoardRejected(String user, Map<ResourceType,List<ResourceType>> resourceType) {
+    public Message productionBoardRejected(String user, Map<Resource, List<ResourceType>> resourceType) {
         return new ActivateBoardProductionMessage(user,resourceType,false);
     }
 

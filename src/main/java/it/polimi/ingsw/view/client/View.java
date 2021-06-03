@@ -282,7 +282,7 @@ public abstract class View {
 
     public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
-    public abstract void showLorenzoAction(ActionToken lorenzoAction);
+    public abstract void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition);
 
     public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse);
 }

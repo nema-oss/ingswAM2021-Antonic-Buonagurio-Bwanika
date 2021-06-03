@@ -1422,7 +1422,7 @@ public class Cli extends View {
     }
 
     @Override
-    public void showLorenzoAction(ActionToken lorenzoAction) {
+    public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
         if(lorenzoAction instanceof ActionTokenDiscard){
             int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
@@ -2888,7 +2888,7 @@ public class Cli extends View {
 
     @Override
     public void serverNotFound() {
-
+        System.out.println("Server is not at home now. Try again later.");
     }
 
     /**

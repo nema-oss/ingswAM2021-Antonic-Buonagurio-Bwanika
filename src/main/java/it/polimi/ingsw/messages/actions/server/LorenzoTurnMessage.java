@@ -11,9 +11,11 @@ public class LorenzoTurnMessage implements ActionMessage, Serializable {
 
 
     private final ActionToken lorenzoAction;
+    private final int lorenzoPosition;
 
-    public LorenzoTurnMessage(ActionToken lorenzoAction){
+    public LorenzoTurnMessage(ActionToken lorenzoAction, int lorenzoPosition){
         this.lorenzoAction = lorenzoAction;
+        this.lorenzoPosition = lorenzoPosition;
 
     }
 
@@ -24,7 +26,6 @@ public class LorenzoTurnMessage implements ActionMessage, Serializable {
 
     @Override
     public void execute(View view) {
-
-        view.showLorenzoAction(lorenzoAction);
+        view.showLorenzoAction(lorenzoAction, lorenzoPosition);
     }
 }

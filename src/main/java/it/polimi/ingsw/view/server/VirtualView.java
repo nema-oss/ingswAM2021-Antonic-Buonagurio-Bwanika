@@ -712,8 +712,8 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     @Override
-    public void sendLorenzoTurn(ActionToken lorenzoAction) {
-        Message message = new LorenzoTurnMessage(lorenzoAction);
+    public void sendLorenzoTurn(ActionToken lorenzoAction, int lorenzoPosition) {
+        Message message = new LorenzoTurnMessage(lorenzoAction, lorenzoPosition);
         clients.values().forEach(p->sendMessage(p,message));
     }
 

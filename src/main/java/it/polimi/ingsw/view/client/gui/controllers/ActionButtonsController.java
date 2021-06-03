@@ -392,7 +392,7 @@ public class ActionButtonsController implements Initializable {
         actionTokenOk.setVisible(value);
     }
 
-    public void showLorenzoTurn(ActionToken tokenDrawn, String text){
+    public void showLorenzoTurn(ActionToken tokenDrawn, int lorenzoPosition, String text){
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);

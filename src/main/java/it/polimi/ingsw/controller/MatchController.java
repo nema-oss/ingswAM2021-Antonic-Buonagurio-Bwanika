@@ -681,9 +681,10 @@ public class MatchController implements ControllerInterface{
     public void onLorenzoTurn(){
 
         ActionToken lorenzoAction = game.lorenzoTurn();
+        int lorenzoPosition = game.getLorenzoPopeRoad().getCurrentPositionIndex();
         if(game.getLorenzoPopeRoad().getCurrentPosition().isPopeSpace())
             game.checkLorenzoPosition(game.getLorenzoPopeRoad().getCurrentPositionIndex());
-        viewInterface.sendLorenzoTurn(lorenzoAction);
+        viewInterface.sendLorenzoTurn(lorenzoAction, lorenzoPosition);
     }
 
     /**

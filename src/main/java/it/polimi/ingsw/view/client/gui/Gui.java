@@ -19,7 +19,6 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +28,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +62,7 @@ public class Gui extends View {
     private Scene gameBoardScene;
 
     private Scene turnActionScene;
-
+    private boolean isPlayingTurn;
 
 
     private ActionButtonsController actionButtonsController;
@@ -285,7 +283,7 @@ public class Gui extends View {
     }
 
     @Override
-    public void showLorenzoAction(ActionToken lorenzoAction) {
+    public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
         Platform.runLater(()-> {
             String lorenzoMessage = "";
@@ -298,7 +296,7 @@ public class Gui extends View {
                 amount = ((ActionTokenMove) lorenzoAction).getSteps();
                 lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
             }
-            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
+            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoPosition, lorenzoMessage);
         });
 
     }
@@ -560,37 +558,36 @@ public class Gui extends View {
     @Override
     public void showPlayTurn(String currentPlayer) {
 
+            Platform.runLater(() -> {
+                if (!isGameScene) {
+                    isGameScene = true;
+                    try {
+                        FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                        Parent root = loader.load();
+                        gameSceneController.leftBorder.setCenter(root);
+                        actionButtonsController = loader.getController();
+                        actionButtonsController.setGui(this);
+                        actionButtonsController.setGameController(gameSceneController);
+                        gameSceneController.initializeActions();
+                        gameSceneController.addLeadersToPlayer();
 
-        Platform.runLater(()->{
-            if(!isGameScene){
-                isGameScene = true;
-                try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    Parent root = loader.load();
-                    gameSceneController.leftBorder.setCenter(root);
-                    actionButtonsController = loader.getController();
-                    actionButtonsController.setGui(this);
-                    actionButtonsController.setGameController(gameSceneController);
-                    gameSceneController.initializeActions();
-                    gameSceneController.addLeadersToPlayer();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    primaryStage.setScene(gameScene);
                 }
-                primaryStage.setScene(gameScene);
-            }
 
-            if(currentPlayer.equals(player.getNickname())){
-                actionButtonsController.setLorenzoVisible(false);
-                actionButtonsController.setWaitVisible(false);
-                actionButtonsController.setChooseActionTypeVisible(true);
-            }else{
-                actionButtonsController.setLorenzoVisible(false);
-                actionButtonsController.setWaitVisible(true);
-                actionButtonsController.setChooseActionTypeVisible(false);
-            }
+                if (currentPlayer.equals(player.getNickname())) {
+                    actionButtonsController.setLorenzoVisible(false);
+                    actionButtonsController.setWaitVisible(false);
+                    actionButtonsController.setChooseActionTypeVisible(true);
+                } else {
+                    actionButtonsController.setLorenzoVisible(false);
+                    actionButtonsController.setWaitVisible(true);
+                    actionButtonsController.setChooseActionTypeVisible(false);
+                }
 
-        });
+            });
     }
 
 

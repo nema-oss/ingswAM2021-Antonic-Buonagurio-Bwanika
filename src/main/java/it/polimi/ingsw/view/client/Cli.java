@@ -168,7 +168,7 @@ public class Cli extends View {
                 color = activeColor;
             else
                 color = ANSI_RESET.escape();
-            System.out.print(color + "\t\t\t"+BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+            System.out.print(color + "\t\t"+BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
         }
         System.out.print("\n");
         for(LeaderCard leaderCard: leaderCards.keySet()) {
@@ -196,7 +196,7 @@ public class Cli extends View {
             else{
                 color = ANSI_RESET.escape();
             }
-            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t" + leaderCard.getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t" + ANSI_RESET.escape());
+            System.out.print(color + BOLD_VERTICAL.escape()+"\t" + leaderCard.getVictoryPoints() + "\t"+BOLD_VERTICAL.escape()+"\t" + ANSI_RESET.escape());
         }
         System.out.print("\n");
         for(LeaderCard leaderCard: leaderCards.keySet()) {
@@ -215,29 +215,29 @@ public class Cli extends View {
                     ResourceType resourceType = ((Discount) leaderCard).getDiscountType();
                     color = getResourceTypeColor(resourceType);
                     if(leaderCards.get(leaderCard)){
-                        System.out.print(activeColor + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t-" + ((Discount) leaderCard).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
+                        System.out.print(activeColor + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t-" + ((Discount) leaderCard).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     }
                     else{
-                        System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCard).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                        System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCard).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t"+BOLD_VERTICAL.escape()+"\t");
                     }
                     break;
                 case EXTRA_DEPOSIT:
                     color = getResourceTypeColor(((ExtraDeposit) leaderCard).getStorageType());
                     if(leaderCards.get(leaderCard)){
-                        System.out.print(activeColor +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
+                        System.out.print(activeColor +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     }
                     else
-                        System.out.print(BOLD_VERTICAL.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                        System.out.print(BOLD_VERTICAL.escape()+"\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
                 case EXTRA_PRODUCTION:
                     int spaces = MAX_SPACES;
                     if(leaderCards.get(leaderCard))
-                        System.out.print(activeColor + BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
+                        System.out.print(activeColor + BOLD_VERTICAL.escape()+ANSI_RESET.escape());
                     else
-                        System.out.print(BOLD_VERTICAL.escape()+"\t");
+                        System.out.print(BOLD_VERTICAL.escape());
                     for(ResourceType resourceType1: ((ExtraProduction) leaderCard).getProductionRequirement().keySet()){
                         System.out.print(((ExtraProduction) leaderCard).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
-                                RESOURCE.escape() + ANSI_RESET.escape()+"\t");
+                                RESOURCE.escape() + ANSI_RESET.escape());
                         spaces-=3;
                     }
                     System.out.print("->");
@@ -270,10 +270,10 @@ public class Cli extends View {
                 case WHITE_TO_RESOURCE:
                     if(leaderCards.get(leaderCard))
                         System.out.print(activeColor+BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCard).getResult())
-                                + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
+                                + RESOURCE.escape() + ANSI_RESET.escape()+ "\t"+activeColor+BOLD_VERTICAL.escape()+"\t"+ANSI_RESET.escape());
                     else
                         System.out.print(BOLD_VERTICAL.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCard).getResult())
-                                + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+BOLD_VERTICAL.escape()+"\t");
+                                + RESOURCE.escape() + ANSI_RESET.escape()+ "\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
             }
         }
@@ -317,7 +317,7 @@ public class Cli extends View {
         for(; z<2; z++){
             System.out.print("\t\t"  + JOLLY.escape() + ANSI_RESET.escape());
         }
-        System.out.print("\t\t\t\t-> "+JOLLY.escape());
+        System.out.print("\t\t\t-> "+JOLLY.escape());
         String color= ANSI_RESET.escape();
         for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
@@ -340,10 +340,10 @@ public class Cli extends View {
 
         System.out.print("\n\t\t");
 
-        for(int i=0; i<8; i++)
+        for(int i=0; i<16; i++)
             System.out.print(HORIZ_POPE.escape());
 
-        System.out.print("\t\t\t"+JOLLY.escape()+"   \t");
+        System.out.print("\t\t"+JOLLY.escape()+"   \t");
 
         for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
@@ -355,17 +355,17 @@ public class Cli extends View {
                     System.out.print(getResourceTypeColor(resourceType) + stack.peek().getCost().get(resourceType) + RESOURCE.escape() +ANSI_RESET.escape());
                 }
                 if(stack.peek().getCost().keySet().size()>2)
-                    System.out.print(color+ "\t\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+ "\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
                 else if(stack.peek().getCost().keySet().size()>1)
-                    System.out.print(color+ "\t\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+ "\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
                 else{
-                    System.out.print(color+"\t\t\t\t" + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+"\t\t" + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
 
                 }
             }
             else{
                 //if no card is present i'll use the default outline
-                System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
             }
 
         }
@@ -374,12 +374,12 @@ public class Cli extends View {
 
         System.out.print("\n");
         for(z=0; z<clientPlayerBoard.getDeposit().getNumberOfResourcesOnFloor(3); z++)
-            System.out.print("   \t" + getResourceTypeColor(clientPlayerBoard.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+            System.out.print("       \t" + getResourceTypeColor(clientPlayerBoard.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
         for(; z<3; z++){
-            System.out.print("   \t" +  JOLLY.escape() + ANSI_RESET.escape());
+            System.out.print("       \t" +  JOLLY.escape() + ANSI_RESET.escape());
 
         }
-        System.out.print("\t\t\t\t");
+        System.out.print("\t\t");
         for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
@@ -389,10 +389,7 @@ public class Cli extends View {
                 for(int j=0; j<stack.peek().getLevel(); j++){
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                 }
-                if(stack.peek().getLevel()==3 || stack.peek().getLevel()==2)
-                    System.out.print("\t\t");
-                else
-                    System.out.print("\t\t\t");
+                System.out.print("\t");
 
                 for(int j=0; j<stack.peek().getLevel(); j++){
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
@@ -402,14 +399,14 @@ public class Cli extends View {
 
             else{
                 //if no card is present i'll use the default outline
-                System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
             }
 
         }
         System.out.print("\n\t");
-        for(int i=0; i<16; i++)
+        for(int i=0; i<32; i++)
             System.out.print(HORIZ_POPE.escape());
-        System.out.print("\t\t\t\t");
+        System.out.print("\t\t");
         for(Stack<DevelopmentCard> stack: clientPlayerBoard.getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
@@ -418,9 +415,9 @@ public class Cli extends View {
             else{
                 color = ANSI_RESET.escape();
             }
-            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         ArrayList<HashMap<ResourceType, Integer>> results = new ArrayList<>();
         ArrayList<Integer> faithResults = new ArrayList<>();//maps of results for every card in the first row
@@ -461,10 +458,10 @@ public class Cli extends View {
                 if (clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet().size() > 1)
                     System.out.print(color+"\t" + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
                 else
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
         System.out.print("\n\t");
@@ -476,66 +473,60 @@ public class Cli extends View {
                 System.out.print(getResourceTypeColor(resourceType) + "0" + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
 
         }
-        System.out.print("\t\t\t\t\t\t");
+        System.out.print("\t\t\t\t");
         for(int i=0; i<3; i++) {
             if(clientPlayerBoard.getDevelopmentCards().get(i).size()>0) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
-                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                         results.get(i).remove(resourceType);
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-                } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-
                 }
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int i=0; i<3; i++) {
             if(clientPlayerBoard.getDevelopmentCards().get(i).size()>0) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
-                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                         results.get(i).remove(resourceType);
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-                } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-
                 }
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
             if(clientPlayerBoard.getDevelopmentCards().get(j).size()>0) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape()+ BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape()+ BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
 
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++){
             if(clientPlayerBoard.getDevelopmentCards().get(j).size()>0) {
@@ -553,17 +544,17 @@ public class Cli extends View {
                 System.out.print(ANSI_RESET.escape()+DOWN_RIGHT.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
@@ -573,16 +564,16 @@ public class Cli extends View {
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
                 color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
@@ -936,7 +927,7 @@ public class Cli extends View {
             for(ResourceType resourceType: leaderCard.getCostResource().keySet()){
                 System.out.print(getResourceTypeColor(resourceType)+ leaderCard.getCostResource().get(resourceType) + RESOURCE.escape()+ANSI_RESET.escape());
             }
-            System.out.print("\t\t\t"+BOLD_VERTICAL.escape() + "\t");
+            System.out.print("\t\t"+BOLD_VERTICAL.escape() + "\t");
         }
         System.out.print("\n");
         showBlankLine(leaderCards.size());
@@ -944,7 +935,7 @@ public class Cli extends View {
         showBlankLine(leaderCards.size());
         System.out.print("\n");
         for(int i=0; i< leaderCards.size(); i++){
-            System.out.print(BOLD_VERTICAL.escape()+"\t\t" + leaderCards.get(i).getVictoryPoints() + "\t\t"+BOLD_VERTICAL.escape()+"\t");
+            System.out.print(BOLD_VERTICAL.escape()+"\t" + leaderCards.get(i).getVictoryPoints() + "\t"+BOLD_VERTICAL.escape()+"\t");
         }
         System.out.print("\n");
         showBlankLine(leaderCards.size());
@@ -955,17 +946,17 @@ public class Cli extends View {
                 case DISCOUNT:
                     ResourceType resourceType = ((Discount) leaderCards.get(i)).getDiscountType();
                     color = getResourceTypeColor(resourceType);
-                    System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCards.get(i)).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    System.out.print(BOLD_VERTICAL.escape()+"\t-" + ((Discount) leaderCards.get(i)).getDiscountAmount()+" "+color +RESOURCE.escape()+ ANSI_RESET.escape()+"\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
                 case EXTRA_DEPOSIT:
                     color = getResourceTypeColor(((ExtraDeposit) leaderCards.get(i)).getStorageType());
-                    System.out.print(BOLD_VERTICAL.escape()+"\t\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    System.out.print(BOLD_VERTICAL.escape()+"\t" + color + SQUARE.escape()+ " " +SQUARE.escape()+ANSI_RESET.escape()+"\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
                 case EXTRA_PRODUCTION:
                     int spaces = MAX_SPACES;
                     for(ResourceType resourceType1: ((ExtraProduction) leaderCards.get(i)).getProductionRequirement().keySet()){
-                        System.out.print(BOLD_VERTICAL.escape()+"\t"+((ExtraProduction) leaderCards.get(i)).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
-                                RESOURCE.escape() + ANSI_RESET.escape()+"\t");
+                        System.out.print(BOLD_VERTICAL.escape()+((ExtraProduction) leaderCards.get(i)).getProductionRequirement().get(resourceType1) + getResourceTypeColor(resourceType1) +
+                                RESOURCE.escape() + ANSI_RESET.escape());
                         spaces-=3;
                     }
                     System.out.print("->");
@@ -975,7 +966,7 @@ public class Cli extends View {
                         if(producible instanceof Resource){
                             if(((Resource) producible).getType() == null){
                                 flag = JOLLY.escape();
-                                color = WHITE.escape();
+                                color = ANSI_RESET.escape();
                             }
                             else {
                                 flag = RESOURCE.escape();
@@ -994,7 +985,7 @@ public class Cli extends View {
                     break;
                 case WHITE_TO_RESOURCE:
                     System.out.print(BOLD_VERTICAL.escape()+"\t" +ANSI_WHITE.escape() +RESOURCE.escape() + ANSI_RESET.escape()+ " -> "+getResourceTypeColor(((WhiteToResource) leaderCards.get(i)).getResult())
-                    + RESOURCE.escape() + ANSI_RESET.escape()+ "\t\t"+BOLD_VERTICAL.escape()+"\t");
+                    + RESOURCE.escape() + ANSI_RESET.escape()+ "\t"+BOLD_VERTICAL.escape()+"\t");
                     break;
             }
         }
@@ -1012,7 +1003,7 @@ public class Cli extends View {
                 color = ANSI_YELLOW.escape();
                 break;
             case STONE:
-                color = ANSI_GREY.escape();
+                color = GREY.escape();
                 break;
             case SHIELD:
                 color = ANSI_BLUE.escape();
@@ -1028,14 +1019,14 @@ public class Cli extends View {
 
     public void showBlankLine(int n){
         for(int i = 0; i< n; i++){
-            System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+ "\t");
+            System.out.print(BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+ "\t");
         }
 
     }
 
     public void showBlankLine(int n, String color){
         for(int i = 0; i< n; i++){
-            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+ "\t" + ANSI_RESET.escape());
+            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+ "\t" + ANSI_RESET.escape());
         }
 
     }
@@ -2097,7 +2088,7 @@ public class Cli extends View {
         for(; z<2; z++){
             System.out.print("\t\t"  + JOLLY.escape() + ANSI_RESET.escape());
         }
-        System.out.print("\t\t\t\t-> "+JOLLY.escape());
+        System.out.print("\t\t\t-> "+JOLLY.escape());
         String color= ANSI_RESET.escape();
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
             System.out.print("\t\t");
@@ -2120,10 +2111,10 @@ public class Cli extends View {
 
         System.out.print("\n\t\t");
 
-        for(int i=0; i<8; i++)
+        for(int i=0; i<16; i++)
             System.out.print(HORIZ_POPE.escape());
 
-        System.out.print("\t\t\t"+JOLLY.escape()+"   \t");
+        System.out.print("\t\t"+JOLLY.escape()+"   \t");
 
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
             System.out.print("\t\t");
@@ -2135,17 +2126,17 @@ public class Cli extends View {
                     System.out.print(getResourceTypeColor(resourceType) + stack.peek().getCost().get(resourceType) + RESOURCE.escape() +ANSI_RESET.escape());
                 }
                 if(stack.peek().getCost().keySet().size()>2)
-                    System.out.print(color+ "\t\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+ "\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
                 else if(stack.peek().getCost().keySet().size()>1)
-                    System.out.print(color+ "\t\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+ "\t\t" +BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
                 else{
-                    System.out.print(color+"\t\t\t\t" + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
+                    System.out.print(color+"\t\t" + BOLD_VERTICAL.escape()+ANSI_RESET.escape()+"\t");
 
                 }
             }
             else{
                 //if no card is present i'll use the default outline
-                System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
             }
 
         }
@@ -2154,12 +2145,12 @@ public class Cli extends View {
 
         System.out.print("\n");
         for(z=0; z<player.getDeposit().getNumberOfResourcesOnFloor(3); z++)
-            System.out.print("   \t" + getResourceTypeColor(player.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
+            System.out.print("       \t" + getResourceTypeColor(player.getDeposit().get(3).getType()) + RESOURCE.escape() + ANSI_RESET.escape());
         for(; z<3; z++){
-            System.out.print("   \t" +  JOLLY.escape() + ANSI_RESET.escape());
+            System.out.print("       \t" +  JOLLY.escape() + ANSI_RESET.escape());
 
         }
-        System.out.print("\t\t\t\t");
+        System.out.print("\t\t");
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
@@ -2169,10 +2160,7 @@ public class Cli extends View {
                 for(int j=0; j<stack.peek().getLevel(); j++){
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                 }
-                if(stack.peek().getLevel()==3 || stack.peek().getLevel()==2)
-                    System.out.print("\t\t");
-                else
-                    System.out.print("\t\t\t");
+                System.out.print("\t");
 
                 for(int j=0; j<stack.peek().getLevel(); j++){
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
@@ -2182,14 +2170,14 @@ public class Cli extends View {
 
             else{
             //if no card is present i'll use the default outline
-                System.out.print(BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+                System.out.print(BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
             }
 
         }
         System.out.print("\n\t");
-        for(int i=0; i<16; i++)
+        for(int i=0; i<32; i++)
             System.out.print(HORIZ_POPE.escape());
-        System.out.print("\t\t\t\t");
+        System.out.print("\t\t");
         for(Stack<DevelopmentCard> stack: player.getPlayerBoard().getDevelopmentCards()){
             System.out.print("\t\t");
             if(!stack.empty()){
@@ -2198,9 +2186,9 @@ public class Cli extends View {
             else{
                 color = ANSI_RESET.escape();
             }
-            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t");
+            System.out.print(color + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t");
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         ArrayList<HashMap<ResourceType, Integer>> results = new ArrayList<>();
         ArrayList<Integer> faithResults = new ArrayList<>();//maps of results for every card in the first row
@@ -2241,10 +2229,10 @@ public class Cli extends View {
                 if (player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet().size() > 1)
                     System.out.print(color+"\t" + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
                 else
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
         System.out.print("\n\t");
@@ -2256,66 +2244,60 @@ public class Cli extends View {
                 System.out.print(getResourceTypeColor(resourceType) + "0" + RESOURCE.escape()+ANSI_RESET.escape()+"\t");
 
         }
-        System.out.print("\t\t\t\t\t\t");
+        System.out.print("\t\t\t\t");
         for(int i=0; i<3; i++) {
             if(player.getPlayerBoard().getDevelopmentCards().get(i).size()>0) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
-                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                         results.get(i).remove(resourceType);
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-                } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-
                 }
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int i=0; i<3; i++) {
             if(player.getPlayerBoard().getDevelopmentCards().get(i).size()>0) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(i).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
-                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                         results.get(i).remove(resourceType);
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-                } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
-
                 }
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
             if(player.getPlayerBoard().getDevelopmentCards().get(j).size()>0) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
             else{
-                System.out.print(ANSI_RESET.escape()+ BOLD_VERTICAL.escape()+"\t\t\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
+                System.out.print(ANSI_RESET.escape()+ BOLD_VERTICAL.escape()+"\t\t"+BOLD_VERTICAL.escape()+"\t\t\t");
             }
 
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++){
             if(player.getPlayerBoard().getDevelopmentCards().get(j).size()>0) {
@@ -2333,17 +2315,17 @@ public class Cli extends View {
                 System.out.print(ANSI_RESET.escape()+DOWN_RIGHT.escape()+"\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
 
         for(int j=0; j<3; j++) {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 1) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(1).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 1) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(1).getType());
@@ -2353,16 +2335,16 @@ public class Cli extends View {
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 2) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(2).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((player.getPlayerBoard().getDevelopmentCards().get(j).get(0).getVictoryPoints()));
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
-        System.out.print("\n\t\t\t\t\t\t\t\t\t\t\t");
+        System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for(int j=0; j<3; j++) {
             if (player.getPlayerBoard().getDevelopmentCards().get(j).size() > 2) {
                 color = getDevelopmentTypeColor(player.getPlayerBoard().getDevelopmentCards().get(j).get(2).getType());
@@ -2413,9 +2395,9 @@ public class Cli extends View {
     }
 
     public int getNumOfTabs(int numOfTabs, int x) {
-        while(x>4){
+        while(x>8){
             numOfTabs++;
-            x-=4;
+            x-=8;
         }
         while(x>0){
             System.out.print(" ");
@@ -2483,14 +2465,11 @@ public class Cli extends View {
                 for(ResourceType resourceType: gameBoard.getCardMarket().getCard(0, i).getCost().keySet()){
                     System.out.print(getResourceTypeColor(resourceType) + gameBoard.getCardMarket().getCard(0, i).getCost().get(resourceType) + RESOURCE.escape() +ANSI_RESET.escape());
                 }
-                if(gameBoard.getCardMarket().getCard(0, i).getCost().keySet().size() > 1)
-                    System.out.print(color +"\t\t\t" + BOLD_VERTICAL.escape() + "\t"+ ANSI_RESET.escape());
-                else
-                    System.out.print(color +"\t\t\t\t" + BOLD_VERTICAL.escape() + "\t"+ ANSI_RESET.escape());
+                System.out.print(color +"\t\t" + BOLD_VERTICAL.escape() + "\t"+ ANSI_RESET.escape());
             }
             else{
                 color = ANSI_RESET.escape();
-                System.out.print(color +BOLD_VERTICAL.escape() +"\t\t\t\t" + BOLD_VERTICAL.escape() + "\t"+ ANSI_RESET.escape());
+                System.out.print(color +BOLD_VERTICAL.escape() +"\t\t" + BOLD_VERTICAL.escape() + "\t"+ ANSI_RESET.escape());
             }
 
 
@@ -2504,7 +2483,7 @@ public class Cli extends View {
                 for (int j = 0; j < gameBoard.getCardMarket().getCard(0, i).getLevel(); j++) {
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                 }
-                System.out.print("\t\t");
+                System.out.print("\t");
                 for (int j = 0; j < gameBoard.getCardMarket().getCard(0, i).getLevel(); j++) {
                     System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                 }
@@ -2520,7 +2499,7 @@ public class Cli extends View {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
             if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
                 color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + "\t\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+                System.out.print(color + BOLD_VERTICAL.escape() + "\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
             }
             else{
                 showBlankLine(1);
@@ -2575,10 +2554,7 @@ public class Cli extends View {
                             RESOURCE.escape() + ANSI_RESET.escape() + " ");
                 }
                 showGameBoardCardUtil(results, faithResults, i);
-                if (gameBoard.getCardMarket().getCard(0, i).getProductionRequirements().keySet().size() > 1)
-                    System.out.print("\t"+color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                else
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                System.out.print("\t"+color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
             }
             else{
                 showBlankLine(1);
@@ -2591,9 +2567,9 @@ public class Cli extends View {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
             if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
                 color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print(gameBoard.getCardMarket().getCard(0, i).getVictoryPoints());
-                System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
             }
             else{
                 showBlankLine(1);
@@ -2639,11 +2615,11 @@ public class Cli extends View {
                     }
                     if (gameBoard.getCardMarket().getCard(i, k).getCost().keySet().size() > 1)
                         if (gameBoard.getCardMarket().getCard(i, k).getCost().keySet().size() > 2)
-                            System.out.print(color + "\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+                            System.out.print(color + "\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
                         else
-                            System.out.print(color + "\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+                            System.out.print(color + "\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
                     else
-                        System.out.print(color + "\t\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+                        System.out.print(color + "\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
                 }
                 else{
                     showBlankLine(1);
@@ -2658,7 +2634,7 @@ public class Cli extends View {
                     for (int j = 0; j < gameBoard.getCardMarket().getCard(i, k).getLevel(); j++) {
                         System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                     }
-                    System.out.print("\t\t\t");
+                    System.out.print("\t");
                     for (int j = 0; j < gameBoard.getCardMarket().getCard(i, k).getLevel(); j++) {
                         System.out.print(color + LEVEL.escape() + ANSI_RESET.escape());
                     }
@@ -2673,7 +2649,7 @@ public class Cli extends View {
             for(int k=0; k<gameBoard.getCardMarketColumns(); k++) {
                 if(gameBoard.getCardMarket().getStack(i,k).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, k).getType());
-                    System.out.print(color + BOLD_VERTICAL.escape() + "\t\t\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
+                    System.out.print(color + BOLD_VERTICAL.escape() + "\t\t" + BOLD_VERTICAL.escape() + "\t" + ANSI_RESET.escape());
                 }
                 else{
                     showBlankLine(1);
@@ -2723,7 +2699,7 @@ public class Cli extends View {
                     if (gameBoard.getCardMarket().getCard(i, j).getProductionRequirements().keySet().size() > 1)
                         System.out.print(color+"\t" + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                     else
-                        System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 }
                 else{
                     showBlankLine(1);
@@ -2736,9 +2712,9 @@ public class Cli extends View {
             for(int j=0; j<gameBoard.getCardMarketColumns(); j++) {
                 if(gameBoard.getCardMarket().getStack(i,j).getListOfCards().size()>0) {
                     color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i, j).getType());
-                    System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                    System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                     System.out.print(gameBoard.getCardMarket().getCard(i, j).getVictoryPoints());
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 }
                 else{
                     showBlankLine(1);
@@ -2772,7 +2748,7 @@ public class Cli extends View {
         else {
             System.out.print("->");
             for(ResourceType resourceType: results.get(j).keySet()){
-                System.out.print("\t"+getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
+                System.out.print(getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                 results.get(j).remove(resourceType);
                 break;
             }
@@ -2785,19 +2761,16 @@ public class Cli extends View {
         for(int i=0; i<gameBoard.getCardMarketColumns(); i++) {
             if(gameBoard.getCardMarket().getStack(0, i).getListOfCards().size()>0) {
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(0, i).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
-                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
+                        System.out.print(getResourceTypeColor(resourceType) + results.get(i).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape());
                         results.get(i).remove(resourceType);
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-
                 }
+                System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
             }
             else{
                 showBlankLine(1);
@@ -2811,7 +2784,7 @@ public class Cli extends View {
         for(int j=0; j<gameBoard.getCardMarketColumns(); j++) {
             if(gameBoard.getCardMarket().getStack(i, j).getListOfCards().size()>0) {
                 String color = getDevelopmentTypeColor(gameBoard.getCardMarket().getCard(i,j).getType());
-                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t");
+                System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(j).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(j).keySet()) {
                         System.out.print(getResourceTypeColor(resourceType) + results.get(j).get(resourceType) + RESOURCE.escape() + ANSI_RESET.escape() + "\t");
@@ -2819,9 +2792,9 @@ public class Cli extends View {
                         break;
                     }
 
-                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                    System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 } else {
-                    System.out.print("\t\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
+                    System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
 
                 }
             }
@@ -2861,7 +2834,7 @@ public class Cli extends View {
                 color = ANSI_RED.escape();
                 break;
             case GREY:
-                color = ANSI_GREY.escape();
+                color = GREY.escape();
                 break;
             case WHITE:
                 color = ANSI_RESET.escape();

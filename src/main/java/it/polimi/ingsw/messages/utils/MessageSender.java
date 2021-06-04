@@ -48,9 +48,9 @@ public class MessageSender {
     public synchronized boolean sendMsg(ObjectOutputStream outputStream) {
         if(!socket.isClosed()){
             try{
-                outputStream.reset();
                 outputStream.writeObject( messageOutput);
                 outputStream.flush();
+                outputStream.reset();
                 return true;
             }catch (IOException e){
                 System.out.println("Can't send message on socket");

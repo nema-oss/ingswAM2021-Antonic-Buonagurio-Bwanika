@@ -616,6 +616,7 @@ public class Gui extends View {
         Platform.runLater(()->{
             alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
             actionButtonsController.setLeaderActionVisible(false);
+            actionButtonsController.setChooseLeaderActionVisible(false);
             actionButtonsController.setStandardActionVisible(!player.isStandardActionDone());
             actionButtonsController.setEndTurnVisible(true);
 

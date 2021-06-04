@@ -98,6 +98,7 @@ public class PlayerBoardController {
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
+
                     leaderActivationResult(l1);
 
                 });

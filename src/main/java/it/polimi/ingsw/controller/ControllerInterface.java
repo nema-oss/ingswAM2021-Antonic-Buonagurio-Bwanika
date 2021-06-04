@@ -72,4 +72,9 @@ public interface ControllerInterface {
     int getPlayerCurrentPosition(String nickname);
 
     Marble getFreeMarble();
+
+    public List<List<Resource>> getUpdatedDeposit();
+
+    public Map<ResourceType, List<Resource>> getUpdatedStrongbox();
+
 }

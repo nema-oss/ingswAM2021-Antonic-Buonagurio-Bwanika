@@ -119,11 +119,19 @@ public class ClientPlayer {
         return standardActionPlayed && actionLeaderPlayed;
     }
 
-    public void standardActionDone() {
+    public void setStandardActionDone() {
         standardActionPlayed = true;
     }
 
-    public void leaderActionDone() {
+    public boolean isActionLeaderPlayed() {
+        return actionLeaderPlayed;
+    }
+
+    public boolean isStandardActionDone(){
+        return standardActionPlayed;
+    }
+
+    public void setLeaderActionDone() {
         actionLeaderPlayed = true;
     }
 
@@ -135,7 +143,6 @@ public class ClientPlayer {
     public void buyDevelopmentCard(int x, int y) {
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x, y);
         playerBoard.addDevelopmentCard(developmentCard);
-        getDeposit().removeResourcesFromDeposit(developmentCard);
     }
 
 

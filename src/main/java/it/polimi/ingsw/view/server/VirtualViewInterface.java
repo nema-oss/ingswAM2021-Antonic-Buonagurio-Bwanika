@@ -61,6 +61,6 @@ public interface VirtualViewInterface {
 
     void sendLorenzoTurn(ActionToken lorenzoAction, int lorenzoPosition);
 
-    void setProductionResult(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
+    void updateDepositAfterAction(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
 }
 

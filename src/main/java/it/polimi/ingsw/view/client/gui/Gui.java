@@ -309,6 +309,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             player.updateDeposit(updatedStrongbox,updatedWarehouse);
+            player.setStandardActionDone();
             playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
             actionButtonsController.setStandardActionVisible(false);
@@ -582,6 +583,7 @@ public class Gui extends View {
 
                 if (currentPlayer.equals(player.getNickname())) {
                     //actionButtonsController.setLorenzoVisible(false);
+                    player.resetTurnActionCounter();
                     actionButtonsController.setWaitVisible(false);
                     actionButtonsController.setChooseActionTypeVisible(true);
                 } else {
@@ -613,6 +615,10 @@ public class Gui extends View {
     public void showAcceptedLeaderAction() {
         Platform.runLater(()->{
             alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
+            actionButtonsController.setLeaderActionVisible(false);
+            actionButtonsController.setStandardActionVisible(!player.isStandardActionDone());
+            actionButtonsController.setEndTurnVisible(true);
+
         });
     }
 
@@ -638,6 +644,7 @@ public class Gui extends View {
         Platform.runLater(()->{
             if(player.getNickname().equals(user)) {
                 player.buyDevelopmentCard(x, y);
+                player.setStandardActionDone();
                 List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
                 System.out.println(developmentCards.size());
                 for (DevelopmentCard card : developmentCards) {
@@ -719,6 +726,7 @@ public class Gui extends View {
         if(accepted){
             Platform.runLater(()->{
                 player.addResource(userChoice);
+                player.setStandardActionDone();
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);

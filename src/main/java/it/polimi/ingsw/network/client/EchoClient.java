@@ -129,6 +129,7 @@ public class EchoClient {
             }
            input.close();
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
+            e.printStackTrace();
             if (!server.isClosed()) {
                 serverDisconnection();
                 e.printStackTrace();
@@ -174,7 +175,8 @@ public class EchoClient {
                     Thread.sleep(1500);
                     Message message = new PingMessage();
                     outputStream.writeObject( message);
-                } catch (InterruptedException | IOException ignored) {
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
                 }
             } while (!server.isClosed());
 

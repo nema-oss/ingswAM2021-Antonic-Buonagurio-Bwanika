@@ -15,7 +15,6 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.*;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -1320,7 +1319,7 @@ public class Cli extends View {
                 }
                 if(!Thread.interrupted()) {
                     PlaceResourcesMessage message = new PlaceResourcesMessage(player.getNickname(), userChoice);
-                    message.setDiscardedResources(Math.abs(userChoice.size() - resourceList.size()));
+                    message.setDiscardedResources(Math.abs(resourceList.size() - userChoice.size()));
                     sendMessage(socket,message);
                 }
 
@@ -1336,7 +1335,7 @@ public class Cli extends View {
     @Override
     public void showAcceptedLeaderAction() {
         System.out.println("Leader action accepted.");
-        player.leaderActionDone();
+        player.setLeaderActionDone();
         askTurnAction();
     }
 
@@ -1559,7 +1558,7 @@ public class Cli extends View {
                     if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
                 }
 
-                player.standardActionDone();
+                player.setStandardActionDone();
             }
 
         });
@@ -1673,7 +1672,7 @@ public class Cli extends View {
             if(!Thread.interrupted())
                 sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(),userChoice.getX(),userChoice.getY(),true));
 
-            player.standardActionDone();
+            player.setStandardActionDone();
         });
 
 
@@ -1736,7 +1735,7 @@ public class Cli extends View {
                 }
                 sendMessage(socket, message);
             }
-            player.standardActionDone();
+            player.setStandardActionDone();
 
         });
     }

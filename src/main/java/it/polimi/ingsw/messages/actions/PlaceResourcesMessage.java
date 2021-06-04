@@ -57,6 +57,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
     }
 
     public void setDiscardedResources(int discardResources){
+
         this.discardResources = discardResources;
     }
 }

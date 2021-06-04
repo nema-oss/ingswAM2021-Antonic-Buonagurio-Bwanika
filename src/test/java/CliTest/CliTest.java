@@ -58,10 +58,14 @@ public class CliTest {
         cardFactory = new CardFactory();
         leaderCards = cardFactory.getLeaderCards();
         Map<LeaderCard,Boolean> cards = new HashMap<>();
-        cards.put(leaderCards.get(0),true);
-        cards.put(leaderCards.get(1),false);
+        ArrayList<LeaderCard> leaders = new ArrayList<>();
+        cards.put(leaderCards.get(12),true);
+        cards.put(leaderCards.get(13),false);
         Cli cli = new Cli();
         cli.showLeaderCards(cards);
+        for(int i=0; i<16; i+=4)
+            leaders.add(leaderCards.get(i));
+        cli.showLeaderCards(leaderCards);
     }
 
     @Test
@@ -72,7 +76,7 @@ public class CliTest {
 
     }
 
- /*   @Test
+   @Test
     public void showEmptyGameBoard() {
         ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
@@ -88,7 +92,7 @@ public class CliTest {
         cli.showGameBoard(gameBoard);
         cli.askTurnAction();
 
-    } */
+    }
 
     @Test
     public void showBoard() throws WrongDepositSwapException, FullDepositException, Exception, NonExistentCardException, InsufficientPaymentException {
@@ -97,6 +101,7 @@ public class CliTest {
         GameBoard gameBoard = new GameBoard();
         ClientGameBoard cgameBoard = new ClientGameBoard();
         ClientPlayer p = new ClientPlayer("Paolo", cgameBoard);
+        //cli.showBoard(cgameBoard, p);
         List<Resource> aLot = new ArrayList<>();
         for(int i=0; i<10; i++) {
             aLot.add(new Resource(ResourceType.SHIELD));
@@ -117,7 +122,8 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         p.getPlayerBoard().getPopeRoad().move(22);
         //cli.showBoard(cgameBoard, p);
-        cli.showPopeRoad(p);
+        //cli.showPopeRoad(p);
+        cli.showOtherPlayerBoard("paolo", p.getPlayerBoard());
     }
 
     @Test

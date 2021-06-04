@@ -428,7 +428,7 @@ public class MatchController implements ControllerInterface{
                 if(toGet != null && userChoice.get(toGet)!=null) {
                     for (ResourceType r : userChoice.get(toGet)) {
                         toGive.add(new Resource(r));
-                        requirements.put(r,1);
+                        requirements.merge(r,1, Integer::sum);
                     }
 
                     try{
@@ -474,7 +474,7 @@ public class MatchController implements ControllerInterface{
                 Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
                 strongbox.moveFromTemporary();
                 List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
-                viewInterface.setProductionResult(game.getCurrentPlayer().getNickname(), strongbox.getAll(), warehouse);
+                viewInterface.updateDepositAfterAction(game.getCurrentPlayer().getNickname(), strongbox.getAll(), warehouse);
                 developmentProductionActivated = false;
                 leaderProductionActivated = false;
                 boardProductionActivated = false;
@@ -944,5 +944,15 @@ public class MatchController implements ControllerInterface{
     public Marble getFreeMarble() {
 
         return game.getGameBoard().getMarket().getFreeMarble();
+    }
+
+    public List<List<Resource>> getUpdatedDeposit(){
+        List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+        return warehouse;
+    }
+
+    public Map<ResourceType, List<Resource>> getUpdatedStrongbox(){
+        Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
+        return strongbox.getAll();
     }
 }

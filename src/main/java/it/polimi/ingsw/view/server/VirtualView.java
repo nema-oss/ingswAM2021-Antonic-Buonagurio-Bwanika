@@ -359,7 +359,9 @@ public class VirtualView implements VirtualViewInterface{
 
 
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
+
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
+        updateDepositAfterAction(user, matchController.getUpdatedStrongbox(), matchController.getUpdatedDeposit());
       //  for(Socket socket: clients.values())
         //    sendMessage(socket, message);
         sendMessage(clients.get(user), message);
@@ -718,7 +720,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     @Override
-    public void setProductionResult(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse) {
+    public void updateDepositAfterAction(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse) {
 
         EndProductionMessage message = new EndProductionMessage(user);
         message.setProductionResult(updateStrongbox, updatedWarehouse);

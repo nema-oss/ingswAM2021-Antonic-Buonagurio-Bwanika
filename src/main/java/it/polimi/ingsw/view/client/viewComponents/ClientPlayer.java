@@ -21,7 +21,7 @@ public class ClientPlayer {
 
     private ClientPlayerBoard playerBoard;
     private boolean standardActionPlayed;
-    private boolean[] actionLeaderPlayed;
+    private boolean actionLeaderPlayed;
     private String nickname;
     private final int victoryPoints;
     private final ClientActiveEffects activeEffects;
@@ -38,7 +38,7 @@ public class ClientPlayer {
         activeEffects = new ClientActiveEffects();
         activeLeaderCards = new ArrayList<>();
         this.standardActionPlayed = false;
-        this.actionLeaderPlayed = new boolean[2];
+        this.actionLeaderPlayed = false;
         this.gameBoard = gameBoard;
 
     }
@@ -116,26 +116,33 @@ public class ClientPlayer {
     }
 
     public boolean allPossibleActionDone() {
-        return standardActionPlayed && getActionLeaderPlayed();
+        return standardActionPlayed && actionLeaderPlayed;
     }
 
-    public void standardActionDone() {
+    public void setStandardActionDone() {
         standardActionPlayed = true;
     }
 
-    public void leaderActionDone() {
-        setActionLeaderPlayed(true);
+    public boolean isActionLeaderPlayed() {
+        return actionLeaderPlayed;
+    }
+
+    public boolean isStandardActionDone(){
+        return standardActionPlayed;
+    }
+
+    public void setLeaderActionDone() {
+        actionLeaderPlayed = true;
     }
 
     public void resetTurnActionCounter() {
         standardActionPlayed = false;
-        setActionLeaderPlayed(false);
+        actionLeaderPlayed = false;
     }
 
     public void buyDevelopmentCard(int x, int y) {
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x, y);
         playerBoard.addDevelopmentCard(developmentCard);
-        getDeposit().removeResourcesFromDeposit(developmentCard);
     }
 
 
@@ -179,27 +186,6 @@ public class ClientPlayer {
 
         strongbox.update(updatedStrongbox);
         deposit.update(updatedWarehouse);
-    }
-
-    public void setStandardActionPlayed(boolean value) {
-        this.standardActionPlayed = value;
-    }
-
-    public void setActionLeaderPlayed(boolean actionLeaderPlayed) {
-        if(actionLeaderPlayed){
-            if(!this.actionLeaderPlayed[0])
-                this.actionLeaderPlayed[0]=true;
-            else if(!this.actionLeaderPlayed[1])
-                this.actionLeaderPlayed[1]=true;
-        }
-        else{
-            this.actionLeaderPlayed[0] = false;
-            this.actionLeaderPlayed[1] = false;
-        }
-    }
-
-    public boolean getActionLeaderPlayed() {
-        return actionLeaderPlayed[0] && actionLeaderPlayed[1];
     }
 }
 

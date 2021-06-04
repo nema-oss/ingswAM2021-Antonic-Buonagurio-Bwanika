@@ -105,8 +105,11 @@ public class PlayerBoardController {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l1,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
+
+
+                    leaderActivationResult();
 
                 });
 
@@ -114,7 +117,7 @@ public class PlayerBoardController {
                 discard.setOnAction(event2 -> {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l1,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     leader1.setVisible(false);
                     gui.sendMessage(msg);
                 });
@@ -151,16 +154,17 @@ public class PlayerBoardController {
 
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l2,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
+                    leaderActivationResult();
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l2,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     leader2.setVisible(false);
                     gui.sendMessage(msg);
                 });
@@ -274,7 +278,7 @@ public class PlayerBoardController {
     @FXML
     public void activateCardsProduction (){
         if(prodCardsList.size()!=0) {
-            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
+            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, true);
             gui.sendMessage(msg);
             prodCardsList.clear();
             dev1.setStyle("");
@@ -289,7 +293,7 @@ public class PlayerBoardController {
     @FXML
     public void activateLeaderProduction(){
         if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, true);
             gui.sendMessage(msg);
             leaderCardsList.clear();
             isL1Selected = false;

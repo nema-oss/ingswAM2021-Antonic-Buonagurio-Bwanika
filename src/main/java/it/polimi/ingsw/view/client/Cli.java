@@ -1004,7 +1004,7 @@ public class Cli extends View {
                 color = ANSI_YELLOW.escape();
                 break;
             case STONE:
-                color = ANSI_GREY.escape();
+                color = GREY.escape();
                 break;
             case SHIELD:
                 color = ANSI_BLUE.escape();
@@ -2835,7 +2835,7 @@ public class Cli extends View {
                 color = ANSI_RED.escape();
                 break;
             case GREY:
-                color = ANSI_GREY.escape();
+                color = GREY.escape();
                 break;
             case WHITE:
                 color = ANSI_RESET.escape();

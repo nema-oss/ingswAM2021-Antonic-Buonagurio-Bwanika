@@ -84,7 +84,7 @@ public class Formatting {
         ANSI_BLACK("\033[30m"),
         ANSI_RED("\033[31m"),
         ANSI_GREEN("\033[32m"),
-        ANSI_YELLOW("\033[33m"),
+        ANSI_YELLOW("\033[0;33m"),
         ANSI_BLUE("\033[34m"),
         ANSI_MAGENTA("\033[35m"),
         ANSI_CYAN("\033[36m"),

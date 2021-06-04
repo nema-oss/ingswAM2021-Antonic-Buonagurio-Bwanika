@@ -215,8 +215,13 @@ public class ActionButtonsController implements Initializable {
             setResourcePaneVisible(false);
             setActivateProductionVisible(false);
             setBuyCardVisible(false);
-            setChooseActionTypeVisible(true);
-            setBackButtonVisible(false);
+            if(!leaderAction.isVisible()) {
+                setChooseActionTypeVisible(true);
+                setBackButtonVisible(false);
+            }
+            else{
+                setEndTurnVisible(true);
+            }
         });
     }
 

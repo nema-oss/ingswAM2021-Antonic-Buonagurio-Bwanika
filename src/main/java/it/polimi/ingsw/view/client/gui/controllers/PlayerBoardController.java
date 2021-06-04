@@ -79,6 +79,16 @@ public class PlayerBoardController {
     }
 
     /**
+     * this method shows the active leader cards
+     */
+    public void showActiveLeaders(){
+        if(is1active)
+            leader1.setVisible(true);
+        if(is2active)
+            leader2.setVisible(true);
+    }
+
+    /**
      * this method shows tha actions which can be performed on a inactive leader
      * @param event
      */
@@ -95,10 +105,8 @@ public class PlayerBoardController {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l1,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     gui.sendMessage(msg);
-
-                    leaderActivationResult(l1);
 
                 });
 
@@ -106,7 +114,7 @@ public class PlayerBoardController {
                 discard.setOnAction(event2 -> {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l1,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     leader1.setVisible(false);
                     gui.sendMessage(msg);
                 });
@@ -143,17 +151,16 @@ public class PlayerBoardController {
 
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l2,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     gui.sendMessage(msg);
 
-                    leaderActivationResult(l2);
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
                     Map<LeaderCard,Boolean> userChoice = new HashMap<>();
                     userChoice.put(l2,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
+                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     leader2.setVisible(false);
                     gui.sendMessage(msg);
                 });
@@ -176,17 +183,15 @@ public class PlayerBoardController {
         }
     }
 
-    public void leaderActivationResult(LeaderCard l){
+    public void leaderActivationResult(){
 
-        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l)){
-            if(l.equals(l1)){
-                is1active = false;
-                leader1.getParent().setStyle("");
-            }
-            else if(l.equals(l2)){
-                is2active = false;
-                leader2.getParent().setStyle("");
-            }
+        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l1)){
+            is1active = false;
+            leader1.getParent().setStyle("");
+        }
+        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l2)){
+            is2active = false;
+            leader2.getParent().setStyle("");
         }
     }
 
@@ -269,7 +274,7 @@ public class PlayerBoardController {
     @FXML
     public void activateCardsProduction (){
         if(prodCardsList.size()!=0) {
-            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, true);
+            Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
             gui.sendMessage(msg);
             prodCardsList.clear();
             dev1.setStyle("");
@@ -284,7 +289,7 @@ public class PlayerBoardController {
     @FXML
     public void activateLeaderProduction(){
         if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, true);
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
             gui.sendMessage(msg);
             leaderCardsList.clear();
             isL1Selected = false;
@@ -429,6 +434,16 @@ public class PlayerBoardController {
                 strongboxStoneCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
         }
+
+        if(!clientStrongbox.getAll().keySet().contains(ResourceType.COIN))
+            strongboxCoinCount.setText("0");
+        if(!clientStrongbox.getAll().keySet().contains(ResourceType.SHIELD))
+            strongboxShieldCount.setText("0");
+        if(!clientStrongbox.getAll().keySet().contains(ResourceType.SERVANT))
+            strongboxServantCount.setText("0");
+        if(!clientStrongbox.getAll().keySet().contains(ResourceType.STONE))
+            strongboxStoneCount.setText("0");
+
     }
 
     /**
@@ -560,6 +575,7 @@ public class PlayerBoardController {
         updateStrongBox(clientPlayerBoard.getStrongbox());
         updateDevelopmentCards(clientPlayerBoard);
         updatePopeRoad(clientPlayerBoard);
+        showActiveLeaders();
 
     }
 

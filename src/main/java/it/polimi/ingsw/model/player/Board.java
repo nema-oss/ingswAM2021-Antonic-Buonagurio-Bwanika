@@ -104,6 +104,20 @@ public class Board implements Serializable {
         }
     }
 
+    public void addDevelopmentCard(DevelopmentCard card, int index) throws IllegalArgumentException{
+
+        Stack<DevelopmentCard> stack = developmentCards.get(index);
+        if(stack.empty()) {
+            stack.push(card);
+        }
+        else{
+            if(card.getLevel() == stack.peek().getLevel() + 1){
+                stack.push(card);
+            }
+            else throw new IllegalArgumentException();
+        }
+    }
+
     /*
         * this method activate the production power of the personal player's game board
         * @param the resources to transform (type: ArrayList<resource>) and the requested type of th

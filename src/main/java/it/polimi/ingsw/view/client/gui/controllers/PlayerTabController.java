@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
@@ -100,14 +101,29 @@ public class PlayerTabController implements Initializable {
         }
     }
 
+    /**
+     * this method makes the producton elements in one's board clickable
+     * @param clientPlayer the player on which to perform the action
+     * @param bool true to allow, false to deny
+     */
     public void setProductionClickable(ClientPlayer clientPlayer, boolean bool){
         controllersMap.get(clientPlayer.getNickname()).setProductionClickable(bool);
     }
 
+    /**
+     * this method tells that a pplayer is playing a leader action and changes his board accordingly
+     * @param clientPlayer the player who's playing
+     * @param bool true or false
+     */
     public void setLeaderAction(ClientPlayer clientPlayer, boolean bool){
         controllersMap.get(clientPlayer.getNickname()).setLeaderAction(bool);
     }
 
+    /**
+     * this metod updates one's position in the pope road
+     * @param playerNickname player's nickname
+     * @param clientPlayer player
+     */
     public void updatePlayerPosition(String playerNickname, ClientPlayer clientPlayer) {
 
         for(Tab t : tabPane.getTabs()){
@@ -118,10 +134,42 @@ public class PlayerTabController implements Initializable {
         }
     }
 
+    /**
+     * this method controls if the leader chosen have been activated or not and changes the board accordingly
+     * @param clientPlayer the player who has played the leader action
+     */
     public void controlLeaders(ClientPlayer clientPlayer){
         for(Tab t : tabPane.getTabs()){
             if(t.getText().equals(clientPlayer.getNickname())){
                 controllersMap.get(clientPlayer.getNickname()).leaderActivationResult();
+                break;
+            }
+        }
+    }
+
+    /**
+     * this method sets the board to place a card
+     * @param nickname tha player who has bought the card
+     * @param cardChosen the  card bought
+     */
+    public void setPlaceCard(String nickname, DevelopmentCard cardChosen){
+        for(Tab t : tabPane.getTabs()){
+            if(t.getText().equals(nickname)){
+                controllersMap.get(nickname).setCardPlaceable(cardChosen);
+                break;
+            }
+        }
+    }
+
+    /**
+     * this method hides the buttons to lace a development card in one's board
+     * @param nickname the player to whom the board belongs to
+     */
+    public void hidePlaceCards(String nickname){
+        for(Tab t: tabPane.getTabs()){
+            if(t.getText().equals(nickname)) {
+                controllersMap.get(nickname).setPlacingVisible(false);
+                break;
             }
         }
     }

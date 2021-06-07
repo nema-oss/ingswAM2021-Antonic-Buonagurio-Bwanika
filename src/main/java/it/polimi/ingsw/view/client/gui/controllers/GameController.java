@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -28,6 +29,9 @@ public class GameController implements Initializable{
     @FXML
     public BorderPane gameBoardPane, playerBoardPane, leftBorder;
 
+    @FXML
+    private Label instructionalLabel;
+
 
     public  GameBoardController gameBoardController;
     public  PlayerTabController playerTabController;
@@ -40,6 +44,7 @@ public class GameController implements Initializable{
     }
 
     public void setInstructionLabel(String s) {
+        instructionalLabel.setText(s);
     }
 
     public void setLeaderCardHand(List<LeaderCard> hand) {
@@ -48,8 +53,6 @@ public class GameController implements Initializable{
     public void showResourceMarket() {
     }
 
-    public void showCardMarket() {
-    }
 
     public void setProductionDevelopmentCard(List<DevelopmentCard> developmentCards) {
     }
@@ -57,9 +60,6 @@ public class GameController implements Initializable{
     public void setProductionLeaderCard(List<LeaderCard> leaderCards) {
     }
 
-    public void showPlaceResourcesButton() {
-
-    }
     public Gui gui;
 
     public void setGui(Gui gui){
@@ -76,6 +76,7 @@ public class GameController implements Initializable{
 
         try {
             GuiManager.gameController = this;
+            instructionalLabel.setVisible(false);
 
             FXMLLoader loader1 = GuiManager.loadFXML("/gui/gameBoard");
             gameBoardPane.setCenter(loader1.load());
@@ -88,17 +89,6 @@ public class GameController implements Initializable{
             FXMLLoader loader3 = GuiManager.loadFXML("/gui/chooseLeaders");
             leftBorder.setCenter(loader3.load());
             chooseLeaderController = loader3.getController();
-
-          /*  List<LeaderCard> leaders = new CardFactory().getLeaderCards();
-            List<LeaderCard> chosen = new ArrayList<>();
-            chosen.add(leaders.get(0));
-            chosen.add(leaders.get(1));
-            chosen.add(leaders.get(2));
-            chosen.add(leaders.get(3));
-            chooseLeaderController.initializeLeaderCards(chosen); */
-
-
-            //nella gui devo chiamare initleaders
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,6 +125,11 @@ public class GameController implements Initializable{
         playerTabController.addPlayerBoard(gui.getPlayerNickname(),gui.getClientPlayer().getPlayerBoard(),true);
     }
 
+    /**
+     * this method adds a new player board
+     * @param user the player
+     * @param clientPlayerBoard his board
+     */
     public void addPlayerBoard(String user, ClientPlayerBoard clientPlayerBoard){
         try {
             playerTabController.addPlayerBoard(user, clientPlayerBoard, false);
@@ -144,9 +139,13 @@ public class GameController implements Initializable{
     }
 
     public void initializeActions(){
-
     }
 
+    /**
+     * this method sets up thew player's board
+     * @param player player to initialise
+     * @param gameBoard his board
+     */
     public void initializeGameBoard(ClientPlayer player, ClientGameBoard gameBoard) {
 
         gameBoardController.updateCardMarket(gameBoard);
@@ -160,22 +159,44 @@ public class GameController implements Initializable{
         playerTabController.addLeadersChosen(gui.getClientPlayer());
     }
 
+    /**
+     * this method allows or denies click on crad Market
+     * @param bool true to allow, false to deny
+     */
     public void makeCardMarketClickable(boolean bool){
         gameBoardController.setCardMarketClickable(bool);
     }
 
+    /**
+     * this method allows or denies clicks on production elements
+     * @param bool true to allow, false to deny
+     */
     public void makeProductionClickable(boolean bool) {
         playerTabController.setProductionClickable(gui.getClientPlayer(), bool);
     }
 
+    /**
+     * this method updates one's board
+     * @param clientPlayer the player
+     * @param clientPlayerBoard the board to be updated
+     */
     public void updatePlayerBoard(String clientPlayer, ClientPlayerBoard clientPlayerBoard) {
         playerTabController.updatePlayerBoard(clientPlayer,clientPlayerBoard);
     }
 
-
+    /**
+     * this method allows or denies clicks on leader cards
+     * @param bool true to allow, false to deny
+     */
     public void setLeaderAction(boolean bool){
         playerTabController.setLeaderAction(gui.getClientPlayer(), bool);
     }
 
+    /**
+     * this method hides initial leader cards
+     */
+    public void hideLeaders(){
+        chooseLeaderController.hide();
+    }
 
 }

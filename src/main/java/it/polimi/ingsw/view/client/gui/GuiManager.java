@@ -25,6 +25,7 @@ public class GuiManager extends Application {
     public void start(Stage stage) throws IOException {
 
         GuiManager.stage = stage;
+        stage.setTitle("Masters of Renaissance");
         executorService = Executors.newCachedThreadPool();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/connection.fxml")));
         Scene scene = new Scene(root,1600,900);

@@ -41,7 +41,7 @@ public class PlayerBoardController {
     ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b;
 
     @FXML
-    Button boardProdButton, cardProdButton, leaderProdButton;
+    Button boardProdButton, cardProdButton, leaderProdButton, place1, place2, place3;
 
     @FXML
     GridPane devCards, floor1, floor2, floor3, popeRoad;
@@ -108,9 +108,6 @@ public class PlayerBoardController {
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
-
-                    leaderActivationResult();
-
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -157,7 +154,6 @@ public class PlayerBoardController {
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, true);
                     gui.sendMessage(msg);
 
-                    leaderActivationResult();
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
@@ -187,6 +183,9 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method removes the green border if the leader action was not accepted
+     */
     public void leaderActivationResult(){
 
         if(!gui.getClientPlayer().getActiveLeaderCards().contains(l1)){
@@ -209,25 +208,11 @@ public class PlayerBoardController {
         popeRoad.getChildren().get(currentPosition).setVisible(false);
         popeRoad.getChildren().get(index).setVisible(true);
         currentPosition = index;
-
-        //moveOnPopeRoad(index-(25-popeSpaces.size()));
     }
 
 
     /**
-     * this method moves the player on the poperoad
-     * @param steps number of steps to move
-     */
-  /*  private void moveOnPopeRoad(Integer steps){
-        popeSpaces.get(0).setVisible(false);
-        if (steps > 0) {
-            popeSpaces.subList(0, steps).clear();
-        }
-        popeSpaces.get(0).setVisible(true);
-    } */
-
-    /**
-     * this method activates board production
+     * this method activates board production sending the message
      */
     @FXML
     public void activateBoardProduction(){
@@ -235,46 +220,43 @@ public class PlayerBoardController {
         List<ResourceType> toGive = new ArrayList<>();
 
         String url = res1.getImage().getUrl();
-        ResourceType key = ResourceType.COIN;
+        ResourceType key;
 
-        if(url.contains("coin"))
-            toGive.add(ResourceType.COIN);
-        else if(url.contains("shield"))
-            toGive.add(ResourceType.SHIELD);
-        else if(url.contains("servant"))
-            toGive.add(ResourceType.SERVANT);
-        else if(url.contains("stone"))
-            toGive.add(ResourceType.STONE);
+        toGive.add(getUrlResource(url));
 
         url = res2.getImage().getUrl();
 
-        if(url.contains("coin"))
-            toGive.add(ResourceType.COIN);
-        else if(url.contains("shield"))
-            toGive.add(ResourceType.SHIELD);
-        else if(url.contains("servant"))
-            toGive.add(ResourceType.SERVANT);
-        else if(url.contains("stone"))
-            toGive.add(ResourceType.STONE);
+        toGive.add(getUrlResource(url));
 
         url = result.getImage().getUrl();
 
-        if(url.contains("coin"))
-            key = ResourceType.COIN;
-        else if(url.contains("shield"))
-            key = ResourceType.SHIELD;
-        else if(url.contains("servant"))
-            key = ResourceType.SERVANT;
-        else if(url.contains("stone"))
-            key = ResourceType.STONE;
-
+        key = getUrlResource(url);
 
         map.put(new Resource(key), toGive);
 
-        Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, false);
+        Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, true);
         gui.sendMessage(msg);
     }
 
+    /**
+     * this method takes the corresponding resource from an url
+     * @param url the url to take the substring from
+     * @return the resourceType defined by the url
+     */
+    private ResourceType getUrlResource(String url){
+        if(url.contains("coin"))
+            return ResourceType.COIN;
+        else if(url.contains("shield"))
+            return ResourceType.SHIELD;
+        else if(url.contains("servant"))
+            return ResourceType.SERVANT;
+        else
+            return ResourceType.STONE;
+    }
+
+    /**
+     * this method activates card production sending the corresponding message
+     */
     @FXML
     public void activateCardsProduction (){
         if(prodCardsList.size()!=0) {
@@ -290,10 +272,13 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method activates leader production sending the corresponding message
+     */
     @FXML
     public void activateLeaderProduction(){
         if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, true);
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
             gui.sendMessage(msg);
             leaderCardsList.clear();
             isL1Selected = false;
@@ -309,7 +294,7 @@ public class PlayerBoardController {
 
     /**
      * this method changes the resources on the board's production panel
-     * @param event
+     * @param event mouse clicked
      */
     @FXML
     public void switchOnNextResource(MouseEvent event){
@@ -322,7 +307,11 @@ public class PlayerBoardController {
 
     }
 
-    //coin -> servant -> shield -> stone
+    /**
+     * this method switches the images in the board production panel; default order is coin -> servant -> shield -> stone
+     * @param view the ImageView clicked
+     * @param url the Image contained in the ImageView
+     */
     public void setNextResource(ImageView view, String url){
         if(url.contains("coin")) {
             view.setImage(new Image("/gui/Images/Resources/servant.png"));
@@ -372,11 +361,15 @@ public class PlayerBoardController {
                     dev3.setCenter(card);
                 }
 
-                //devCards.add(card, i, 0);
             }
         }
     }
 
+    /**
+     * this method adds a blue border if the development card has been selected for production, and removes it otherwise
+     * @param card the card clicked
+     * @return true if card is selected, false otherwise
+     */
     public boolean controlDevelopmentCard(ImageView card){
         if(card.getParent().equals(dev1)){
             if(!isDev1Selected){
@@ -580,23 +573,66 @@ public class PlayerBoardController {
         updateDevelopmentCards(clientPlayerBoard);
         updatePopeRoad(clientPlayerBoard);
         showActiveLeaders();
-
     }
 
     public void setGui(Gui gui){
         this.gui = gui;
     }
 
+    /**
+     * this method allows or denies click on production elements and shows or hides their buttons
+     * @param bool true to allow, false to deny
+     */
     public void setProductionClickable(Boolean bool){
         boardProdButton.setVisible(bool);
         cardProdButton.setVisible(bool);
         leaderProdButton.setVisible(bool);
     }
 
+    /**
+     * this method sets the messages to send when placing a development card
+     * @param card card bought
+     */
+    public void setCardPlaceable(DevelopmentCard card){
+        setPlacingVisible(true);
+
+        place1.setOnAction(event -> {
+            Message msg = new PlaceCardMessage(gui.getPlayerNickname(), card, 0);
+            gui.sendMessage(msg);
+        });
+        place2.setOnAction(event -> {
+            Message msg = new PlaceCardMessage(gui.getPlayerNickname(), card, 1);
+            gui.sendMessage(msg);
+        });
+        place3.setOnAction(event -> {
+            Message msg = new PlaceCardMessage(gui.getPlayerNickname(), card, 2);
+            gui.sendMessage(msg);
+        });
+
+    }
+
+    /**
+     * this method shows/hides placing buttons
+     * @param value true to show, false to hide
+     */
+    public void setPlacingVisible(Boolean value){
+        place1.setVisible(value);
+        place2.setVisible(value);
+        place3.setVisible(value);
+    }
+
+    /**
+     * this method sets the fact that a leader action is being played
+     * @param bool
+     */
     public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
     }
 
+    /**
+     * this method adds the extra deposit images to a leader card
+     * @param leaderCard the leader card chosen
+     */
     public void checkExtraDeposit(LeaderCard leaderCard){
 
         if(leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_DEPOSIT)){
@@ -635,10 +671,4 @@ public class PlayerBoardController {
         }
     }
 
-    public void updateOtherPlayers(ClientPlayerBoard clientPlayerBoard) {
-
-        updateDeposit(clientPlayerBoard.getDeposit());
-        updateStrongBox(clientPlayerBoard.getStrongbox());
-        updateDevelopmentCards(clientPlayerBoard);
-    }
 }

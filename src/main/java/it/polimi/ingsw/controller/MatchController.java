@@ -534,6 +534,22 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+
+    public List<Error> onPlaceCard(String nickname, DevelopmentCard card, int index){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()){
+           try {
+               game.getCurrentPlayer().getPlayerBoard().addDevelopmentCard(card, index);
+           }
+           catch (IllegalArgumentException e){
+               errors.add(Error.INVALID_ACTION);
+           }
+        }
+        return errors;
+    }
+
     /**
      * this method calls the Player's method buyResoources
      * @param nickname the player's nickname

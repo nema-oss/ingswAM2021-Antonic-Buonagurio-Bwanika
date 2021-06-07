@@ -140,9 +140,10 @@ public class ClientPlayer {
         actionLeaderPlayed = false;
     }
 
-    public void buyDevelopmentCard(int x, int y) {
+    public DevelopmentCard buyDevelopmentCard(int x, int y) {
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(x, y);
         playerBoard.addDevelopmentCard(developmentCard);
+        return developmentCard;
     }
 
 

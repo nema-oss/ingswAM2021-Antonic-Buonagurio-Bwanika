@@ -1,12 +1,14 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.actions.server.LeaderActionAccepted;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +27,9 @@ public class ChooseLeaderController {
    ImageView l1, l2, l3, l4;
 
    @FXML
+    Label text;
+
+   @FXML
    Button leadersOk;
 
    private boolean l1selected, l2selected, l3selected, l4selected;
@@ -34,7 +39,7 @@ public class ChooseLeaderController {
 
     /**
      * this method sets the gui
-     * @param gui
+     * @param gui the gui to assign
      */
     public void setGui(Gui gui){
         this.gui = gui;
@@ -42,10 +47,9 @@ public class ChooseLeaderController {
 
     /**
      * this method sends the message with the chosen leader cards
-     * @throws IOException
      */
     @FXML
-    private void switchOnChooseResources() throws IOException {
+    private void switchOnChooseResources() {
 
         List<LeaderCard> selected = new ArrayList<>();
         if(l1selected){
@@ -150,7 +154,7 @@ public class ChooseLeaderController {
 
 
     /**
-     * this method initializes the images representing the leadercards to choose
+     * this method initializes the images representing the leader cards to choose
      * @param leaderCards to choose from
      */
     public void initializeLeaderCards(List<LeaderCard> leaderCards){
@@ -171,6 +175,18 @@ public class ChooseLeaderController {
 
 
     public void setInstructionLabel(String infoMessage) {
+    }
+
+    /**
+     * this method hides the cards and the button and changes the label to "waiting"
+     */
+    public void hide(){
+        l1.getParent().setVisible(false);
+        l2.getParent().setVisible(false);
+        l3.getParent().setVisible(false);
+        l4.getParent().setVisible(false);
+        leadersOk.setVisible(false);
+        text.setText("Waiting for other players to setup their board");
     }
 
 

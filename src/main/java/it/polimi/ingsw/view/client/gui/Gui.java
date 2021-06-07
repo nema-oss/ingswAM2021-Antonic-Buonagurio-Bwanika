@@ -379,7 +379,7 @@ public class Gui extends View {
         Platform.runLater(()->{
             if(!actionRejectedBefore){
                 gameSceneController.setInstructionLabel("Select which cards you want to discard/activate. ");
-                gameSceneController.setLeaderCardHand(player.getHand());
+              //  gameSceneController.setLeaderCardHand(player.getHand());
             }else{
                 //gameSceneController.restore();
                 String informationMessage = "Leader card action rejected. Try again. ";
@@ -615,6 +615,7 @@ public class Gui extends View {
     public void showAcceptedLeaderAction() {
         Platform.runLater(()->{
             alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
+            playerTabController.controlLeaders(player);
             actionButtonsController.setLeaderActionVisible(false);
             actionButtonsController.setChooseLeaderActionVisible(false);
             actionButtonsController.setStandardActionVisible(!player.isStandardActionDone());
@@ -630,6 +631,7 @@ public class Gui extends View {
     public void showRejectedLeaderAction() {
         Platform.runLater(()->{
             alertUser("Warning", "Leader card action rejected.", Alert.AlertType.WARNING);
+            playerTabController.controlLeaders(player);
         });
     }
 
@@ -644,7 +646,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             if(player.getNickname().equals(user)) {
-                player.buyDevelopmentCard(x, y);
+                DevelopmentCard cardChosen =player.buyDevelopmentCard(x, y);
                 player.setStandardActionDone();
                 List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
                 System.out.println(developmentCards.size());
@@ -652,7 +654,8 @@ public class Gui extends View {
                     System.out.println(card.getLevel());
                 }
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
-                alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
+                alertUser("Information", "Accepted buy card; select where to place your card", Alert.AlertType.INFORMATION);
+              //  playerTabController.setPlaceCard(player.getNickname(), true, cardChosen);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
@@ -690,6 +693,9 @@ public class Gui extends View {
         player.setHand(choice);
         Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
         sendMessage(message);
+        Platform.runLater(() ->{
+            gameSceneController.hideLeaders();
+        });
     }
 
 

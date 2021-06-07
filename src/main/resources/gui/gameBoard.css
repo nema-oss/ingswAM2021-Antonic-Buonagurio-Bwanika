@@ -15,10 +15,26 @@
 .gridPane {
     -fx-border-color: #ffffff;
 }
-.orange {
-    -fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%);
+.textField {
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
     -fx-text-fill: black;
-    -fx-font-size: 14px;
-    -fx-padding: 5 30 5 30;
-
+    -fx-font-size: 14;
 }
+
+.round {
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+    -fx-font-size: 14;
+}
+
+.round:hover{
+    -fx-background-color: #c2bebe;
+}
+.round.clicked{
+    -fx-background-color: #c2bebe;
+}
+

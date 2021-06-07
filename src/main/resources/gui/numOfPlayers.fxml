@@ -14,7 +14,7 @@
             <Font name="Old English Text MT" size="33.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboBox" layoutX="132.0" layoutY="179.0" prefHeight="30.0" prefWidth="146.0" promptText="number of players" />
-      <Button layoutX="150.0" layoutY="239.0" onAction="#switchToLobby" styleClass="orange" stylesheets="@gameBoard.css" text="Confirm" />
+      <ComboBox fx:id="comboBox" layoutX="116.0" layoutY="179.0" prefHeight="30.0" prefWidth="180.0" promptText="number of players" styleClass="textField" stylesheets="@gameBoard.css" />
+      <Button layoutX="154.0" layoutY="239.0" onAction="#switchToLobby" prefHeight="30.0" prefWidth="103.0" styleClass="round" stylesheets="@gameBoard.css" text="Confirm" />
    </AnchorPane>
 </AnchorPane>

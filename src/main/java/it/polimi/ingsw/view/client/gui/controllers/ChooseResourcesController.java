@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -30,8 +31,12 @@ public class ChooseResourcesController implements Initializable {
     @FXML
     private Label title;
 
+    @FXML
+    private AnchorPane coinView, servantView, shieldView, stoneView;
 
-    private boolean coinSelected1, servantSelected1, shieldSelected1, stoneSelected1, coinSelected2, servantSelected2, shieldSelected2, stoneSelected2;
+    @FXML
+    private Button button;
+
     private Gui gui;
 
     public void setGui(Gui gui){
@@ -46,31 +51,6 @@ public class ChooseResourcesController implements Initializable {
     private void switchOnGame() {
 
         Map<ResourceType,Integer> selectedResourceTypes = new HashMap<>();
-
-     /*   if(coinSelected1){
-            if(coinSelected2)
-                selectedResourceTypes.put(ResourceType.COIN,2);
-            else
-                selectedResourceTypes.put(ResourceType.COIN,1);
-        }
-        if(servantSelected1){
-            if(servantSelected2)
-                selectedResourceTypes.put(ResourceType.SERVANT,2);
-            else
-                selectedResourceTypes.put(ResourceType.SERVANT,1);
-        }
-        if(stoneSelected1) {
-            if(stoneSelected2)
-                selectedResourceTypes.put(ResourceType.STONE,2);
-            else
-                selectedResourceTypes.put(ResourceType.STONE,1);
-        }
-        if(shieldSelected1){
-            if(shieldSelected2)
-                selectedResourceTypes.put(ResourceType.SHIELD,2);
-            else
-                selectedResourceTypes.put(ResourceType.SHIELD,1);
-        } */
 
         if(coin.getValue()!=0)
             selectedResourceTypes.put(ResourceType.COIN, coin.getValue());
@@ -87,87 +67,13 @@ public class ChooseResourcesController implements Initializable {
     }
 
     /**
-     * this method changes the images's style if it is clicked
-     */
-    /* @FXML
-    private void goldChosen(){
-        if(!coinSelected1) {
-            coin.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            coinSelected1 = true;
-        }
-        else if(!coinSelected2) {
-            coin.setStyle(" -fx-border-color: purple; -fx-border-width: 5");
-            coinSelected2 = true;
-        }
-        else {
-            coin.setStyle("");
-            coinSelected1 = false;
-            coinSelected2 = false;
-        }
-    }
-
-    @FXML
-    private void servantChosen(){
-        if(!servantSelected1) {
-            servant.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            servantSelected1 = true;
-        }
-        else if(!servantSelected2) {
-            servant.;
-
-            servant.setStyle("");
-            servantSelected2 = true;
-        }
-        else {
-            servant.setStyle("");
-            servantSelected1 = false;
-            servantSelected2 = false;
-        }
-    }
-
-    @FXML
-    private void shieldChosen(){
-        if(!shieldSelected1) {
-            shield.setStyle("-fx-border-color: violet; -fx-border-width: 5");
-            shieldSelected1 = true;
-        }
-        else if(!shieldSelected2) {
-            shield.setStyle("");
-            shieldSelected2 = true;
-        }
-        else {
-            shield.setStyle("");
-            shieldSelected1 = false;
-            shieldSelected2 = false;
-        }
-    }
-
-    @FXML
-    private void stoneChosen(){
-
-        if(!stoneSelected1) {
-            stone.setStyle("");
-            stoneSelected1 = true;
-        }
-        else if(!stoneSelected2) {
-            stone.setStyle("-fx-border-color: purple; -fx-border-width: 5");
-            stoneSelected2 = true;
-        }
-        else {
-            stone.setStyle("");
-            stoneSelected1 = false;
-            stoneSelected2 = false;
-        }
-
-    } */
-
-    /**
      * this method updates the label, writing how many resources the client can choose
      * @param text
      */
     public void setInstructionalLabel(String text){
         title.setText(text);
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -186,5 +92,21 @@ public class ChooseResourcesController implements Initializable {
         shieldValueFactory.setValue(0);
         stone.setValueFactory(stoneValueFactory);
         stoneValueFactory.setValue(0);
+    }
+
+    /**
+     * this method hides the resources and the buttons and sets the title to "waiting"
+     */
+    public void hide(){
+        coinView.setVisible(false);
+        servantView.setVisible(false);
+        servantView.setVisible(false);
+        stoneView.setVisible(false);
+        servant.setVisible(false);
+        stone.setVisible(false);
+        shield.setVisible(false);
+        coin.setVisible(false);
+        button.setVisible(false);
+        title.setText("Waiting for other players to setup their board");
     }
 }

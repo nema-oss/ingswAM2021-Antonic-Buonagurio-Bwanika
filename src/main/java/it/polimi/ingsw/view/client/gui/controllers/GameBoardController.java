@@ -101,6 +101,12 @@ public class GameBoardController{
 
     }
 
+    /**
+     * this method removes an imageview from a gridPane
+     * @param row the imageView's row index
+     * @param column the imageView's column index
+     * @param gridPane the grid to remove it from
+     */
     public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
 
         ObservableList<Node> children = gridPane.getChildren();
@@ -115,8 +121,8 @@ public class GameBoardController{
 
 
     /**
-     * this method updates the gameboard's card market
-     * @param clientGameBoard
+     * this method updates the game board's card market
+     * @param clientGameBoard the board to update
      */
     public void updateCardMarket(ClientGameBoard clientGameBoard){
 
@@ -155,6 +161,10 @@ public class GameBoardController{
 
     }
 
+    /**
+     * this method allows or forbids the player to click the card market
+     * @param bool true to allow, false to forbid
+     */
     public void setCardMarketClickable(boolean bool){
 
         for(Node img : cardMarket.getChildren())

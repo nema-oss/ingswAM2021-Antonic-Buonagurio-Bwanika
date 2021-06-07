@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -30,8 +29,6 @@ import java.util.ResourceBundle;
 
 public class ActionButtonsController implements Initializable {
 
-    @FXML
-    private BorderPane leftPane;
 
     @FXML
     private AnchorPane resourcePane, swapPane, lorenzoPane;
@@ -72,23 +69,16 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * this method creates all the buttons for the actions and sets them invisible
-     * @param location
-     * @param resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //scelta delle azioni da fare
 
-        //progressindicator per l'attesa con scritta "tizio sta giocando il suo turno"
         wait.setStyle("-fx-progress-color: white");
         wait.setPrefWidth(80);
         setWaitVisible(false);
 
-        //wait.setVisible(true);
-       // waitingMessage.setVisible(true);
 
-        //bottoni per decidere se standard action o leader action con scritta di spiegazione
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
             setChooseStandardActionVisible(true);
@@ -103,7 +93,6 @@ public class ActionButtonsController implements Initializable {
         setChooseActionTypeVisible(true);
 
 
-        //se standard action tre bottoni per i tre tipi di standard action
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);
             setRowOrColumnVisible(true);
@@ -136,7 +125,6 @@ public class ActionButtonsController implements Initializable {
         setChooseStandardActionVisible(false);
         endProd.setVisible(false);
 
-        //se buyResource combo con riga/colonna + combo con numero riga/colonna
         rowOrColumn.setItems(FXCollections.observableArrayList("row", "column"));
         setRowOrColumnVisible(false);
         rowOrColumnOk.setOnAction(event -> {
@@ -150,25 +138,22 @@ public class ActionButtonsController implements Initializable {
         setRowIndexVisible(false);
         rowOk.setOnAction(event -> {
             setRowIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),(Integer) rowIndex.getValue()-1, -1, false);
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), rowIndex.getValue()-1, -1, false);
             gui.sendMessage(msg);
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
             setColumnIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1, (Integer) columnIndex.getValue()-1, false);
+            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1,  columnIndex.getValue()-1, false);
             gui.sendMessage(msg);
         });
 
-        //placing resources
         floorComboBox1.setItems(FXCollections.observableArrayList(1,2,3));
         floorComboBox2.setItems(FXCollections.observableArrayList(1,2,3));
         floorComboBox3.setItems(FXCollections.observableArrayList(1,2,3));
         floorComboBox4.setItems(FXCollections.observableArrayList(1,2,3));
-        placeResourcesOk.setOnAction(event -> {
-            sendPlaceResources();
-        });
+        placeResourcesOk.setOnAction(event -> sendPlaceResources());
         setResourcePaneVisible(false);
 
         swapOk.setOnAction(event -> sendSwapFloors());
@@ -176,14 +161,10 @@ public class ActionButtonsController implements Initializable {
         secondSwap.setItems(FXCollections.observableArrayList(1,2,3));
         setSwapPaneVisible(false);
 
-        //se buyDevelopmentCard messaggio con clicca sulla carta che vuoi
         devMessage.setVisible(false);
 
-        //se attiva produzione clicca sulle carteDev / plancia / carteLeader
         prodMessage.setVisible(false);
 
-        //se scarta clicca su quale scartare
-        //se attiva clicca su quale attivare
         leaderMessage .setVisible(false);
 
         endTurnButton.setOnAction(event -> {
@@ -227,7 +208,7 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * these methods show or hide the action buttons
-     * @param value
+     * @param value: true to set object visible, false otherwise
      */
     public void setBackButtonVisible(boolean value){
         backButton.setVisible(value);
@@ -321,7 +302,7 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * this method prepares the pane to place the resources
-     * @param resources
+     * @param resources to place
      */
     public void setPlaceResources(List<Resource> resources){
 
@@ -393,12 +374,20 @@ public class ActionButtonsController implements Initializable {
         gui.sendMessage(msg);
     }
 
+    /**
+     * this method sens the message to swap the deposit's floors
+     */
     public void sendSwapFloors(){
 
         Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
         gui.sendMessage(msg);
     }
 
+
+    /**
+     * this method shows or hides lorenzo's turn
+     * @param value true to set visible, false otherwise
+     */
     public void setLorenzoVisible(boolean value){
         lorenzoLabel.setVisible(value);
         actionToken.setVisible(value);
@@ -406,6 +395,12 @@ public class ActionButtonsController implements Initializable {
         actionTokenOk.setVisible(value);
     }
 
+    /**
+     * this method shows the action token drawn by the player and explains the corresponding action
+     * @param tokenDrawn the action token drawn
+     * @param lorenzoPosition lorenz's position in the pope road
+     * @param text string of explanation
+     */
     public void showLorenzoTurn(ActionToken tokenDrawn, int lorenzoPosition, String text){
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));

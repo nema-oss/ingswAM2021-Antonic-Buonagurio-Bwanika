@@ -63,10 +63,20 @@ public class Deposit implements Serializable {
 
     public boolean checkDepositRules() {
 
+        List<ResourceType> uniqueTypes = new ArrayList<>();
+        List<ResourceType> presentTypes = new ArrayList<>();
         for (int i = 0; i < warehouse.size(); i++) {
             if (warehouse.get(i).size() > i + 1) return false;
             if (warehouse.get(i).stream().map(Resource::getType).distinct().limit(2).count() > 1) return false;
+            if (warehouse.get(i).size() > 0) {
+                presentTypes.add(warehouse.get(i).get(0).getType());
+                if (!uniqueTypes.contains(warehouse.get(i).get(0).getType()))
+                    uniqueTypes.add(warehouse.get(i).get(0).getType());
+            }
         }
+        if (presentTypes.size()>uniqueTypes.size())
+            return false;
+
         return warehouse.stream().flatMap(List<Resource>::stream).map(Resource::getType).distinct().limit(4).count() <= 3;
 
     }
@@ -126,6 +136,11 @@ public class Deposit implements Serializable {
 
         floor--;
         return warehouse.get(floor).get(0);
+    }
+
+    public List<Resource> getFloor(int floor){
+        floor--;
+        return warehouse.get(floor);
     }
 
     public int getNumberOfResourcesOnFloor(int floor) {

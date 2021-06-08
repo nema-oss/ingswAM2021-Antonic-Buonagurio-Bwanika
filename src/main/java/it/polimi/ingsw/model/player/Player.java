@@ -382,7 +382,7 @@ public class Player{
      * @param floor the selected floor
      */
 
-    public void addResourceToDeposit(int floor, Resource resource) throws FullDepositException, Exception {
+    public void addResourceToDeposit(int floor, Resource resource) throws FullDepositException {
 
         getDeposit().addResource(floor,resource);
     }

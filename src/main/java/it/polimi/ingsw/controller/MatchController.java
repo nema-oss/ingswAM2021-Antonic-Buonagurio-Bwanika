@@ -720,14 +720,29 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
+        System.out.println(resources);
+
+        Map<Resource, Integer> resourcesPut = new HashMap<>();
+
         if(errors.isEmpty()){
             for(Resource r : resources.keySet()){
                 try {
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
+                    resourcesPut.put(r, resources.get(r));
+                    System.out.println(resourcesPut);
                 } catch (FullDepositException e) {
                     errors.add(Error.DEPOSIT_IS_FULL);
+                    for(Resource put : resourcesPut.keySet()) {
+                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
+                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
+                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
+                    }
+                    break;
                 } catch (Exception e) {
                     errors.add(Error.INVALID_ACTION);
+                    for(Resource put : resourcesPut.keySet())
+                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
+                    break;
                 }
             }
         }

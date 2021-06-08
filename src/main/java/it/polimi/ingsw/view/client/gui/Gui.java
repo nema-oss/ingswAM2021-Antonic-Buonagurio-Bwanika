@@ -603,8 +603,16 @@ public class Gui extends View {
     public void setPlaceResourcesAction() {
 
         Platform.runLater(()->{
-            actionButtonsController.setSwapPaneVisible(true);
-            actionButtonsController.setPlaceResources(player.getBoughtResources());
+            if(player.getBoughtResources().size()!=0) {
+                actionButtonsController.setSwapPaneVisible(true);
+                actionButtonsController.setPlaceResources(player.getBoughtResources());
+            }
+            else{
+                player.setStandardActionDone();
+                actionButtonsController.setLeaderActionVisible(true);
+                actionButtonsController.setStandardActionVisible(false);
+                actionButtonsController.setEndTurnVisible(true);
+            }
         });
     }
 

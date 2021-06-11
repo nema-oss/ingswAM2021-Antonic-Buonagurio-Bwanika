@@ -24,9 +24,9 @@
          <Button fx:id="leaderAction" layoutX="248.0" layoutY="186.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="165.0" styleClass="round" stylesheets="@gameBoard.css" text="Leader action" />
          <Button fx:id="buyResource" layoutX="217.0" layoutY="113.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy resources" />
          <Button fx:id="endTurnButton" alignment="CENTER" layoutX="264.0" layoutY="262.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="round" stylesheets="@gameBoard.css" text="end turn" />
-         <Button fx:id="startProd" layoutX="218.0" layoutY="157.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="221.0" styleClass="round" stylesheets="@gameBoard.css" text="Activate Production" />
+         <Button fx:id="startProd" layoutX="217.0" layoutY="157.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="221.0" styleClass="round" stylesheets="@gameBoard.css" text="Activate Production" />
          <Button fx:id="buyCard" layoutX="217.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy development card" />
-         <ComboBox fx:id="rowOrColumn" layoutX="253.0" layoutY="128.0" prefWidth="150.0" promptText="row or column?" styleClass="textField" stylesheets="@gameBoard.css" />
+         <ComboBox fx:id="rowOrColumn" layoutX="254.0" layoutY="128.0" prefWidth="150.0" promptText="row or column?" styleClass="textField" stylesheets="@gameBoard.css" />
          <Button fx:id="rowOrColumnOk" layoutX="267.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" styleClass="round" stylesheets="@gameBoard.css" text="Confirm" />
          <ComboBox fx:id="rowIndex" layoutX="254.0" layoutY="120.0" prefWidth="150.0" promptText="choose row" styleClass="textField" stylesheets="@gameBoard.css" />
          <ComboBox fx:id="columnIndex" layoutX="254.0" layoutY="120.0" prefWidth="150.0" promptText="choose column" styleClass="textField" stylesheets="@gameBoard.css" />

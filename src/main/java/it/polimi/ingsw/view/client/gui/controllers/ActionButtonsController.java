@@ -314,6 +314,7 @@ public class ActionButtonsController implements Initializable {
             resourcePane.setVisible(true);
             placeResourcesOk.setVisible(true);
             placeResourcesMessage.setVisible(true);
+            setEndTurnVisible(false);
 
             firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).getType().label + ".png"));
             firstRes.setVisible(true);

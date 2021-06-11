@@ -11,9 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="leftPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ActionButtonsController">
-   <right>
-      <AnchorPane prefHeight="343.0" prefWidth="733.0" BorderPane.alignment="CENTER">
+<BorderPane fx:id="generalPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.ActionButtonsController">
+   <center>
+      <AnchorPane prefHeight="365.0" prefWidth="646.0" BorderPane.alignment="CENTER">
+         <Button fx:id="cheat" layoutX="212.0" layoutY="66.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Cheat" />
          <ProgressIndicator fx:id="wait" layoutX="297.0" layoutY="145.0" prefHeight="78.0" prefWidth="52.0" stylesheets="@gameBoard.css" />
          <Label fx:id="waitingMessage" layoutX="151.0" layoutY="49.0" prefHeight="64.0" prefWidth="354.0" text="Waiting for other players to play their turn">
             <font>
@@ -22,10 +23,10 @@
          </Label>
          <Button fx:id="standardAction" layoutX="248.0" layoutY="126.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="165.0" styleClass="round" stylesheets="@gameBoard.css" text="Standard action" />
          <Button fx:id="leaderAction" layoutX="248.0" layoutY="186.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="165.0" styleClass="round" stylesheets="@gameBoard.css" text="Leader action" />
-         <Button fx:id="buyResource" layoutX="217.0" layoutY="113.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy resources" />
-         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="264.0" layoutY="262.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="round" stylesheets="@gameBoard.css" text="end turn" />
-         <Button fx:id="startProd" layoutX="217.0" layoutY="157.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="221.0" styleClass="round" stylesheets="@gameBoard.css" text="Activate Production" />
-         <Button fx:id="buyCard" layoutX="217.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy development card" />
+         <Button fx:id="buyResource" layoutX="212.0" layoutY="113.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy resources" />
+         <Button fx:id="endTurnButton" alignment="CENTER" layoutX="264.0" layoutY="262.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="119.0" styleClass="round" stylesheets="@gameBoard.css" text="End turn" />
+         <Button fx:id="startProd" layoutX="213.0" layoutY="158.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="221.0" styleClass="round" stylesheets="@gameBoard.css" text="Activate Production" />
+         <Button fx:id="buyCard" layoutX="212.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="223.0" styleClass="round" stylesheets="@gameBoard.css" text="Buy development card" />
          <ComboBox fx:id="rowOrColumn" layoutX="254.0" layoutY="128.0" prefWidth="150.0" promptText="row or column?" styleClass="textField" stylesheets="@gameBoard.css" />
          <Button fx:id="rowOrColumnOk" layoutX="267.0" layoutY="201.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" styleClass="round" stylesheets="@gameBoard.css" text="Confirm" />
          <ComboBox fx:id="rowIndex" layoutX="254.0" layoutY="120.0" prefWidth="150.0" promptText="choose row" styleClass="textField" stylesheets="@gameBoard.css" />
@@ -62,9 +63,9 @@
                </Label>
                <Button fx:id="placeResourcesOk" layoutX="118.0" layoutY="309.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="116.0" styleClass="round" stylesheets="@gameBoard.css" text="Confirm" />
                <CheckBox fx:id="discard1" layoutX="257.0" layoutY="55.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
-               <CheckBox fx:id="discard2" layoutX="257.0" layoutY="123.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0"  text="Discard" />
-               <CheckBox fx:id="discard3" layoutX="257.0" layoutY="192.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0"  text="Discard" />
-               <CheckBox fx:id="discard4" layoutX="257.0" layoutY="260.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0"  text="Discard" />
+               <CheckBox fx:id="discard2" layoutX="257.0" layoutY="123.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
+               <CheckBox fx:id="discard3" layoutX="257.0" layoutY="192.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
+               <CheckBox fx:id="discard4" layoutX="257.0" layoutY="260.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Discard" />
             </children>
          </AnchorPane>
          <AnchorPane fx:id="swapPane" layoutX="368.0" layoutY="65.0" prefHeight="212.0" prefWidth="260.0" styleClass="cardPane">
@@ -86,7 +87,7 @@
          </AnchorPane>
          <AnchorPane fx:id="lorenzoPane" layoutX="179.0" layoutY="45.0" prefHeight="289.0" prefWidth="289.0">
             <children>
-               <ImageView fx:id="actionToken" fitHeight="140.0" fitWidth="147.0" layoutX="69.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="actionToken" fitHeight="140.0" fitWidth="147.0" layoutX="72.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true" />
                <Label fx:id="lorenzoLabel" alignment="CENTER" layoutY="12.0" prefHeight="47.0" prefWidth="288.0" text="Label">
                   <font>
                      <Font size="14.0" />
@@ -94,10 +95,7 @@
                <Button fx:id="actionTokenOk" layoutX="85.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" styleClass="round" stylesheets="@gameBoard.css" text="Confirm" />
             </children>
          </AnchorPane>
-         <Button fx:id="backButton" layoutX="547.0" layoutY="301.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="92.0" styleClass="round" stylesheets="@gameBoard.css" text="Back" />
+         <Button fx:id="backButton" layoutX="282.0" layoutY="340.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="92.0" styleClass="round" stylesheets="@gameBoard.css" text="Back" />
       </AnchorPane>
-   </right>
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="335.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

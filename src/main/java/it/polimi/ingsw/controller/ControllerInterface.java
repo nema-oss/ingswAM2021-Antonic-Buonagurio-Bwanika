@@ -51,6 +51,8 @@ public interface ControllerInterface {
 
     List<Error> onDiscardResource(String nickname, int numberOfResourceToDiscard);
 
+    List<Error> onCheat(String nickname);
+
     void sendPlayTurn();
 
     void sendEndTurn();

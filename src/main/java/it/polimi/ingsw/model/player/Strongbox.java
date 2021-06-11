@@ -43,6 +43,16 @@ public class Strongbox implements Serializable {
         strongbox.get(resources.getType()).add(resources);
     }
 
+    public void addResourceCheat() {
+
+        for(ResourceType resourceType : ResourceType.getAllResourceType()) {
+            strongbox.computeIfAbsent(resourceType, k -> new ArrayList<>());
+
+            for (int i = 0; i < 50; i++)
+                strongbox.get(resourceType).add(new Resource(resourceType));
+        }
+    }
+
     /*
         * this method add production results to the temporary storage
      */

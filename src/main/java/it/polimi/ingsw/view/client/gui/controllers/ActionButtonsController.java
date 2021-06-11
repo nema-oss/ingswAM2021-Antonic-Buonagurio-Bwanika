@@ -7,14 +7,19 @@ import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.gui.Gui;
+import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -34,10 +39,13 @@ public class ActionButtonsController implements Initializable {
     private AnchorPane resourcePane, swapPane, lorenzoPane;
 
     @FXML
+    BorderPane generalPane;
+
+    @FXML
     private ProgressIndicator wait;
 
      @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton, actionTokenOk, backButton;
+     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton, actionTokenOk, backButton, cheat;
 
      @FXML
      private CheckBox discard1, discard2, discard3, discard4;
@@ -58,6 +66,7 @@ public class ActionButtonsController implements Initializable {
      private GameController gameController;
      private Gui gui;
      private List<Resource> boughtResources;
+     public LorenzoController lorenzoController;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -98,6 +107,11 @@ public class ActionButtonsController implements Initializable {
             setRowOrColumnVisible(true);
 
         });
+        cheat.setVisible(false);
+        cheat.setOnAction(event -> {
+            Message msg = new CheatMessage(gui.getPlayerNickname());
+            gui.sendMessage(msg);
+        });
         buyCard.setOnAction(event -> {
             gameController.makeCardMarketClickable(true);
             setChooseStandardActionVisible(false);
@@ -128,25 +142,29 @@ public class ActionButtonsController implements Initializable {
         rowOrColumn.setItems(FXCollections.observableArrayList("row", "column"));
         setRowOrColumnVisible(false);
         rowOrColumnOk.setOnAction(event -> {
-            if(rowOrColumn.getValue().equals("row"))
+            if(rowOrColumn.getValue()!= null && rowOrColumn.getValue().equals("row"))
                 setRowIndexVisible(true);
-            else if(rowOrColumn.getValue().equals("column"))
+            else if(rowOrColumn.getValue()!= null && rowOrColumn.getValue().equals("column"))
                 setColumnIndexVisible(true);
             setRowOrColumnVisible(false);
         });
         rowIndex.setItems(FXCollections.observableArrayList(1,2,3));
         setRowIndexVisible(false);
         rowOk.setOnAction(event -> {
-            setRowIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), rowIndex.getValue()-1, -1, false);
-            gui.sendMessage(msg);
+            if(rowIndex.getValue()!= null) {
+                setRowIndexVisible(false);
+                Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), rowIndex.getValue() - 1, -1, false);
+                gui.sendMessage(msg);
+            }
         });
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
-            setColumnIndexVisible(false);
-            Message msg = new BuyResourcesMessage(gui.getPlayerNickname(),-1,  columnIndex.getValue()-1, false);
-            gui.sendMessage(msg);
+            if(rowIndex.getValue()!= null) {
+                setColumnIndexVisible(false);
+                Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), -1, columnIndex.getValue() - 1, false);
+                gui.sendMessage(msg);
+            }
         });
 
         floorComboBox1.setItems(FXCollections.observableArrayList(1,2,3));
@@ -204,6 +222,7 @@ public class ActionButtonsController implements Initializable {
                 setEndTurnVisible(true);
             }
         });
+
     }
 
     /**
@@ -240,6 +259,7 @@ public class ActionButtonsController implements Initializable {
         buyCard.setVisible(value);
         buyResource.setVisible(value);
         startProd.setVisible(value);
+        cheat.setVisible(value);
     }
 
     public void setChooseLeaderActionVisible(boolean value){
@@ -356,16 +376,16 @@ public class ActionButtonsController implements Initializable {
 
         Map<Resource, Integer> map = new HashMap<>();
 
-        if(floorComboBox1.isVisible() && !discard1.isSelected()) {
+        if(floorComboBox1.isVisible() && !discard1.isSelected() && floorComboBox1.getValue()!=null) {
             map.put(new Resource(toPut1), floorComboBox1.getValue());
         }
-        if(floorComboBox2.isVisible() && !discard2.isSelected()) {
+        if(floorComboBox2.isVisible() && !discard2.isSelected() && floorComboBox2.getValue()!=null) {
             map.put(new Resource(toPut2), floorComboBox2.getValue());
         }
-        if(floorComboBox3.isVisible() && !discard3.isSelected()) {
+        if(floorComboBox3.isVisible() && !discard3.isSelected() && floorComboBox3.getValue()!=null) {
             map.put(new Resource(toPut3), floorComboBox3.getValue());
         }
-        if(floorComboBox4.isVisible() && !discard4.isSelected()) {
+        if(floorComboBox4.isVisible() && !discard4.isSelected() && floorComboBox4.getValue()!=null) {
             map.put(new Resource(toPut4), floorComboBox4.getValue());
         }
 
@@ -380,8 +400,10 @@ public class ActionButtonsController implements Initializable {
      */
     public void sendSwapFloors(){
 
-        Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
-        gui.sendMessage(msg);
+        if(firstSwap.getValue()!=null && secondSwap.getValue()!=null) {
+            Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
+            gui.sendMessage(msg);
+        }
     }
 
 
@@ -399,10 +421,9 @@ public class ActionButtonsController implements Initializable {
     /**
      * this method shows the action token drawn by the player and explains the corresponding action
      * @param tokenDrawn the action token drawn
-     * @param lorenzoPosition lorenz's position in the pope road
      * @param text string of explanation
      */
-    public void showLorenzoTurn(ActionToken tokenDrawn, int lorenzoPosition, String text){
+    public void showLorenzoTurn(ActionToken tokenDrawn, String text){
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);
@@ -414,5 +435,17 @@ public class ActionButtonsController implements Initializable {
         endTurnButton.setVisible(false);
         backButton.setVisible(false);
 
+    }
+
+    public void showLorenzoPosition() throws IOException {
+
+        FXMLLoader loader = GuiManager.loadFXML("/gui/lorenzoPosition");
+        generalPane.setRight(loader.load());
+        lorenzoController = loader.getController();
+
+    }
+
+    public void updateLorenzoPosition(int lorenzoPosition){
+        lorenzoController.update(lorenzoPosition);
     }
 }

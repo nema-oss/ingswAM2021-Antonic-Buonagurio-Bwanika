@@ -27,6 +27,8 @@ public enum ActionMessageType {
     DISCARD_LEADERCARD,
 
 
-    MOVE_ON_POPEROAD; // this is useless
+    MOVE_ON_POPEROAD, // this is useless
+
+    CHEAT;
 
 }

@@ -39,8 +39,6 @@ public class Gui extends View {
     private Stage primaryStage;
     private Scene startingScene;
 
-
-
     private NicknameController nicknameController;
     private Scene nicknameScene;
 
@@ -57,7 +55,6 @@ public class Gui extends View {
     private Scene chooseResourcesScene;
 
     private ConnectionController connectionController;
-
 
     private Scene gameBoardScene;
 
@@ -83,11 +80,9 @@ public class Gui extends View {
         initLoginUsername();
         initNumberOfPlayers();
         initGameScene();
-        //initGameBoard();
         initTurnActions();
         intEndGame();
         isGameScene = false;
-
 
     }
 
@@ -167,6 +162,8 @@ public class Gui extends View {
             gameSceneController.setGui(this);
             gameBoardController = gameSceneController.gameBoardController;
             playerTabController = gameSceneController.playerTabController;
+
+
         } catch (IOException e) {
             System.out.println("Could not initialize Game Scene");
         }
@@ -178,7 +175,6 @@ public class Gui extends View {
             FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
             gameSceneController.leftBorder.setCenter(loader.load());
             actionButtonsController = loader.getController();
-            //gameSceneController.addLeadersToPlayer();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,6 +223,10 @@ public class Gui extends View {
 
     public String getPlayerNickname(){
         return player.getNickname();
+    }
+
+    public int getNumberOfPlayers(){
+        return otherPlayerBoards.size() +1;
     }
 
     /**
@@ -298,8 +298,9 @@ public class Gui extends View {
             }else if(lorenzoAction instanceof ActionTokenMove){
                 amount = ((ActionTokenMove) lorenzoAction).getSteps();
                 lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
+                actionButtonsController.updateLorenzoPosition(amount);
             }
-            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoPosition, lorenzoMessage);
+            actionButtonsController.showLorenzoTurn(lorenzoAction, lorenzoMessage);
         });
 
     }
@@ -315,6 +316,7 @@ public class Gui extends View {
             actionButtonsController.setStandardActionVisible(false);
             actionButtonsController.setResourcePaneVisible(false);
             actionButtonsController.setSwapPaneVisible(false);
+            actionButtonsController.setChooseStandardActionVisible(false);
             actionButtonsController.setEndTurnVisible(true);
         });
     }
@@ -703,6 +705,13 @@ public class Gui extends View {
         sendMessage(message);
         Platform.runLater(() ->{
             gameSceneController.hideLeaders();
+            if(otherPlayerBoards.size()+1==1) {
+                try {
+                    actionButtonsController.showLorenzoPosition();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 

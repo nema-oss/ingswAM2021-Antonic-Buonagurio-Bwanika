@@ -465,12 +465,9 @@ public class MatchController implements ControllerInterface{
     public List<Error> onEndProduction(String nickname){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
-        System.out.println(game.getGamePhase());
-        errors.forEach(System.out::println);
 
         if(errors.isEmpty()) {
             if (developmentProductionActivated || leaderProductionActivated || boardProductionActivated) {
-                System.out.println("correct turn");
                 Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
                 strongbox.moveFromTemporary();
                 List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
@@ -481,7 +478,6 @@ public class MatchController implements ControllerInterface{
 
             } else {
                 errors.add(Error.INVALID_ACTION);
-                System.out.println("nel end production");
             }
 
         }
@@ -489,6 +485,28 @@ public class MatchController implements ControllerInterface{
         nextTurn();
         return errors;
 
+    }
+
+    /**
+     * this method gives 50 of each resource to the player
+     * @param nickname of the player
+     * @return the list of errors generated
+     */
+    @Override
+    public List<Error> onCheat(String nickname){
+
+        List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
+        if(errors.isEmpty()) {
+            Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
+            strongbox.addResourceCheat();
+            List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+            viewInterface.updateDepositAfterAction(game.getCurrentPlayer().getNickname(), strongbox.getAll(), warehouse);
+            game.getCurrentPlayer().setStandardActionPlayed(true);
+        }
+
+        nextTurn();
+        return errors;
     }
 
 

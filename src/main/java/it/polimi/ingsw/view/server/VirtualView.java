@@ -510,6 +510,10 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
+    public void cheat(String user){
+        List<Error> errors = matchController.onCheat(user);
+    }
+
 
     /**
      * This method manage the activation of a leader card

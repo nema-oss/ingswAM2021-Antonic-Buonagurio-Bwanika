@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="lorenzo" prefHeight="321.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.LorenzoController">
+   <children>
+      <ImageView fitHeight="139.0" fitWidth="145.0" layoutX="3.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/ActionTokens/retrocerchi.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="71.0" fitWidth="61.0" layoutX="3.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/PopeRoadResources/croce.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lorenzoPos" alignment="CENTER" layoutX="61.0" layoutY="266.0" prefHeight="62.0" prefWidth="61.0" text="0" textFill="WHITE">
+         <font>
+            <Font name="Old English Text MT" size="53.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutY="59.0" prefHeight="34.0" prefWidth="144.0" text="Lorenzo's" textFill="WHITE">
+         <font>
+            <Font name="Old English Text MT" size="27.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutY="93.0" prefHeight="34.0" prefWidth="144.0" text="position" textFill="WHITE">
+         <font>
+            <Font name="Old English Text MT" size="27.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

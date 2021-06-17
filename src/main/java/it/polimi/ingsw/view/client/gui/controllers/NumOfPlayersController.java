@@ -25,6 +25,8 @@ public class NumOfPlayersController implements Initializable {
 
     private LoginRequest message;
 
+    private boolean isLocalMatch;
+
     /**
      * this method sens the message with the number of players chosen
      */
@@ -49,5 +51,13 @@ public class NumOfPlayersController implements Initializable {
 
     public void setNicknameMessage(LoginRequest message) {
         this.message = message;
+    }
+
+    /**
+     * Set the local match number of player: single player mode
+     */
+    public void setLocalMatch() {
+        ObservableList<Integer> list = FXCollections.observableArrayList(1);
+        comboBox.setItems(list);
     }
 }

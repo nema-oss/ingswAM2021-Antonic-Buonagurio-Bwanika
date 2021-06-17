@@ -46,6 +46,7 @@ public class MessageSender {
      * @return true if the message has been sent successfully
      */
     public synchronized boolean sendMsg(ObjectOutputStream outputStream) {
+
         if(!socket.isClosed()){
             try{
                 outputStream.writeObject( messageOutput);

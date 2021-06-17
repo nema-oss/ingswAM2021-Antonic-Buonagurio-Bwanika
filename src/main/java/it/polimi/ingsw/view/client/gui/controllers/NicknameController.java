@@ -21,6 +21,7 @@ public class NicknameController {
     private Gui gui;
 
     private boolean isFirstPlayer;
+    private boolean isLocalMatch;
 
     /**
      * this method validates the nickname's format and sends the message that a nickname has been chosen
@@ -29,14 +30,13 @@ public class NicknameController {
     public void sendNickname() {
 
         String nickname = nickField.getText();
-
         if(!InputValidator.isNickname(nickname))
             notifyInvalidNickname();
 
         else {
             LoginRequest message = new LoginRequest(nickname);
 
-            if(isFirstPlayer){
+            if(isFirstPlayer || isLocalMatch){
                 gui.selectNumberOfPlayers(message);
             }else{
                 gui.sendMessage(message);
@@ -61,5 +61,9 @@ public class NicknameController {
 
     public void setIsFirstPlayer(boolean isFirstPlayer){
         this.isFirstPlayer = isFirstPlayer;
+    }
+
+    public void setLocalMatch(boolean localMatch) {
+        isLocalMatch = localMatch;
     }
 }

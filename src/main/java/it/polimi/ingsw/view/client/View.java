@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -36,6 +37,9 @@ public abstract class View {
     protected ClientPlayer player;
     protected ClientGameBoard gameBoard;
     protected Map<String,ClientPlayerBoard> otherPlayerBoards;
+
+    protected LocalMatchHandler localMatchHandler;
+    protected boolean isLocalMatch;
 
     public void newMatch(String nickname){
         this.gameBoard = new ClientGameBoard();
@@ -186,8 +190,10 @@ public abstract class View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     * @param card
+     * @param activate
      */
-    public abstract void showAcceptedLeaderAction();
+    public abstract void showAcceptedLeaderAction(LeaderCard card, boolean activate);
 
     /**
      * This method tells the user that the leader card action has been accepted
@@ -257,7 +263,11 @@ public abstract class View {
      * @param message the message to send
      */
     public void sendMessage(Socket socket, Message message){
-        new MessageSender(socket,message).sendMsg(outputStream);
+        if(isLocalMatch)
+            localMatchHandler.executeMessageFromClient(message);
+        else {
+            new MessageSender(socket, message).sendMsg(outputStream);
+        }
     }
 
 
@@ -278,7 +288,7 @@ public abstract class View {
     public abstract void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard);
 
     public void showAcceptedActivateLeaderCard(LeaderCard choice){
-        player.activateLeaderCard(choice);
+        player.useLeaderCard(choice,true);
     }
 
     public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
@@ -286,4 +296,15 @@ public abstract class View {
     public abstract void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition);
 
     public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse);
+
+    /**
+     * Return true if the player can end the turn
+     * @return true when player can end its turn
+     */
+    public boolean checkTurnEnd() {
+        return player.isStandardActionPlayed();
+    }
+
+    public void gameSetupLocalMatch() {
+    }
 }

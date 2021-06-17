@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
+import it.polimi.ingsw.network.LocalMatchHandler;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -45,6 +46,9 @@ public class VirtualView implements VirtualViewInterface{
     private List<Resource> boughtResources;
     private InGameReconnectionHandler inGameReconnectionHandler;
 
+    private LocalMatchHandler localMatchHandler;
+    private boolean isLocalMatch;
+
     public VirtualView(ControllerInterface matchController, int lobbyID, InGameReconnectionHandler inGameReconnectionHandler) {
         this.lobbyID = lobbyID;
         this.matchController = matchController;
@@ -53,8 +57,16 @@ public class VirtualView implements VirtualViewInterface{
         this.requiredNumberOfPlayers = -1;
         this.socketObjectOutputStreamMap = new HashMap<>();
         this.inGameReconnectionHandler = inGameReconnectionHandler;
-
+        this.isLocalMatch = false;
         matchController.setVirtualView(this);
+    }
+
+    /**
+     * Set a local match
+     */
+    public void setLocalMatch(boolean localMatch, LocalMatchHandler localMatchHandler) {
+        this.isLocalMatch = localMatch;
+        this.localMatchHandler = localMatchHandler;
     }
 
     /**
@@ -98,10 +110,15 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void sendMessage(Socket socket, Message message){
 
-        ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
-        boolean success = new MessageSender(socket,message).sendMsg(outputStream);
-        if(!success) clientDown(socket);
-        else System.out.println("sent from server === " + message + " \nsocket == " + socket);
+        if(isLocalMatch)
+            localMatchHandler.executeMessageFromServer(message);
+        else{
+            ObjectOutputStream outputStream = socketObjectOutputStreamMap.get(socket);
+            boolean success = new MessageSender(socket,message).sendMsg(outputStream);
+            if(!success) clientDown(socket);
+            else System.out.println("sent from server === " + message + " \nsocket == " + socket);
+        }
+
     }
 
     /**
@@ -177,8 +194,12 @@ public class VirtualView implements VirtualViewInterface{
     private void onLoginAcceptedRequest(String nickname, Socket socket){
 
 
-        clients.put(nickname,socket);
-        System.out.println(nickname + " logged in lobby number " + lobbyID );
+        if(!isLocalMatch) {
+            clients.put(nickname, socket);
+            System.out.println(nickname + " logged in lobby number " + lobbyID);
+        }else{
+            clients.put(nickname, new Socket());
+        }
 
         Message newUserMessage = new UpdateWriter().loginUpdate(nickname);
         for(String user: clients.keySet()){
@@ -235,6 +256,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the user that selects the card
      */
     public void chooseLeaderCards(String user, List<LeaderCard> leaderCards){
+
         List<Error> errors = matchController.onLeaderCardsChosen(user,leaderCards);
 
         if(isActive){
@@ -244,10 +266,7 @@ public class VirtualView implements VirtualViewInterface{
                 onRejectedChooseLeaderCard(user, leaderCards);
         }
 
-
     }
-
-
 
     /**
      * This method send alerts the client that its leaderCard selection has been accepted
@@ -627,7 +646,7 @@ public class VirtualView implements VirtualViewInterface{
      * @return true if number of player is enough
      */
     public synchronized boolean isRequiredNumberOfPlayers() {
-        return this.requiredNumberOfPlayers == clients.size();
+        return this.requiredNumberOfPlayers == clients.size() || isLocalMatch;
     }
 
     /**

@@ -68,7 +68,7 @@ public class PlayerTabController implements Initializable {
         PlayerBoardController controller = loader.getController();
         controllersMap.put(clientPlayer, controller);
         controller.setGui(gui);
-        //gui.setPlayerBoardController(controller);
+        gui.setPlayerBoardController(controller);
 
         tabPane.getTabs().add(tab);
 

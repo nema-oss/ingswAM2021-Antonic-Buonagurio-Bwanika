@@ -1322,11 +1322,14 @@ public class Cli extends View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     * @param card
+     * @param activate
      */
     @Override
-    public void showAcceptedLeaderAction() {
+    public void showAcceptedLeaderAction(LeaderCard card, boolean activate) {
         System.out.println("Leader action accepted.");
         player.setLeaderActionDone();
+        player.useLeaderCard(card,activate);
         askTurnAction();
     }
 
@@ -1481,11 +1484,16 @@ public class Cli extends View {
                                 askTurnAction();
                                 break;
                             case END_TURN:
-                                player.resetTurnActionCounter();
-                                Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
-                                sendMessage(socket, message);
-                                sendMessage(socket, new EndTurnMessage(player.getNickname()));
-                                return;
+                                if(!checkTurnEnd()) {
+                                    System.out.println("You can't end your turn without playing a standard action");
+                                    break;
+                                }else {
+                                    player.resetTurnActionCounter();
+                                    Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+                                    sendMessage(socket, message);
+                                    sendMessage(socket, new EndTurnMessage(player.getNickname()));
+                                    return;
+                                }
                         }
                 }
 

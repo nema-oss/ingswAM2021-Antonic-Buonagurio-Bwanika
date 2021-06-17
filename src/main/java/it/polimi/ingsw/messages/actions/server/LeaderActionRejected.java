@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 import java.io.Serializable;
 
 public class LeaderActionRejected implements ActionMessage,Serializable {
+
     @Override
     public void execute(VirtualView virtualView) {
 

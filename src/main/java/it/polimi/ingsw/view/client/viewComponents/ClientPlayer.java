@@ -127,10 +127,6 @@ public class ClientPlayer {
         return actionLeaderPlayed;
     }
 
-    public boolean isStandardActionDone(){
-        return standardActionPlayed;
-    }
-
     public void setLeaderActionDone() {
         actionLeaderPlayed = true;
     }
@@ -175,9 +171,14 @@ public class ClientPlayer {
         popeRoad.setCurrentPosition(position);
     }
 
-    public void activateLeaderCard(LeaderCard card){
-        activeLeaderCards.add(card);
-        playerBoard.addActiveLeaderCard(card);
+    public void useLeaderCard(LeaderCard card, boolean activate){
+
+        if(activate) {
+            activeLeaderCards.add(card);
+            playerBoard.addActiveLeaderCard(card);
+        }
+        else
+            hand.remove(card);
     }
 
     public void updateDeposit(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {

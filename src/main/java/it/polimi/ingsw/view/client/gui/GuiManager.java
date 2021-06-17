@@ -21,18 +21,25 @@ public class GuiManager extends Application {
     public static Stage stage;
     public static GameController gameController;
 
+    public static boolean isLocalMatch;
+
+
     @Override
     public void start(Stage stage) throws IOException {
 
         GuiManager.stage = stage;
         stage.setTitle("Masters of Renaissance");
         executorService = Executors.newCachedThreadPool();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/connection.fxml")));
+        Parent root;
+        if(isLocalMatch) {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/localMatch.fxml")));
+        }
+        else
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/connection.fxml")));
         Scene scene = new Scene(root,1600,900);
         stage.setScene(scene);
         stage.show();
     }
-
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
         return new FXMLLoader(GuiManager.class.getResource( fxml + ".fxml")); //va messa la cartella giusta
@@ -51,8 +58,8 @@ public class GuiManager extends Application {
 
     }
 
-
     public static void startGui() {
         launch();
     }
+
 }

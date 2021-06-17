@@ -154,7 +154,6 @@ public class GameBoardController{
      */
     public void buyDevelopmentCard(int i, int j){
 
-        System.out.println("row = " + i + "col = " + j);
         gui.alertUser("Information", "Buy", Alert.AlertType.INFORMATION);
         Message msg = new BuyDevelopmentCardMessage(gui.getPlayerNickname(), i, j, true);
         gui.sendMessage(msg);

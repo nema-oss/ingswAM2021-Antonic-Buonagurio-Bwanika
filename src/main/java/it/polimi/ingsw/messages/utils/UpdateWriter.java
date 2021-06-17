@@ -60,11 +60,11 @@ public class UpdateWriter {
     }
 
     public Message activateLeaderAccepted(LeaderCard card) {
-        return new LeaderActionAccepted();
+        return new LeaderActionAccepted(card,true);
     }
 
     public Message discardLeaderAccepted(LeaderCard card) {
-        return new LeaderActionAccepted();
+        return new LeaderActionAccepted(card,false);
     }
 
 

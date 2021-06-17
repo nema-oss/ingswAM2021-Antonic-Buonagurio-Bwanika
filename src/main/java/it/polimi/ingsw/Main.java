@@ -2,7 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.server.EchoServer;
 import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
+import javafx.stage.Stage;
 
 /**
  * Starting point of the game
@@ -27,8 +29,17 @@ public class Main {
     private static void clientMode(String[] args) {
         if(args.length == 2 && args[1].equals("-cli"))
             new Cli().gameSetup();
-        else if(args.length == 2 && args[1].equals("-gui"))
+        else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-cli"))
+            new Cli().gameSetupLocalMatch();
+        else if(args.length == 2 && args[1].equals("-gui")){
+            GuiManager.isLocalMatch = false;
+            System.out.println("Diooo");
             GuiManager.startGui();
+        }
+        else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-gui")) {
+            GuiManager.isLocalMatch = true;
+            GuiManager.startGui();
+        }
 
     }
 

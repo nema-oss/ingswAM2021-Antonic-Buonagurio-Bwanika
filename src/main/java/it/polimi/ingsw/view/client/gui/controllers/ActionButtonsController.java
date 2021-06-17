@@ -186,10 +186,15 @@ public class ActionButtonsController implements Initializable {
         leaderMessage .setVisible(false);
 
         endTurnButton.setOnAction(event -> {
-            Message msg = new EndTurnMessage(gui.getPlayerNickname());
-            UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
-            gui.sendMessage(updateClientPlayerBoardsMessage);
-            gui.sendMessage(msg);
+
+            if(!gui.checkTurnEnd())
+                gui.alertUser("Warning", "You can't end your turn without playing a standard action", Alert.AlertType.WARNING);
+            else {
+                Message msg = new EndTurnMessage(gui.getPlayerNickname());
+                UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
+                gui.sendMessage(updateClientPlayerBoardsMessage);
+                gui.sendMessage(msg);
+            }
         });
         setEndTurnVisible(false);
 

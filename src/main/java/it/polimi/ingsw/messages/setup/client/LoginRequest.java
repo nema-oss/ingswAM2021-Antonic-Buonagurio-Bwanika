@@ -53,7 +53,7 @@ public class LoginRequest implements SetupMessage, Serializable {
 
     @Override
     public void execute(VirtualView virtualView) {
-
+        virtualView.loginRequest(nickname,numberOfPlayers,null);
     }
 
     @Override

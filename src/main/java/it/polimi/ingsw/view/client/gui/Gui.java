@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
@@ -86,6 +87,19 @@ public class Gui extends View {
 
     }
 
+    public Gui(Stage stage, Scene scene, boolean localMatch) {
+
+        this.primaryStage = stage;
+        this.startingScene = scene;
+        isGameScene = false;
+        isLocalMatch = localMatch;
+        initLoginUsername();
+        initNumberOfPlayers();
+        initGameScene();
+        initTurnActions();
+        intEndGame();
+
+    }
 
 
     private void initLoginUsername() {
@@ -96,6 +110,8 @@ public class Gui extends View {
             nicknameScene = new Scene(root);
             nicknameController = loader.getController();
             nicknameController.setGui(this);
+            if(isLocalMatch)
+                nicknameController.setLocalMatch(true);
         }catch(IOException e){
             System.out.println("Could not initialize Nickname Scene");
         }
@@ -575,7 +591,8 @@ public class Gui extends View {
                         actionButtonsController.setGui(this);
                         actionButtonsController.setGameController(gameSceneController);
                         gameSceneController.initializeActions();
-                        gameSceneController.addLeadersToPlayer();
+                        //if(!isLocalMatch)
+                            //gameSceneController.addLeadersToPlayer();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -620,16 +637,20 @@ public class Gui extends View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     * @param card
+     * @param activate
      */
     @Override
-    public void showAcceptedLeaderAction() {
+    public void showAcceptedLeaderAction(LeaderCard card, boolean activate) {
         Platform.runLater(()->{
             alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
+            player.useLeaderCard(card,activate);
             playerTabController.controlLeaders(player);
             actionButtonsController.setLeaderActionVisible(false);
             actionButtonsController.setChooseLeaderActionVisible(false);
-            actionButtonsController.setStandardActionVisible(!player.isStandardActionDone());
+            actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
             actionButtonsController.setEndTurnVisible(true);
+            playerBoardController.showActiveLeaders();
 
         });
     }
@@ -658,14 +679,9 @@ public class Gui extends View {
             if(player.getNickname().equals(user)) {
                 DevelopmentCard cardChosen =player.buyDevelopmentCard(x, y);
                 player.setStandardActionDone();
-                List<DevelopmentCard> developmentCards = player.getDevelopmentCards();
-                System.out.println(developmentCards.size());
-                for (DevelopmentCard card : developmentCards) {
-                    System.out.println(card.getLevel());
-                }
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 alertUser("Information", "Accepted buy card; select where to place your card", Alert.AlertType.INFORMATION);
-              //  playerTabController.setPlaceCard(player.getNickname(), true, cardChosen);
+                //playerTabController.setPlaceCard(player.getNickname(), cardChosen);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
@@ -700,10 +716,13 @@ public class Gui extends View {
      */
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
-        player.setHand(choice);
-        Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
-        sendMessage(message);
+
         Platform.runLater(() ->{
+            player.setHand(choice);
+            gameSceneController.addLeadersToPlayer();
+            System.out.println(choice);
+            Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+            sendMessage(message);
             gameSceneController.hideLeaders();
             if(otherPlayerBoards.size()+1==1) {
                 try {
@@ -819,18 +838,36 @@ public class Gui extends View {
      * @param message the message to send
      */
     public void sendMessage(Message message){
-        new MessageSender(socket,message).sendMsg(outputStream);
+
+        if(isLocalMatch)
+            localMatchHandler.executeMessageFromClient(message);
+        else{
+            new MessageSender(socket,message).sendMsg(outputStream);
+        }
     }
 
     public void selectNumberOfPlayers(LoginRequest message) {
 
-        numOfPlayersController.setNicknameMessage(message);
         Platform.runLater(()->{
+            numOfPlayersController.setNicknameMessage(message);
+            if(isLocalMatch)
+                numOfPlayersController.setLocalMatch();
             primaryStage.setScene(numberOfPlayersScene);
+
         });
     }
 
     public void setPlayerBoardController(PlayerBoardController controller) {
         playerBoardController = controller;
+    }
+
+    public void startLocalMatch() {
+
+        Platform.runLater(()->{
+                localMatchHandler = new LocalMatchHandler(this);
+                primaryStage.setScene(nicknameScene);
+                primaryStage.show();
+        });
+
     }
 }

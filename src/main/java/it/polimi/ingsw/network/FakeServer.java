@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class FakeServer implements InGameReconnectionHandler {
+
     @Override
     public void onClientDown(VirtualView virtualView, String disconnectedPlayer) {
 

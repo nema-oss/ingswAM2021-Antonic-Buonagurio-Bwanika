@@ -143,12 +143,12 @@ public class EchoServer implements InGameReconnectionHandler {
         }
     }
 
-    public void playerReconnection(String disconnectedPlayer, Socket socket, ObjectOutputStream outputStream){
+    public void playerReconnection(String player, Socket socket, ObjectOutputStream outputStream){
 
-        if(disconnectedPlayer.contains(disconnectedPlayer)){
-            int lobbyID = disconnectedPlayers.get(disconnectedPlayer);
+        if(disconnectedPlayers.containsKey(player)){
+            int lobbyID = disconnectedPlayers.get(player);
             VirtualView previousMatch = matchesWithDisconnectedPlayers.get(lobbyID);
-            previousMatch.reconnectPlayer(disconnectedPlayer,socket,outputStream);
+            previousMatch.reconnectPlayer(player,socket,outputStream);
 
         }
 

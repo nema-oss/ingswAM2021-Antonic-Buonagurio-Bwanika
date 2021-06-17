@@ -3,7 +3,9 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
-public class ReconnectedMessage implements Message {
+import java.io.Serializable;
+
+public class ReconnectedMessage implements Message, Serializable {
 
     private final String user;
 

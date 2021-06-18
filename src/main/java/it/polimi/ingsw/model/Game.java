@@ -54,49 +54,6 @@ public class Game {
 
     }
 
-    /*
-       * this method start a match and allocate the resources and turn for each player
-     */
-    public void startGame(Map<String, List<LeaderCard>> playerCardChoices, Map<String,ResourceType> playerResourceChoices) throws Exception, FullDepositException {
-
-        /* this part should go outside the model in the player creation part
-        for(Player p: listOfPlayers){
-            ArrayList<LeaderCard> hand = new ArrayList<LeaderCard>();
-            for(int i = 0; i < 4; i++){
-                hand.add(leaderDeck.drawCard());
-
-            }
-            p.setHand(hand);
-
-            Collections.shuffle(listOfPlayers);
-            currentPlayer = listOfPlayers.get(0);
-        }
-
-         */
-
-        for(String nickname: playerCardChoices.keySet()){
-            getPlayerByNickname(nickname).getHand().removeAll(playerCardChoices.get(nickname));
-        }
-
-        // not exactly correct since a player could choose two different resources
-
-        for(String nickname: playerResourceChoices.keySet()){
-            Player p = getPlayerByNickname(nickname);
-            int playerIndex = listOfPlayers.indexOf(p);
-            if(playerIndex + 1 == 3){
-                p.addResourceToDeposit(1, new Resource(playerResourceChoices.get(nickname)));
-                p.addVictoryPoints(STARTING_VICTORY_POINTS);
-            }
-            else if(playerIndex + 1 == 4){
-                p.addResourceToDeposit(1, new Resource(playerResourceChoices.get(nickname)));
-                p.addResourceToDeposit(2, new Resource(playerResourceChoices.get(nickname)));
-                p.addVictoryPoints(STARTING_VICTORY_POINTS);
-
-            }
-
-        }
-
-    }
 
     /**
      * this method return the next player
@@ -118,6 +75,7 @@ public class Game {
         }
         currentPlayer = nextPlayer;
     }
+
     /**
      * this method receive a nickname and return the correspondent player TODO fix null
      */

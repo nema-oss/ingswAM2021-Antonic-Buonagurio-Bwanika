@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.view.server.InGameReconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -21,5 +22,10 @@ public class FakeServer implements InGameReconnectionHandler {
     @Override
     public boolean hasDisconnectedBefore(String nickname) {
         return false;
+    }
+
+    @Override
+    public void addClientHandler(String user, ClientHandler clientHandler) {
+
     }
 }

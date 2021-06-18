@@ -4,6 +4,7 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.ActionTokenDiscard;
@@ -477,6 +478,8 @@ public class Gui extends View {
                     loginWaitController.setInformationBox(infoMessage);
                     primaryStage.setScene(loginWaitScene);
                     primaryStage.show();
+                    if(!isLocalMatch)
+                        sendMessage(new LoginDoneMessage(user,true));
                 });
 
     }

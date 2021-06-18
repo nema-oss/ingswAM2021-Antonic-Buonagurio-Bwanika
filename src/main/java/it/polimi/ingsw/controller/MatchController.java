@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
+import java.net.Socket;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -596,8 +597,10 @@ public class MatchController implements ControllerInterface{
                 viewInterface.sendResourcesBought(resourcesBought);
             } catch (FullDepositException e) {
                 errors.add(Error.DEPOSIT_IS_FULL);
+                e.printStackTrace();
             }
         }
+
 
         nextTurn();
 
@@ -738,8 +741,6 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-        System.out.println(resources);
-
         Map<Resource, Integer> resourcesPut = new HashMap<>();
 
         if(errors.isEmpty()){
@@ -839,6 +840,7 @@ public class MatchController implements ControllerInterface{
     public void nextTurn(){
 
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
+
             sendEndTurn();
 
             game.nextPlayer();

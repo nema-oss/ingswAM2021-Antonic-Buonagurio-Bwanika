@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.ActionTokenDiscard;
 import it.polimi.ingsw.model.ActionTokenMove;
@@ -1781,6 +1782,9 @@ public class Cli extends View {
      */
     @Override
     public void showLoginDone(String user) {
+
+        //if(!isLocalMatch)
+            //sendMessage(socket, new LoginDoneMessage(user,true));
         newMatch(user);
         System.out.println("Login done, matchmaking ...");
     }

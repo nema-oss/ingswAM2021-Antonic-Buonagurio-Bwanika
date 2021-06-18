@@ -6,7 +6,6 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ public class EchoServer implements InGameReconnectionHandler {
     private static int serverPort;
     private Map<String, Integer> disconnectedPlayers;
     private Map<Integer,VirtualView> matchesWithDisconnectedPlayers;
+    private Map<String,ClientHandler> playersClientHandlers;
+    private List<ClientHandler> clientHandlers;
     private final List<VirtualView> lobbies;
 
 
@@ -41,6 +42,7 @@ public class EchoServer implements InGameReconnectionHandler {
         disconnectedPlayers = new HashMap<>();
         matchesWithDisconnectedPlayers = new HashMap<>();
         lobbies.add(new VirtualView(new MatchController(),lobbies.size()+1, this));
+        clientHandlers = new ArrayList<>();
 
     }
 
@@ -64,7 +66,6 @@ public class EchoServer implements InGameReconnectionHandler {
         while (true) {
             try {
                 Socket client = server.accept();
-                System.out.println(client + "   arrived");
                 findAMatch(client);
             } catch(IOException e) {
                 break;
@@ -101,22 +102,27 @@ public class EchoServer implements InGameReconnectionHandler {
         for (VirtualView match : lobbies){
             if(!match.isRequiredNumberOfPlayers() && !match.isActive()){
                 if(match.getLobbySize() == 0) {
-                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match), true));
+                    ClientHandler c = new ClientHandler(client, match, lobbies.indexOf(match), true,this);
+                    clientHandlers.add(c);
+                    executor.submit(c);
                 }
                 else {
-                    executor.submit(new ClientHandler(client, match, lobbies.indexOf(match), false));
+                    ClientHandler c = new ClientHandler(client, match, lobbies.indexOf(match), false,this);
+                    clientHandlers.add(c);
+                    executor.submit(c);
                 }
                 found = true;
                 break;
             }
         }
 
-        //The server have to create a new lobby because there isn't a free one.
         if(!found){
             System.out.println("[SERVER] creates a new lobby...");
             VirtualView match = new VirtualView(new MatchController(),lobbies.size()+1,this);
             lobbies.add(match);
-            executor.submit(new ClientHandler(client,match,lobbies.indexOf(match),true));
+            ClientHandler c = new ClientHandler(client, match, lobbies.indexOf(match), true,this);
+            clientHandlers.add(c);
+            executor.submit(c);
         }
     }
 
@@ -135,6 +141,7 @@ public class EchoServer implements InGameReconnectionHandler {
 
         if (virtualView.getLobbySize() > 1) {
             virtualView.inGameDisconnection(disconnectedPlayer);
+            clientHandlers.removeIf(p->p.getNickname().equals(disconnectedPlayer));
             disconnectedPlayers.put(disconnectedPlayer, virtualView.getLobbyID());
             matchesWithDisconnectedPlayers.put(virtualView.getLobbyID(),virtualView);
         }
@@ -148,6 +155,8 @@ public class EchoServer implements InGameReconnectionHandler {
         if(disconnectedPlayers.containsKey(player)){
             int lobbyID = disconnectedPlayers.get(player);
             VirtualView previousMatch = matchesWithDisconnectedPlayers.get(lobbyID);
+            ClientHandler clientHandler = clientHandlers.stream().filter(p->p.getNickname().equals(player)).findFirst().get();
+            clientHandler.setVirtualView(previousMatch);
             previousMatch.reconnectPlayer(player,socket,outputStream);
 
         }
@@ -157,5 +166,10 @@ public class EchoServer implements InGameReconnectionHandler {
     @Override
     public boolean hasDisconnectedBefore(String nickname) {
         return disconnectedPlayers.containsKey(nickname);
+    }
+
+    @Override
+    public void addClientHandler(String user, ClientHandler clientHandler) {
+        playersClientHandlers.put(user,clientHandler);
     }
 }

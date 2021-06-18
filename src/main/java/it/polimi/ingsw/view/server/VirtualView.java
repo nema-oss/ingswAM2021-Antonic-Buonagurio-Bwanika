@@ -19,6 +19,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
 import it.polimi.ingsw.network.LocalMatchHandler;
+import it.polimi.ingsw.network.server.ClientHandler;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -759,6 +760,10 @@ public class VirtualView implements VirtualViewInterface{
                 sendMessage(clients.get(user), updateClientPlayerBoardsMessage);
         }
 
+    }
+
+    public void addClientHandler(String nickname, ClientHandler clientHandler) {
+        inGameReconnectionHandler.addClientHandler(nickname,clientHandler);
     }
 }
 

@@ -53,4 +53,8 @@ public class LoginDoneMessage implements Serializable, SetupMessage {
     public boolean isAccepted() {
         return accepted;
     }
+
+    public String getUser() {
+        return user;
+    }
 }

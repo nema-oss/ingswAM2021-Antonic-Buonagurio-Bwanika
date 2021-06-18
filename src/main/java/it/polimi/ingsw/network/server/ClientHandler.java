@@ -3,7 +3,9 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.PingMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
+import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.messages.utils.MessageSender;
+import it.polimi.ingsw.view.server.InGameReconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
@@ -25,14 +27,17 @@ public class ClientHandler implements Runnable{
     private ObjectInputStream inputStream;
     private final boolean isFirstPLayer;
     private boolean isLogged;
+    private String nickname;
+    private InGameReconnectionHandler inGameReconnectionHandler;
 
 
-    public ClientHandler(Socket socket, VirtualView virtualView, int lobbyNumber, boolean isFirstPLayer) {
+    public ClientHandler(Socket socket, VirtualView virtualView, int lobbyNumber, boolean isFirstPLayer, InGameReconnectionHandler inGameReconnectionHandler) {
         this.client = socket;
         this.virtualView = virtualView;
         this.lobbyNumber = lobbyNumber;
         this.isFirstPLayer = isFirstPLayer;
         this.isLogged = false;
+        this.inGameReconnectionHandler = inGameReconnectionHandler;
     }
 
     /**
@@ -123,6 +128,7 @@ public class ClientHandler implements Runnable{
 
         if(message instanceof LoginRequest){
             LoginRequest loginRequest = (LoginRequest) message;
+            this.nickname = loginRequest.getNickname();
             virtualView.loginRequest(loginRequest.getNickname(), loginRequest.getNumberOfPlayers(), client);
         }
         else {
@@ -174,7 +180,9 @@ public class ClientHandler implements Runnable{
         this.virtualView = virtualView;
     }
 
-
+    public String getNickname() {
+        return nickname;
+    }
 }
 
 

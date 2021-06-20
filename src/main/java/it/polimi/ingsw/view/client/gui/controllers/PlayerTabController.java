@@ -173,4 +173,8 @@ public class PlayerTabController implements Initializable {
             }
         }
     }
+
+    public void removePlayerBoard(String otherClient) {
+        controllersMap.remove(otherClient);
+    }
 }

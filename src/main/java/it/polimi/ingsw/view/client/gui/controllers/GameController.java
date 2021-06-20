@@ -199,4 +199,7 @@ public class GameController implements Initializable{
         chooseLeaderController.hide();
     }
 
+    public void removePlayerBoard(String otherClient) {
+        playerTabController.removePlayerBoard(otherClient);
+    }
 }

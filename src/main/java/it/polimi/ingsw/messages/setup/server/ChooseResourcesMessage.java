@@ -47,7 +47,6 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView){
-        //method in virtualView
         virtualView.chooseResourceType(user,resourceChoice);
     }
 

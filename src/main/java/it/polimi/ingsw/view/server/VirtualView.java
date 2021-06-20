@@ -721,9 +721,11 @@ public class VirtualView implements VirtualViewInterface{
         clients.put(disconnectedPlayer,socket);
         socketObjectOutputStreamMap.put(socket,outputStream);
         System.out.println(disconnectedPlayer + " is back!");
-        //sendMessage(socket, new UpdateWriter().loginDone(disconnectedPlayer));
-        sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
         matchController.onPlayerReconnection(disconnectedPlayer);
+        sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
+        sendMessage(clients.get(disconnectedPlayer),new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble()));
+        updateDepositAfterAction(disconnectedPlayer, matchController.getUpdatedStrongbox(), matchController.getUpdatedDeposit());
+
     }
 
     public ObjectOutputStream getOutputStream(Socket socket) {

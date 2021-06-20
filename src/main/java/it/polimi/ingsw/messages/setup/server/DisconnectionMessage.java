@@ -37,7 +37,7 @@ public class DisconnectionMessage implements Serializable, Message {
      * @param view: receiver view
      */
     public void execute(View view) {
-        //view.showAnotherClientDisconnection(disconnectedNickname);
+        view.showAnotherClientDisconnection(disconnectedNickname);
     }
 
     /**

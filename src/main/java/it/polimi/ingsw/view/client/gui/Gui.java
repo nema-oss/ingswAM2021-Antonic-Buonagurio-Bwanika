@@ -520,6 +520,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             alertUser("Information", otherClient+"has disconnected from the match!", Alert.AlertType.INFORMATION);
+            otherPlayerBoards.remove(otherClient);
         });
     }
 

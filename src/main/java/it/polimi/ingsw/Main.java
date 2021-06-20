@@ -16,7 +16,7 @@ public class Main {
         if (args[0].equals("-client")) {
             clientMode(args);
         }
-        if (args.length == 2 && args[0].equals("-server")) {
+        if (args[0].equals("-server")) {
             serverMode(args);
         }
 

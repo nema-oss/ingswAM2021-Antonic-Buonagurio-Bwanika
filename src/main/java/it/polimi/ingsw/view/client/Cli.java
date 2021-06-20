@@ -2904,6 +2904,7 @@ public class Cli extends View {
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
         System.out.println(otherClient + " has disconnected from the match.");
+        otherPlayerBoards.remove(otherClient);
     }
 
     /**

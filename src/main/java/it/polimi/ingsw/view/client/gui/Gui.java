@@ -786,20 +786,6 @@ public class Gui extends View {
                 actionButtonsController.setResourcePaneVisible(false);
                 actionButtonsController.setSwapPaneVisible(false);
                 actionButtonsController.setEndTurnVisible(true);
-                /*
-                try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    Parent root = loader.load();
-                    gameSceneController.leftBorder.setCenter(root);
-                    actionButtonsController.setLeaderActionVisible(true);
-                    actionButtonsController.setStandardActionVisible(false);
-                    actionButtonsController.setEndTurnVisible(true);
-                }catch (IOException e){
-                    System.out.println("Can't load Turn Action Scene");
-                    e.printStackTrace();
-                }
-
-                 */
             });
         }
         else{
@@ -836,6 +822,13 @@ public class Gui extends View {
     @Override
     public void showReconnectionToMatch() {
 
+        Platform.runLater(()->{
+            try {
+                gameSceneController.initializePlayerBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

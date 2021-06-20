@@ -101,12 +101,10 @@ public class MatchController implements ControllerInterface{
         }
         game.setPlayersOrder();
 
-        //forse bisogna aggiungere metodo della view che comunica il numero di giocatori?
-
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
 
         viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles(), game.getGameBoard().getMarket().getFreeMarble());
-        sendChooseLeaderCards(); // per il numero di giocatori
+        sendChooseLeaderCards();
 
         return errors;
     }
@@ -126,6 +124,8 @@ public class MatchController implements ControllerInterface{
         }
 
         viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
+        //List<String> users = game.getListOfPlayers().stream().map(Player::getNickname).collect(Collectors.toList());
+        //viewInterface.toDoChooseLeaderCards(users, leaders );
 
     }
 
@@ -973,6 +973,7 @@ public class MatchController implements ControllerInterface{
     @Override
     public void onPlayerReconnection(String disconnectedPlayer) {
 
+        game.reconnectPlayer(disconnectedPlayer);
         game.reconnectPlayer(disconnectedPlayer);
 
     }

@@ -629,7 +629,14 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
+
         sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,false));
+    }
+
+
+    public void toDoChooseLeaderCards(List<String> users, List<LeaderCard> leaderCards){
+
+        users.forEach(p -> sendMessage(clients.get(p), new ChooseLeadersMessage(p,leaderCards,false)));
     }
 
 

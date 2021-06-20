@@ -16,7 +16,7 @@ public class Main {
         if (args[0].equals("-client")) {
             clientMode(args);
         }
-        if (args[0].equals("-server")) {
+        if (args.length == 2 && args[0].equals("-server")) {
             serverMode(args);
         }
 
@@ -29,11 +29,11 @@ public class Main {
     private static void clientMode(String[] args) {
         if(args.length == 2 && args[1].equals("-cli"))
             new Cli().gameSetup();
-        else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-cli"))
+        else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-cli")){
             new Cli().gameSetupLocalMatch();
+        }
         else if(args.length == 2 && args[1].equals("-gui")){
             GuiManager.isLocalMatch = false;
-            System.out.println("Diooo");
             GuiManager.startGui();
         }
         else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-gui")) {

@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.*;
+import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
@@ -99,6 +100,8 @@ public class Cli extends View {
         Formatting.clearScreen();
 
         showBoard(gameBoard, player);
+
+        showLeaderCards(player.getHand());
 
         otherPlayerBoards.forEach((k,v) -> showOtherPlayerBoard(k,v));
 
@@ -1086,6 +1089,15 @@ public class Cli extends View {
         new EchoClient(myIp,myPort,this).start();
     }
 
+    public void gameSetupLocalMatch() {
+
+        isLocalMatch = true;
+        localMatchHandler = new LocalMatchHandler(this);
+        DoLoginMessage message = new DoLoginMessage();
+        message.setFirstPlayer(true);
+        showLogin(message);
+    }
+
     //View Override methods
 
     /**
@@ -1448,8 +1460,12 @@ public class Cli extends View {
     @Override
     public void askTurnAction() {
 
-        System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
-                " Press Enter to continue.");
+        if(isLocalMatch)
+            System.out.println("It's your turn. You can choose both a turn action among these " + TurnActions.getLocalMatchTurnAction() +
+                    " Press Enter to continue.");
+        else
+            System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
+                    " Press Enter to continue.");
 
         AtomicBoolean correct = new AtomicBoolean(false);
         inputWithTimeout();
@@ -1764,7 +1780,7 @@ public class Cli extends View {
             do{
                 System.out.println("Insert number of players [1..4]");
                 int numberOfPlayers = scanner.nextInt();
-                correct = inputValidator.isNumberOfPlayers(numberOfPlayers);
+                correct = inputValidator.isNumberOfPlayers(numberOfPlayers,isLocalMatch);
                 if(!correct){
                     System.out.println("Incorrect number of players. Try again");
                 }

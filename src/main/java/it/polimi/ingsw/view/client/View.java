@@ -305,6 +305,4 @@ public abstract class View {
         return player.isStandardActionPlayed();
     }
 
-    public void gameSetupLocalMatch() {
-    }
 }

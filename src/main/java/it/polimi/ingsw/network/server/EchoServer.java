@@ -23,7 +23,6 @@ import java.util.concurrent.Executors;
 
 public class EchoServer implements InGameReconnectionHandler {
 
-    private static final int SERVER_PORT = 1234; // this should be read from command line args
     private ServerSocket server;
     private ExecutorService executor;
     private static int serverPort;
@@ -48,7 +47,7 @@ public class EchoServer implements InGameReconnectionHandler {
 
     public static void main(String[] args) {
 
-        EchoServer echoServer = new EchoServer(SERVER_PORT);
+        EchoServer echoServer = new EchoServer(serverPort);
         echoServer.start();
     }
 
@@ -85,7 +84,7 @@ public class EchoServer implements InGameReconnectionHandler {
             System.err.println(e.getMessage());
             return;
         }
-        System.out.println("[SERVER] ready on port: " + SERVER_PORT);
+        System.out.println("[SERVER] ready on port: " + serverPort);
     }
 
     /**

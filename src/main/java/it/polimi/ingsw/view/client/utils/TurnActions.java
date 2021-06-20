@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.client.utils;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum TurnActions {
@@ -39,5 +41,11 @@ public enum TurnActions {
     @Override
     public  String toString() {
         return label;
+    }
+
+    public static List<TurnActions> getLocalMatchTurnAction(){
+        List<TurnActions> turnActions = Arrays.asList(TurnActions.values());
+        turnActions.remove(TurnActions.SHOW_OTHER_PLAYERS);
+        return turnActions;
     }
 }

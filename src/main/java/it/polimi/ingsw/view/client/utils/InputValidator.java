@@ -50,6 +50,7 @@ public class InputValidator {
     private static final String DEVELOPMENT_CARD = "develop";
     private static final String LEADER = "leader";
     private static final String BOARD = "board";
+    private static final int SINGLE_PLAYER = 1;
 
 
     /**
@@ -348,9 +349,12 @@ public class InputValidator {
     /**
      * This method checks if the selected number of players is correct
      * @param numberOfPlayers the selected number
+     * @param isLocalMatch
      * @return true if correct
      */
-    public boolean isNumberOfPlayers(int numberOfPlayers) {
-        return Pattern.matches(NUMBER_OF_PLAYERS_REGEX,String.valueOf(numberOfPlayers));
+    public boolean isNumberOfPlayers(int numberOfPlayers, boolean isLocalMatch) {
+        if(!isLocalMatch)
+            return Pattern.matches(NUMBER_OF_PLAYERS_REGEX,String.valueOf(numberOfPlayers));
+        return SINGLE_PLAYER == numberOfPlayers;
     }
 }

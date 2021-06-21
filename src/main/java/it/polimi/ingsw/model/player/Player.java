@@ -163,7 +163,7 @@ public class Player{
         boolean levelRequirements = false;
         List<Stack<DevelopmentCard>> developmentCards = getPlayerBoard().getDevelopmentCards();
         for(Stack<DevelopmentCard> cards: developmentCards){
-            if((cards.empty() &&  cardLevel == 1) || cards.peek().getLevel() == cardLevel - 1)
+            if((cards.empty() &&  cardLevel == 1) || (!cards.empty() && cards.peek().getLevel() == cardLevel - 1) )
                 levelRequirements = true;
         }
         if(!levelRequirements) throw new InsufficientPaymentException();

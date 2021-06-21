@@ -47,11 +47,11 @@ class PlayerTest {
 
     }
 
-  /*  @Test
+    @Test
     @DisplayName("Testing the buy a Card action")
     void buyDevelopmentCard() throws Exception, NonExistentCardException, InsufficientPaymentException, FullDepositException {
 
-        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
+        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(2,0);
         System.out.println(developmentCard.getCost());
         Strongbox strongbox = player.getStrongbox();
         List<Resource> resources = new ArrayList<>();
@@ -64,15 +64,15 @@ class PlayerTest {
         deposit.addResource(2, new Resource(ResourceType.STONE));
         deposit.addResource(3, new Resource(ResourceType.SERVANT));
         strongbox.addResource(resources);
-        player.buyDevelopmentCard(1, 1);
-        System.out.println(strongbox.getAll().keySet());
-        System.out.println(deposit.getAll().keySet());
+
+        player.buyDevelopmentCard(2, 0);
+
         List<Stack<DevelopmentCard>> cards = player.getPlayerBoard().getDevelopmentCards();
         DevelopmentCard developmentCard1 = cards.get(0).peek();
         assertEquals(developmentCard1,developmentCard);
-        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(1,2));
+        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(2,1));
     }
-*/
+
     @Test
     @DisplayName("Testing the buy a Resource action")
     void buyResources() throws FullDepositException, WrongDepositSwapException {
@@ -132,7 +132,7 @@ class PlayerTest {
     }
 
 
-/*    @Test
+    @Test
     @DisplayName("Testing the discard a Leader Card action")
     void discardLeader() throws NonExistentCardException {
 
@@ -145,7 +145,7 @@ class PlayerTest {
         assertEquals(player.getHand().size(), 0);
 
     }
-*/
+
     @Test
     @DisplayName("Testing the activate a Leader Card action")
     void activateLeaderCard() throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException {

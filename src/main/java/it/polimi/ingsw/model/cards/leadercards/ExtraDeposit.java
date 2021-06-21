@@ -39,6 +39,7 @@ public class ExtraDeposit extends LeaderCard{
         return storageType;
     }
 
+    @Override
     public String getId() {
         return id;
     }

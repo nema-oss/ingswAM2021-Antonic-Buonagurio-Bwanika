@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
  */
 public class DevelopmentCard implements Card, Serializable {
 
-    private String id;
-    private int level;
-    private DevelopmentCardType type;
-    private Map<ResourceType, Integer> cost;
-    private Map<ResourceType, Integer> productionRequirements;
-    private List<Producible> productionResults;
-    private int victoryPoints;
+    private final String id;
+    private final int level;
+    private final DevelopmentCardType type;
+    private final Map<ResourceType, Integer> cost;
+    private final Map<ResourceType, Integer> productionRequirements;
+    private final List<Producible> productionResults;
+    private final int victoryPoints;
 
     public DevelopmentCard(String id, int level, DevelopmentCardType type, Map<ResourceType, Integer> cost, Map<ResourceType, Integer> productionRequirements, ArrayList<Producible> productionResults, int victoryPoints) {
         this.id = id;

@@ -1,37 +1,43 @@
 package it.polimi.ingsw.model.CardTest;
 
-import static org.junit.Assert.assertEquals;
-/*
-public class DevelopmentCardTest {
-    private DevelopmentCard developmentCard;
+import it.polimi.ingsw.model.cards.CardFactory;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.gameboard.Resource;
+import it.polimi.ingsw.model.gameboard.ResourceType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    @Test
-    public void getLevel(){
-        int level = 2;
-        Map<ResourceType, Integer> cost = new HashMap<ResourceType, Integer>();
-        cost.put(SHIELD, 2);
-        Map<ResourceType, Integer> reqMap = new HashMap<ResourceType, Integer>();
-        reqMap.put(STONE, 1);
-        Producible p = new Resource(COIN);
-        Map<Producible, Integer> resMap = new HashMap<Producible, Integer>();
-        resMap.put(p, 1);
-        developmentCard = new DevelopmentCard(level, DevelopmentCardType.YELLOW, cost, reqMap, resMap, 1);
-        assertEquals(level, developmentCard.getLevel());
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DevelopmentCardTest {
+
+    private CardFactory cardFactory;
+    private List<DevelopmentCard> developmentCards;
+
+    @BeforeEach
+    void setUp() {
+        cardFactory = new CardFactory();
+        developmentCards = cardFactory.getDevelopmentCards();
     }
 
     @Test
-    public void getType(){
-        DevelopmentCardType type = DevelopmentCardType.YELLOW;
-        Map<ResourceType, Integer> cost = new HashMap<ResourceType, Integer>();
-        cost.put(SHIELD, 2);
-        Map<ResourceType, Integer> reqMap = new HashMap<ResourceType, Integer>();
-        reqMap.put(STONE, 1);
-        Producible p = new Resource(COIN);
-        Map<Producible, Integer> resMap = new HashMap<Producible, Integer>();
-        resMap.put(p, 1);
-        developmentCard = new DevelopmentCard(1, type, cost, reqMap, resMap, 1);
-        assertEquals(type, developmentCard.getType());
+    void developmentTest() throws Exception {
+
+        assertEquals("d6", developmentCards.get(5).getId());
+        assertEquals(2, developmentCards.get(6).getVictoryPoints());
+
+        DevelopmentCard card = developmentCards.get(0);
+        DevelopmentCard developmentCard = new DevelopmentCard(card.getId(), card.getLevel(), card.getType(), card.getCost(), card.getProductionRequirements(), new ArrayList<>(card.getProductionResults()), card.getVictoryPoints());
+
+        List<Resource> payment = new ArrayList<>();
+        for(ResourceType resourceType : card.getProductionRequirements().keySet())
+            for (int amount =0; amount<card.getProductionRequirements().get(resourceType); amount++)
+                payment.add(new Resource(resourceType));
+
+        assertEquals(card.getProductionResults(), developmentCard.activateProduction(payment));
     }
 
 }
-*/

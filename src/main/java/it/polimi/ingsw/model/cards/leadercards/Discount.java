@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public class Discount extends LeaderCard{
 
-    private ResourceType discountType;
-    private int discountAmount;
+    private final ResourceType discountType;
+    private final int discountAmount;
     private LeaderCardType leaderCardType;
 
     public Discount(String id, Map<ResourceType, Integer> costResource, Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints, ResourceType discountType, int discountAmount, LeaderCardType leaderCardType) {
@@ -46,6 +46,7 @@ public class Discount extends LeaderCard{
         return discountAmount;
     }
 
+    @Override
     public String getId() {
         return id;
     }

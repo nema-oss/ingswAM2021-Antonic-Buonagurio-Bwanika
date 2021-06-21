@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameboard;
 
+import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,9 +84,7 @@ class CardMarketTest {
             }
 
             assertEquals(0, cardMarket.getMiniDeck(2,3).getListOfCards().size());
-
-            try{cardMarket.buyCard(2,3);}
-            catch(NonExistentCardException e){e.printStackTrace(); System.out.println("errore!");}
+            assertThrows(NonExistentCardException.class, ()-> cardMarket.buyCard(2,3));
 
     }
 

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
@@ -37,6 +39,8 @@ class EffectsTest {
         effects = player.getActiveEffects();
 
     }
+
+
     @Test
     @DisplayName("Testing the white to resource effect on resource buying")
     void activateWhiteToResource() throws FullDepositException {
@@ -46,12 +50,12 @@ class EffectsTest {
 
     }
 
-  /*  @Test
+    @Test
     @DisplayName("Testing the discount effect on card buying")
 
     void discountEffect() throws NonExistentCardException, InsufficientPaymentException, Exception {
 
-        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
+        DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(2,0);
         Map<ResourceType, Integer> cost = developmentCard.getCost();
         List<Resource> resources = new ArrayList<>();
         for(ResourceType type: cost.keySet()){
@@ -66,15 +70,15 @@ class EffectsTest {
         }
 
         System.out.println(developmentCard.getCost());
-        player.buyDevelopmentCard(1, 1);
+        player.buyDevelopmentCard(2, 0);
         System.out.println(developmentCard.getCost());
         System.out.println(strongbox.getAll().keySet());
         List<Stack<DevelopmentCard>> cards = player.getPlayerBoard().getDevelopmentCards();
         DevelopmentCard developmentCard1 = cards.get(0).peek();
         assertEquals(developmentCard1,developmentCard);
-        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(1,2));
+        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(2,1));
     }
-*/
+
     @Test
     @DisplayName("Testing the extra production effect")
     void isExtraProduction() {
@@ -96,8 +100,12 @@ class EffectsTest {
         player.addResourceToExtraDeposit(newResources, 0);
         AuxiliaryDeposit auxiliaryDeposit = effects.getAuxiliaryDeposit(0);
 
+        assertEquals(1 ,auxiliaryDeposit.getSize());
+
         assertEquals(auxiliaryDeposit.getResources(1).get(0), firstToAdd);
 
+        List<Resource> resources = newResources.subList(0,0);
+        assertEquals(resources, auxiliaryDeposit.getAuxiliaryDeposit());
 
     }
 }

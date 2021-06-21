@@ -43,6 +43,7 @@ public class WhiteToResource extends LeaderCard{
         return leaderCardType;
     }
 
+    @Override
     public String getId() {
         return id;
     }

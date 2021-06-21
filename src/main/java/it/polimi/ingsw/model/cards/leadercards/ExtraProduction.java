@@ -49,6 +49,7 @@ public class ExtraProduction extends LeaderCard{
         return productionResult;
     }
 
+    @Override
     public String getId() {
         return id;
     }

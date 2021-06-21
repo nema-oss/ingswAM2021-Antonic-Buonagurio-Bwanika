@@ -1,11 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.ActionToken;
-import it.polimi.ingsw.model.ActionTokenDiscard;
 import it.polimi.ingsw.model.ActionTokenFactory;
-import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.ActionTokenDeck;
-import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.player.Cell;
 import it.polimi.ingsw.model.player.CellFactory;
@@ -17,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 class ActionTokenTest {
 
     private ActionTokenFactory actionTokenFactory;
@@ -25,7 +25,6 @@ class ActionTokenTest {
     private PopeRoad popeRoad;
     private CardMarket cardMarket;
 
-    @Test
     @BeforeEach
     void setUp(){
 
@@ -41,8 +40,18 @@ class ActionTokenTest {
     @Test
     void useEffect(){
 
+    }
 
+    @Test
+    void tokenDeckTest(){
 
+        assertEquals(tokens.get(0), actionTokenDeck.getTop());
+        assertEquals(tokens.get(0), actionTokenDeck.drawCard());
+
+        actionTokenDeck = new ActionTokenDeck(tokens);
+
+        actionTokenDeck.shuffle();
+        assertNotEquals(new ActionTokenDeck(tokens), actionTokenDeck);
     }
 
 }

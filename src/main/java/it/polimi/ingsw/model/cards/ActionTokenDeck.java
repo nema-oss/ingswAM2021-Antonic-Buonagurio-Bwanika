@@ -5,25 +5,28 @@ import it.polimi.ingsw.model.ActionToken;
 import java.util.Collections;
 import java.util.List;
 
-public class ActionTokenDeck implements Deck{
+/**
+ * this class represents the Deck of action tokens
+ */
+public class ActionTokenDeck implements Deck<ActionToken>{
 
-    private List<ActionToken> listOfActionToken;
+    private final List<ActionToken> listOfActionToken;
 
     public ActionTokenDeck(List<ActionToken> tokenList){
         this.listOfActionToken = tokenList;
     }
+
+    @Override
     public ActionToken drawCard(){
         return listOfActionToken.remove(0);
     }
 
+    @Override
     public void shuffle(){
         Collections.shuffle(listOfActionToken);
     }
 
-    public List<ActionToken> getListOfActionToken() {
-        return listOfActionToken;
-    }
-
+    @Override
     public ActionToken getTop(){
         return listOfActionToken.get(0);
     }

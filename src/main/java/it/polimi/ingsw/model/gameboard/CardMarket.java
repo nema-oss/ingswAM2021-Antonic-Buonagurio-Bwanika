@@ -9,9 +9,9 @@ import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 
 
-/*
+/**
 * this class represents the Card Market containing Development Cards ordered by color and level
-* @author Chiara Buonagurio
+* @author Chiara
 */
 
 public class CardMarket implements Serializable {
@@ -20,7 +20,7 @@ public class CardMarket implements Serializable {
     private final int nRow;
     private final int nCol;
 
-    /*
+    /**
      * this method is the class constructor
      * @param deck : the set od developmentCards to put in the cardMarket
      * @param nRow, nCol : number of rows and columns of the cardMarket
@@ -70,7 +70,7 @@ public class CardMarket implements Serializable {
     }
 
 
-    /*
+    /**
      *this method returns the developmentCard chosen by the Player and removes it from the cardMarket
      * @param row, column : indexes of the cardMarket's cell which the player wants to  buy from
      * @return development card (type: DevelopmentCard)
@@ -99,16 +99,16 @@ public class CardMarket implements Serializable {
         else return cardMarket[row][column].getTop();
     }
 
-    /*
+    /**
      * this method returns the developmentDeck at a given position in the cardMarket
      * @param row,column : indexes of the selected deck in the cardMarket
      * @return development cards deck (type: DevelopmentDeck)
      */
     public DevelopmentDeck getMiniDeck(int row, int column) {return cardMarket[row][column];}
 
-    /*
+    /**
         *this method discard a given number of cards from the market
-        * @param number of cards to discard, type of cards
+        * @param amount number of cards to discard, type of cards
      */
     public boolean discardCard(DevelopmentCardType type, int amount){
 
@@ -136,6 +136,9 @@ public class CardMarket implements Serializable {
         return false;
     }
 
+    /**
+     * @return the card market
+     */
     public DevelopmentDeck[][] getCardMarket(){
         return cardMarket;
     }

@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.player.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * this class represents the player's personal board clitn side
+ */
 public class ClientPlayerBoard implements Serializable {
 
     private final ClientPopeRoad popeRoad;
@@ -33,41 +36,67 @@ public class ClientPlayerBoard implements Serializable {
         activeLeaderCard = new ArrayList<>();
     }
 
+    /**
+     * @return player's pope road
+     */
     public ClientPopeRoad getPopeRoad() {
         return popeRoad;
     }
 
+    /**
+     * @return player's deposit
+     */
     public ClientDeposit getDeposit() {
         return deposit;
     }
 
+    /**
+     * @return player's strongbox
+     */
     public ClientStrongbox getStrongbox() {
         return strongbox;
     }
 
+    /**
+     * @return the list of all development cards belonging to the player
+     */
     public List<Stack<DevelopmentCard>> getDevelopmentCards() {
         return developmentCards;
     }
 
+    /**
+     * this method returns the top development card in a stack
+     * @param positionIndex the index of the stack in player's board
+     * @return the card requested
+     */
     public DevelopmentCard getDevelopmentCard(int positionIndex) {
         return developmentCards.get(positionIndex).peek();
     }
 
+    /**
+     * @return the board's production power
+     */
     public HashMap<ArrayList<Resource>, ArrayList<Resource>> getProductionPower() {
         return productionPower;
     }
 
+    /**
+     * @return the pope road's size
+     */
     public static int getPopeRoadSize() {
         return 24;
     }
 
+    /***
+     * @return the cell factory
+     */
     public CellFactory getCellFactory() {
         return cellFactory;
     }
 
-    /*
+    /**
      *this method add a new DevelopmentCard to the board
-     *@param the card to add
+     *@param card the card to add
      */
 
     public void addDevelopmentCard(DevelopmentCard card){
@@ -87,10 +116,17 @@ public class ClientPlayerBoard implements Serializable {
     }
 
 
+    /**
+     * @return the list of active leader cards
+     */
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCard;
     }
 
+    /**
+     * this method adds an active leader card
+     * @param card the new active card
+     */
     public void addActiveLeaderCard(LeaderCard card) {
         activeLeaderCard.add(card);
     }

@@ -32,8 +32,8 @@ public class GameBoardController{
     }
 
     /**
-     * this method initializes the general gameboard
-     * @param clientGameBoard the game's gameboard
+     * this method initializes the general game board
+     * @param clientGameBoard the game's game board
      */
     public void initialize(ClientGameBoard clientGameBoard) {
 
@@ -75,8 +75,8 @@ public class GameBoardController{
     }
 
     /**
-     * this method updates the gameboard's marble market
-     * @param clientGameBoard
+     * this method updates the game board's marble market
+     * @param clientGameBoard the game board
      */
     public void updateMarbleMarket(ClientGameBoard clientGameBoard){
 

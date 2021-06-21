@@ -63,7 +63,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * Set a local match
+     * Sets a local match
      */
     public void setLocalMatch(boolean localMatch, LocalMatchHandler localMatchHandler) {
         this.isLocalMatch = localMatch;
@@ -97,7 +97,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method check if the match has started
+     * This method checks if the match has started
      * @return true if match has started
      */
     public synchronized boolean isActive() {
@@ -105,7 +105,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method send a message on the socket
+     * This method sends a message on the socket
      * @param socket the receiver
      * @param message the message to send
      */
@@ -123,7 +123,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the client disconnection
+     * This method manages the client disconnection
      * @param disconnectedSocket the client unavailable
      */
     public void clientDown(Socket disconnectedSocket) {
@@ -145,7 +145,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method send a login request to a client
+     * This method sends a login request to a client
      * @param client the client that must login
      */
     public void toDoLogin(Socket client, boolean isFirstPlayer, ObjectOutputStream outputStream) {
@@ -187,7 +187,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the successful login of a client, sends an update to the other players and a positive reply to
+     * This method manages the successful login of a client, sends an update to the other players and a positive reply to
      * the new logged client
      * @param nickname the nickname of the new logged client
      * @param socket the new client socket
@@ -218,7 +218,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method send a message to the clients that the match has started and call the on
+     * This method sends a message to the clients that the match has started and call the on
      * to start the game on controller
      */
     private synchronized void toStartMatch() {
@@ -229,7 +229,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the unsuccessful login of a client and alerts the client that it must login again
+     * This method manages the unsuccessful login of a client and alerts the client that it must login again
      * @param nickname the proposed nickname of the new client
      * @param socket the new client socket
      */
@@ -238,7 +238,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method ask a client to play its turn and send a wait message to the others
+     * This method asks a client to play its turn and sends a wait message to the others
      * @param username the nickname of the player that has to play
      */
     public void playTurn(String username){
@@ -252,7 +252,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the choose leaderCard request from client
+     * This method manages the choose leaderCard request from client
      * @param leaderCards the chosen card
      * @param user the user that selects the card
      */
@@ -270,7 +270,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method send alerts the client that its leaderCard selection has been accepted
+     * This method sends alerts the client that its leaderCard selection has been accepted
      * @param user the user requesting the card
      * @param leaderCards the card selected
      */
@@ -291,7 +291,7 @@ public class VirtualView implements VirtualViewInterface{
 
 
     /**
-     * This method manage the choose resource type request from client
+     * This method manages the choose resource type request from client
      * @param resourceType the chosen resource type
      */
     public void chooseResourceType(String username, Map<ResourceType,Integer> resourceType){
@@ -305,7 +305,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method send alerts the client that its resourceType selection has been accepted
+     * This method sends alerts the client that its resourceType selection has been accepted
      * @param user the user requesting the card
      * @param resourceType the type selected
      */
@@ -317,7 +317,7 @@ public class VirtualView implements VirtualViewInterface{
         sendMessage(clients.get(user), boardUpdate);
     }
     /**
-     * This method send alerts the client that its resourceType selection has been rejected
+     * This method sends alerts the client that its resourceType selection has been rejected
      * @param user the user requesting the card
      * @param resourceType the type selected
      */
@@ -327,7 +327,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the swap deposit request from client
+     * This method manages the swap deposit request from client
      * @param a,b deposit's floor to swap
      */
     public void moveDeposit(String user, int a, int b){
@@ -363,7 +363,7 @@ public class VirtualView implements VirtualViewInterface{
 
 
     /**
-     * This method manage a buy resource requests from client
+     * This method manages a buy resource requests from client
      * @param x, y are the coordinates of the card
      */
     public void buyDevelopmentCards(String user, int x, int y){
@@ -378,6 +378,12 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    /**
+     * this method alerts the client that its buy development card action has been accepted
+     * @param user the player's nickname
+     * @param x the row index of the card
+     * @param y the column index of the card
+     */
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
 
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
@@ -387,6 +393,12 @@ public class VirtualView implements VirtualViewInterface{
         sendMessage(clients.get(user), message);
     }
 
+    /**
+     * this method alerts the user that its buy development card action has been rejected
+     * @param user the player's nickname
+     * @param x the card's row index
+     * @param y the card's column index
+     */
     private void onRejectedBuyDevelopmentCards(String user, int x, int y) {
 
         Message message = new ErrorWriter().buyCardRejected(user,x, y);
@@ -394,7 +406,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage a buy resources requests from client
+     * This method manages a buy resources requests from client
      * @param x, y are the coordinates of the card
      */
     public void buyResources(String user, int x, int y){
@@ -407,6 +419,12 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
+    /**
+     * this method alerts the user that its buy resource action has been accepted
+     * @param user the player's nickname
+     * @param x the row index in the marble market
+     * @param y the column index in the marble market
+     */
     private void onAcceptedBuyResources(String user, int x, int y) {
 
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
@@ -426,6 +444,12 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * this method alerts the user that its buy resources action has been rejected
+     * @param user the player's nickname
+     * @param x the row index in the marble market
+     * @param y the column index in the marble market
+     */
     private void onRejectedBuyResources(String user, int x, int y) {
         Message message = new ErrorWriter().buyResourceRejected(user,x,y);
         sendMessage(clients.get(user), message);
@@ -433,7 +457,7 @@ public class VirtualView implements VirtualViewInterface{
     }
 
     /**
-     * This method manage the activate production development card request from client
+     * This method manages the activate production development card request from client
      * @param developmentCards the cards  to use
      * @param user the current user
      */
@@ -447,6 +471,11 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
+    /**
+     * this method alerts the user that his activate production action on development cards has been accepted
+     * @param user the player's nickname
+     * @param cards the cards
+     */
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
 
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
@@ -457,13 +486,18 @@ public class VirtualView implements VirtualViewInterface{
         //sendMessage(clients.get(user), boardUpdate);
     }
 
+    /**
+     * this method alerts the user that his activate production action on development cards has been rejected
+     * @param user the player's nickname
+     * @param cards the cards
+     */
     private void onRejectedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
         Message message = new ErrorWriter().productionCardRejected(user,cards);
         sendMessage(clients.get(user), message);
     }
 
     /**
-     * This method manage the activate production board request from client
+     * This method manages the activate production board request from client
      */
     public void activateProductionBoard(String user, Map<Resource,List<ResourceType>> userChoice){
 
@@ -478,6 +512,11 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * this method alerts the user that his activate production action on the board has been accepted
+     * @param user the player's nickname
+     * @param userChoice the production requested
+     */
     private void onAcceptedActivateProductionBoard(String user, Map<Resource,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
         sendMessage(clients.get(user), message);
@@ -487,6 +526,11 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    /**
+     * this method alerts the user that his activate production action on the board has been accepted
+     * @param user the player's nickname
+     * @param userChoice the production requested
+     */
     private void onRejectedActivateProductionBoard(String user,  Map<Resource,List<ResourceType>> userChoice) {
         Message message = new ErrorWriter().productionBoardRejected(user,userChoice);
         sendMessage(clients.get(user), message);
@@ -494,7 +538,7 @@ public class VirtualView implements VirtualViewInterface{
 
 
     /**
-     * This method manage the activate production leader card request from client
+     * This method manages the activate production leader card request from client
      * @param leaderCards the selected cards
      * @param user the current user
      */
@@ -508,19 +552,33 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
-    private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> card){
-        Message message = new UpdateWriter().productionLeaderAccepted(user,card);
+    /**
+     * this method alerts the user that his activate production action on leader cards has been accepted
+     * @param user the player's nickname
+     * @param cards the cards
+     */
+    private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
+        Message message = new UpdateWriter().productionLeaderAccepted(user,cards);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
 
     }
 
-    private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> card){
-        Message message = new ErrorWriter().productionLeaderRejected(user,card);
+    /**
+     * this method alerts the user that his activate production action on leader cards has been rejected
+     * @param user the player's nickname
+     * @param cards the cards
+     */
+    private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
+        Message message = new ErrorWriter().productionLeaderRejected(user,cards);
         sendMessage(clients.get(user), message);
 
     }
 
+    /**
+     * this method ends the production
+     * @param user the layer's nickname
+     */
     public void endProduction(String user){
 
         List<Error> errors = matchController.onEndProduction(user);
@@ -530,6 +588,10 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
+    /**
+     * this method uses cheats
+     * @param user the player's nickname
+     */
     public void cheat(String user){
         List<Error> errors = matchController.onCheat(user);
     }
@@ -550,12 +612,22 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * this method alerts the user that his activate leader card action has been accepted
+     * @param user the player's nickname
+     * @param card the card activated
+     */
     private void onAcceptedActivateLeaderCard(String user, LeaderCard card) {
         Message message = new UpdateWriter().activateLeaderAccepted(card);
         sendMessage(clients.get(user), message);
 
     }
 
+    /**
+     * this method alerts the user that his activate leader card action has been rejected
+     * @param user the player's nickname
+     * @param card the card he wanted to activate
+     */
     private void onRejectedActivateLeaderCard(String user, LeaderCard card) {
         Message message = new ErrorWriter().activateLeaderRejected(card);
         sendMessage(clients.get(user), message);
@@ -579,13 +651,22 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
-
+    /**
+     * this method alerts the user that his discard leader card action has been accepted
+     * @param user the player's nickname
+     * @param card the card discarded
+     */
     private void onAcceptedDiscardLeaderCard(String user, LeaderCard card){
         Message message = new UpdateWriter().discardLeaderAccepted(card);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
     }
 
+    /**
+     * this method alerts the user that his discard leader card action has been rejected
+     * @param user the player's nickname
+     * @param card the card he wanted to discard
+     */
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
         Message message = new ErrorWriter().discardLeaderRejected(card);
         sendMessage(clients.get(user), message);
@@ -608,6 +689,10 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    /**
+     * this method manages player's disconnection
+     * @param disconnectedPlayer the disconnected player's nickname
+     */
     public void inGameDisconnection(String disconnectedPlayer) {
         matchController.onPlayerDisconnection(disconnectedPlayer);
     }
@@ -628,6 +713,11 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * this method creates a message to choose leader cards
+     * @param user the player's nickname
+     * @param leaderCards the cards to choose from
+     */
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
         sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,false));
     }
@@ -672,11 +762,21 @@ public class VirtualView implements VirtualViewInterface{
         }
     }
 
+    /**
+     * this method alerts the user that his pplace resources action has been rejected
+     * @param user the player's nickname
+     * @param userChoice  the placing rules chosen
+     */
     private void onRejectedPlaceResource(String user, Map<Resource, Integer> userChoice) {
         Message message = new ErrorWriter().placeResourceRejected(user,userChoice);
         sendMessage(clients.get(user), message);
     }
 
+    /**
+     * this method alerts the user that his pplace resources action has been accepted
+     * @param user the player's nickname
+     * @param userChoice  the placing rules chosen
+     */
     private void onAcceptedPlaceResource(String user, Map<Resource, Integer> userChoice) {
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
         sendMessage(clients.get(user), message);
@@ -716,6 +816,12 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    /**
+     * this method manages a player's reconnection
+     * @param disconnectedPlayer the player's nickname
+     * @param socket client's socket
+     * @param outputStream the output stream
+     */
     public synchronized void reconnectPlayer(String disconnectedPlayer, Socket socket, ObjectOutputStream outputStream) {
 
         clients.put(disconnectedPlayer,socket);
@@ -731,6 +837,10 @@ public class VirtualView implements VirtualViewInterface{
     }
 
 
+    /**
+     * this method updates player's position on pope road
+     * @param nickname the player's nickname
+     */
     public void updatePlayerPosition(String nickname){
 
         Message message = new MoveOnPopeRoadMessage(matchController.getPlayerCurrentPosition(nickname));
@@ -752,6 +862,10 @@ public class VirtualView implements VirtualViewInterface{
         updatePlayerPosition(user);
     }
 
+    /**
+     * this method sends the message that tells other players to update the current player's board
+     * @param updateClientPlayerBoardsMessage the message to send
+     */
     public void sendPlayerBoardUpdateToOthers(UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage) {
 
         String sender = updateClientPlayerBoardsMessage.getUser();
@@ -762,6 +876,11 @@ public class VirtualView implements VirtualViewInterface{
 
     }
 
+    /**
+     * this method adds a client handler
+     * @param nickname the player's nickname
+     * @param clientHandler the client handler to add
+     */
     public void addClientHandler(String nickname, ClientHandler clientHandler) {
         inGameReconnectionHandler.addClientHandler(nickname,clientHandler);
     }

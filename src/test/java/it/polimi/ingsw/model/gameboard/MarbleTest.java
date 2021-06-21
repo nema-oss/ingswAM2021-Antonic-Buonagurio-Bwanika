@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GameBoardTest;
+package it.polimi.ingsw.model.gameboard;
 
 import it.polimi.ingsw.model.gameboard.*;
 import org.junit.Test;
@@ -19,8 +19,10 @@ public class MarbleTest {
         assertEquals(MarbleType.WHITE, marble.getColor());
 
         marble = new  Marble(MarbleType.BLUE, new Resource(ResourceType.SHIELD));
-        if(marble.getProduct().isPresent())
+        if(marble.getProduct().isPresent()) {
             assertEquals(ResourceType.SHIELD, marble.getProduct().get().getType());
+            assertEquals("it.polimi.ingsw.model.gameboard.Resource",marble.getProduct().get().getClassName());
+        }
         assertEquals(MarbleType.BLUE, marble.getColor());
 
         marble = new Marble(MarbleType.RED, new FaithPoint(FaithType.FAITH));

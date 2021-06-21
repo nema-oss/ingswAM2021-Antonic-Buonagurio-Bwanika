@@ -432,13 +432,13 @@ public class PlayerBoardController {
             }
         }
 
-        if(!clientStrongbox.getAll().keySet().contains(ResourceType.COIN))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.COIN))
             strongboxCoinCount.setText("0");
-        if(!clientStrongbox.getAll().keySet().contains(ResourceType.SHIELD))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.SHIELD))
             strongboxShieldCount.setText("0");
-        if(!clientStrongbox.getAll().keySet().contains(ResourceType.SERVANT))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.SERVANT))
             strongboxServantCount.setText("0");
-        if(!clientStrongbox.getAll().keySet().contains(ResourceType.STONE))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.STONE))
             strongboxStoneCount.setText("0");
 
     }
@@ -516,6 +516,12 @@ public class PlayerBoardController {
 
     }
 
+    /**
+     * this method removes an object from a gridPane
+     * @param row the grid's row
+     * @param column the grid's column
+     * @param gridPane the grid pane
+     */
     public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
 
         ObservableList<Node> children = gridPane.getChildren();
@@ -537,7 +543,6 @@ public class PlayerBoardController {
         prodCardsList = new ArrayList<>();
         leaderCardsList = new ArrayList<>();
 
-        //setting leadercards
         l1 = clientPlayer.getHand().get(0);
         leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
         checkExtraDeposit(l1);
@@ -545,20 +550,16 @@ public class PlayerBoardController {
         leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
         checkExtraDeposit(l2);
 
-        //setting popeSpace
-       // popeSpaces = popeRoad.getChildren();
         if(clientPlayer.getPositionIndex() == 1 ) {
             p0.setVisible(false);
             p1.setVisible(true);
             currentPosition = 1;
-           // popeSpaces.remove(0);
         }
         else{
             p0.setVisible(true);
             currentPosition = 0;
         }
 
-        //setting deposit
         updateDeposit(clientPlayer.getDeposit());
 
     }

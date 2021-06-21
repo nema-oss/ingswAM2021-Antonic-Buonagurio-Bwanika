@@ -35,7 +35,6 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        //method in view to show the choice
         view.showMoveDepositResult(x,y,accepted);
     }
     /**
@@ -44,7 +43,6 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
      */
     public void execute(VirtualView virtualView){
         virtualView.moveDeposit(user,x,y);
-        //method in virtualView
     }
     /**
      * Get the message type

@@ -41,23 +41,20 @@ public class GuiManager extends Application {
         stage.show();
     }
 
+    /**
+     * this method creates the loader of a given fxml
+     * @param fxml the file to load
+     * @return the loader created
+     * @throws IOException if unable to open the file
+     */
     public static FXMLLoader loadFXML(String fxml) throws IOException {
-        return new FXMLLoader(GuiManager.class.getResource( fxml + ".fxml")); //va messa la cartella giusta
+        return new FXMLLoader(GuiManager.class.getResource( fxml + ".fxml"));
     }
 
-    public static void changeScene(String fxml) throws IOException {
 
-        Parent root = loadFXML(fxml).load();
-        Scene scene = new Scene(root, 1600, 900);
-        stage.setScene(scene);
-    }
-
-    public static void changeGameScene(String fxml) throws IOException {
-
-        gameController.leftBorder.setCenter(loadFXML(fxml).load());
-
-    }
-
+    /**
+     * this method starts the gui
+     */
     public static void startGui() {
         launch();
     }

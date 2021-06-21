@@ -4,9 +4,9 @@ import it.polimi.ingsw.model.player.PopeRoad;
 
 import java.io.Serializable;
 
-/*
+/**
 * this class represents a FaithPoint (red cross)
-* @author Chiara Buonagurio
+* @author Chiara
  */
 
 public class FaithPoint implements Producible, Serializable {
@@ -20,7 +20,7 @@ public class FaithPoint implements Producible, Serializable {
         this.type = type;
     }
 
-    /*
+    /**
      *This method returns the faithPoint's type
      * @return type (Type: FaithType)
      */
@@ -28,7 +28,7 @@ public class FaithPoint implements Producible, Serializable {
         return type;
     }
 
-    /*
+    /**
      *This method returns this class' name and it is used to build FaithPoints
      */
     @Override
@@ -36,7 +36,7 @@ public class FaithPoint implements Producible, Serializable {
         return className;
     }
 
-    /*
+    /**
      *This method applies the effect of a Faith Point, increasing the player's position by one in his PopeRoad
      */
     public boolean useEffect(PopeRoad popeRoad){

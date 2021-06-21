@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CardTest;
+package it.polimi.ingsw.model.CardTest;
 
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

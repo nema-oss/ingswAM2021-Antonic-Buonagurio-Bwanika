@@ -7,9 +7,8 @@ import it.polimi.ingsw.model.player.Effects;
 
 import java.util.Map;
 
-/*
-*ExtraDepositLeaderCard represents the LeaderCard with the effect of having two extra slots for a resource
-*@author Nemanja
+/**
+ * this class represents the extra deposit leader cards
  */
 
 public class ExtraDeposit extends LeaderCard{
@@ -33,6 +32,9 @@ public class ExtraDeposit extends LeaderCard{
         return leaderCardType;
     }
 
+    /**
+     * @return the type of resources that can be stored
+     */
     public ResourceType getStorageType() {
         return storageType;
     }

@@ -1,27 +1,33 @@
 package it.polimi.ingsw.model.cards.leadercards;
 
 import it.polimi.ingsw.model.cards.Deck;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LeaderDeck implements Deck {
+/**
+ * this class represents a deck of leader cards
+ */
+public class LeaderDeck implements Deck<LeaderCard> {
 
-    private List<LeaderCard> listOfLeaderCard;
+    private final List<LeaderCard> listOfLeaderCard;
 
     public LeaderDeck(List<LeaderCard> cardsList) {
         listOfLeaderCard = cardsList;
     }
 
+    /**
+     * @return the list of cards in the deck
+     */
     public List<LeaderCard> getListOfCards(){
         return listOfLeaderCard;
     }
 
+    @Override
     public LeaderCard drawCard(){
         return listOfLeaderCard.remove(0);
     }
 
+    @Override
     public void shuffle(){
         Collections.shuffle(listOfLeaderCard);
     }

@@ -13,11 +13,19 @@ public class PlaceCardMessage implements Serializable, ActionMessage {
     public PlaceCardMessage(String user, DevelopmentCard card, int Index) {
     }
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
 
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
-import java.io.Serializable;
-
+/**
+ * this interface represents a card
+ */
 public interface Card {
     int getVictoryPoints();
 }

@@ -19,16 +19,30 @@ public class EndProductionMessage implements ActionMessage, Serializable {
     public EndProductionMessage(String user){
         this.user = user;
     }
+
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
         virtualView.endProduction(user);
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
         view.showProductionResult(updatedStrongbox,updatedWarehouse);
     }
 
+    /**
+     * sets the updated strongbox and warehouse
+     * @param updatedStrongbox the current strongbox
+     * @param updatedWarehouse the current warehouse
+     */
     public void setProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
         this.updatedStrongbox = updatedStrongbox;
         this.updatedWarehouse = updatedWarehouse;

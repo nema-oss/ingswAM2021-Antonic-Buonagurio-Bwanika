@@ -47,7 +47,7 @@ class PlayerTest {
 
     }
 
-    @Test
+  /*  @Test
     @DisplayName("Testing the buy a Card action")
     void buyDevelopmentCard() throws Exception, NonExistentCardException, InsufficientPaymentException, FullDepositException {
 
@@ -72,7 +72,7 @@ class PlayerTest {
         assertEquals(developmentCard1,developmentCard);
         assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(1,2));
     }
-
+*/
     @Test
     @DisplayName("Testing the buy a Resource action")
     void buyResources() throws FullDepositException, WrongDepositSwapException {

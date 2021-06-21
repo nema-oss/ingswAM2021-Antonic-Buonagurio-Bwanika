@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameboard;
 
-/*
- *This class represents the possible marble's type
+/**
+ *This class represents the possible marbles types
  */
 
 public enum MarbleType {

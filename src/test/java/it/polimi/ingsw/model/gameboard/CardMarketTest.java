@@ -145,7 +145,13 @@ class CardMarketTest {
         int actualSizeUpper = cardMarket.getMiniDeck(1,3).getListOfCards().size();
         assertEquals(actualSizeUpper, previousSizeUpper - 1);
 
+    }
 
-
+    @Test
+    void getCardTest(){
+        try {
+            cardMarket.getCard(5,5);
+        } catch (NonExistentCardException ignored) {
+        }
     }
 }

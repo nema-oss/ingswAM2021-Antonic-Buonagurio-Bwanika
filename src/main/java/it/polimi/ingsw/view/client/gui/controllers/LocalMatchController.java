@@ -14,7 +14,7 @@ public class LocalMatchController {
     private Gui gui;
 
     /**
-     * Start the gui
+     * Starts the gui
      * */
     @FXML
     public void onStartLocalMatch() {

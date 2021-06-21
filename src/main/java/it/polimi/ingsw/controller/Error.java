@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller;
 
+/**
+ * this enumeration lists the possible errors in game phase
+ */
 public enum Error {
     GENERIC,
     DEPOSIT_IS_FULL,

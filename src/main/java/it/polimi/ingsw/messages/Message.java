@@ -1,8 +1,5 @@
 package it.polimi.ingsw.messages;
 
-//TODO == each Message should implement this class and Serializable and should contains just the minimum amount of info
-// to complete the required action
-
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -11,7 +8,16 @@ import it.polimi.ingsw.view.server.VirtualView;
  */
 public interface Message {
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     void execute(VirtualView virtualView);
+
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     void execute(View view);
 
 }

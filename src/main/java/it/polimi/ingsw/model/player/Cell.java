@@ -2,12 +2,15 @@ package it.polimi.ingsw.model.player;
 
 import java.io.Serializable;
 
+/**
+ * this class represents a pope road's cell
+ */
 public class Cell implements Serializable {
 
 
-    private int points;
-    private Boolean popeSpace;
-    private int vaticanReportSectionId;
+    private final int points;
+    private final Boolean popeSpace;
+    private final int vaticanReportSectionId;
 
 
     public Cell(int points, Boolean popeSpace, int vaticanReportSectionId){
@@ -16,7 +19,7 @@ public class Cell implements Serializable {
         this.vaticanReportSectionId = vaticanReportSectionId;
     }
 
-    /*
+    /**
      * this method give the points to the player based on the position
      * @return number of points in the occupied Cell
     */
@@ -25,7 +28,7 @@ public class Cell implements Serializable {
         return points;
     }
 
-    /*
+    /**
      * this method tells if a Cell is a popeSpace or not
      * @return true if Cell is a popeSpace, else false
     */
@@ -33,11 +36,10 @@ public class Cell implements Serializable {
     public Boolean isPopeSpace() {
         return popeSpace;
     }
-    /*
+    /**
      * this method give the Vatican Report Section Id of the Cell
      * @return the Vatican Report Section Id of the Cell
     */
-
     public int getVaticanReportSectionId() {
         return vaticanReportSectionId;
     }

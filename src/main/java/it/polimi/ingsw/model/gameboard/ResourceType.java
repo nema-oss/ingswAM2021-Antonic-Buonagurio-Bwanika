@@ -1,16 +1,14 @@
 package it.polimi.ingsw.model.gameboard;
 
-/*
-    *This class represent the possible resource's type
- */
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static it.polimi.ingsw.view.client.utils.Formatting.ColorCode.ANSI_RESET;
-import static it.polimi.ingsw.view.client.utils.Formatting.Unicode.RESOURCE;
+
+/**
+ *This class represent the possible resource's type
+ */
 
 public enum ResourceType implements ProducibleType {
 
@@ -23,7 +21,7 @@ public enum ResourceType implements ProducibleType {
 
     public final String label;
 
-    private ResourceType(String label) {
+    ResourceType(String label) {
         this.label = label;
     }
 
@@ -33,10 +31,12 @@ public enum ResourceType implements ProducibleType {
         }
     }
 
+    /**
+     * @return the list of all resource types
+     */
     public static List<ResourceType> getAllResourceType(){
        return Arrays.asList(ResourceType.values());
     }
-    // ... fields, constructor, methods
 
     public static ResourceType valueOfLabel(String label) {
         return BY_LABEL.get(label);

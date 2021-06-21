@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class represents the extra production leader cards
+ */
 public class ExtraProduction extends LeaderCard{
 
     private List<Producible> productionResult;
@@ -32,10 +35,16 @@ public class ExtraProduction extends LeaderCard{
         return leaderCardType;
     }
 
+    /**
+     * @return the requirements to start the card's production
+     */
     public Map<ResourceType, Integer> getProductionRequirement() {
         return productionRequirement;
     }
 
+    /**
+     * @return the results of the card's production
+     */
     public List<Producible> getProductionResult(){
         return productionResult;
     }

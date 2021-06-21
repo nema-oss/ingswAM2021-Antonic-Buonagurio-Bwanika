@@ -8,11 +8,18 @@ import java.io.Serializable;
 
 public class LeaderActionRejected implements ActionMessage,Serializable {
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
-
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
         view.showRejectedLeaderAction();

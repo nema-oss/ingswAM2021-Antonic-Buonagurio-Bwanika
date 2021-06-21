@@ -7,7 +7,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * this class creates a pope section from a json file
+ */
 public class PopeSectionFactory implements Serializable {
 
     private List<PopeSection> popeSections;
@@ -16,13 +20,10 @@ public class PopeSectionFactory implements Serializable {
 
     public List<PopeSection> getPopeSections() {
 
-
-            //Reader reader = new FileReader("src/main/resources/popesections.json");
-            Reader reader = new InputStreamReader(CardFactory.class.getResourceAsStream("/popesections.json"));
+            Reader reader = new InputStreamReader(Objects.requireNonNull(CardFactory.class.getResourceAsStream("/popesections.json")));
             Gson gson = new Gson();
             PopeSection[] popeSectionArray = gson.fromJson(reader, PopeSection[].class);
             popeSections = new ArrayList<>(Arrays.asList(popeSectionArray));
-
 
         return popeSections;
     }

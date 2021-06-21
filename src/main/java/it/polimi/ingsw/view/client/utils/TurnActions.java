@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class enumerates all the possible actions to play in a turn
+ */
 public enum TurnActions {
 
     BUY_CARD("buy card"),

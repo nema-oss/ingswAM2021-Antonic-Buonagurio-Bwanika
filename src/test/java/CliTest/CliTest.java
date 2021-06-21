@@ -1,5 +1,5 @@
 package CliTest;
-
+/*
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -38,7 +38,7 @@ public class CliTest {
         Formatting.clearScreen();
 
     }
-   /* @Test
+    @Test
     public void showTitle(){
         Cli cli = new Cli();
         Scanner scanner = new Scanner(System.in);
@@ -51,7 +51,7 @@ public class CliTest {
         Map<Resource,Integer> userChoice = InputValidator.isValidPlaceResourceAction(resources,input);
         System.out.println(userChoice);
 
-    } */
+    }
 
     @Test
     public void showLeaders(){
@@ -152,3 +152,4 @@ public class CliTest {
 
 
 }
+*/

@@ -52,27 +52,50 @@ public class ClientActiveEffects {
         return whiteToResourceList;
     }
 
+    /**
+     * Check if discount effect is active
+     * @return true if the effect is active
+     */
     public boolean isDiscount() {
         return isDiscount;
     }
 
+    /**
+     * @return the amount discounted by the effect
+     */
     public Map<ResourceType, Integer> getDiscountAmounts() {
         return discountAmounts;
     }
 
+    /**
+     * this method adds a discount effect
+     * @param resourceType the type od resource to discount
+     * @param amount the amount to discount
+     */
     public void addDiscountEffect(ResourceType resourceType, int amount) {
         isDiscount = true;
         discountAmounts.put(resourceType,amount);
     }
 
+    /**
+     * Check if extra deposit effect is active
+     * @return true if the effect is active
+     */
     public boolean isExtraDeposit() {
         return isExtraDeposit;
     }
 
+    /**
+     * this method adds an extra deposit
+     * @param auxiliaryDepositType the type of the resources that can be put in the extra deposit
+     */
     public void addAuxiliaryDeposit(ResourceType auxiliaryDepositType) {
         auxiliaryDeposits.add(new AuxiliaryDeposit(auxiliaryDepositType));
     }
 
+    /**
+     * @return the list of all extra deposits active
+     */
     public List<AuxiliaryDeposit> getAuxiliaryDeposits() {
         return auxiliaryDeposits;
     }

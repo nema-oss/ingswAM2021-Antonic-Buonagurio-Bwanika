@@ -17,10 +17,18 @@ public class LeaderActionAccepted implements ActionMessage, Serializable {
         this.activate = activate;
     }
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
         view.showAcceptedLeaderAction(card,activate);

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GameBoardTest;
+package it.polimi.ingsw.model.gameboard;
 
 import it.polimi.ingsw.model.gameboard.FaithPoint;
 import it.polimi.ingsw.model.gameboard.FaithType;
@@ -35,5 +35,11 @@ public class FaithPointTest {
         assertEquals(4,popeRoad.getCurrentPositionIndex());
 
         assertTrue(faithPoint.useEffect(popeRoad));
+    }
+
+    @Test
+    public void getClassNameTest(){
+        faithPoint = new FaithPoint(FaithType.FAITH);
+        assertEquals("it.polimi.ingsw.model.gameboard.FaithPoint",faithPoint.getClassName());
     }
 }

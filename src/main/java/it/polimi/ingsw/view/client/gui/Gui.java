@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class represent the gui
+ */
 public class Gui extends View {
 
     public PlayerBoardController playerBoardController;
@@ -103,6 +106,9 @@ public class Gui extends View {
     }
 
 
+    /**
+     * this method initializes the login scene
+     */
     private void initLoginUsername() {
 
         try{
@@ -118,6 +124,9 @@ public class Gui extends View {
         }
     }
 
+    /**
+     * this method initializes the scene to choose number of players
+     */
     private void initNumberOfPlayers() {
 
         try{
@@ -148,6 +157,10 @@ public class Gui extends View {
     }
 
 
+    /**
+     * this method initializes the scene to choose leader cards
+     * @param leaderCards the cards to choose from
+     */
     private void initChooseLeadersSelection(List<LeaderCard> leaderCards){
 
             chooseLeaderController = gameSceneController.getChooseLeaderController();
@@ -155,6 +168,9 @@ public class Gui extends View {
             chooseLeaderController.initializeLeaderCards(leaderCards);
     }
 
+    /**
+     * this method initializes the scene to choose the resources
+     */
     private void initChooseResourcesSelection(){
 
         try {
@@ -169,6 +185,9 @@ public class Gui extends View {
     }
 
 
+    /**
+     * this method initializes the game scene
+     */
     private void initGameScene() {
 
         try {
@@ -186,6 +205,9 @@ public class Gui extends View {
         }
     }
 
+    /**
+     * this method initializes the turns
+     */
     private void initTurnActions() {
 
         try {
@@ -197,6 +219,10 @@ public class Gui extends View {
             e.printStackTrace();
         }
     }
+
+    /**
+     * this method initializes the game board
+     */
     private void initGameBoard(){
 
         try{
@@ -206,6 +232,9 @@ public class Gui extends View {
         }
     }
 
+    /**
+     * this method initalizes the final scene
+     */
     private void intEndGame() {
     }
 
@@ -290,6 +319,12 @@ public class Gui extends View {
     }
 
 
+    /**
+     * this method updates the game board
+     * @param cardMarket the card market
+     * @param market the marble market
+     * @param freeMarble the free marble
+     */
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
 
 
@@ -838,7 +873,7 @@ public class Gui extends View {
     }
 
     /**
-     * This method send a message on the socket
+     * This method sends a message on the socket
      * @param message the message to send
      */
     public void sendMessage(Message message){
@@ -850,6 +885,10 @@ public class Gui extends View {
         }
     }
 
+    /**
+     * this method sets the message in the num of players scene
+     * @param message the message to set
+     */
     public void selectNumberOfPlayers(LoginRequest message) {
 
         Platform.runLater(()->{
@@ -861,10 +900,17 @@ public class Gui extends View {
         });
     }
 
+    /**
+     * this method sets the player board's controller
+     * @param controller the controller to set
+     */
     public void setPlayerBoardController(PlayerBoardController controller) {
         playerBoardController = controller;
     }
 
+    /**
+     * this method starts a local match
+     */
     public void startLocalMatch() {
 
         Platform.runLater(()->{

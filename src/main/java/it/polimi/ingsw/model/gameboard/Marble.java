@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gameboard;
 import java.io.Serializable;
 import java.util.Optional;
 
-/*
+/**
  *This class represents marbles
  * @author Chiara Buonagurio
  */
@@ -21,7 +21,7 @@ public class Marble implements Serializable {
         return color;
     }
 
-    /*
+    /**
      *This method returns the Optional<Producible> corresponding to the marble's color.
      * @return Optional<Producible>
      */

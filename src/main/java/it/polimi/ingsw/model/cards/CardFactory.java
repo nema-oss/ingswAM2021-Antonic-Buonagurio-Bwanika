@@ -11,7 +11,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * this class returns the cards crated from the json file
+ */
 public class CardFactory {
 
 
@@ -20,17 +24,15 @@ public class CardFactory {
 
     public CardFactory() { }
 
-    /*
-        * this method parse the Json file configuration and create the Development cards
+    /**
+     * this method parses the Json file configuration and creates the Development cards
+     * @return the list of development cards created
      */
 
-    public ArrayList<DevelopmentCard> getDevelopmentCards() {
-        // look how to change this try and catch exception: search "file opening exception handling java"
-        try {
-            // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
 
-            //Reader file = new FileReader("src/main/resources/developmentCards.json");
-            Reader file = new InputStreamReader(CardFactory.class.getResourceAsStream("/developmentCards.json"));
+    public ArrayList<DevelopmentCard> getDevelopmentCards() {
+        try {
+            Reader file = new InputStreamReader(Objects.requireNonNull(CardFactory.class.getResourceAsStream("/developmentCards.json")));
             final GsonBuilder builder = new GsonBuilder();
 
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
@@ -43,29 +45,22 @@ public class CardFactory {
         return new ArrayList<>(Arrays.asList(developmentCards));
     }
 
-    /*
-     * this method parse the Json file configuration and create the Leader cards
+    /**
+     * this method parses the Json file configuration and creates the leader cards
+     * @return the list of leader cards created
      */
 
     public List<LeaderCard> getLeaderCards() {
 
-
-            // doesn't need the full length file name + try function InputStreamReader("main".class.getResourceAsStream("filename")
-
-            //Reader file = new FileReader("src/main/resources/leaderCards.json");
-            Reader file = new InputStreamReader(CardFactory.class.getResourceAsStream("/leaderCards.json"));
+            Reader file = new InputStreamReader(Objects.requireNonNull(CardFactory.class.getResourceAsStream("/leaderCards.json")));
             final GsonBuilder builder = new GsonBuilder();
+
             builder.registerTypeAdapter(Producible.class, new InterfaceAdapter<>());
             builder.registerTypeAdapter(LeaderCard.class ,new LeaderCardDeserializer());
 
             Gson gson = builder.create();
             leaderCards = gson.fromJson(file, LeaderCard[].class);
 
-
-
-
         return new ArrayList<>(Arrays.asList(leaderCards));
-
     }
-
 }

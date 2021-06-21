@@ -9,40 +9,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class represents the strongbox client side
+ */
 public class ClientStrongbox implements Serializable {
 
     private Map<ResourceType, List<Resource>> strongbox;
     private List<Resource> temporaryResourceStorage;
 
     public ClientStrongbox(){
-        strongbox = new HashMap<ResourceType,List<Resource>>();
+        strongbox = new HashMap<>();
         temporaryResourceStorage = new ArrayList<>();
     }
 
-    /*
+    /**
      *this method add resources to the strongbox
-     *@param the list of resources to add
+     *@param resources the list of resources to add
      */
     public void addResource(List<Resource> resources){
 
         for(Resource res: resources){
-            strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<Resource>());
+            strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<>());
             strongbox.get(res.getType()).add(res);
         }
     }
 
-    public void addResource(Resource resources) {
+    /**
+     * this method adds a resource to the strongbox
+     * @param resource the resource to add
+     */
+    public void addResource(Resource resource) {
 
-        strongbox.computeIfAbsent(resources.getType(), k -> new ArrayList<Resource>());
-        strongbox.get(resources.getType()).add(resources);
+        strongbox.computeIfAbsent(resource.getType(), k -> new ArrayList<>());
+        strongbox.get(resource.getType()).add(resource);
     }
 
 
+    /**
+     * @return the strongbox
+     */
     public Map<ResourceType, List<Resource>> getAll() {
-
         return strongbox;
     }
 
+    /**
+     * this method updates the strongbox
+     * @param updatedStrongbox the current strongbox
+     */
     public void update(Map<ResourceType, List<Resource>> updatedStrongbox) {
 
         strongbox = updatedStrongbox;

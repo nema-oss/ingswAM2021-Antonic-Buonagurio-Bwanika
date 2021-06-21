@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CardTest;
+package it.polimi.ingsw.model.CardTest;
 
 import static org.junit.Assert.assertEquals;
 /*

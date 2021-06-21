@@ -1,5 +1,8 @@
 package it.polimi.ingsw.messages;
 
+/**
+ * this class enumerates different types of messages
+ */
 public enum MessageType {
     PING,
     DISCONNECTION,

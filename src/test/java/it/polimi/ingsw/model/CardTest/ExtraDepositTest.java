@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CardTest;
+package it.polimi.ingsw.model.CardTest;
 
 import it.polimi.ingsw.model.cards.leadercards.ExtraDeposit;
 import org.junit.Test;

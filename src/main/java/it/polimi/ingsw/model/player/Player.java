@@ -1,12 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-/*
-    * this class represent the player
-    * @ author René Nema
- */
-
-
-
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
@@ -16,17 +9,21 @@ import it.polimi.ingsw.model.gameboard.*;
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
 
+/**
+ * this class represent the player
+ */
+
 public class Player{
 
-    private GameBoard gameBoard;
-    private Game currentGame;
+    private final GameBoard gameBoard;
+    private final Game currentGame;
     private String nickname;
     private List<LeaderCard> hand;
-    private List<LeaderCard> activeLeaderCards;
+    private final List<LeaderCard> activeLeaderCards;
     private int victoryPoints;
-    private Cell position;
-    private Board playerBoard;
-    private Effects activeEffects;
+    private final Cell position;
+    private final Board playerBoard;
+    private final Effects activeEffects;
 
     private boolean standardActionPlayed;
     private boolean[] leaderActionPlayed;
@@ -42,73 +39,119 @@ public class Player{
         activeEffects = new Effects();
         activeLeaderCards = new ArrayList<>();
 
-
         standardActionPlayed = false;
         leaderActionPlayed = new boolean[2];
 
     }
 
 
+    /**
+     * @return the cards in player's hand
+     */
     public List<LeaderCard> getHand() {
         return hand;
     }
 
+    /**
+     * @return player's personal board
+     */
     public Board getPlayerBoard() {
         return playerBoard;
     }
 
+    /**
+     * @return player's active leader cards
+     */
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
     }
 
+    /**
+     * this method sets the cards in player's hand
+     * @param hand the cards to give
+     */
     public void setHand(List<LeaderCard> hand) {
         this.hand = hand;
     }
 
+    /**
+     * @return the player's position index in pope road
+     */
     public int getPositionIndex() {
         return playerBoard.getPopeRoad().getCurrentPositionIndex();
     }
 
+    /**
+     * @return player's position
+     */
     public Cell getPosition() {
         return getPopeRoad().getCurrentPosition();
     }
 
+    /**
+     * @return player's deposit
+     */
     public Deposit getDeposit(){
         return playerBoard.getDeposit();
     }
 
+    /**
+     * @return player's strongbox
+     */
     public Strongbox getStrongbox(){
         return playerBoard.getStrongbox();
     }
 
+    /**
+     * @return layer's pope road
+     */
     public PopeRoad getPopeRoad(){
         return playerBoard.getPopeRoad();
     }
 
+    /**
+     * @return pplayer's nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * @return player's active effects
+     */
     public Effects getActiveEffects(){
         return activeEffects;
     }
 
+    /**
+     * this method gives victory points to the player
+     * @param victoryPoints the amount of points to give
+     */
     public void addVictoryPoints(int victoryPoints) {
         this.victoryPoints += victoryPoints;
     }
 
+    /**
+     * @return player's victory points
+     */
     public int getVictoryPoints() {
         return victoryPoints;
     }
 
+    /**
+     * this method sets the player's nickname
+     * @param nickname the nickname chosen
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    /*
-        * this method let the player buy a DevelopmentCard from the market
-        * @param card coordinates
-        * @exception player has not enough resources to buy the card or card is not present
+    /**
+        * this method lets the player buy a DevelopmentCard from the market
+        * @param x row index
+        * @param y column index
+        * @exception InsufficientPaymentException if the player doesn't have enough resources to buy the card
+        * @exception NonExistentCardException if the card is not present
      */
 
     public void buyDevelopmentCard(int x, int y) throws InsufficientPaymentException, NonExistentCardException, Exception {
@@ -136,6 +179,11 @@ public class Player{
 
     }
 
+    /**
+     * this method takes the resources from the player's board
+     * @param cost the resources to take
+     * @throws InsufficientResourcesException if the player doesn't have enough resources
+     */
     public void takeResourceForAction(Map<ResourceType, Integer> cost) throws InsufficientResourcesException {
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
@@ -159,14 +207,13 @@ public class Player{
         }
     }
 
-    /*
+    /**
         * this method check if the player has enough resources to pay the given cost
-        * @param the cost
-        * @exception player has not enough resources to buy the card or card is not present
+        * @param cost the cost
+        * @exception InsufficientPaymentException if the player has not enough resources to buy the card or card is not present
      */
 
     public void checkCardRequirements(Map<ResourceType, Integer> cost) throws InsufficientPaymentException {
-
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
@@ -196,9 +243,10 @@ public class Player{
         }
     }
 
-    /*
+    /**
      * this method let the player buy a resources from the market
-     * @param card coordinates
+     * @param x row index in market
+     * @param y column index in market
      */
 
     public List<Resource> buyResources(int x, int y) throws FullDepositException {
@@ -218,7 +266,7 @@ public class Player{
         }
 
         result.removeIf(producible -> producible.useEffect(getPopeRoad())); // using faith points
-        List<Resource> newResources = new ArrayList<Resource>();
+        List<Resource> newResources = new ArrayList<>();
         for (Producible producible : result) {
             newResources.add((Resource) producible);
         }
@@ -264,9 +312,9 @@ public class Player{
 
     }
 
-    /*
-        *this method move the player on the popeRoad of the given steps
-        *@param amount of steps
+    /**
+        *this method moves the player on the popeRoad
+        *@param steps amount of steps to make
      */
     public void moveOnPopeRoad(int steps){
 
@@ -276,8 +324,8 @@ public class Player{
         }
     }
 
-    /*
-     *this method move the player on the popeRoad of one single step
+    /**
+     *this method moves the player on the popeRoad of one single step
      */
 
     public void moveOnPopeRoad(){
@@ -286,8 +334,8 @@ public class Player{
         addVictoryPoints(position.getPoints());
     }
 
-    /*
-        * this method moves the player if a resource is discarded, in this case it doesn't called the vatican Report
+    /**
+        * this method moves the player if a resource is discarded, in this case it doesn't call the vatican Report
      */
 
     public void moveOnPopeRoadDiscard(int steps){
@@ -302,9 +350,9 @@ public class Player{
 
     }
 
-    /*
+    /**
         * this method discard a Leader card from hand and move the player on poperoad
-        * @param the card to discard (type: LeaderCard)
+        * @param positionIndex the card to discard (type: LeaderCard)
      */
     public void discardLeader(int positionIndex) throws NonExistentCardException{
 
@@ -323,15 +371,15 @@ public class Player{
 
     public void activateLeaderCard(int positionIndex) throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException{
 
-        if(positionIndex < 0 || hand.size() < positionIndex || hand.get(positionIndex) == null) throw new NonExistentCardException(); // this can be fixed in the controller
+        if(positionIndex < 0 || hand.size() < positionIndex || hand.get(positionIndex) == null) throw new NonExistentCardException();
 
         int resourceCounter = 0;
-        if(!hand.get(positionIndex).getCostResource().isEmpty()){ //this means the resource requirement for the LeaderCard needs to be satisfied
-            //need to check player's deposit, auxiliary deposit (if present) and strongbox
-            for(ResourceType resourceType : hand.get(positionIndex).getCostResource().keySet()) { // for every resource needed count how many resources the player has
+        if(!hand.get(positionIndex).getCostResource().isEmpty()){
+
+            for(ResourceType resourceType : hand.get(positionIndex).getCostResource().keySet()) {
                 resourceCounter = 0;
                 if(playerBoard.getDeposit().getAll().get(resourceType)!=null)
-                    resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size(); //checking the deposit
+                    resourceCounter += playerBoard.getDeposit().getAll().get(resourceType).size();
 
                 if(activeEffects.isExtraDeposit()){
                     resourceCounter += activeEffects.getAuxiliaryDeposit(0).getAuxiliaryDeposit().stream().filter(r -> r.getType() == resourceType).count();
@@ -342,7 +390,7 @@ public class Player{
             }
         }
         int numberOfCards = 0;
-        if(!hand.get(positionIndex).getCostDevelopment().isEmpty()){ //this means the development card requirements need to be satisfied
+        if(!hand.get(positionIndex).getCostDevelopment().isEmpty()){
 
             for(Integer integer : hand.get(positionIndex).getCostDevelopment().keySet()){
                 for(DevelopmentCardType developmentCardType : hand.get(positionIndex).getCostDevelopment().get(integer).keySet()){
@@ -398,21 +446,32 @@ public class Player{
     }
 
 
-
-
-    //added methods
+    /**
+     * @return true if the player has played the standard action
+     */
     public boolean hasPlayedStandardAction() {
         return standardActionPlayed;
     }
 
+    /**
+     * @return true if the player has played both the leader actions possible
+     */
     public boolean hasPlayedLeaderAction() {
         return leaderActionPlayed[0] && leaderActionPlayed[1];
     }
 
+    /**
+     * this method sets that the player has played the standard action
+     * @param standardActionPlayed true if played, false otherwise
+     */
     public void setStandardActionPlayed(boolean standardActionPlayed) {
         this.standardActionPlayed = standardActionPlayed;
     }
 
+    /**
+     * this method sets the fact that the player has played a leader action
+     * @param leaderActionPlayed true if plated, false otherwise
+     */
     public void setLeaderActionPlayed(boolean leaderActionPlayed) {
         if(leaderActionPlayed){
             if(!this.leaderActionPlayed[0])

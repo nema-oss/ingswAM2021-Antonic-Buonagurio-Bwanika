@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class represents the player's deposit client side
+ */
 public class ClientDeposit implements Serializable {
 
     private List<List<Resource>> warehouse;
@@ -25,9 +28,9 @@ public class ClientDeposit implements Serializable {
         warehouse.add(new ArrayList<Resource>());
     }
 
-    /*
-     * this method return a resource based on a floor
-     * @param the floor
+    /**
+     * this method returns a resource based on a floor
+     * @param floor the floor to get the resource from
      * @return the resource in the given floor
      */
 
@@ -37,38 +40,42 @@ public class ClientDeposit implements Serializable {
         return warehouse.get(floor).get(0);
     }
 
+    /**
+     * this method returns the number of resources on a given floor
+     * @param floor the floor
+     * @return the number of resources on it
+     */
     public int getNumberOfResourcesOnFloor(int floor){
         floor--;
         return warehouse.get(floor).size();
     }
 
-    /*
+    /**
      *this method adds a given resource to a given floor
-     * @param the floor and the resource
-     * @exception the deposit is full or the floor is not present
+     * @param floor the floor where to put the resource
+     * @param resource the resource to add
      */
-
     public void addResource(int floor, Resource resource){
-
             floor--;
             warehouse.get(floor).add(resource);
     }
 
-    /*
+    /**
      * this method swaps two floor if possible
-     * @param the two floors to swap
-     * @exception the movement is against the rules
+     * @param x the first floor to swap
+     * @param y the second floor to swap
      */
-
     public void swapFloors(int x, int y){
-
         if((1 <= x && x <= 3) && (1 <= y && y <= 3)) {
             Collections.swap(warehouse, x - 1, y - 1);
 
         }
-
     }
 
+    /**
+     * this method removes the resources from the deposit given a development card's requirements
+     * @param developmentCard the card
+     */
     public void removeResourcesFromDeposit(DevelopmentCard developmentCard) {
 
         Map<ResourceType, Integer> cost = developmentCard.getCost();
@@ -89,6 +96,10 @@ public class ClientDeposit implements Serializable {
 
     }
 
+    /**
+     * this method updates the warehouse
+     * @param updatedWarehouse the modified warehouse
+     */
     public void update(List<List<Resource>> updatedWarehouse){
         warehouse = updatedWarehouse;
     }

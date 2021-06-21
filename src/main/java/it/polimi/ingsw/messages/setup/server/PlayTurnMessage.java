@@ -6,6 +6,9 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 
+/**
+ * message sent to alert a user that it is his turn
+ */
 public class PlayTurnMessage implements SetupMessage, Serializable {
 
 
@@ -15,16 +18,27 @@ public class PlayTurnMessage implements SetupMessage, Serializable {
         this.user = user;
     }
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
 
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
         view.showPlayTurn(user);
     }
 
+    /**
+     * @return the player's nickname
+     */
     public String getUser() {
         return user;
     }

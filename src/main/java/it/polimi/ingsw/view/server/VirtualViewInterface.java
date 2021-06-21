@@ -23,7 +23,6 @@ public interface VirtualViewInterface {
 
     /**
      * Asks the user to choose its resources
-     *
      * @param nickname          the user's nickname
      * @param numberOfResources the amount of resources to select
      */
@@ -41,26 +40,49 @@ public interface VirtualViewInterface {
 
     /**
      * This method asks a user to play its turn
-     *
      * @param nickname the user's nickname
      */
     void playTurn(String nickname);
 
     /**
      * This method alerts a user that its turn is finished
-     *
      * @param nickname the user's nickname
      */
     void endTurn(String nickname);
 
+    /**
+     * this method alerts that resources have been bought
+     * @param resources resources bought
+     */
     void sendResourcesBought(List<Resource> resources);
 
+    /**
+     * this method sends the current game board
+     * @param cardMarket current card market
+     * @param market current marble market
+     * @param freeMarble current free marble
+     */
     void sendGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
-    public void updatePlayerPosition(String nickname);
+    /**
+     * this method updates one's position
+     * @param nickname pplayer's nickname
+     */
+    void updatePlayerPosition(String nickname);
 
+    /**
+     * tihs method alerts that lorenzo's turn has been played
+     * @param lorenzoAction the action token drawn
+     * @param lorenzoPosition lorenzo's position in pope road
+     */
     void sendLorenzoTurn(ActionToken lorenzoAction, int lorenzoPosition);
 
+    /**
+     * this method updates the deposit
+     * @param user player's nickname
+     * @param updateStrongbox the updated strongbox
+     * @param updatedWarehouse the uppdate warehouse
+     */
     void updateDepositAfterAction(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
 }
 

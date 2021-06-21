@@ -5,23 +5,30 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class creates the action tokens from a json file
+ */
 public class ActionTokenFactory {
 
-    private List<ActionToken> actionTokens;
+    private final List<ActionToken> actionTokens;
     private static final int DISCARD_AMOUNT = 2;
     private static final int MOVE_STEP_SHUFFLE = 1;
-    private static final int MOVE_STEP_NOSHUFFLE = 2;
+    private static final int MOVE_STEP_NO_SHUFFLE = 2;
 
     public ActionTokenFactory(){
 
         actionTokens = new ArrayList<>();
     }
 
+    /**
+     * this method creates the action tokens
+     * @return the tokens created
+     */
     public List<ActionToken> getTokens() {
 
         ActionToken moveShuffle = new ActionTokenMove(MOVE_STEP_SHUFFLE, true);
         moveShuffle.setId("7");
-        ActionToken moveNoShuffle = new ActionTokenMove(MOVE_STEP_NOSHUFFLE, false);
+        ActionToken moveNoShuffle = new ActionTokenMove(MOVE_STEP_NO_SHUFFLE, false);
         moveNoShuffle.setId("5");
         ActionToken discardBlue = new ActionTokenDiscard(DevelopmentCardType.BLUE, DISCARD_AMOUNT);
         discardBlue.setId("1");

@@ -1,13 +1,12 @@
 package it.polimi.ingsw.model.gameboard;
 
-/*
- * this class represents the Resources
- */
-
 import it.polimi.ingsw.model.player.PopeRoad;
 
 import java.io.Serializable;
 
+/**
+ * this class represents the Resources
+ */
 public class Resource implements Producible, Serializable {
 
     private final ResourceType type;
@@ -18,7 +17,7 @@ public class Resource implements Producible, Serializable {
         this.type = type;
     }
 
-    /*
+    /**
      * this method returns the type of the Resource
      * @return resource's type (type:ResourceType)
     */

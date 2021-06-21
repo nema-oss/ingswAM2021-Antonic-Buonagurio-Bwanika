@@ -136,6 +136,7 @@ public class EchoServer implements InGameReconnectionHandler {
         lobbies.remove(match);
     }
 
+    @Override
     public void onClientDown(VirtualView virtualView, String disconnectedPlayer) {
 
         if (virtualView.getLobbySize() > 1) {
@@ -149,6 +150,7 @@ public class EchoServer implements InGameReconnectionHandler {
         }
     }
 
+    @Override
     public void playerReconnection(String player, Socket socket, ObjectOutputStream outputStream){
 
         if(disconnectedPlayers.containsKey(player)){

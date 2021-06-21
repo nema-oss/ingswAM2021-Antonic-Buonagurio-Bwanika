@@ -3,9 +3,9 @@ package it.polimi.ingsw.model.gameboard;
 import java.io.Serializable;
 import java.util.*;
 
-/*
+/**
  * this class represents the MarbleMarket containing all marbles.
- * @author Chiara Buonagurio
+ * @author Chiara
  */
 
 public class MarbleMarket implements Serializable {
@@ -15,7 +15,7 @@ public class MarbleMarket implements Serializable {
     private final int nRow;
     private final int nCol;
 
-    /*
+    /**
      *This method is the class constructor
      * @param nRow, nCol number of rows and columns of the marble market;
      * @param marbles : list of marbles to put in the market
@@ -26,20 +26,17 @@ public class MarbleMarket implements Serializable {
         this.nRow = nRow;
         this.nCol = nCol;
 
-
-        //inserisco casualmente le biglie nella matrice
         Collections.shuffle(marbles);
         for(int i=0; i<nRow; i++)
             for(int j=0; j<nCol; j++){
                 marbleMarket[i][j] = marbles.remove(0);
             }
 
-        //la rimanente è una freeMarble
         freeMarble = marbles.get(0);
     }
 
 
-    /*
+    /**
      *This method returns the free marble, which is the one that is not in the grid and has to be inserted after purchase
      * @return free marble (Type: Marble)
      */
@@ -61,41 +58,42 @@ public class MarbleMarket implements Serializable {
 
 
         if (row == -1) {
-
-            //pesca una colonna
             marbles = new Marble[nRow];
             for(int i=0; i<nRow; i++)
                 marbles[i] = marbleMarket[i][column];
 
-            //riordina colonna
             tempFreeMarble = marbleMarket[0][column];
             for(int i=0; i<nRow-1; i++)
                 marbleMarket[i][column] = marbleMarket[i+1][column];
             marbleMarket[nRow-1][column] = freeMarble;
-            freeMarble = tempFreeMarble;
         }
 
         else{
-            //pesca una riga
             marbles = new Marble[nCol];
             if (nCol >= 0) System.arraycopy(marbleMarket[row], 0, marbles, 0, nCol);
 
-            //riordina riga
             tempFreeMarble = marbleMarket[row][0];
             if (nCol - 1 >= 0) System.arraycopy(marbleMarket[row], 1, marbleMarket[row], 0, nCol - 1);
             marbleMarket[row][nCol-1]=freeMarble;
-            freeMarble= tempFreeMarble;
         }
+        freeMarble = tempFreeMarble;
 
         return Arrays.asList(marbles);
 
     }
 
-
+    /**
+     * @param row tha market's row index
+     * @param column the market's column index
+     * @return the marble in that position
+     */
     public Marble getMarble(int row, int column){
         return marbleMarket[row][column];
     }
 
+    /**
+     * @return the marble market
+     */
     public Marble[][] marbles(){
         return marbleMarket;
     }

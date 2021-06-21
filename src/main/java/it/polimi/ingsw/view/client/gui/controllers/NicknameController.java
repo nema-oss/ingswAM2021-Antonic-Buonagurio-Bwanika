@@ -59,10 +59,16 @@ public class NicknameController {
     }
 
 
+    /**
+     * @param isFirstPlayer true if the player is the first one
+     */
     public void setIsFirstPlayer(boolean isFirstPlayer){
         this.isFirstPlayer = isFirstPlayer;
     }
 
+    /**
+     * @param localMatch true if it is a local match
+     */
     public void setLocalMatch(boolean localMatch) {
         isLocalMatch = localMatch;
     }

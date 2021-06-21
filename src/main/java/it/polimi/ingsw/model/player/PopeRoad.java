@@ -3,16 +3,14 @@ package it.polimi.ingsw.model.player;
 import java.io.Serializable;
 import java.util.List;
 
-/*
+/**
     * PopeRoad represents the road on player's game board
-    *
     * @author René
  */
 
 public class PopeRoad implements Serializable {
 
-    private List<Cell> popeRoad;
-    private List<Cell> popeSpaces;
+    private final List<Cell> popeRoad;
     private Cell currentPosition;
     private int currentPositionIndex;
 
@@ -23,7 +21,7 @@ public class PopeRoad implements Serializable {
         currentPosition = popeRoad.get(0);
     }
 
-    /*
+    /**
         * this method returns the length of the popeRoad
         * @return size(type:int) of popeRoad
      */
@@ -32,7 +30,7 @@ public class PopeRoad implements Serializable {
         return popeRoad.size();
     }
 
-    /*
+    /**
         * this method return the current Cell occupied by the player
         * @return current player position (type:Cell)
      */
@@ -40,7 +38,7 @@ public class PopeRoad implements Serializable {
         return currentPosition;
     }
 
-    /*
+    /**
      * this method return the current index position occupied by the player
      * @return current player position (type:int)
      */
@@ -48,9 +46,9 @@ public class PopeRoad implements Serializable {
         return currentPositionIndex;
     }
 
-    /*
+    /**
      * this method move the player by a given number of steps
-     * @param steps(type:int) number of steps forward
+     * @param steps (type:int) number of steps forward
     */
     public void move(int steps){
 
@@ -63,7 +61,7 @@ public class PopeRoad implements Serializable {
         currentPosition = popeRoad.get(currentPositionIndex);
     }
 
-    /*
+    /**
      * this method move the player by a one step
     */
     public void move(){
@@ -79,7 +77,7 @@ public class PopeRoad implements Serializable {
 
     }
 
-    /*
+    /**
      * this method give the points to the player based on the position
      * @return number of points in the occupied Cell
      */

@@ -20,6 +20,10 @@ public class LeaderActionMessage implements ActionMessage, Serializable {
         this.user = user;
     }
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
         for(LeaderCard leaderCard: userChoice.keySet()) {
@@ -32,6 +36,10 @@ public class LeaderActionMessage implements ActionMessage, Serializable {
         }
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
     }

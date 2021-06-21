@@ -9,25 +9,25 @@ import java.io.Serializable;
 import java.util.*;
 
 
-/*
+/**
     *this class represent the deposit on player's game board
     *@author René
  */
 
 public class Deposit implements Serializable {
 
-    private List<List<Resource>> warehouse;
+    private final List<List<Resource>> warehouse;
     private static final int NUMBER_OF_FLOORS = 3;
 
     public Deposit() {
 
-        warehouse = new ArrayList<List<Resource>>(NUMBER_OF_FLOORS);
-        warehouse.add(new ArrayList<Resource>());
-        warehouse.add(new ArrayList<Resource>());
-        warehouse.add(new ArrayList<Resource>());
+        warehouse = new ArrayList<>(NUMBER_OF_FLOORS);
+        warehouse.add(new ArrayList<>());
+        warehouse.add(new ArrayList<>());
+        warehouse.add(new ArrayList<>());
     }
 
-    /*
+    /**
      * this method returns a given number of resources from the deposit
      * @return set of resources (type:ArrayList<Resource)
      */
@@ -35,7 +35,7 @@ public class Deposit implements Serializable {
 
     public List<Resource> getResources(ResourceType type, int amount) throws InsufficientResourcesException {
 
-        ArrayList<Resource> result = new ArrayList<Resource>();
+        ArrayList<Resource> result = new ArrayList<>();
         Map<ResourceType, List<Resource>> availableResources = getAll();
         if(!availableResources.containsKey(type) || availableResources.get(type).size() < amount) throw new InsufficientResourcesException();
 
@@ -55,7 +55,7 @@ public class Deposit implements Serializable {
     }
 
 
-    /*
+    /**
      * this method checks if the current deposit's setup is respecting the rules
      * @return true if rules are respected, else false
      */
@@ -91,10 +91,11 @@ public class Deposit implements Serializable {
         return result;
     }
 
-    /*
+    /**
         * this method swaps two floor if possible
-        * @param the two floors to swap
-        * @exception the movement is against the rules
+        * @param x the first floor to swap
+        * @param y the second floor to swap
+        * @exception WrongDepositSwapException if the movement is against the rules
      */
 
     public void swapFloors(int x, int y) throws WrongDepositSwapException {
@@ -109,10 +110,10 @@ public class Deposit implements Serializable {
         
     }
 
-    /*
+    /**
         *this method adds a given resource to a given floor
-        * @param the floor and the resource
-        * @exception the deposit is full or the floor is not present
+        * @param floor the floor and the resource
+        * @exception FullDepositException if the deposit is full or the floor is not present
      */
 
     public void addResource(int floor, Resource resource) throws FullDepositException{
@@ -126,9 +127,9 @@ public class Deposit implements Serializable {
             }
     }
 
-    /*
-        * this method return a resource based on a floor
-        * @param the floor
+    /**
+        * this method returns a resource based on a floor
+        * @param floor the floor
         * @return the resource in the given floor
      */
 
@@ -138,16 +139,19 @@ public class Deposit implements Serializable {
         return warehouse.get(floor).get(0);
     }
 
+    /**
+     * this method return the list of resources on a floor
+     * @param floor the floor to get
+     * @return the list of resources on that floor
+     */
     public List<Resource> getFloor(int floor){
         floor--;
         return warehouse.get(floor);
     }
 
-    public int getNumberOfResourcesOnFloor(int floor) {
-        floor--;
-        return warehouse.get(floor).size();
-    }
-
+    /**
+     * @return the warehouse
+     */
     public List<List<Resource>> getWarehouse() {
         return warehouse;
     }

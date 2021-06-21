@@ -10,39 +10,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
  *this class represent the strongbox in the player's game board
  *@author René
  */
 
 public class Strongbox implements Serializable {
 
-    private HashMap<ResourceType,List<Resource>> strongbox;
+    private final HashMap<ResourceType,List<Resource>> strongbox;
     private List<Resource> temporaryResourceStorage;
 
     public Strongbox(){
-        strongbox = new HashMap<ResourceType,List<Resource>>();
+        strongbox = new HashMap<>();
         temporaryResourceStorage = new ArrayList<>();
     }
 
-    /*
-     *this method add resources to the strongbox
-     *@param the list of resources to add
+    /**
+     *this method adds resources to the strongbox
+     *@param resources the list of resources to add
      */
     public void addResource(List<Resource> resources){
 
         for(Resource res: resources){
-            strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<Resource>());
+            strongbox.computeIfAbsent(res.getType(), k -> new ArrayList<>());
             strongbox.get(res.getType()).add(res);
         }
     }
 
-    public void addResource(Resource resources) {
+    /**
+     * this method adds a single resource to the strongbox
+     * @param resource the resource to add
+     */
+    public void addResource(Resource resource) {
 
-        strongbox.computeIfAbsent(resources.getType(), k -> new ArrayList<Resource>());
-        strongbox.get(resources.getType()).add(resources);
+        strongbox.computeIfAbsent(resource.getType(), k -> new ArrayList<>());
+        strongbox.get(resource.getType()).add(resource);
     }
 
+    /**
+     * this method adds 50 of each resource type to the strongbox
+     */
     public void addResourceCheat() {
 
         for(ResourceType resourceType : ResourceType.getAllResourceType()) {
@@ -53,7 +60,7 @@ public class Strongbox implements Serializable {
         }
     }
 
-    /*
+    /**
         * this method add production results to the temporary storage
      */
 
@@ -62,7 +69,7 @@ public class Strongbox implements Serializable {
         temporaryResourceStorage.addAll(resources);
     }
 
-    /*
+    /**
         *this method adds a single resource to the temporary storage
      */
     public void addResourceTemporary(Resource resource){
@@ -70,7 +77,7 @@ public class Strongbox implements Serializable {
         temporaryResourceStorage.add(resource);
     }
 
-    /*
+    /**
         * this method add resources at the end of the production action
      */
 
@@ -79,15 +86,17 @@ public class Strongbox implements Serializable {
         temporaryResourceStorage = new ArrayList<>();
     }
 
-    /*
+    /**
      * this method returns a given number of resources from the deposit if available
+     * @param amount the amount of resource to get
+     * @param type the type of resources to get
      * @return set of resources (type:ArrayList<Resource)
      */
 
     public List<Resource> getResource(ResourceType type, int amount) throws InsufficientResourcesException{
 
         if(amount > strongbox.get(type).size()) throw new InsufficientResourcesException();
-        ArrayList<Resource> result = new ArrayList<Resource>();
+        ArrayList<Resource> result = new ArrayList<>();
         while(amount > 0){
             result.add(strongbox.get(type).get(0));
             strongbox.get(type).remove(0);
@@ -97,6 +106,9 @@ public class Strongbox implements Serializable {
     }
 
 
+    /**
+     * @return the strongbox
+     */
     public Map<ResourceType, List<Resource>> getAll() {
         return strongbox;
     }

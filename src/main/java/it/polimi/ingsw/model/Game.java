@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
-import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -15,25 +14,26 @@ import it.polimi.ingsw.controller.Error;
 
 import java.util.*;
 
+/**
+ * this class represents the game
+ */
 public class Game {
 
     private GamePhase gamePhase;
 
-    private List<Player> listOfPlayers;
+    private final List<Player> listOfPlayers;
     private Player currentPlayer;
     private Player winner;
-    private LeaderDeck leaderDeck;
-    private GameBoard gameBoard;
+    private final LeaderDeck leaderDeck;
+    private final GameBoard gameBoard;
     private int lorenzoPoints;
-    private List<PopeSection> popeSectionList;
+    private final List<PopeSection> popeSectionList;
     private PopeSection lastPopeSection;
-    private Map<String,Player> disconnectedPlayers;
+    private final Map<String,Player> disconnectedPlayers;
 
-    // single player mode
     private PopeRoad lorenzoPopeRoad;
     private ActionTokenDeck actionDeck;
 
-    // constants
     private static final int LAST_POPE_SPACE = 24;
     private final int RESOURCE_VICTORY_POINTS_RATIO = 5;
     private static final int STARTING_VICTORY_POINTS = 1;
@@ -62,7 +62,7 @@ public class Game {
 
         int i = listOfPlayers.indexOf(currentPlayer);
 
-        if(i == -1){ // only for testing since we don't have startGame yet
+        if(i == -1){
             currentPlayer = listOfPlayers.get(0);
             return;
         }
@@ -279,15 +279,25 @@ public class Game {
 
     }
 
+    /**
+     * @return the deck of leader cards
+     */
     public LeaderDeck getLeaderDeck(){
         return leaderDeck;
     }
 
+    /**
+     * this method establishes the player's order to play
+     */
     public void setPlayersOrder(){
         Collections.shuffle(listOfPlayers);
         currentPlayer = listOfPlayers.get(0);
     }
 
+    /**
+     * this method removes a player from the game
+     * @param nickname the nickname of the player to remove
+     */
     public void removePlayer(String nickname){
 
         Player p = getPlayerByNickname(nickname);
@@ -297,14 +307,25 @@ public class Game {
         }
     }
 
+    /**
+     * this method sets the current game phase
+     * @param gamePhase the game phase to set
+     */
     public void setGamePhase(GamePhase gamePhase){
         this.gamePhase = gamePhase;
     }
 
+    /**
+     * @return current game phase
+     */
     public GamePhase getGamePhase() {
         return gamePhase;
     }
 
+    /**
+     * this method sets the current player
+     * @param p current player
+     */
     public void setCurrentPlayer (Player p){
         currentPlayer = p;
     }
@@ -321,6 +342,9 @@ public class Game {
         }
     }
 
+    /**
+     * @return lorenzo's pope road
+     */
     public PopeRoad getLorenzoPopeRoad() {
         return lorenzoPopeRoad;
     }

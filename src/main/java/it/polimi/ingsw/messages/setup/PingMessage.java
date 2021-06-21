@@ -23,7 +23,6 @@ public class PingMessage implements SetupMessage, Serializable {
         this.messageType = MessageType.PING;
     }
 
-
     /**
      * Get the message type
      * @return the message type
@@ -32,11 +31,19 @@ public class PingMessage implements SetupMessage, Serializable {
         return messageType;
     }
 
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
 
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     public void execute(View view) {
     }
 }

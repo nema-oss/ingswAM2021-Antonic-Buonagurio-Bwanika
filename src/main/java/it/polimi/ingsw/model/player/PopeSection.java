@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.player;
 
 import java.io.Serializable;
 
+/**
+ * this class represents a pope section
+ */
 public class PopeSection implements Serializable {
 
     private int start;
@@ -18,6 +21,9 @@ public class PopeSection implements Serializable {
 
     }
 
+    /**
+     * @return the section's points
+     */
     public int getPoints() {
         return points;
     }

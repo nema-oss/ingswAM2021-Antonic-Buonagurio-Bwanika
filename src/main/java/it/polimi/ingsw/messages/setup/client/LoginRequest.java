@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 /**
  * the login request a client sends to a server after receiving a LoginMessage from it. It should contain the nickname
- *
  */
 public class LoginRequest implements SetupMessage, Serializable {
 

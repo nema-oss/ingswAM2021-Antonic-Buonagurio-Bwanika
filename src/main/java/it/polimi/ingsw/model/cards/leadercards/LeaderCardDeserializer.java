@@ -4,6 +4,9 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
+/**
+ * this class represents the de-serializer of leader cards from a JSON file
+ */
 public class LeaderCardDeserializer implements JsonDeserializer<LeaderCard> {
 
     @Override

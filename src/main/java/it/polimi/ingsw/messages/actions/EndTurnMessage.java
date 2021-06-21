@@ -12,11 +12,20 @@ public class EndTurnMessage implements ActionMessage, Serializable {
     public EndTurnMessage(String user){
         this.user = user;
     }
+
+    /**
+     * Execute the request server side
+     * @param virtualView: receiver view
+     */
     @Override
     public void execute(VirtualView virtualView) {
         virtualView.endTurn(user);
     }
 
+    /**
+     * Execute the request client side
+     * @param view: receiver view
+     */
     @Override
     public void execute(View view) {
 

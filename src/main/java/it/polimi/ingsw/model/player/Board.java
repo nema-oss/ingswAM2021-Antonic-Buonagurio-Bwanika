@@ -1,11 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-
-/*
- *this class represents the player's personal game board
- *@author René
-*/
-
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
@@ -13,32 +7,35 @@ import it.polimi.ingsw.model.gameboard.ResourceType;
 import java.io.Serializable;
 import java.util.*;
 
+
+/**
+ *this class represents the player's personal game board
+ *@author René
+ */
+
 public class Board implements Serializable {
 
 
-    private PopeRoad popeRoad;
-    private Deposit deposit;
-    private Strongbox strongbox;
-    private List<Stack<DevelopmentCard>> developmentCards;
-    private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
-    private static int popeRoadSize = 24;
-    private CellFactory cellFactory;
+    private final PopeRoad popeRoad;
+    private final Deposit deposit;
+    private final Strongbox strongbox;
+    private final List<Stack<DevelopmentCard>> developmentCards;
 
 
     public Board(){
 
-        cellFactory = new CellFactory();
+        CellFactory cellFactory = new CellFactory();
         List<Cell> cells = new ArrayList<>(Arrays.asList(cellFactory.getCells()));
         popeRoad = new PopeRoad(cells);
         deposit = new Deposit();
         strongbox = new Strongbox();
-        developmentCards = new ArrayList<Stack<DevelopmentCard>>();
-        developmentCards.add(new Stack<DevelopmentCard>());
-        developmentCards.add(new Stack<DevelopmentCard>());
-        developmentCards.add(new Stack<DevelopmentCard>());
+        developmentCards = new ArrayList<>();
+        developmentCards.add(new Stack<>());
+        developmentCards.add(new Stack<>());
+        developmentCards.add(new Stack<>());
     }
 
-    /*
+    /**
         * this method returns all the DevelopmentCards in the board
         * @return all the cards
      */
@@ -47,7 +44,7 @@ public class Board implements Serializable {
         return developmentCards;
     }
 
-    /*
+    /**
         * this method returns the card at the given index
         * @return the selected card
      */
@@ -56,7 +53,7 @@ public class Board implements Serializable {
         return developmentCards.get(positionIndex).peek();
     }
 
-    /*
+    /**
      *this method returns the player's personal popeRoad
      *@return the popeRoad
      */
@@ -64,7 +61,7 @@ public class Board implements Serializable {
         return popeRoad;
     }
 
-    /*
+    /**
      *this method returns the player's personal deposit
      *@return the deposit
      */
@@ -73,7 +70,7 @@ public class Board implements Serializable {
         return deposit;
     }
 
-    /*
+    /**
      *this method returns the player's personal strongbox
      *@return the strongbox
      */
@@ -82,9 +79,9 @@ public class Board implements Serializable {
         return strongbox;
     }
 
-    /*
+    /**
         *this method add a new DevelopmentCard to the board
-        *@param the card to add
+        *@param card the card to add
      */
 
     public void addDevelopmentCard(DevelopmentCard card){
@@ -118,20 +115,15 @@ public class Board implements Serializable {
         }
     }
 
-    /*
+    /**
         * this method activate the production power of the personal player's game board
-        * @param the resources to transform (type: ArrayList<resource>) and the requested type of th
-        * result (type:ResourceType)
-        *  @exception if the number of resources to transform is not enough
+        * @param toGive the resources to transform (type: ArrayList<resource>)
+        * @param request the resource to get(type:ResourceType)
+        * @exception Exception if the number of resources to transform is not enough
      */
 
     public void useProductionPower(List<Resource> toGive, ResourceType request) throws Exception{
-
         if(toGive.size() != 2) throw new Exception();
-
         strongbox.addResourceTemporary(new Resource(request));
-
     }
-
-
 }

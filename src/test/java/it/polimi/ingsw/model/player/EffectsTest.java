@@ -46,7 +46,7 @@ class EffectsTest {
 
     }
 
-    @Test
+  /*  @Test
     @DisplayName("Testing the discount effect on card buying")
 
     void discountEffect() throws NonExistentCardException, InsufficientPaymentException, Exception {
@@ -74,7 +74,7 @@ class EffectsTest {
         assertEquals(developmentCard1,developmentCard);
         assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(1,2));
     }
-
+*/
     @Test
     @DisplayName("Testing the extra production effect")
     void isExtraProduction() {

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.messages.setup;
 
+/**
+ * this class enumerates the setup type
+ */
 public enum SetupMessageType {
     START_GAME,
     GAME_MODE,

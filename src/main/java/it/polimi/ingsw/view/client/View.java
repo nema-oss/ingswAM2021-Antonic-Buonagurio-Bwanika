@@ -270,31 +270,68 @@ public abstract class View {
         }
     }
 
-
+    /**
+     * @return the player client side
+     */
     public ClientPlayer getClientPlayer(){
         return player;
     }
 
+    /**
+     * @return the boards belonging to other players
+     */
     public Map<String, ClientPlayerBoard> getOtherPlayerBoards() {
         return otherPlayerBoards;
     }
 
+    /**
+     * @return the player's board (client side)
+     */
     public ClientGameBoard getClientGameBoard() {
         return gameBoard;
     }
 
+    /**
+     * this method updates player's position
+     * @param position player's current position
+     */
     public  abstract void updatePlayerPosition(int position);
 
+    /**
+     * this method updates one's player boards
+     * @param user the nickname of the player to update
+     * @param clientPlayerBoard his board
+     */
     public abstract void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard);
 
+    /**
+     * this method shows that a leader card has been activated
+     * @param choice
+     */
     public void showAcceptedActivateLeaderCard(LeaderCard choice){
         player.useLeaderCard(choice,true);
     }
 
+    /**
+     * this method updates the game board
+     * @param cardMarket the updated card market
+     * @param market the updated marble market
+     * @param freeMarble the new free marble
+     */
     public abstract void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble);
 
+    /**
+     * this method shows lorenzo's action
+     * @param lorenzoAction the token drawn
+     * @param lorenzoPosition lorenzo's position in the pope road
+     */
     public abstract void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition);
 
+    /**
+     * this method shows the result of the production
+     * @param updatedStrongbox the updated strongbox
+     * @param updatedWarehouse the updated warehouse
+     */
     public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse);
 
     /**

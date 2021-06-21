@@ -6,18 +6,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DevelopmentDeck implements Deck, Serializable {
+/**
+ * this class represents a deck of development cards
+ */
+public class DevelopmentDeck implements Deck<DevelopmentCard>, Serializable {
 
-     private ArrayList<DevelopmentCard> developmentDeck;
+     private final ArrayList<DevelopmentCard> developmentDeck;
 
     public DevelopmentDeck(ArrayList<DevelopmentCard> cardList) {
         developmentDeck=cardList;
     }
 
+    /**
+     * @return the list of development cards in the deck
+     */
     public ArrayList<DevelopmentCard> getListOfCards(){
         return developmentDeck;
     }
 
+    @Override
      public DevelopmentCard drawCard() throws NonExistentCardException {
         if (developmentDeck.size()==0)
             throw new NonExistentCardException();
@@ -25,6 +32,7 @@ public class DevelopmentDeck implements Deck, Serializable {
             return developmentDeck.remove(0);
      }
 
+     @Override
      public void shuffle(){
          Collections.shuffle(developmentDeck);
      }

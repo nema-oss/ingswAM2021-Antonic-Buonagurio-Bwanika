@@ -442,6 +442,10 @@ public class ActionButtonsController implements Initializable {
 
     }
 
+    /**
+     * this method shows lorenzo's position
+     * @throws IOException if unable to load fxml file
+     */
     public void showLorenzoPosition() throws IOException {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/lorenzoPosition");
@@ -450,6 +454,10 @@ public class ActionButtonsController implements Initializable {
 
     }
 
+    /**
+     * this method updates lorenzo's position
+     * @param lorenzoPosition new position
+     */
     public void updateLorenzoPosition(int lorenzoPosition){
         lorenzoController.update(lorenzoPosition);
     }

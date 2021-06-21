@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.player.Effects;
 
 import java.util.Map;
 
+/**
+ * this class represents the discount leader cards
+ */
 public class Discount extends LeaderCard{
 
     private ResourceType discountType;
@@ -29,10 +32,16 @@ public class Discount extends LeaderCard{
         return LeaderCardType.DISCOUNT;
     }
 
+    /**
+     * @return the type of discount
+     */
     public ResourceType getDiscountType() {
         return discountType;
     }
 
+    /**
+     * @return the quantity discounted
+     */
     public int getDiscountAmount() {
         return discountAmount;
     }

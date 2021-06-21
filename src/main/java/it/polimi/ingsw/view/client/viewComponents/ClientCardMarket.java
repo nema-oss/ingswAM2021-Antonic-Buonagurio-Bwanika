@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * this class represents the crad market client side
+ */
 public class ClientCardMarket implements Serializable {
 
     private DevelopmentDeck[][] cardMarket;
@@ -63,6 +66,12 @@ public class ClientCardMarket implements Serializable {
         }
     }
 
+    /**
+     * this method returns the card in a given position
+     * @param row the row index in the card market
+     * @param column the column index in the card market
+     * @return the development card requested
+     */
     public DevelopmentCard getCard(int row, int column) {
 
         if(row>=nRow || column>=nCol || row < 0 || column<0 || cardMarket[row][column].getListOfCards().size()==0)
@@ -73,10 +82,20 @@ public class ClientCardMarket implements Serializable {
     }
 
 
+    /**
+     * this method returns the stack of development cards in a given position of the card market
+     * @param i the row index in the card market
+     * @param j the column index in the card market
+     * @return the stack of development cards requested
+     */
     public DevelopmentDeck getStack(int i, int j){
         return cardMarket[i][j];
     }
 
+    /**
+     * this method updates the card market
+     * @param market the modified market
+     */
     public void update(DevelopmentDeck[][] market) {
         cardMarket = market;
     }

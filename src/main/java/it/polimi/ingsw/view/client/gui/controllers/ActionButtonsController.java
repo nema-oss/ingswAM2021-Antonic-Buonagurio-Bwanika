@@ -160,7 +160,7 @@ public class ActionButtonsController implements Initializable {
         columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
         setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
-            if(rowIndex.getValue()!= null) {
+            if(columnIndex.getValue()!= null) {
                 setColumnIndexVisible(false);
                 Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), -1, columnIndex.getValue() - 1, false);
                 gui.sendMessage(msg);

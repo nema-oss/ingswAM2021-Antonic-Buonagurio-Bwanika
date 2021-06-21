@@ -243,17 +243,7 @@ public abstract class View {
      * Show the results of the selection the initial resources
      * @param resourceChoice the user choice
      */
-    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
-
-        ClientDeposit deposit = player.getDeposit();
-
-        int j=3;
-        for(ResourceType resourceType: resourceChoice.keySet()){
-            for(int i=0; i<resourceChoice.get(resourceType); i++)
-                deposit.addResource(j, new Resource(resourceType));
-            j--;
-        }
-    }
+    public abstract void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice);
 
     public abstract void showReconnectionToMatch();
 

@@ -21,6 +21,7 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
+import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -198,6 +199,7 @@ public class Gui extends View {
             gameSceneController.setGui(this);
             gameBoardController = gameSceneController.gameBoardController;
             playerTabController = gameSceneController.playerTabController;
+            playerTabController.setGui(this);
 
 
         } catch (IOException e) {
@@ -556,6 +558,10 @@ public class Gui extends View {
         Platform.runLater(()->{
             alertUser("Information", otherClient+"has disconnected from the match!", Alert.AlertType.INFORMATION);
             otherPlayerBoards.remove(otherClient);
+            gameSceneController.removePlayerBoard(otherClient);
+            otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+
+
         });
     }
 
@@ -815,20 +821,6 @@ public class Gui extends View {
                 actionButtonsController.setResourcePaneVisible(false);
                 actionButtonsController.setSwapPaneVisible(false);
                 actionButtonsController.setEndTurnVisible(true);
-                /*
-                try {
-                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                    Parent root = loader.load();
-                    gameSceneController.leftBorder.setCenter(root);
-                    actionButtonsController.setLeaderActionVisible(true);
-                    actionButtonsController.setStandardActionVisible(false);
-                    actionButtonsController.setEndTurnVisible(true);
-                }catch (IOException e){
-                    System.out.println("Can't load Turn Action Scene");
-                    e.printStackTrace();
-                }
-
-                 */
             });
         }
         else{
@@ -839,9 +831,39 @@ public class Gui extends View {
         }
     }
 
+    /**
+     * Show the results of the selection the initial resources
+     *
+     * @param resourceChoice the user choice
+     */
+    @Override
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
+
+        Platform.runLater(()->{
+
+            int j=3;
+            for(ResourceType resourceType: resourceChoice.keySet()){
+                for(int i=0; i<resourceChoice.get(resourceType); i++)
+                    player.getDeposit().addResource(j, new Resource(resourceType));
+                j--;
+            }
+            playerBoardController.updateDeposit(player.getDeposit());
+
+        });
+
+
+    }
+
     @Override
     public void showReconnectionToMatch() {
 
+        Platform.runLater(()->{
+            try {
+                gameSceneController.initializePlayerBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

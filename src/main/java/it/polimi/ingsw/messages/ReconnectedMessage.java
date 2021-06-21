@@ -21,7 +21,7 @@ public class ReconnectedMessage implements Message, Serializable {
 
     @Override
     public void execute(View view) {
-        view.showReconnectionToMatch();
         view.showLoginDone(user);
+        view.showReconnectionToMatch();
     }
 }

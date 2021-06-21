@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
+import java.net.Socket;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ public class MatchController implements ControllerInterface{
     private boolean leaderProductionActivated;
     private boolean boardProductionActivated;
     private boolean firstSkipped;
+
     private boolean isLastRound;
 
 
@@ -51,11 +53,21 @@ public class MatchController implements ControllerInterface{
     }
 
 
+    /**
+     * this method sets the virtual view for the controller
+     * @param virtualView the game's virtualView
+     */
     @Override
     public void setVirtualView(VirtualViewInterface virtualView){
         this.viewInterface = virtualView;
     }
 
+
+    /**
+     * this method adds a player to the game
+     * @param nickname the chosen nickname
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onNewPlayer(String nickname){
 
@@ -71,13 +83,17 @@ public class MatchController implements ControllerInterface{
 
     }
 
+    /**
+     * this method starts the game
+     * @return the list of errors generated
+     */
     @Override
-    public void onStartGame() {
+    public List<Error> onStartGame() {
 
+        List<Error> errors = new ArrayList<>();
         if(!game.getGamePhase().equals(GamePhase.LOGIN)){
-            List<Error> errors = new ArrayList<>();
             errors.add(Error.WRONG_GAME_PHASE);
-            return;
+            return errors;
         }
         int numberOfPlayers = game.getListOfPlayers().size();
         if(numberOfPlayers == 1){
@@ -90,8 +106,13 @@ public class MatchController implements ControllerInterface{
         viewInterface.sendGameBoard(game.getGameBoard().getCardMarket().getCardMarket(), game.getGameBoard().getMarket().marbles(), game.getGameBoard().getMarket().getFreeMarble());
         sendChooseLeaderCards();
 
+        return errors;
     }
 
+
+    /**
+     * this method calls the virtualView's method to send message "Choose Leader Cards"
+     */
     @Override
     public void sendChooseLeaderCards() {
 
@@ -103,13 +124,23 @@ public class MatchController implements ControllerInterface{
         }
 
         viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
+        //List<String> users = game.getListOfPlayers().stream().map(Player::getNickname).collect(Collectors.toList());
+        //viewInterface.toDoChooseLeaderCards(users, leaders );
 
     }
 
+
+    /**
+     * this method assigns the leaderCards chosen to the player's hand
+     * @param nickname of the player
+     * @param leaderCardsChosen cards chosen by the player
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onLeaderCardsChosen(String nickname, List<LeaderCard> leaderCardsChosen){
 
         List<Error> errors = new ArrayList<>();
+
 
         if(!game.getGamePhase().equals(GamePhase.CHOOSE_LEADERS)){
             errors.add(Error.WRONG_GAME_PHASE);
@@ -155,11 +186,15 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+    /**
+     * ths method calls the virtualView's method to send message "Choose initial Resources" and distributes initial FaithPoints
+     */
     @Override
     public void sendChooseResources() {
 
         Player currentPlayer = game.getCurrentPlayer();
         int size = game.getListOfPlayers().size();
+
 
         if(size > 1 && currentPlayer.equals(game.getListOfPlayers().get(0)) && !firstSkipped){
             firstSkipped = true;
@@ -183,8 +218,15 @@ public class MatchController implements ControllerInterface{
             game.setGamePhase(GamePhase.PLAY_TURN);
             viewInterface.playTurn(game.getCurrentPlayer().getNickname());
         }
+
     }
 
+    /**
+     * this method gives the initial resources chosen to the player
+     * @param nickname player's nickname
+     * @param resourcesChosen resourceTypes chosen
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onResourcesChosen(String nickname, Map<ResourceType,Integer> resourcesChosen){
 
@@ -223,6 +265,11 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+    /**
+     * this method controls if the player canactivate the production
+     * @param nickname player's nickname
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onActivateProduction(String nickname) {
 
@@ -231,15 +278,25 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty())
             errors = controlStandardAction();
 
+        //if(errors.isEmpty())
+            //viewInterface.playTurn(nickname);
+
+
         return errors;
     }
 
-
+    /**
+     * this method activates the production on DevelopmentCards
+     * @param nickname the player's nickname
+     * @param developmentCards tha cards chosen for production
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onActivateDevelopmentProduction(String nickname, List<DevelopmentCard> developmentCards){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors;
+
 
         errors = controlTurn(nickname);
         if(!errors.isEmpty())
@@ -277,9 +334,17 @@ public class MatchController implements ControllerInterface{
                 }
             }
         }
+
         return errors;
+
     }
 
+    /**
+     * this method activates production on active leader cards
+     * @param nickname the player's nickname
+     * @param leaderCards the leaderCards chosen for production
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards){
 
@@ -323,11 +388,19 @@ public class MatchController implements ControllerInterface{
                 i++;
             }
         }
+
         return errors;
     }
 
+    /**
+     * this method activates the board production
+     * @param nickname the player's nickname
+     * @param userChoiceMap a map containing the resource the player wants to get e the ones to put in the production
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onActivateBoardProduction(String nickname, Map<Resource, List<ResourceType>> userChoiceMap){
+
 
         Map<ResourceType, List<ResourceType>> userChoice = new HashMap<>();
 
@@ -384,6 +457,11 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+    /**
+     * this method end a player's production
+     * @param nickname the player's nickname
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onEndProduction(String nickname){
 
@@ -402,11 +480,19 @@ public class MatchController implements ControllerInterface{
             } else {
                 errors.add(Error.INVALID_ACTION);
             }
+
         }
+
         nextTurn();
         return errors;
+
     }
 
+    /**
+     * this method gives 50 of each resource to the player
+     * @param nickname of the player
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onCheat(String nickname){
 
@@ -425,6 +511,13 @@ public class MatchController implements ControllerInterface{
     }
 
 
+    /**
+     * this method calls Player's method buyDevelopmentCard
+     * @param nickname the player's nickname
+     * @param row the row of the cardMarket
+     * @param column the column of the cardMarket
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onBuyDevelopmentCards(String nickname, int row, int column) {
 
@@ -454,7 +547,9 @@ public class MatchController implements ControllerInterface{
                 errors.add(Error.GENERIC);
             }
         }
+
         nextTurn();
+
         return errors;
     }
 
@@ -474,7 +569,13 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
-
+    /**
+     * this method calls the Player's method buyResoources
+     * @param nickname the player's nickname
+     * @param row the row of the marbleMarket
+     * @param column the column of the marbleMarket
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onBuyResources(String nickname, int row, int column) {
 
@@ -499,17 +600,26 @@ public class MatchController implements ControllerInterface{
                 e.printStackTrace();
             }
         }
+
+
         nextTurn();
+
         return errors;
     }
 
 
 
-
+    /**
+     * this method activates a player's leaderCard
+     * @param nickname the player's nickname
+     * @param leaderCard the leaderCard to activate
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onActivateLeader(String nickname, LeaderCard leaderCard) {
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
+
 
         if(errors.isEmpty())
             errors.addAll(controlLeaderAction());
@@ -530,11 +640,20 @@ public class MatchController implements ControllerInterface{
                 errors.add(Error.INSUFFICIENT_PAYMENT);
             }
         }
+
+
         nextTurn();
+
+
         return errors;
     }
 
-
+    /**
+     * this method discards the player's chosen LeaderCard
+     * @param nickname the player's nickname
+     * @param leaderCard the card to discard
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onDiscardLeader(String nickname, LeaderCard leaderCard) {
 
@@ -545,6 +664,7 @@ public class MatchController implements ControllerInterface{
             errors.addAll(controlLeaderAction());
 
         if(errors.isEmpty()) {
+
             try {
 
                 for(LeaderCard l : curr.getHand())
@@ -560,12 +680,18 @@ public class MatchController implements ControllerInterface{
                 errors.add(Error.CARD_DOESNT_EXIST);
             }
         }
+
         nextTurn();
+
         return errors;
     }
 
 
-
+    /**
+     * this method manages the case in which a player decides to end his turn before playing all the possible actions
+     * @param nickname the player's nickname
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onEndTurn(String nickname){
 
@@ -593,7 +719,7 @@ public class MatchController implements ControllerInterface{
     }
 
     /**
-     * Manages Lorenzo's turn
+     * Manages the Lorenzo turn
      */
     public void onLorenzoTurn(){
 
@@ -604,6 +730,12 @@ public class MatchController implements ControllerInterface{
         viewInterface.sendLorenzoTurn(lorenzoAction, lorenzoPosition);
     }
 
+    /**
+     * this method adds the resources just bought from the marbleMarket to the player's deposit
+     * @param nickname the player's nickname
+     * @param resources the resources and the floor to put them in
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onPlaceResources(String nickname, Map<Resource, Integer> resources){
 
@@ -636,6 +768,14 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
+
+    /**
+     * this method calls player's method swapDepositFloor
+     * @param nickname the player's nickname
+     * @param x first floor
+     * @param y second floor
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onMoveDeposit (String nickname, int x, int y){
 
@@ -652,9 +792,14 @@ public class MatchController implements ControllerInterface{
     }
 
 
-
+    /**
+     * this method calls the player's method discardResources
+     * @param nickname the player's nickname
+     * @param numberOfResourcesToDiscard the number of resources to discard
+     * @return the list of errors generated
+     */
     @Override
-    public void onDiscardResource(String nickname, int numberOfResourcesToDiscard){
+    public List<Error> onDiscardResource(String nickname, int numberOfResourcesToDiscard){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
@@ -662,6 +807,9 @@ public class MatchController implements ControllerInterface{
             game.movePlayersDiscard(nickname,numberOfResourcesToDiscard);
             game.getListOfPlayers().stream().map(Player::getNickname).filter(pNickname -> !pNickname.equals(nickname)).collect(Collectors.toList()).forEach(viewInterface::updatePlayerPosition);
         }
+
+        return errors;
+
     }
 
     /**
@@ -765,6 +913,11 @@ public class MatchController implements ControllerInterface{
 
     }
 
+    /**
+     * this method reacts to a disconnection removing the player who has disconnected from the game
+     * @param nickname nickname of the player who has disconnected
+     * @return the list of errors generated
+     */
     @Override
     public List<Error> onPlayerDisconnection(String nickname) {
         List<Error> errors = new ArrayList<>();
@@ -772,6 +925,7 @@ public class MatchController implements ControllerInterface{
         if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
             errors.add(Error.INVALID_ACTION);
         else {
+            //game.nextPlayer();
             game.removePlayer(nickname);
 
 
@@ -779,35 +933,49 @@ public class MatchController implements ControllerInterface{
                 viewInterface.endMatch();
 
         }
+
         return errors;
     }
 
-
+    /**
+     * this method calls the virtualView's method PlayTurn
+     */
     @Override
     public void sendPlayTurn(){
         viewInterface.playTurn(game.getCurrentPlayer().getNickname());
     }
 
+
+    /**
+     * this method calls the virtualView's method endTurn
+     */
     @Override
     public void sendEndTurn(){
         viewInterface.endTurn(game.getCurrentPlayer().getNickname());
     }
 
-    /**
-     * @return current game
-     */
     public Game getGame(){
         return this.game;
     }
 
-    @Override
+    /**
+     * Sends the updated board to the client after a successful standard action
+     */
     public Board sendBoardUpdate(String user){
         return game.getPlayerByNickname(user).getPlayerBoard();
     }
 
+    /**
+     * Add the previously disconnected player to the game
+     * @param disconnectedPlayer the previously disconnected player
+     * @return errors
+     */
     @Override
     public void onPlayerReconnection(String disconnectedPlayer) {
+
         game.reconnectPlayer(disconnectedPlayer);
+        game.reconnectPlayer(disconnectedPlayer);
+
     }
 
     @Override
@@ -815,14 +983,11 @@ public class MatchController implements ControllerInterface{
         return game.getGameBoard().getMarket().marbles();
     }
 
-
     @Override
     public DevelopmentDeck[][] getCardMarket() {
         return game.getGameBoard().getCardMarket().getCardMarket();
     }
 
-
-    @Override
     public int getPlayerCurrentPosition(String nickname){
         return game.getPlayerByNickname(nickname).getPositionIndex();
     }
@@ -834,9 +999,9 @@ public class MatchController implements ControllerInterface{
     }
 
     public List<List<Resource>> getUpdatedDeposit(){
-        return game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+        List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+        return warehouse;
     }
-
 
     public Map<ResourceType, List<Resource>> getUpdatedStrongbox(){
         Strongbox strongbox = game.getCurrentPlayer().getStrongbox();

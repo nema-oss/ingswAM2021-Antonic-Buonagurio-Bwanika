@@ -19,7 +19,12 @@ public interface VirtualViewInterface {
     /**
      * Asks a user to choose its leader card
      */
-    void toDoChooseLeaderCards(String nickname, List<LeaderCard> leaders);
+    void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards);
+
+    /**
+     * Asks a user to choose its leader card
+     */
+    void toDoChooseLeaderCards(List<String> users, List<LeaderCard> leaders);
 
     /**
      * Asks the user to choose its resources

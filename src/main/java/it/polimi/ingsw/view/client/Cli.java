@@ -19,6 +19,7 @@ import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
+import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
@@ -1407,6 +1408,24 @@ public class Cli extends View {
             System.out.println("Incorrect place resources. Try again.");
             setPlaceResourcesAction();
         }
+    }
+
+    /**
+     * Show the results of the selection the initial resources
+     *
+     * @param resourceChoice the user choice
+     */
+    @Override
+    public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
+
+            ClientDeposit deposit = player.getDeposit();
+
+            int j=3;
+            for(ResourceType resourceType: resourceChoice.keySet()){
+                for(int i=0; i<resourceChoice.get(resourceType); i++)
+                    deposit.addResource(j, new Resource(resourceType));
+                j--;
+            }
     }
 
 

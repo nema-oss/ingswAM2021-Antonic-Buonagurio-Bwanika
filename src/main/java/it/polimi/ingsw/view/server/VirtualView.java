@@ -719,7 +719,14 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCards the cards to choose from
      */
     public void toDoChooseLeaderCards(String user, List<LeaderCard> leaderCards){
+
         sendMessage(clients.get(user), new ChooseLeadersMessage(user,leaderCards,false));
+    }
+
+
+    public void toDoChooseLeaderCards(List<String> users, List<LeaderCard> leaderCards){
+
+        users.forEach(p -> sendMessage(clients.get(p), new ChooseLeadersMessage(p,leaderCards,false)));
     }
 
 
@@ -827,9 +834,11 @@ public class VirtualView implements VirtualViewInterface{
         clients.put(disconnectedPlayer,socket);
         socketObjectOutputStreamMap.put(socket,outputStream);
         System.out.println(disconnectedPlayer + " is back!");
-        //sendMessage(socket, new UpdateWriter().loginDone(disconnectedPlayer));
-        sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
         matchController.onPlayerReconnection(disconnectedPlayer);
+        sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
+        sendMessage(clients.get(disconnectedPlayer),new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble()));
+        updateDepositAfterAction(disconnectedPlayer, matchController.getUpdatedStrongbox(), matchController.getUpdatedDeposit());
+
     }
 
     public ObjectOutputStream getOutputStream(Socket socket) {

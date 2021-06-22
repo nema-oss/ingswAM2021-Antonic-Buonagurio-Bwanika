@@ -29,7 +29,7 @@ public class Deposit implements Serializable {
 
     /**
      * this method returns a given number of resources from the deposit
-     * @return set of resources (type:ArrayList<Resource)
+     * @return set of resources
      */
 
 

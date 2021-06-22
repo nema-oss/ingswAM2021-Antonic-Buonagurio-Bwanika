@@ -24,23 +24,55 @@ import java.util.Map;
 
 /**
  * The view abstract class
- * @author Nemanja Antonic
  */
 public abstract class View {
 
+    /**
+     * the clientHandler reference
+     */
     protected EchoClient clientHandler;
+    /**
+     * Server ip address
+     */
     protected String myIp;
+    /**
+     * Server port
+     */
     protected int myPort;
+    /**
+     * Output stream
+     */
     protected ObjectOutputStream outputStream;
+    /**
+     * Client socket
+     */
     protected Socket socket;
-
+    /**
+     * Client player reference
+     */
     protected ClientPlayer player;
+    /**
+     * Client gameboard reference
+     */
     protected ClientGameBoard gameBoard;
+    /**
+     * Other player playerboards
+     */
     protected Map<String,ClientPlayerBoard> otherPlayerBoards;
-
+    /**
+     * Local match handler
+     */
     protected LocalMatchHandler localMatchHandler;
+    /**
+     * True if it's a local match without server connection
+     */
     protected boolean isLocalMatch;
 
+
+    /**
+     * After starting a match, it creates the client model scheme
+     * @param nickname player's nickname
+     */
     public void newMatch(String nickname){
         this.gameBoard = new ClientGameBoard();
         this.player = new ClientPlayer(nickname,this.gameBoard);
@@ -118,6 +150,7 @@ public abstract class View {
 
     /**
      * Shows the player that the login has been done
+     * @param user the player's nickname
      */
     public abstract void showLoginDone(String user);
 
@@ -135,6 +168,7 @@ public abstract class View {
 
     /**
      * Shows that another client has disconnected
+     * @param otherClient the client that disconnected
      */
     public abstract void showAnotherClientDisconnection(String otherClient);
 
@@ -190,8 +224,8 @@ public abstract class View {
 
     /**
      * This method tells the user that the leader card action has been accepted
-     * @param card
-     * @param activate
+     * @param card the selected card
+     * @param activate the result of the request
      */
     public abstract void showAcceptedLeaderAction(LeaderCard card, boolean activate);
 
@@ -202,12 +236,14 @@ public abstract class View {
 
     /**
      * This method tells the user that the buy card action has been accepted
+     * @param x,y the card coordinates
+     * @param user the current player
      */
     public abstract void showAcceptedBuyDevelopmentCard(String user, int x, int y);
 
     /**
      * This method tells the user that the activate production request has been rejected
-     * @param accepted
+     * @param accepted the result of the request
      */
     public abstract void showProductionRequestResults(boolean accepted);
 

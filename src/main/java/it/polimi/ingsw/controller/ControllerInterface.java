@@ -29,9 +29,8 @@ public interface ControllerInterface {
 
     /**
      * this method starts the game
-     * @return the list of errors generated
      */
-    void onStartGame();
+    List<Error> onStartGame();
 
 
     /**
@@ -166,9 +165,9 @@ public interface ControllerInterface {
      * this method calls the player's method discardResources
      * @param nickname the player's nickname
      * @param numberOfResourcesToDiscard the number of resources to discard
-     * @return the list of errors generated
+     * @return
      */
-    void onDiscardResource(String nickname, int numberOfResourcesToDiscard);
+    List<Error> onDiscardResource(String nickname, int numberOfResourcesToDiscard);
 
 
     /**

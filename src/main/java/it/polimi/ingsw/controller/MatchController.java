@@ -16,7 +16,6 @@ import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
 
 import javax.naming.InsufficientResourcesException;
-import java.net.Socket;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -968,7 +967,6 @@ public class MatchController implements ControllerInterface{
     /**
      * Add the previously disconnected player to the game
      * @param disconnectedPlayer the previously disconnected player
-     * @return errors
      */
     @Override
     public void onPlayerReconnection(String disconnectedPlayer) {

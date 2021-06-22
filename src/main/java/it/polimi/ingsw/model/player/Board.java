@@ -117,8 +117,8 @@ public class Board implements Serializable {
 
     /**
         * this method activate the production power of the personal player's game board
-        * @param toGive the resources to transform (type: ArrayList<resource>)
-        * @param request the resource to get(type:ResourceType)
+        * @param toGive the resources to transform
+        * @param request the resource to get
         * @exception Exception if the number of resources to transform is not enough
      */
 

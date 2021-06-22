@@ -90,7 +90,7 @@ public class Strongbox implements Serializable {
      * this method returns a given number of resources from the deposit if available
      * @param amount the amount of resource to get
      * @param type the type of resources to get
-     * @return set of resources (type:ArrayList<Resource)
+     * @return list of resources
      */
 
     public List<Resource> getResource(ResourceType type, int amount) throws InsufficientResourcesException{

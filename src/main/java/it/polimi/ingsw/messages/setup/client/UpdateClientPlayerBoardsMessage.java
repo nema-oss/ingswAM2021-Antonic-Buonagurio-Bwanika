@@ -16,6 +16,7 @@ public class UpdateClientPlayerBoardsMessage implements SetupMessage, Serializab
     private final ClientPlayerBoard clientPlayerBoard;
     private final String user;
 
+
     public UpdateClientPlayerBoardsMessage(String user, ClientPlayerBoard clientPlayerBoard){
         this.user = user;
         this.clientPlayerBoard = clientPlayerBoard;

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import javax.naming.InsufficientResourcesException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,21 +51,21 @@ public class DevelopmentCard implements Card, Serializable {
     }
     /**
      * this method returns the cost in terms of resources of the developmentCard
-     * @return cost(type: Map<Resource, Integer>) of DevelopmentCard
+     * @return cost of DevelopmentCard
      */
     public Map<ResourceType, Integer> getCost() {
         return cost;
     }
     /**
      * this method returns the production requirements in terms of resources of the developmentCard
-     * @return productionRequirements(type: Map<Resource, Integer>) of DevelopmentCard
+     * @return productionRequirements of DevelopmentCard
      */
     public Map<ResourceType, Integer> getProductionRequirements() {
         return productionRequirements;
     }
     /**
      * this method returns the resulting resources of the production of the developmentCard
-     * @return productionResults(type: Map<Resource, Integer>) of DevelopmentCard
+     * @return productionResults of DevelopmentCard
      */
 
     public List<Producible> getProductionResults() {
@@ -80,18 +81,28 @@ public class DevelopmentCard implements Card, Serializable {
         return victoryPoints;
     }
 
-    public List<Producible> activateProduction(List<Resource> resources) throws Exception {
+    /**
+     * Activate card production
+     * @param resources the required resources
+     * @return list of producible
+     * @throws InsufficientResourcesException given resources are not enough
+     */
+    public List<Producible> activateProduction(List<Resource> resources) throws InsufficientResourcesException {
 
         Map<ResourceType, Long> frequencyMap = resources.stream().collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
 
         for (ResourceType type : frequencyMap.keySet()) {
-            if (frequencyMap.get(type).intValue() != (productionRequirements.get(type))) throw new Exception();
+            if (frequencyMap.get(type).intValue() != (productionRequirements.get(type))) throw new InsufficientResourcesException();
         }
 
         return productionResults;
 
     }
 
+    /**
+     * Get the card id
+     * @return the card id
+     */
     public String getId(){
         return id;
     }

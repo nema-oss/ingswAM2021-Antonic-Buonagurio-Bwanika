@@ -22,8 +22,8 @@ public class Marble implements Serializable {
     }
 
     /**
-     *This method returns the Optional<Producible> corresponding to the marble's color.
-     * @return Optional<Producible>
+     *This method returns the producible corresponding to the marble's color.
+     * @return the producible matched with the resource
      */
     public Optional<Producible> getProduct(){
         return Optional.ofNullable(product);

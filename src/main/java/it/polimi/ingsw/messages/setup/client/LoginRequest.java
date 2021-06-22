@@ -42,10 +42,18 @@ public class LoginRequest implements SetupMessage, Serializable {
         return messageType;
     }
 
+    /**
+     * Get the number of players requested
+     * @return the number of players
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /**
+     * Set the number of players requested
+     * @param numberOfPlayers the number of players requested
+     */
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }

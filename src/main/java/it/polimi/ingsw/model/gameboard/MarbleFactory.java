@@ -19,7 +19,7 @@ public class MarbleFactory implements Serializable {
 
     /**
      *This method returns the marbles created by this factory
-     * @return ArrayList<Marble> : list of all marbles
+     * @return list of all marbles
      */
     public ArrayList<Marble> getMarbles() {
 

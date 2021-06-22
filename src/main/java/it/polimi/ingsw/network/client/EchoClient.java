@@ -27,6 +27,12 @@ public class EchoClient {
     private ObjectInputStream input;
     private ObjectOutputStream outputStream;
 
+    /**
+     * Create the Echo Client to manage server socket connection
+     * @param ip server ip address
+     * @param port server port
+     * @param view view
+     */
     public EchoClient(String ip, int port, View view) {
         this.serverPort = port;
         this.ip = ip;
@@ -139,7 +145,7 @@ public class EchoClient {
 
     /**
      * This method process messages using the execute method in the message
-     * @param message
+     * @param message the message to process
      */
     public void processMessage(Message message) throws IOException{
         message.execute(view);

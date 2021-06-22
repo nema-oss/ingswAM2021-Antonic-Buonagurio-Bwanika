@@ -49,7 +49,7 @@ public class MarbleMarket implements Serializable {
     * this method also rearranges the marble market after purchase
     * @param row : if the player wants to buy a row, it is the index of that row. if the player wants to buy a column it's -1;
     * @param column : it is the column index if the player wants to buy a column, otherwise it is -1;
-    * @return list of marbles selected (Type : List<Marble>)
+    * @return list of marbles selected
     */
     public List<Marble> buy(int row, int column) {
 

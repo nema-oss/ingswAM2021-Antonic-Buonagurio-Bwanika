@@ -45,12 +45,6 @@ public class EchoServer implements InGameReconnectionHandler {
 
     }
 
-    public static void main(String[] args) {
-
-        EchoServer echoServer = new EchoServer(serverPort);
-        echoServer.start();
-    }
-
 
     /**
      * This method allows server to start to accept a connection from a client and create a thread which manages a

@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
+import javafx.application.Platform;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
@@ -143,27 +144,20 @@ public class MatchController implements ControllerInterface{
 
         if(!game.getGamePhase().equals(GamePhase.CHOOSE_LEADERS)){
             errors.add(Error.WRONG_GAME_PHASE);
-            System.out.println(errors);
             return errors;
         }
 
         if(!nickname.equals(game.getCurrentPlayer().getNickname())) {
             errors.add(Error.NOT_YOUR_TURN);
-            System.out.println(errors);
             return errors;
         }
 
         if(leaderCardsChosen == null || leaderCardsChosen.size() != 2) {
-            System.out.println(leaderCardsChosen == null);
-            if(leaderCardsChosen != null)
-                System.out.println(leaderCardsChosen.size());
             errors.add(Error.INVALID_ACTION);
-            System.out.println(errors);
             return errors;
         }
 
         game.getCurrentPlayer().setHand(leaderCardsChosen);
-        System.out.println("carte nel controller");
         game.getCurrentPlayer().getHand().forEach(System.out::println);
 
         game.nextPlayer();
@@ -972,8 +966,6 @@ public class MatchController implements ControllerInterface{
     public void onPlayerReconnection(String disconnectedPlayer) {
 
         game.reconnectPlayer(disconnectedPlayer);
-        game.reconnectPlayer(disconnectedPlayer);
-
     }
 
     @Override
@@ -992,17 +984,41 @@ public class MatchController implements ControllerInterface{
 
     @Override
     public Marble getFreeMarble() {
-
         return game.getGameBoard().getMarket().getFreeMarble();
     }
 
-    public List<List<Resource>> getUpdatedDeposit(){
-        List<List<Resource>> warehouse = game.getCurrentPlayer().getPlayerBoard().getDeposit().getWarehouse();
+    public List<List<Resource>> getUpdatedDeposit(String player){
+        List<List<Resource>> warehouse = game.getPlayerByNickname(player).getPlayerBoard().getDeposit().getWarehouse();
         return warehouse;
     }
 
-    public Map<ResourceType, List<Resource>> getUpdatedStrongbox(){
-        Strongbox strongbox = game.getCurrentPlayer().getStrongbox();
-        return strongbox.getAll();
+    public Map<ResourceType, List<Resource>> getUpdatedStrongbox(String player) {
+        Strongbox strongbox = game.getPlayerByNickname(player).getStrongbox();
+        {
+            return strongbox.getAll();
+        }
     }
+
+    /**
+     * Get the player active leader cards
+     *
+     * @param player player
+     * @return player's active leader cards
+     */
+    @Override
+    public List<LeaderCard> getPlayerActiveLeaderCards(String player) {
+        return game.getPlayerByNickname(player).getActiveLeaderCards();
+    }
+
+    /**
+     * Get the player hand
+     *
+     * @param player player
+     * @return player's hand
+     */
+    @Override
+    public List<LeaderCard> getPlayerHand(String player) {
+        return game.getPlayerByNickname(player).getHand();
+    }
+
 }

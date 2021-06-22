@@ -1474,6 +1474,14 @@ public class Cli extends View {
     }
 
     /**
+     * Alerts the users that it's the last round of the match
+     */
+    @Override
+    public void showLastRound() {
+        System.out.println("GET READY!\n We are at the end of the journey! LAST ROUND START!");
+    }
+
+    /**
      * Asks the user to play its turn action
      */
     @Override

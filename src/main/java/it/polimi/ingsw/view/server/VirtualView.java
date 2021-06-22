@@ -387,7 +387,7 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedBuyDevelopmentCards(String user, int x, int y) {
 
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
-        updateDepositAfterAction(user, matchController.getUpdatedStrongbox(), matchController.getUpdatedDeposit());
+        updateDepositAfterAction(user, matchController.getUpdatedStrongbox(user), matchController.getUpdatedDeposit(user));
       //  for(Socket socket: clients.values())
         //    sendMessage(socket, message);
         sendMessage(clients.get(user), message);
@@ -710,7 +710,8 @@ public class VirtualView implements VirtualViewInterface{
      * This method alerts the clients that it is the last turn to play
      */
     public void lastRound(){
-
+        LastRoundMessage message = new LastRoundMessage();
+        clients.values().forEach(p->sendMessage(p,message));
     }
 
     /**
@@ -837,8 +838,9 @@ public class VirtualView implements VirtualViewInterface{
         matchController.onPlayerReconnection(disconnectedPlayer);
         sendMessage(clients.get(disconnectedPlayer), new ReconnectedMessage(disconnectedPlayer));
         sendMessage(clients.get(disconnectedPlayer),new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble()));
-        updateDepositAfterAction(disconnectedPlayer, matchController.getUpdatedStrongbox(), matchController.getUpdatedDeposit());
-
+        updateDepositAfterAction(disconnectedPlayer, matchController.getUpdatedStrongbox(disconnectedPlayer), matchController.getUpdatedDeposit(disconnectedPlayer));
+        sendMessage(clients.get(disconnectedPlayer), new LeaderCardsUpdateMessage(matchController.getPlayerHand(disconnectedPlayer), matchController.getPlayerActiveLeaderCards(disconnectedPlayer)));
+        updatePlayerPosition(disconnectedPlayer);
     }
 
     public ObjectOutputStream getOutputStream(Socket socket) {

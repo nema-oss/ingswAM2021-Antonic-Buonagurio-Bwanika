@@ -368,4 +368,19 @@ public abstract class View {
         return player.isStandardActionPlayed();
     }
 
+    /**
+     * Alerts the users that it's the last round of the match
+     */
+    public abstract void showLastRound();
+
+    /**
+     * Update the player's hand and the active leader cards after reconnection
+     * @param hand player's hand
+     * @param activeLeaderCards player's active leader cards
+     */
+    public void showLeaderCardUpdate(List<LeaderCard> hand, List<LeaderCard> activeLeaderCards){
+
+        player.setHand(hand);
+        activeLeaderCards.forEach(p->player.useLeaderCard(p,true));
+    }
 }

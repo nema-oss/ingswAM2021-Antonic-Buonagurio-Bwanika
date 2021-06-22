@@ -376,6 +376,17 @@ public class Gui extends View {
     }
 
     /**
+     * Alerts the users that it's the last round of the match
+     */
+    @Override
+    public void showLastRound() {
+
+        Platform.runLater(()->{
+            alertUser("Last Round","GET READY! We are at the end of the journey! LAST ROUND START!" , Alert.AlertType.INFORMATION);
+        });
+    }
+
+    /**
      * Asks the user to play its turn action
      */
     @Override

@@ -22,6 +22,7 @@ public interface ControllerInterface {
 
     /**
      * this method adds a player to the game
+     *
      * @param nickname the chosen nickname
      * @return the list of errors generated
      */
@@ -35,7 +36,8 @@ public interface ControllerInterface {
 
     /**
      * this method assigns the leaderCards chosen to the player's hand
-     * @param nickname of the player
+     *
+     * @param nickname          of the player
      * @param leaderCardsChosen cards chosen by the player
      * @return the list of errors generated
      */
@@ -44,7 +46,8 @@ public interface ControllerInterface {
 
     /**
      * this method gives the initial resources chosen to the player
-     * @param nickname player's nickname
+     *
+     * @param nickname        player's nickname
      * @param resourcesChosen resourceTypes chosen
      * @return the list of errors generated
      */
@@ -53,6 +56,7 @@ public interface ControllerInterface {
 
     /**
      * this method controls if the player canactivate the production
+     *
      * @param nickname player's nickname
      * @return the list of errors generated
      */
@@ -60,7 +64,8 @@ public interface ControllerInterface {
 
     /**
      * this method activates the production on DevelopmentCards
-     * @param nickname the player's nickname
+     *
+     * @param nickname         the player's nickname
      * @param developmentCards tha cards chosen for production
      * @return the list of errors generated
      */
@@ -69,7 +74,8 @@ public interface ControllerInterface {
 
     /**
      * this method activates production on active leader cards
-     * @param nickname the player's nickname
+     *
+     * @param nickname    the player's nickname
      * @param leaderCards the leaderCards chosen for production
      * @return the list of errors generated
      */
@@ -77,7 +83,8 @@ public interface ControllerInterface {
 
     /**
      * this method activates the board production
-     * @param nickname the player's nickname
+     *
+     * @param nickname      the player's nickname
      * @param userChoiceMap a map containing the resource the player wants to get e the ones to put in the production
      * @return the list of errors generated
      */
@@ -85,6 +92,7 @@ public interface ControllerInterface {
 
     /**
      * this method end a player's production
+     *
      * @param nickname the player's nickname
      * @return the list of errors generated
      */
@@ -93,9 +101,10 @@ public interface ControllerInterface {
 
     /**
      * this method calls Player's method buyDevelopmentCard
+     *
      * @param nickname the player's nickname
-     * @param row the row of the cardMarket
-     * @param column the column of the cardMarket
+     * @param row      the row of the cardMarket
+     * @param column   the column of the cardMarket
      * @return the list of errors generated
      */
     List<Error> onBuyDevelopmentCards(String nickname, int row, int column);
@@ -103,9 +112,10 @@ public interface ControllerInterface {
 
     /**
      * this method calls the Player's method buyResoources
+     *
      * @param nickname the player's nickname
-     * @param row the row of the marbleMarket
-     * @param column the column of the marbleMarket
+     * @param row      the row of the marbleMarket
+     * @param column   the column of the marbleMarket
      * @return the list of errors generated
      */
     List<Error> onBuyResources(String nickname, int row, int column);
@@ -113,7 +123,8 @@ public interface ControllerInterface {
 
     /**
      * this method adds the resources just bought from the marbleMarket to the player's deposit
-     * @param nickname the player's nickname
+     *
+     * @param nickname  the player's nickname
      * @param resources the resources and the floor to put them in
      * @return the list of errors generated
      */
@@ -122,7 +133,8 @@ public interface ControllerInterface {
 
     /**
      * this method activates a player's leaderCard
-     * @param nickname the player's nickname
+     *
+     * @param nickname   the player's nickname
      * @param leaderCard the leaderCard to activate
      * @return the list of errors generated
      */
@@ -131,7 +143,8 @@ public interface ControllerInterface {
 
     /**
      * this method discards the player's chosen LeaderCard
-     * @param nickname the player's nickname
+     *
+     * @param nickname   the player's nickname
      * @param leaderCard the card to discard
      * @return the list of errors generated
      */
@@ -139,6 +152,7 @@ public interface ControllerInterface {
 
     /**
      * this method reacts to a disconnection removing the player who has disconnected from the game
+     *
      * @param nickname nickname of the player who has disconnected
      * @return the list of errors generated
      */
@@ -147,6 +161,7 @@ public interface ControllerInterface {
 
     /**
      * this method manages the case in which a player decides to end his turn before playing all the possible actions
+     *
      * @param nickname the player's nickname
      * @return the list of errors generated
      */
@@ -154,16 +169,18 @@ public interface ControllerInterface {
 
     /**
      * this method calls player's method swapDepositFloor
+     *
      * @param nickname the player's nickname
-     * @param x first floor
-     * @param y second floor
+     * @param x        first floor
+     * @param y        second floor
      * @return the list of errors generated
      */
     List<Error> onMoveDeposit(String nickname, int x, int y);
 
     /**
      * this method calls the player's method discardResources
-     * @param nickname the player's nickname
+     *
+     * @param nickname                   the player's nickname
      * @param numberOfResourcesToDiscard the number of resources to discard
      * @return
      */
@@ -172,6 +189,7 @@ public interface ControllerInterface {
 
     /**
      * this method gives 50 of each resource to the player
+     *
      * @param nickname of the player
      * @return the list of errors generated
      */
@@ -199,6 +217,7 @@ public interface ControllerInterface {
 
     /**
      * this method sets the virtual view for the controller
+     *
      * @param virtualView the game's virtualView
      */
     void setVirtualView(VirtualViewInterface virtualView);
@@ -210,6 +229,7 @@ public interface ControllerInterface {
 
     /**
      * Add the previously disconnected player to the game
+     *
      * @param disconnectedPlayer the previously disconnected player
      */
     void onPlayerReconnection(String disconnectedPlayer);
@@ -238,13 +258,34 @@ public interface ControllerInterface {
 
 
     /**
-     * @return the current player's warehouse
+     * Get the updated deposit
+     *
+     * @param player the player
+     * @return the player's warehous
      */
-    List<List<Resource>> getUpdatedDeposit();
+    List<List<Resource>> getUpdatedDeposit(String player);
 
     /**
+     * Get the updated deposit
+     *
+     * @param player the player
      * @return the current player's strongbox
      */
-    Map<ResourceType, List<Resource>> getUpdatedStrongbox();
+    Map<ResourceType, List<Resource>> getUpdatedStrongbox(String player);
+
+
+    /**
+     * Get the player active leader cards
+     * @param player player
+     * @return player's active leader cards
+     */
+    List<LeaderCard> getPlayerActiveLeaderCards(String player);
+
+    /**
+     * Get the player hand
+     * @param player player
+     * @return player's hand
+     */
+    List<LeaderCard> getPlayerHand(String player);
 
 }

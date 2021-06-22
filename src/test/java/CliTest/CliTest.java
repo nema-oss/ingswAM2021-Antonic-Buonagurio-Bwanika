@@ -1,5 +1,5 @@
 package CliTest;
-/*
+
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -121,9 +121,9 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         p.getPlayerBoard().getPopeRoad().move(22);
-        //cli.showBoard(cgameBoard, p);
+        cli.showBoard(cgameBoard, p);
         //cli.showPopeRoad(p);
-        cli.showOtherPlayerBoard("paolo", p.getPlayerBoard());
+        //cli.showOtherPlayerBoard("paolo", p.getPlayerBoard());
     }
 
     @Test
@@ -152,4 +152,3 @@ public class CliTest {
 
 
 }
-*/

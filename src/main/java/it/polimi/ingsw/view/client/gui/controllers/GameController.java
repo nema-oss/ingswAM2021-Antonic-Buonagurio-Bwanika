@@ -199,6 +199,10 @@ public class GameController implements Initializable{
         chooseLeaderController.hide();
     }
 
+    /**
+     * Remove a disconnected player's playerboard from the pane
+     * @param otherClient the player that disconnected
+     */
     public void removePlayerBoard(String otherClient) {
         playerTabController.removePlayerBoard(otherClient);
     }

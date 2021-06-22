@@ -174,7 +174,13 @@ public class PlayerTabController implements Initializable {
         }
     }
 
+
+    /**
+     * Remove a disconnected player's playerboard from the pane
+     * @param otherClient the player that disconnected
+     */
     public void removePlayerBoard(String otherClient) {
         controllersMap.remove(otherClient);
+        tabPane.getTabs().removeIf(t -> t.getText().equals(otherClient));
     }
 }

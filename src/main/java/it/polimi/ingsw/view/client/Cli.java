@@ -19,10 +19,7 @@ import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.utils.*;
-import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
-import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
-import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
+import it.polimi.ingsw.view.client.viewComponents.*;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -2443,6 +2440,9 @@ public class Cli extends View {
         showLogin(doLoginMessage);
     }
 
+    /**
+     * This method shows the titlescreen
+     */
     public void showTitle() {
 
         System.out.print(ANSI_BLUE.escape() +
@@ -2456,5 +2456,22 @@ public class Cli extends View {
                 "By Nemanja Antonic, Chiara Buonagurio and René Bwanika"+ Formatting.ColorCode.ANSI_RESET.escape());
     }
 
+    /**
+     * This method displays the player's extra deposit(s)
+     * @param player: player of whom extra deposit(s) will be shown
+     */
+    public void showExtraDeposit(ClientPlayer player){
+        ArrayList<AuxiliaryDeposit> deposits = (ArrayList<AuxiliaryDeposit>) player.getActiveEffects().getAuxiliaryDeposits();
+        if(deposits!=null){
+            System.out.println("(" + player.getNickname() + ") Extra Deposit:");
+            for(AuxiliaryDeposit deposit: deposits){
+                ArrayList<Resource> contents = (ArrayList<Resource>) deposit.getAuxiliaryDeposit();
+                for(Resource resource: contents){
+                    System.out.print(getResourceTypeColor(resource.getType()) + RESOURCE.escape() + ANSI_RESET.escape() + " ");
+                }
+                System.out.print("\n");
+            }
+        }
+    }
 
 }

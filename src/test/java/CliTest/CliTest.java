@@ -140,7 +140,7 @@ public class CliTest {
         Cli cli = new Cli();
         ClientPlayer clientPlayer = new ClientPlayer("prova", new ClientGameBoard());
         ArrayList<LeaderCard> hand = new ArrayList<>();
-        hand.add(leaderCards.get(12));
+        hand.add(leaderCards.get(5));
         hand.add(leaderCards.get(13));
         clientPlayer.setHand(hand);
         HashMap<LeaderCard, Boolean> active = new HashMap<>();
@@ -149,6 +149,17 @@ public class CliTest {
         cli.showLeaderCards(active);
     }
 
-
+    @Test
+    public void showExtraDeposit(){
+        cardFactory = new CardFactory();
+        leaderCards = cardFactory.getLeaderCards();
+        Cli cli = new Cli();
+        ClientPlayer clientPlayer = new ClientPlayer("prova", new ClientGameBoard());
+        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand.add(leaderCards.get(5));
+        clientPlayer.setHand(hand);
+        clientPlayer.useLeaderCard(leaderCards.get(5), true);
+        cli.showExtraDeposit(clientPlayer);
+    }
 
 }

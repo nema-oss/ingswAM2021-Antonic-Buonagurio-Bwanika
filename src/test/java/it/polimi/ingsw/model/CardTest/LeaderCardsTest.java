@@ -67,7 +67,7 @@ public class LeaderCardsTest {
     void extraDepositTest(){
 
         ExtraDeposit leaderCard = (ExtraDeposit) leaderCards.get(4);
-        ExtraDeposit card = new ExtraDeposit(leaderCard.getId(), leaderCard.getCostResource(), leaderCard.costDevelopment, leaderCard.getVictoryPoints(), leaderCard.getStorageType(), leaderCard.getLeaderType());
+        ExtraDeposit card = new ExtraDeposit(leaderCard.getId(), leaderCard.getCostResource(), leaderCard.getCostDevelopment(), leaderCard.getVictoryPoints(), leaderCard.getStorageType(), leaderCard.getLeaderType());
 
         assertEquals(LeaderCardType.EXTRA_DEPOSIT, card.getLeaderType());
 

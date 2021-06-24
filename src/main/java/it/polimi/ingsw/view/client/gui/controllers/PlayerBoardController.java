@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import com.sun.javafx.scene.control.ContextMenuContent;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -8,14 +7,10 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
-import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.*;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -28,7 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -188,11 +182,11 @@ public class PlayerBoardController {
      */
     public void leaderActivationResult(){
 
-        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l1)){
+        if(!gui.getClientPlayer().isLeaderCardActive(l1)){
             is1active = false;
             leader1.getParent().setStyle("");
         }
-        if(!gui.getClientPlayer().getActiveLeaderCards().contains(l2)){
+        if(!gui.getClientPlayer().isLeaderCardActive(l2)){
             is2active = false;
             leader2.getParent().setStyle("");
         }

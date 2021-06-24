@@ -28,7 +28,7 @@ public class ClientPlayer {
     private String nickname;
     private final int victoryPoints;
     private final ClientActiveEffects activeEffects;
-    private final List<LeaderCard> activeLeaderCards;
+    private List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
     private ClientGameBoard gameBoard;
     private List<Resource> boughtResources;
@@ -275,9 +275,12 @@ public class ClientPlayer {
      */
     public void useLeaderCard(LeaderCard card, boolean activate){
 
-        if(activate) {
-            activeLeaderCards.add(card);
-            playerBoard.addActiveLeaderCard(card);
+        if(activate){
+            LeaderCard leaderCard = hand.stream().filter(p->p.getId().equals(card.getId())).findAny().orElse(null);
+            if(leaderCard != null) {
+                activeLeaderCards.add(leaderCard);
+                playerBoard.addActiveLeaderCard(leaderCard);
+            }
         }
         else
             hand.remove(card);
@@ -295,6 +298,16 @@ public class ClientPlayer {
 
         strongbox.update(updatedStrongbox);
         deposit.update(updatedWarehouse);
+    }
+
+    /**
+     * Check if the player has the given leader card active
+     * @param leaderCard the card
+     * @return true if it's active
+     */
+    public boolean isLeaderCardActive(LeaderCard leaderCard) {
+
+        return activeLeaderCards.stream().anyMatch(p->p.getId().equals(leaderCard.getId()));
     }
 }
 

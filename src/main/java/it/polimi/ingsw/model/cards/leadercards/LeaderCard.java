@@ -13,10 +13,10 @@ import java.util.Map;
  */
 public abstract class LeaderCard implements Card, Serializable {
 
-    public String id;
-    public Map<ResourceType, Integer> costResource;
-    public Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
-    public int victoryPoints;
+    protected String id;
+    protected Map<ResourceType, Integer> costResource;
+    protected Map<Integer, Map<DevelopmentCardType, Integer>> costDevelopment;
+    protected int victoryPoints;
 
 
     public LeaderCard(String id, Map<ResourceType, Integer> costResource, Map<Integer,Map<DevelopmentCardType, Integer>> costDevelopment, int victoryPoints) {

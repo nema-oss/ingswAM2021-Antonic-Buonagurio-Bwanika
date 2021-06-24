@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
@@ -151,15 +152,11 @@ public class CliTest {
 
     @Test
     public void showExtraDeposit(){
-        cardFactory = new CardFactory();
-        leaderCards = cardFactory.getLeaderCards();
+        AuxiliaryDeposit auxiliaryDeposit = new AuxiliaryDeposit(ResourceType.COIN);
+        auxiliaryDeposit.addResource(new Resource(ResourceType.COIN));
+        auxiliaryDeposit.addResource(new Resource(ResourceType.COIN));
         Cli cli = new Cli();
-        ClientPlayer clientPlayer = new ClientPlayer("prova", new ClientGameBoard());
-        ArrayList<LeaderCard> hand = new ArrayList<>();
-        hand.add(leaderCards.get(5));
-        clientPlayer.setHand(hand);
-        clientPlayer.useLeaderCard(leaderCards.get(5), true);
-        cli.showExtraDeposit(clientPlayer);
+        cli.showExtraDeposit(auxiliaryDeposit);
     }
 
 }

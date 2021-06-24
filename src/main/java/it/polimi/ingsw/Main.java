@@ -53,7 +53,7 @@ public class Main {
         if(args.length == 2)
             port = Integer.parseInt(args[1]);
         else
-            port = 1234;
+            port = 3456;
 
         EchoServer echoServer = new EchoServer(port);
         echoServer.start();

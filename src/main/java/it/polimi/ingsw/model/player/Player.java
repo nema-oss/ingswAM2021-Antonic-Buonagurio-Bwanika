@@ -303,7 +303,7 @@ public class Player{
      * this method use the production effect of a leader card
      */
 
-    public void activateProductionLeader(int position) throws ProductionRequirementsException, InsufficientPaymentException {
+    public void activateProductionLeader(int position) throws InsufficientPaymentException {
 
         if(activeEffects.isExtraProduction()){
             activeEffects.useExtraProductionEffect(this, position);
@@ -409,7 +409,7 @@ public class Player{
 
 
         hand.get(positionIndex).useEffect(activeEffects);
-        activeLeaderCards.add(hand.remove(positionIndex));
+        activeLeaderCards.add(hand.get(positionIndex));
 
     }
 

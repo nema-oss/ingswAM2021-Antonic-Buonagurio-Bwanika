@@ -68,4 +68,14 @@ class StrongboxTest {
         strongbox.addResource(resources);
         assertThrows(Exception.class, () -> strongbox.getResource(ResourceType.STONE, 30));
     }
+
+    @Test
+    void addResourceCheat(){
+        strongbox = new Strongbox();
+        strongbox.addResourceCheat();
+
+        for(ResourceType resourceType: strongbox.getAll().keySet()){
+            assertEquals(strongbox.getAll().get(resourceType).size(), 50);
+        }
+    }
 }

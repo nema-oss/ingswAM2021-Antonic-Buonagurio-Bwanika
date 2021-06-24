@@ -116,7 +116,7 @@ public class PlayerBoardController {
                 inactiveMenu1.getItems().addAll(activate, discard);
 
                 inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
-            } else {
+            } else if(leaderProdButton.isVisible()){
                 if(!isL1Selected) {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
                     leaderCardsList.add(l1);
@@ -162,7 +162,7 @@ public class PlayerBoardController {
                 inactiveMenu2.getItems().addAll(activate, discard);
 
                 inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
-            } else {
+            } else if(leaderProdButton.isVisible()) {
                 if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
                     leaderCardsList.add(l2);

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,5 +87,28 @@ class DepositTest {
 
     }
 
+    @Test
+    void getFloor() throws FullDepositException {
+        deposit = new Deposit();
+        deposit.addResource(1, new Resource(ResourceType.COIN));
 
+        assertEquals(ResourceType.COIN, deposit.getFloor(1).get(0).getType());
+
+    }
+
+    @Test
+    void getResources2() throws FullDepositException, InsufficientResourcesException {
+        deposit = new Deposit();
+        List<Resource> resources = new ArrayList<Resource>();
+        resources.add( new Resource(ResourceType.SHIELD));
+        resources.add( new Resource(ResourceType.COIN));
+        resources.add( new Resource(ResourceType.COIN));
+        deposit.addResource(1,resources.get(0));
+        deposit.addResource(2, resources.get(1));
+        deposit.addResource(2, resources.get(1));
+        List<Resource> result = deposit.getResources(ResourceType.COIN, 2);
+        for(Resource resource: result){
+            assertEquals(resource.getType(), ResourceType.COIN);
+        }
+    }
 }

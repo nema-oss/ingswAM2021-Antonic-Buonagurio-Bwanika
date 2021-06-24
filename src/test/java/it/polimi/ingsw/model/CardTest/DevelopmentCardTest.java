@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.CardTest;
 
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +40,13 @@ public class DevelopmentCardTest {
                 payment.add(new Resource(resourceType));
 
         assertEquals(card.getProductionResults(), developmentCard.activateProduction(payment));
+    }
+
+    @Test
+    void developmentDeckTest(){
+        ArrayList<DevelopmentCard> developmentCards = new ArrayList<>();
+        DevelopmentDeck developmentDeck = new DevelopmentDeck(developmentCards);
+        assertThrows(NonExistentCardException.class,()->developmentDeck.drawCard());
     }
 
 }

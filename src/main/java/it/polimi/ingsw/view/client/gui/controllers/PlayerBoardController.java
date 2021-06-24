@@ -83,6 +83,19 @@ public class PlayerBoardController {
     }
 
     /**
+     * this method shows the active leader cards
+     */
+    public void showActiveLeaders(ClientPlayerBoard clientPlayerBoard){
+
+        if(clientPlayerBoard.getActiveLeaderCards().size() > 0)
+            System.out.println(clientPlayerBoard.getActiveLeaderCards().get(0).getId());
+        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l1.getId())))
+            leader1.setVisible(true);
+        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l2.getId())))
+            leader2.setVisible(true);
+    }
+
+    /**
      * this method shows tha actions which can be performed on a inactive leader
      * @param event
      */
@@ -558,6 +571,7 @@ public class PlayerBoardController {
 
     }
 
+
     /**
      * this method updates the whole player board
      * @param clientPlayerBoard the player to update
@@ -568,6 +582,7 @@ public class PlayerBoardController {
         updateDevelopmentCards(clientPlayerBoard);
         updatePopeRoad(clientPlayerBoard);
         showActiveLeaders();
+        //showActiveLeaders(clientPlayerBoard);
     }
 
     public void setGui(Gui gui){
@@ -666,4 +681,19 @@ public class PlayerBoardController {
         }
     }
 
+
+    public void addLeaderOnOtherClient(LeaderCard card) {
+
+        if(l1 == null) {
+            l1 = card;
+            is1active = true;
+            leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
+            checkExtraDeposit(l1);
+        }else{
+            l2 = card;
+            is2active = true;
+            leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
+            checkExtraDeposit(l2);
+        }
+    }
 }

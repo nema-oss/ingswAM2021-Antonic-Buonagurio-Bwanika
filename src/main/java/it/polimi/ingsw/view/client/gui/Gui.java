@@ -21,7 +21,6 @@ import it.polimi.ingsw.network.client.EchoClient;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.client.gui.controllers.*;
 import it.polimi.ingsw.view.client.utils.TurnActions;
-import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -76,6 +75,8 @@ public class Gui extends View {
 
     private PlayerTabController playerTabController;
 
+    private EndGameController endGameController;
+    private Scene endGameScene;
 
     public Gui(String ip, int port, Stage stage, Scene scene){
 
@@ -238,6 +239,16 @@ public class Gui extends View {
      * this method initalizes the final scene
      */
     private void intEndGame() {
+
+        try {
+            FXMLLoader loader = GuiManager.loadFXML("/gui/winner");
+            Parent root = loader.load();
+            gameScene = new Scene(root);
+            endGameController = loader.getController();
+
+        } catch (IOException e) {
+            System.out.println("Could not initialize Game Scene");
+        }
     }
 
     /**
@@ -607,10 +618,16 @@ public class Gui extends View {
 
     /**
      * Shows the game is finished
+     * @param winner game winner
      */
     @Override
-    public void showEndGame() {
+    public void showEndGame(String winner) {
 
+        Platform.runLater(()->{
+            endGameController.setWinner(winner);
+            endGameController.setMessage(winner + " has won the match");
+            primaryStage.setScene(endGameScene);
+        });
     }
 
     /**
@@ -693,20 +710,29 @@ public class Gui extends View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     * @param user
      * @param card
      * @param activate
      */
     @Override
-    public void showAcceptedLeaderAction(LeaderCard card, boolean activate) {
+    public void showAcceptedLeaderAction(String user, LeaderCard card, boolean activate) {
+
         Platform.runLater(()->{
-            alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
-            player.useLeaderCard(card,activate);
-            playerTabController.controlLeaders(player);
-            actionButtonsController.setLeaderActionVisible(false);
-            actionButtonsController.setChooseLeaderActionVisible(false);
-            actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
-            actionButtonsController.setEndTurnVisible(true);
-            playerBoardController.showActiveLeaders();
+            if(user.equals(player.getNickname())) {
+                alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
+                player.useLeaderCard(card, activate);
+                playerTabController.controlLeaders(player);
+                actionButtonsController.setLeaderActionVisible(false);
+                actionButtonsController.setChooseLeaderActionVisible(false);
+                actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
+                actionButtonsController.setEndTurnVisible(true);
+                playerBoardController.showActiveLeaders();
+            }else{
+                if(activate) {
+                    otherPlayerBoards.get(user).getActiveLeaderCards().add(card);
+                    gameSceneController.addLeaderToOtherPlayer(user, card);
+                }
+            }
 
         });
     }

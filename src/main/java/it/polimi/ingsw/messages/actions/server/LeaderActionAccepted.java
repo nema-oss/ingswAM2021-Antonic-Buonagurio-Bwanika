@@ -9,11 +9,13 @@ import java.io.Serializable;
 
 public class LeaderActionAccepted implements ActionMessage, Serializable {
 
+    private final String user;
     private final LeaderCard card;
     private final boolean activate;
 
-    public LeaderActionAccepted(LeaderCard card, boolean activate){
+    public LeaderActionAccepted(String user, LeaderCard card, boolean activate){
         this.card = card;
+        this.user = user;
         this.activate = activate;
     }
 
@@ -31,6 +33,6 @@ public class LeaderActionAccepted implements ActionMessage, Serializable {
      */
     @Override
     public void execute(View view) {
-        view.showAcceptedLeaderAction(card,activate);
+        view.showAcceptedLeaderAction(user,card,activate);
     }
 }

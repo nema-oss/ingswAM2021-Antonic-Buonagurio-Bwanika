@@ -156,8 +156,18 @@ class PlayerTest {
         System.out.println(card.getCostResource().keySet());
         System.out.println("level == " + card.getCostDevelopment().keySet());
         System.out.println("cards == "+ card.getCostDevelopment().values());
-//        assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
+        assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
 
+        CardFactory cardFactory = new CardFactory();
+        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand.add(cardFactory.getLeaderCards().get(7));
+        player.setHand(hand);
+        card = player.getHand().get(0);
+        System.out.println(player.getHand().get(0).getLeaderType());
+        System.out.println(card.getCostResource().keySet());
+        System.out.println("type == " + card.getCostResource().keySet());
+        System.out.println("amount == "+ card.getCostResource().values());
+        assertThrows(InsufficientResourcesException.class, () -> player.activateLeaderCard(0));
     }
 
     @Test
@@ -166,6 +176,29 @@ class PlayerTest {
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
         player.getPlayerBoard().addDevelopmentCard(developmentCard);
         System.out.println(player.getPlayerBoard().getDevelopmentCards().get(1).size());
+    }
+
+    @Test
+    void setNickname(){
+        player.setNickname("prova");
+        assertEquals(player.getNickname(), "prova");
+    }
+
+    @Test
+    void moveOnPopeRoadDiscard(){
+        player.moveOnPopeRoadDiscard(3);
+        assertEquals(player.getPositionIndex(), 3);
+    }
+
+    @Test
+    void setLeaderActionPlayed(){
+        player.setLeaderActionPlayed(false);
+        assertEquals(false, player.hasPlayedLeaderAction());
+        player.setLeaderActionPlayed(true);
+        assertEquals(player.hasPlayedLeaderAction(), false);
+        player.setLeaderActionPlayed(true);
+        assertEquals(player.hasPlayedLeaderAction(), true);
+
     }
 
 }

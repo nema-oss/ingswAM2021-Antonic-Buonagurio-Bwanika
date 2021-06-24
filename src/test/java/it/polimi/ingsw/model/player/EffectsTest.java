@@ -9,16 +9,14 @@ import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,5 +105,29 @@ class EffectsTest {
         List<Resource> resources = newResources.subList(0,0);
         assertEquals(resources, auxiliaryDeposit.getAuxiliaryDeposit());
 
+    }
+
+    @Test
+    void useExtraProduction() throws InsufficientPaymentException {
+        CardFactory cardFactory = new CardFactory();
+        ArrayList<LeaderCard> card = new ArrayList<>();
+        card.add(cardFactory.getLeaderCards().get(14));
+
+        player.getActiveLeaderCards().add(card.get(0));
+        player.getStrongbox().addResourceCheat();
+
+        Map<ResourceType,Integer> productionRequirements = new HashMap<>();
+        List<Producible> productionResult = new ArrayList<>();
+
+        productionRequirements.put(ResourceType.SHIELD, 1);
+        productionResult.add(new Resource(ResourceType.STONE));
+        effects.activateExtraProduction(productionRequirements, productionResult);
+        effects.useExtraProductionEffect(player, 0);
+        player.getStrongbox().moveFromTemporary();
+        for(ResourceType resourceType: player.getStrongbox().getAll().keySet()){
+            if(resourceType.equals(ResourceType.STONE)){
+                assertEquals(52, player.getStrongbox().getAll().get(resourceType).size()+1);
+            }
+        }
     }
 }

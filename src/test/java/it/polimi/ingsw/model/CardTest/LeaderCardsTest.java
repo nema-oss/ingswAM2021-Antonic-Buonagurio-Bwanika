@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.player.Effects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +20,13 @@ public class LeaderCardsTest {
 
     private CardFactory cardFactory;
     private List<LeaderCard> leaderCards;
+    private Effects effects;
 
     @BeforeEach
     void setUp(){
         cardFactory = new CardFactory();
         leaderCards = cardFactory.getLeaderCards();
+        effects = new Effects();
     }
 
     @Test
@@ -61,6 +64,9 @@ public class LeaderCardsTest {
         assertEquals(ResourceType.SERVANT, leaderCard.getDiscountType());
         assertEquals(1, leaderCard.getDiscountAmount());
 
+        leaderCard.useEffect(effects);
+        assertEquals(true,effects.isDiscount());
+
     }
 
     @Test
@@ -73,6 +79,8 @@ public class LeaderCardsTest {
 
         assertEquals(ResourceType.STONE, card.getStorageType());
 
+        leaderCard.useEffect(effects);
+        assertEquals(true,effects.isExtraDeposit());
     }
 
     @Test
@@ -88,6 +96,9 @@ public class LeaderCardsTest {
 
         assertNull(card.getProductionResult().get(0).getType());
         assertEquals( "it.polimi.ingsw.model.gameboard.FaithPoint", card.getProductionResult().get(1).getClassName());
+
+        leaderCard.useEffect(effects);
+        assertEquals(true,effects.isExtraProduction());
     }
 
     @Test
@@ -99,7 +110,10 @@ public class LeaderCardsTest {
         assertEquals(LeaderCardType.WHITE_TO_RESOURCE, card.getLeaderType());
         assertEquals(ResourceType.SERVANT, card.getResult());
 
+        leaderCard.useEffect(effects);
+        assertEquals(true,effects.isWhiteToResource());
 
+        assertEquals(leaderCard.getId(), "l9");
     }
 
     @Test

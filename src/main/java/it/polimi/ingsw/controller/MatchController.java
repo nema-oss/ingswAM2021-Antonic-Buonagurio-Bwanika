@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
@@ -236,13 +237,20 @@ public class MatchController implements ControllerInterface{
         }
 
         int j=3;
+
         for(ResourceType r : resourcesChosen.keySet()) {
+            boolean putCorrectly = false;
             try {
                 for(int i=0; i<resourcesChosen.get(r); i++)
                     game.getCurrentPlayer().addResourceToDeposit(j, new Resource(r));
                 j--;
-            }catch(Exception | FullDepositException e){
-                errors.add(Error.DEPOSIT_IS_FULL);
+            }catch(FullDepositException e){
+                if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+                        for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
+                            if(!putCorrectly && auxiliaryDeposit.getType().equals(r))
+                                putCorrectly = auxiliaryDeposit.addResource(new Resource(r));
+                }
+                 else errors.add(Error.DEPOSIT_IS_FULL);
             }
         }
 
@@ -613,7 +621,6 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-
         if(errors.isEmpty())
             errors.addAll(controlLeaderAction());
 
@@ -634,9 +641,7 @@ public class MatchController implements ControllerInterface{
             }
         }
 
-
         nextTurn();
-
 
         return errors;
     }
@@ -738,18 +743,24 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()){
             for(Resource r : resources.keySet()){
+                boolean putCorrectly = false;
                 try {
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
                     resourcesPut.put(r, resources.get(r));
-                    System.out.println(resourcesPut);
                 } catch (FullDepositException e) {
-                    errors.add(Error.DEPOSIT_IS_FULL);
-                    for(Resource put : resourcesPut.keySet()) {
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
-                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
+                    if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+                        for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
+                            if(!putCorrectly && auxiliaryDeposit.getType().equals(r.getType()))
+                                putCorrectly =auxiliaryDeposit.addResource(r);
                     }
-                    break;
+                    if(!putCorrectly) {
+                        errors.add(Error.DEPOSIT_IS_FULL);
+
+                        for (Resource put : resourcesPut.keySet()) {
+                            game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
+                        }
+                        break;
+                    }
                 } catch (Exception e) {
                     errors.add(Error.INVALID_ACTION);
                     for(Resource put : resourcesPut.keySet())

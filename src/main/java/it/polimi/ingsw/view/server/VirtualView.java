@@ -544,6 +544,8 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void activateProductionLeaderCard(String user, List<LeaderCard> leaderCards){
         List<Error> errors = matchController.onActivateLeaderProduction(user,leaderCards);
+        System.out.println(errors.size());
+        System.out.println(errors);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionLeaderCard(user,leaderCards);
@@ -570,6 +572,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param cards the cards
      */
     private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
+        System.out.println("Rejected leader prod");
         Message message = new ErrorWriter().productionLeaderRejected(user,cards);
         sendMessage(clients.get(user), message);
 
@@ -609,6 +612,9 @@ public class VirtualView implements VirtualViewInterface{
             else
                 onRejectedActivateLeaderCard(user, card);
         }
+        else{
+            System.out.println("Game not active anymore");
+        }
 
     }
 
@@ -618,6 +624,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card activated
      */
     private void onAcceptedActivateLeaderCard(String user, LeaderCard card) {
+        System.out.println("Invio accettazione");
         Message message = new UpdateWriter().activateLeaderAccepted(card);
         sendMessage(clients.get(user), message);
 
@@ -629,6 +636,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card he wanted to activate
      */
     private void onRejectedActivateLeaderCard(String user, LeaderCard card) {
+        System.out.println("Invio rifiuto");
         Message message = new ErrorWriter().activateLeaderRejected(card);
         sendMessage(clients.get(user), message);
 

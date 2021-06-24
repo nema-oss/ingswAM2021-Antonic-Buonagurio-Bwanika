@@ -355,16 +355,14 @@ public class MatchController implements ControllerInterface{
             for (LeaderCard c : leaderCards) {
                 if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
 
-                    for(LeaderCard l : game.getCurrentPlayer().getHand()) {
+                    for(LeaderCard l : game.getCurrentPlayer().getActiveLeaderCards()) {
                         if (l.getId().equals(c.getId())) {
                             try {
                                 currPlayer.activateProductionLeader(i);
                                 leaderProductionActivated = true;
                                 game.getCurrentPlayer().setStandardActionPlayed(true);
                                 if (currPlayer.getPosition().isPopeSpace())
-                                    game.vaticanReport(currPlayer.getPositionIndex());
-                            } catch (ProductionRequirementsException e) {
-                                errors.add(Error.PRODUCTION_REQUIREMENTS_ERROR);
+                                    game.vaticanReport(currPlayer.getPositionIndex());;
                             } catch (InsufficientPaymentException e) {
                                 errors.add(Error.INSUFFICIENT_PAYMENT);
                             }
@@ -382,6 +380,7 @@ public class MatchController implements ControllerInterface{
             }
         }
 
+        System.out.println(errors);
         return errors;
     }
 
@@ -612,7 +611,8 @@ public class MatchController implements ControllerInterface{
     public List<Error> onActivateLeader(String nickname, LeaderCard leaderCard) {
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
-
+        System.out.println(game.getGamePhase());
+        System.out.println(game.getCurrentPlayer().getNickname());
 
         if(errors.isEmpty())
             errors.addAll(controlLeaderAction());
@@ -620,7 +620,8 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty()) {
             try {
                 int index;
-                for(LeaderCard l : game.getCurrentPlayer().getHand())
+                List<LeaderCard> leaderCardList = (ArrayList<LeaderCard>) ((ArrayList<LeaderCard>) game.getCurrentPlayer().getHand()).clone();
+                for(LeaderCard l : leaderCardList)
                     if(l.getId().equals(leaderCard.getId())) {
                         index = game.getCurrentPlayer().getHand().indexOf(l);
                         game.getCurrentPlayer().activateLeaderCard(index);
@@ -631,13 +632,16 @@ public class MatchController implements ControllerInterface{
                 errors.add(Error.CARD_DOESNT_EXIST);
             } catch (InsufficientResourcesException | InsufficientDevelopmentCardsException e) {
                 errors.add(Error.INSUFFICIENT_PAYMENT);
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
 
 
         nextTurn();
 
-
+        System.out.println(errors);
+        System.out.println(errors.size());
         return errors;
     }
 

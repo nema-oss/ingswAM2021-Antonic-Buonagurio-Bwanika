@@ -66,18 +66,19 @@ public class ChooseLeaderController {
         }
 
         if(selected.size() < 2){
+            selected.clear();
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText("Not enough cards selected! You need to choose exactly two leader cards.");
             alert.showAndWait();
-            selected.clear();
+            return;
         }
         else if(selected.size() > 2){
+            selected.clear();
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText("Too much leader cards selected! You need to choose exactly two leader cards.");
             alert.showAndWait();
-            selected.clear();
+            return;
         }
-
         Message message = new ChooseLeadersMessage(gui.getPlayerNickname(),selected,true);
         gui.sendMessage(message);
 

@@ -2457,21 +2457,18 @@ public class Cli extends View {
     }
 
     /**
-     * This method displays the player's extra deposit(s)
-     * @param player: player of whom extra deposit(s) will be shown
+     * This method displays an extra deposit
+     * @param auxiliaryDeposit: extra deposit to be shown
      */
-    public void showExtraDeposit(ClientPlayer player){
-        ArrayList<AuxiliaryDeposit> deposits = (ArrayList<AuxiliaryDeposit>) player.getActiveEffects().getAuxiliaryDeposits();
-        if(deposits!=null){
-            System.out.println("(" + player.getNickname() + ") Extra Deposit:");
-            for(AuxiliaryDeposit deposit: deposits){
-                ArrayList<Resource> contents = (ArrayList<Resource>) deposit.getAuxiliaryDeposit();
-                for(Resource resource: contents){
-                    System.out.print(getResourceTypeColor(resource.getType()) + RESOURCE.escape() + ANSI_RESET.escape() + " ");
-                }
-                System.out.print("\n");
-            }
+    public void showExtraDeposit(AuxiliaryDeposit auxiliaryDeposit){
+        System.out.print("Extra Deposit:\n");
+        ArrayList<Resource> contents = (ArrayList<Resource>) auxiliaryDeposit.getAuxiliaryDeposit();
+        for(Resource resource: contents){
+            System.out.print(getResourceTypeColor(resource.getType()) + RESOURCE.escape() + ANSI_RESET.escape() + " ");
         }
+        System.out.print("\n");
     }
+
+
 
 }

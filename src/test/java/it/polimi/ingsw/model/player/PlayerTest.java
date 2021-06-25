@@ -150,7 +150,10 @@ class PlayerTest {
     @DisplayName("Testing the activate a Leader Card action")
     void activateLeaderCard() throws NonExistentCardException, InsufficientResourcesException, InsufficientDevelopmentCardsException {
 
-        LeaderCardType leaderCardType = player.getHand().get(0).getLeaderType();
+        CardFactory cardFactory = new CardFactory();
+        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand.add(cardFactory.getLeaderCards().get(3));
+        player.setHand(hand);
         LeaderCard card = player.getHand().get(0);
         System.out.println(player.getHand().get(0).getLeaderType());
         System.out.println(card.getCostResource().keySet());
@@ -158,8 +161,7 @@ class PlayerTest {
         System.out.println("cards == "+ card.getCostDevelopment().values());
         assertThrows(InsufficientDevelopmentCardsException.class, () -> player.activateLeaderCard(0));
 
-        CardFactory cardFactory = new CardFactory();
-        ArrayList<LeaderCard> hand = new ArrayList<>();
+        hand = new ArrayList<>();
         hand.add(cardFactory.getLeaderCards().get(7));
         player.setHand(hand);
         card = player.getHand().get(0);

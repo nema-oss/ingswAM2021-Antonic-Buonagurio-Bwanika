@@ -169,11 +169,11 @@ public class PlayerBoardController {
                 if (!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
                     leaderCardsList.add(l2);
-                    isL1Selected = true;
+                    isL2Selected = true;
                 } else {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                     leaderCardsList.remove(l2);
-                    isL1Selected = false;
+                    isL2Selected = false;
                 }
             }
         }

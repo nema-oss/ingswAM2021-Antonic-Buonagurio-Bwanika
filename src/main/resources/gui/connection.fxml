@@ -10,7 +10,7 @@
    <AnchorPane layoutX="184.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="589.0" styleClass="anchorPane" stylesheets="@logo.css" />
    <AnchorPane layoutX="860.0" layoutY="200.0" prefHeight="477.0" prefWidth="389.0">
       <TextField fx:id="ip" layoutX="113.0" layoutY="152.0" prefHeight="36.0" prefWidth="201.0" promptText="IP (default: 127.0.0.1)" styleClass="textField" stylesheets="@gameBoard.css" />
-      <TextField fx:id="port" layoutX="113.0" layoutY="225.0" prefHeight="36.0" prefWidth="201.0" promptText="Port (default: 1234)" styleClass="textField" stylesheets="@gameBoard.css" />
+      <TextField fx:id="port" layoutX="113.0" layoutY="225.0" prefHeight="36.0" prefWidth="201.0" promptText="Port (default: 3456)" styleClass="textField" stylesheets="@gameBoard.css" />
       <Button layoutX="150.0" layoutY="301.0" mnemonicParsing="false" onAction="#onConnection" prefHeight="30.0" prefWidth="120.0" styleClass="round" stylesheets="@gameBoard.css" text="Connect" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="37.0" prefHeight="60.0" prefWidth="351.0" text="Insert Ip Address and Port">
          <font>

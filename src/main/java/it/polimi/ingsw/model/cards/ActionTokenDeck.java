@@ -18,7 +18,9 @@ public class ActionTokenDeck implements Deck<ActionToken>{
 
     @Override
     public ActionToken drawCard(){
-        return listOfActionToken.remove(0);
+        ActionToken actionToken = listOfActionToken.remove(0);
+        listOfActionToken.add(actionToken);
+        return actionToken;
     }
 
     @Override

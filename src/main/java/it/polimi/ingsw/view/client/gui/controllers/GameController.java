@@ -206,4 +206,9 @@ public class GameController implements Initializable{
     public void removePlayerBoard(String otherClient) {
         playerTabController.removePlayerBoard(otherClient);
     }
+
+
+    public void addLeaderToOtherPlayer(String user, LeaderCard card){
+        playerTabController.controllersMap.get(user).addLeaderOnOtherClient(card);
+    }
 }

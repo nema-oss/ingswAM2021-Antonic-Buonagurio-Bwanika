@@ -27,7 +27,6 @@ public class LeaderActionMessage implements ActionMessage, Serializable {
     @Override
     public void execute(VirtualView virtualView) {
 
-        System.out.println("Sono dentro il server e sto inviando le carte." + " size == " + userChoice.size() + " carte == " + userChoice);
         for(LeaderCard leaderCard: userChoice.keySet()) {
             if(userChoice.get(leaderCard)) {
                 virtualView.activateLeaderCard(user, leaderCard);

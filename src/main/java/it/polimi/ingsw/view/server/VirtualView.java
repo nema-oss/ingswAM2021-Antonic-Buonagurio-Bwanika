@@ -18,10 +18,10 @@ import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.server.ClientHandler;
 
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -624,9 +624,8 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card activated
      */
     private void onAcceptedActivateLeaderCard(String user, LeaderCard card) {
-        System.out.println("Invio accettazione");
-        Message message = new UpdateWriter().activateLeaderAccepted(card);
-        sendMessage(clients.get(user), message);
+        Message message = new UpdateWriter().activateLeaderAccepted(user,card);
+        clients.values().forEach(p->sendMessage(p,message));
 
     }
 
@@ -636,7 +635,6 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card he wanted to activate
      */
     private void onRejectedActivateLeaderCard(String user, LeaderCard card) {
-        System.out.println("Invio rifiuto");
         Message message = new ErrorWriter().activateLeaderRejected(card);
         sendMessage(clients.get(user), message);
 
@@ -652,7 +650,6 @@ public class VirtualView implements VirtualViewInterface{
             if(errors.isEmpty())
                 onAcceptedDiscardLeaderCard(user,card);
             else {
-                errors.forEach(System.out::println);
                 onRejectedDiscardLeaderCard(user, card);
             }
 
@@ -665,7 +662,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param card the card discarded
      */
     private void onAcceptedDiscardLeaderCard(String user, LeaderCard card){
-        Message message = new UpdateWriter().discardLeaderAccepted(card);
+        Message message = new UpdateWriter().discardLeaderAccepted(user,card);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
     }
@@ -678,22 +675,6 @@ public class VirtualView implements VirtualViewInterface{
     private void onRejectedDiscardLeaderCard(String user, LeaderCard card) {
         Message message = new ErrorWriter().discardLeaderRejected(card);
         sendMessage(clients.get(user), message);
-    }
-
-    /**
-     * This method close all the connections after a match is finished
-     */
-    public void endMatch(){
-        for(Socket socket: clients.values()){
-            if(!socket.isClosed()){
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("[SERVER] Disconnection! Match in lobby number = " + lobbyID + "finished");
     }
 
 
@@ -719,6 +700,39 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void lastRound(){
         LastRoundMessage message = new LastRoundMessage();
+        clients.values().forEach(p->sendMessage(p,message));
+    }
+
+    /**
+     * This method alerts the clients that the match is finished
+     */
+    @Override
+    public void endMatch() {
+
+           /*
+        for(Socket socket: clients.values()){
+            if(!socket.isClosed()){
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("[SERVER] Disconnection! Match in lobby number = " + lobbyID + "finished");
+
+         */
+    }
+
+    /**
+     * Notify the winner and the losers
+     *
+     * @param winner
+     */
+    @Override
+    public void notifyWinner(String winner) {
+
+        EndGameMessage message = new EndGameMessage(winner);
         clients.values().forEach(p->sendMessage(p,message));
     }
 

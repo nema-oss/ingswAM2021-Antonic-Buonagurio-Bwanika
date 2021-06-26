@@ -15,7 +15,6 @@ import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.view.server.VirtualViewInterface;
-import javafx.application.Platform;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.*;
@@ -855,7 +854,7 @@ public class MatchController implements ControllerInterface{
 
             if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
                 Player winner = game.endGame();
-                viewInterface.endMatch();
+                viewInterface.notifyWinner(winner.getNickname());
             }
 
             else {

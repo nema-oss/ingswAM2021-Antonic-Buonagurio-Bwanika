@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.client.EchoClient;
-import it.polimi.ingsw.view.client.viewComponents.ClientDeposit;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayerBoard;
@@ -191,8 +190,9 @@ public abstract class View {
 
     /**
      * Shows the game is finished
+     * @param winner game winner
      */
-    public abstract void showEndGame();
+    public abstract void showEndGame(String winner);
 
     /**
      * This method tells the user that login has been rejected
@@ -224,10 +224,11 @@ public abstract class View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     * @param user the current player
      * @param card the selected card
      * @param activate the result of the request
      */
-    public abstract void showAcceptedLeaderAction(LeaderCard card, boolean activate);
+    public abstract void showAcceptedLeaderAction(String user, LeaderCard card, boolean activate);
 
     /**
      * This method tells the user that the leader card action has been accepted

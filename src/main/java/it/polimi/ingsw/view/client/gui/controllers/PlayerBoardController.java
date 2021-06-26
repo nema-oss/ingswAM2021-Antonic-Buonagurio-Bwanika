@@ -76,16 +76,28 @@ public class PlayerBoardController {
     /**
      * this method shows the active leader cards
      */
-    public void showActiveLeaders() {
-        if (gui.getClientPlayer().isLeaderCardActive(l1))
+    public void showActiveLeaders(){
+        if(is1active)
             leader1.setVisible(true);
-        if (gui.getClientPlayer().isLeaderCardActive(l2))
+        if(is2active)
+            leader2.setVisible(true);
+    }
+
+    /**
+     * this method shows the active leader cards
+     */
+    public void showActiveLeaders(ClientPlayerBoard clientPlayerBoard){
+
+        if(clientPlayerBoard.getActiveLeaderCards().size() > 0)
+            System.out.println(clientPlayerBoard.getActiveLeaderCards().get(0).getId());
+        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l1.getId())))
+            leader1.setVisible(true);
+        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l2.getId())))
             leader2.setVisible(true);
     }
 
     /**
      * this method shows tha actions which can be performed on a inactive leader
-     *
      * @param event
      */
     @FXML
@@ -99,8 +111,8 @@ public class PlayerBoardController {
                 activate.setOnAction(event1 -> {
                     is1active = true;
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1, true);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,true);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     gui.sendMessage(msg);
 
@@ -108,8 +120,8 @@ public class PlayerBoardController {
 
                 MenuItem discard = new MenuItem("Discard leader card");
                 discard.setOnAction(event2 -> {
-                    Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1, false);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l1,false);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     leader1.setVisible(false);
                     gui.sendMessage(msg);
@@ -118,12 +130,13 @@ public class PlayerBoardController {
                 inactiveMenu1.getItems().addAll(activate, discard);
 
                 inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
-            } else if (leaderProdButton.isVisible()) {
-                if (!isL1Selected) {
+            } else if(leaderProdButton.isVisible()){
+                if(!isL1Selected) {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
                     leaderCardsList.add(l1);
                     isL1Selected = true;
-                } else {
+                }
+                else {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
                     leaderCardsList.remove(l1);
                     isL1Selected = false;
@@ -133,29 +146,28 @@ public class PlayerBoardController {
     }
 
     @FXML
-    private void actionsOnLeader2(MouseEvent event) {
+    private void actionsOnLeader2(MouseEvent event){
 
-        if (isLeaderAction) {
+        if(isLeaderAction) {
             if (!is2active) {
                 ContextMenu inactiveMenu2 = new ContextMenu();
 
                 MenuItem activate = new MenuItem("Activate leader card");
-                activate.setOnAction(event3 -> {
-
+                activate.setOnAction(event1 -> {
                     is2active = true;
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                    Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2, true);
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,true);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     gui.sendMessage(msg);
 
                 });
 
                 MenuItem discard = new MenuItem("Discard leader card");
-                discard.setOnAction(event4 -> {
-                    Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2, false);
+                discard.setOnAction(event2 -> {
+                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+                    userChoice.put(l2,false);
                     Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
                     leader2.setVisible(false);
                     gui.sendMessage(msg);
@@ -164,9 +176,8 @@ public class PlayerBoardController {
                 inactiveMenu2.getItems().addAll(activate, discard);
 
                 inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
-
-            } else if (leaderProdButton.isVisible()) {
-                if (!isL2Selected) {
+            } else if(leaderProdButton.isVisible()) {
+                if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
                     leaderCardsList.add(l2);
                     isL2Selected = true;
@@ -182,13 +193,13 @@ public class PlayerBoardController {
     /**
      * this method removes the green border if the leader action was not accepted
      */
-    public void leaderActivationResult() {
+    public void leaderActivationResult(){
 
-        if (!gui.getClientPlayer().isLeaderCardActive(l1)) {
+        if(!gui.getClientPlayer().isLeaderCardActive(l1)){
             is1active = false;
             leader1.getParent().setStyle("");
         }
-        if (!gui.getClientPlayer().isLeaderCardActive(l2)) {
+        if(!gui.getClientPlayer().isLeaderCardActive(l2)){
             is2active = false;
             leader2.getParent().setStyle("");
         }
@@ -197,10 +208,9 @@ public class PlayerBoardController {
 
     /**
      * this method updates the pope road
-     *
      * @param clientPlayerBoard the player's board
      */
-    public void updatePopeRoad(ClientPlayerBoard clientPlayerBoard) {
+    public void updatePopeRoad(ClientPlayerBoard clientPlayerBoard){
         int index = clientPlayerBoard.getPopeRoad().getCurrentPositionIndex();
         popeRoad.getChildren().get(currentPosition).setVisible(false);
         popeRoad.getChildren().get(index).setVisible(true);
@@ -212,7 +222,7 @@ public class PlayerBoardController {
      * this method activates board production sending the message
      */
     @FXML
-    public void activateBoardProduction() {
+    public void activateBoardProduction(){
         Map<Resource, List<ResourceType>> map = new HashMap<>();
         List<ResourceType> toGive = new ArrayList<>();
 
@@ -237,16 +247,15 @@ public class PlayerBoardController {
 
     /**
      * this method takes the corresponding resource from an url
-     *
      * @param url the url to take the substring from
      * @return the resourceType defined by the url
      */
-    private ResourceType getUrlResource(String url) {
-        if (url.contains("coin"))
+    private ResourceType getUrlResource(String url){
+        if(url.contains("coin"))
             return ResourceType.COIN;
-        else if (url.contains("shield"))
+        else if(url.contains("shield"))
             return ResourceType.SHIELD;
-        else if (url.contains("servant"))
+        else if(url.contains("servant"))
             return ResourceType.SERVANT;
         else
             return ResourceType.STONE;
@@ -256,8 +265,8 @@ public class PlayerBoardController {
      * this method activates card production sending the corresponding message
      */
     @FXML
-    public void activateCardsProduction() {
-        if (prodCardsList.size() != 0) {
+    public void activateCardsProduction (){
+        if(prodCardsList.size()!=0) {
             Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
             gui.sendMessage(msg);
             prodCardsList.clear();
@@ -274,17 +283,17 @@ public class PlayerBoardController {
      * this method activates leader production sending the corresponding message
      */
     @FXML
-    public void activateLeaderProduction() {
-        if (leaderCardsList.size() != 0) {
+    public void activateLeaderProduction(){
+        if(leaderCardsList.size()!=0) {
             Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
             gui.sendMessage(msg);
             leaderCardsList.clear();
             isL1Selected = false;
             isL2Selected = false;
-            if (is1active) {
+            if(is1active){
                 leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             }
-            if (is2active) {
+            if(is2active){
                 leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             }
         }
@@ -292,34 +301,35 @@ public class PlayerBoardController {
 
     /**
      * this method changes the resources on the board's production panel
-     *
      * @param event mouse clicked
      */
     @FXML
-    public void switchOnNextResource(MouseEvent event) {
-        if (event.getSource().equals(res1))
+    public void switchOnNextResource(MouseEvent event){
+        if( event.getSource().equals(res1) )
             setNextResource(res1, res1.getImage().getUrl());
-        if (event.getSource().equals(res2))
+        if( event.getSource().equals(res2) )
             setNextResource(res2, res2.getImage().getUrl());
-        if (event.getSource().equals(result))
+        if( event.getSource().equals(result) )
             setNextResource(result, result.getImage().getUrl());
 
     }
 
     /**
      * this method switches the images in the board production panel; default order is coin -> servant -> shield -> stone
-     *
      * @param view the ImageView clicked
-     * @param url  the Image contained in the ImageView
+     * @param url the Image contained in the ImageView
      */
-    public void setNextResource(ImageView view, String url) {
-        if (url.contains("coin")) {
+    public void setNextResource(ImageView view, String url){
+        if(url.contains("coin")) {
             view.setImage(new Image("/gui/Images/Resources/servant.png"));
-        } else if (url.contains("servant")) {
+        }
+        else if (url.contains("servant")) {
             view.setImage(new Image("/gui/Images/Resources/shield.png"));
-        } else if (url.contains("shield")) {
+        }
+        else if (url.contains("shield")) {
             view.setImage(new Image("/gui/Images/Resources/stone.png"));
-        } else if (url.contains("stone")) {
+        }
+        else if (url.contains("stone")) {
             view.setImage(new Image("/gui/Images/Resources/coin.png"));
         }
     }
@@ -327,13 +337,12 @@ public class PlayerBoardController {
 
     /**
      * this method updates the player's developmentCards
-     *
      * @param clientPlayerBoard the player board to update
      */
-    public void updateDevelopmentCards(ClientPlayerBoard clientPlayerBoard) {
+    public void updateDevelopmentCards(ClientPlayerBoard clientPlayerBoard){
 
-        for (int i = 0; i < 3; i++) {
-            if (clientPlayerBoard.getDevelopmentCards().get(i).size() != 0) {
+        for(int i=0; i<3; i++){
+            if(clientPlayerBoard.getDevelopmentCards().get(i).size() != 0) {
                 ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientPlayerBoard.getDevelopmentCard(i).getId() + ".png"));
                 card.setId(clientPlayerBoard.getDevelopmentCard(i).getId());
                 card.setFitWidth(110);
@@ -343,17 +352,19 @@ public class PlayerBoardController {
                 card.setOnMouseClicked(event -> {
                     boolean bool = controlDevelopmentCard(card);
 
-                    if (bool)
+                    if(bool)
                         prodCardsList.add(clientPlayerBoard.getDevelopmentCard(finalI));
                     else
                         prodCardsList.remove(clientPlayerBoard.getDevelopmentCard(finalI));
                 });
 
-                if (i == 0) {
+                if(i==0) {
                     dev1.setCenter(card);
-                } else if (i == 1) {
+                }
+                else if(i==1) {
                     dev2.setCenter(card);
-                } else {
+                }
+                else{
                     dev3.setCenter(card);
                 }
 
@@ -363,38 +374,42 @@ public class PlayerBoardController {
 
     /**
      * this method adds a blue border if the development card has been selected for production, and removes it otherwise
-     *
      * @param card the card clicked
      * @return true if card is selected, false otherwise
      */
-    public boolean controlDevelopmentCard(ImageView card) {
-        if (card.getParent().equals(dev1)) {
-            if (!isDev1Selected) {
+    public boolean controlDevelopmentCard(ImageView card){
+        if(card.getParent().equals(dev1)){
+            if(!isDev1Selected){
                 isDev1Selected = true;
                 dev1.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
-            } else {
+            }
+            else{
                 isDev1Selected = false;
                 dev1.setStyle("");
                 return false;
             }
-        } else if (card.getParent().equals(dev2)) {
-            if (!isDev2Selected) {
+        }
+        else if(card.getParent().equals(dev2)){
+            if(!isDev2Selected){
                 isDev2Selected = true;
                 dev2.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
-            } else {
+            }
+            else{
                 isDev2Selected = false;
                 dev2.setStyle("");
                 return false;
             }
 
-        } else {
-            if (!isDev3Selected) {
+        }
+        else {
+            if(!isDev3Selected){
                 isDev3Selected = true;
                 dev3.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
-            } else {
+            }
+            else{
                 isDev3Selected = false;
                 dev3.setStyle("");
                 return false;
@@ -405,63 +420,66 @@ public class PlayerBoardController {
 
     /**
      * this method updates the player's strongbox content
-     *
      * @param clientStrongbox the player strongbox to update
      */
-    public void updateStrongBox(ClientStrongbox clientStrongbox) {
+    public void updateStrongBox(ClientStrongbox clientStrongbox){
 
-        for (ResourceType resourceType : clientStrongbox.getAll().keySet()) {
-            if (resourceType.equals(ResourceType.COIN)) {
+        for(ResourceType resourceType : clientStrongbox.getAll().keySet()){
+            if(resourceType.equals(ResourceType.COIN)){
                 strongboxCoinCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
-            } else if (resourceType.equals(ResourceType.SHIELD)) {
+            }
+            else if(resourceType.equals(ResourceType.SHIELD)){
                 strongboxShieldCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
-            } else if (resourceType.equals(ResourceType.SERVANT)) {
+            }
+            else if(resourceType.equals(ResourceType.SERVANT)){
                 strongboxServantCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
-            } else if (resourceType.equals(ResourceType.STONE)) {
+            }
+            else if(resourceType.equals(ResourceType.STONE)){
                 strongboxStoneCount.setText(String.valueOf(clientStrongbox.getAll().get(resourceType).size()));
             }
         }
 
-        if (!clientStrongbox.getAll().containsKey(ResourceType.COIN))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.COIN))
             strongboxCoinCount.setText("0");
-        if (!clientStrongbox.getAll().containsKey(ResourceType.SHIELD))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.SHIELD))
             strongboxShieldCount.setText("0");
-        if (!clientStrongbox.getAll().containsKey(ResourceType.SERVANT))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.SERVANT))
             strongboxServantCount.setText("0");
-        if (!clientStrongbox.getAll().containsKey(ResourceType.STONE))
+        if(!clientStrongbox.getAll().containsKey(ResourceType.STONE))
             strongboxStoneCount.setText("0");
 
     }
 
     /**
      * this method updates the player's deposit content
-     *
      * @param deposit the player deposit
      */
-    public void updateDeposit(ClientDeposit deposit) {
+    public void updateDeposit(ClientDeposit deposit){
 
-        removeNodeByRowColumnIndex(0, 0, floor1);
-        removeNodeByRowColumnIndex(0, 0, floor2);
-        removeNodeByRowColumnIndex(0, 1, floor2);
-        removeNodeByRowColumnIndex(0, 0, floor3);
-        removeNodeByRowColumnIndex(0, 1, floor3);
-        removeNodeByRowColumnIndex(0, 2, floor3);
 
-        if (deposit.getNumberOfResourcesOnFloor(1) != 0) {
+        removeNodeByRowColumnIndex(0,0,floor1);
+        removeNodeByRowColumnIndex(0,0,floor2);
+        removeNodeByRowColumnIndex(0,1,floor2);
+        removeNodeByRowColumnIndex(0,0,floor3);
+        removeNodeByRowColumnIndex(0,1,floor3);
+        removeNodeByRowColumnIndex(0,2,floor3);
+
+        if(deposit.getNumberOfResourcesOnFloor(1)!=0) {
             ImageView res = new ImageView(new Image("/gui/Images/Resources/" + deposit.get(1).getType().label + ".png"));
             res.setFitHeight(30);
             res.setFitWidth(30);
 
             floor1.add(res, 0, 0);
-        } else {
+        }
+        else{
             floor1.add(new ImageView(), 0, 0);
         }
 
         ImageView res1 = new ImageView();
         ImageView res2 = new ImageView();
 
-        if (deposit.getNumberOfResourcesOnFloor(2) != 0) {
-            if (deposit.getNumberOfResourcesOnFloor(2) >= 1) {
+        if(deposit.getNumberOfResourcesOnFloor(2)!=0) {
+            if(deposit.getNumberOfResourcesOnFloor(2)>=1) {
                 res1.setImage(new Image("/gui/Images/Resources/" + deposit.get(2).getType().label + ".png"));
                 res1.setFitHeight(30);
                 res1.setFitWidth(30);
@@ -480,20 +498,20 @@ public class PlayerBoardController {
         ImageView res4 = new ImageView();
         ImageView res5 = new ImageView();
 
-        if (deposit.getNumberOfResourcesOnFloor(3) != 0) {
-            if (deposit.getNumberOfResourcesOnFloor(3) >= 1) {
+        if(deposit.getNumberOfResourcesOnFloor(3)!=0) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=1) {
                 res3.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res3.setFitHeight(30);
                 res3.setFitWidth(30);
 
             }
-            if (deposit.getNumberOfResourcesOnFloor(3) >= 2) {
+            if(deposit.getNumberOfResourcesOnFloor(3)>=2) {
                 res4.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res4.setFitHeight(30);
                 res4.setFitWidth(30);
 
             }
-            if (deposit.getNumberOfResourcesOnFloor(3) == 3) {
+            if(deposit.getNumberOfResourcesOnFloor(3)==3) {
                 res5.setImage(new Image("/gui/Images/Resources/" + deposit.get(3).getType().label + ".png"));
                 res5.setFitHeight(30);
                 res5.setFitWidth(30);
@@ -507,17 +525,16 @@ public class PlayerBoardController {
 
     /**
      * this method removes an object from a gridPane
-     *
-     * @param row      the grid's row
-     * @param column   the grid's column
+     * @param row the grid's row
+     * @param column the grid's column
      * @param gridPane the grid pane
      */
-    public void removeNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    public void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
 
         ObservableList<Node> children = gridPane.getChildren();
-        for (Node node : children) {
-            if (node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                ImageView imageView = (ImageView) node;
+        for(Node node : children) {
+            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                ImageView imageView= (ImageView) node;
                 gridPane.getChildren().remove(imageView);
                 break;
             }
@@ -526,10 +543,9 @@ public class PlayerBoardController {
 
     /**
      * this method initializes the player's board
-     *
      * @param clientPlayer the player the board belongs to
      */
-    public void initialize(ClientPlayer clientPlayer) {
+    public void initialize(ClientPlayer clientPlayer){
 
         prodCardsList = new ArrayList<>();
         leaderCardsList = new ArrayList<>();
@@ -541,11 +557,12 @@ public class PlayerBoardController {
         leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
         initializeExtraDeposit(l2);
 
-        if (clientPlayer.getPositionIndex() == 1) {
+        if(clientPlayer.getPositionIndex() == 1 ) {
             p0.setVisible(false);
             p1.setVisible(true);
             currentPosition = 1;
-        } else {
+        }
+        else{
             p0.setVisible(true);
             currentPosition = 0;
         }
@@ -554,12 +571,12 @@ public class PlayerBoardController {
 
     }
 
+
     /**
      * this method updates the whole player board
-     *
      * @param clientPlayerBoard the player to update
      */
-    public void update(ClientPlayerBoard clientPlayerBoard) {
+    public void update(ClientPlayerBoard clientPlayerBoard){
         updateDeposit(clientPlayerBoard.getDeposit());
         updateStrongBox(clientPlayerBoard.getStrongbox());
         updateDevelopmentCards(clientPlayerBoard);
@@ -572,16 +589,15 @@ public class PlayerBoardController {
             updateExtraDeposits(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits());
     }
 
-    public void setGui(Gui gui) {
+    public void setGui(Gui gui){
         this.gui = gui;
     }
 
     /**
      * this method allows or denies click on production elements and shows or hides their buttons
-     *
      * @param bool true to allow, false to deny
      */
-    public void setProductionClickable(Boolean bool) {
+    public void setProductionClickable(Boolean bool){
         boardProdButton.setVisible(bool);
         cardProdButton.setVisible(bool);
         leaderProdButton.setVisible(bool);
@@ -589,10 +605,9 @@ public class PlayerBoardController {
 
     /**
      * this method sets the messages to send when placing a development card
-     *
      * @param card card bought
      */
-    public void setCardPlaceable(DevelopmentCard card) {
+    public void setCardPlaceable(DevelopmentCard card){
         setPlacingVisible(true);
 
         place1.setOnAction(event -> {
@@ -612,10 +627,9 @@ public class PlayerBoardController {
 
     /**
      * this method shows/hides placing buttons
-     *
      * @param value true to show, false to hide
      */
-    public void setPlacingVisible(Boolean value) {
+    public void setPlacingVisible(Boolean value){
         place1.setVisible(value);
         place2.setVisible(value);
         place3.setVisible(value);
@@ -623,21 +637,19 @@ public class PlayerBoardController {
 
     /**
      * this method sets the fact that a leader action is being played
-     *
      * @param bool
      */
-    public void setLeaderAction(Boolean bool) {
+    public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
     }
 
     /**
      * this method adds the extra deposit images to a leader card
-     *
      * @param leaderCard the leader card chosen
      */
-    public void initializeExtraDeposit(LeaderCard leaderCard) {
+    public void initializeExtraDeposit(LeaderCard leaderCard){
 
-        if (leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_DEPOSIT)) {
+        if(leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_DEPOSIT)){
             String resource;
             switch (leaderCard.getId()) {
                 case "l5":
@@ -654,7 +666,7 @@ public class PlayerBoardController {
                     break;
             }
 
-            if (leaderCard.equals(l1)) {
+            if(leaderCard.equals(l1)){
                 extraDeposit1.setVisible(true);
                 extraDeposit1Type = resource;
                 dep1a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
@@ -662,7 +674,8 @@ public class PlayerBoardController {
                 dep1b.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
                 dep1b.setVisible(false);
                 extraDeposit1.toFront();
-            } else {
+            }
+            else {
                 extraDeposit2.setVisible(true);
                 extraDeposit2Type = resource;
                 dep2a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
@@ -708,6 +721,21 @@ public class PlayerBoardController {
                 dep1a.setVisible(true);
             if(amount == 2)
                 dep2a.setVisible(true);
+        }
+    }
+
+    public void addLeaderOnOtherClient(LeaderCard card) {
+
+        if(l1 == null) {
+            l1 = card;
+            is1active = true;
+            leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
+            initializeExtraDeposit(l1);
+        }else{
+            l2 = card;
+            is2active = true;
+            leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
+            initializeExtraDeposit(l2);
         }
     }
 }

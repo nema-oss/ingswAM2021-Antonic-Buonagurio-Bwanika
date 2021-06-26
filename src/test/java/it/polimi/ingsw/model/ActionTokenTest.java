@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.ActionTokenFactory;
 import it.polimi.ingsw.model.cards.ActionTokenDeck;
+import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.player.Cell;
 import it.polimi.ingsw.model.player.CellFactory;
@@ -54,4 +55,10 @@ class ActionTokenTest {
         assertNotEquals(new ActionTokenDeck(tokens), actionTokenDeck);
     }
 
+    @Test
+    void getAmount(){
+        ActionTokenDiscard actionTokenDiscard = new ActionTokenDiscard(DevelopmentCardType.BLUE, 2);
+        assertEquals(2, actionTokenDiscard.getAmount());
+
+    }
 }

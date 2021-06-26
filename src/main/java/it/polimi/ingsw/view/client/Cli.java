@@ -7,7 +7,6 @@ import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.messages.setup.server.ChooseResourcesMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.messages.setup.client.LoginRequest;
-import it.polimi.ingsw.messages.setup.server.LoginDoneMessage;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.ActionTokenDiscard;
 import it.polimi.ingsw.model.ActionTokenMove;
@@ -585,6 +584,7 @@ public class Cli extends View {
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
         }
+        System.out.println();
     }
 
     /**
@@ -1341,15 +1341,19 @@ public class Cli extends View {
 
     /**
      * This method tells the user that the leader card action has been accepted
-     * @param card
-     * @param activate
+     * @param user the current user
+     * @param card the card
+     * @param activate true to activate leader card, false to discard
      */
     @Override
-    public void showAcceptedLeaderAction(LeaderCard card, boolean activate) {
-        System.out.println("Leader action accepted.");
-        player.setLeaderActionDone();
-        player.useLeaderCard(card,activate);
-        askTurnAction();
+    public void showAcceptedLeaderAction(String user, LeaderCard card, boolean activate) {
+
+        if(user.equals(player.getNickname())) {
+            System.out.println("Leader action accepted.");
+            player.setLeaderActionDone();
+            player.useLeaderCard(card, activate);
+            askTurnAction();
+        }
     }
 
     /**
@@ -2422,9 +2426,10 @@ public class Cli extends View {
 
     /**
      *
+     * @param winner
      */
     @Override
-    public void showEndGame() {
+    public void showEndGame(String winner) {
 
     }
 

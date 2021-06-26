@@ -1,10 +1,17 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.CardFactory;
+import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PopeRoad;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +43,12 @@ class GameTest {
 
     @Test
     @DisplayName("Testing the end of the game")
-    void endGame(){}
+    void endGame(){
+        CardFactory cardFactory = new CardFactory();
+        player1.getPlayerBoard().addDevelopmentCard(cardFactory.getDevelopmentCards().get(4));
+        Player winner = game.endGame();
+        assertEquals(true, winner.equals(player1));
+    }
 
     @Test
     @DisplayName("Testing the vatican report action")
@@ -44,13 +56,15 @@ class GameTest {
 
         assertEquals(player1, game.getCurrentPlayer());
         player1.moveOnPopeRoad(FIRST_POPE_SPACE);
-      //  assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
+        game.vaticanReport(player1.getPositionIndex());
+        assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
         assertEquals(0, player2.getVictoryPoints());
 
         game.nextPlayer();
         assertEquals(game.getCurrentPlayer(),player2);
         player2.moveOnPopeRoad(FIRST_POPE_SPACE);
-//        assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
+        game.vaticanReport(player2.getPositionIndex());
+        assertEquals(FIRST_POPE_SPACE_POINTS + 3, player1.getVictoryPoints());
         assertEquals(3, player2.getVictoryPoints());
 
     }
@@ -63,5 +77,58 @@ class GameTest {
         game.setSinglePlayerCPU();
         game.lorenzoTurn();
 
+    }
+
+    @Test
+    void getPlayerByNickname(){
+        assertEquals(game.getPlayerByNickname("Player1").getNickname(), "Player1");
+    }
+
+    @Test
+    void getListOfPlayers(){
+        List<Player> expected = new ArrayList<>();
+        expected.add(player1);
+        expected.add(player2);
+        assertEquals(true, game.getListOfPlayers().equals(expected));
+
+
+    }
+
+    @Test
+    void checkLorenzoPosition(){
+        Game game1 = new Game();
+        Player single = new Player("single", new GameBoard(), game1);
+        game1.addPlayer(single);
+        game1.setSinglePlayerCPU();
+        ActionToken actionToken = game1.lorenzoTurn();
+        System.out.println(actionToken.getId());
+        for(int i = 0; i<20; i++){
+            actionToken = game1.lorenzoTurn();
+            System.out.println(actionToken.getId());
+        } //10th cell
+        single.moveOnPopeRoad(11);
+        game1.checkLorenzoPosition(11);
+        assertEquals(7, single.getVictoryPoints());
+    }
+
+    @Test
+    void movePlayersDiscard(){
+        game.movePlayersDiscard("Player1", 7);
+        assertEquals(player2.getVictoryPoints(), 3);
+        assertEquals(player1.getVictoryPoints(), 0);
+    }
+
+    @Test
+    void removePlayer(){
+        game.removePlayer("Player1");
+        assertEquals(false, game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
+        assertEquals(true, game.getListOfPlayers().contains(game.getPlayerByNickname("Player2")));
+
+    }
+
+    @Test
+    void setGamePhase(){
+        game.setGamePhase(GamePhase.CHOOSE_LEADERS);
+        assertEquals(GamePhase.CHOOSE_LEADERS, game.getGamePhase());
     }
 }

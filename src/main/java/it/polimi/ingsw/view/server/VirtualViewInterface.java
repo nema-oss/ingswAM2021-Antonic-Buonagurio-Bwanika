@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,10 @@ public interface VirtualViewInterface {
      */
     void endMatch();
 
+    /**
+     * Notify the winner and the losers
+     */
+    void notifyWinner(String winner);
     /**
      * This method asks a user to play its turn
      * @param nickname the user's nickname

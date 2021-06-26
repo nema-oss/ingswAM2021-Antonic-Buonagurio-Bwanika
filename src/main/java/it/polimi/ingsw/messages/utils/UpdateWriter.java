@@ -116,8 +116,8 @@ public class UpdateWriter {
      * @param card the leader card to activate
      * @return the message to perform a leader action of activation
      */
-    public Message activateLeaderAccepted(LeaderCard card) {
-        return new LeaderActionAccepted(card,true);
+    public Message activateLeaderAccepted(String user, LeaderCard card) {
+        return new LeaderActionAccepted(user, card,true);
     }
 
     /**
@@ -125,8 +125,8 @@ public class UpdateWriter {
      * @param card the leader card to discard
      * @return the message to perform a leader action od discard
      */
-    public Message discardLeaderAccepted(LeaderCard card) {
-        return new LeaderActionAccepted(card,false);
+    public Message discardLeaderAccepted(String user, LeaderCard card) {
+        return new LeaderActionAccepted(user, card,false);
     }
 
 

@@ -13,12 +13,15 @@ import java.io.Serializable;
  */
 public class EndGameMessage implements SetupMessage, Serializable {
     private final MessageType messageType;
+    private final String winner;
 
     /**
      * Server-side constructor to create the message
+     * @param winner
      */
-    public EndGameMessage() {
+    public EndGameMessage(String winner) {
         this.messageType = MessageType.END_GAME;
+        this.winner = winner;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class EndGameMessage implements SetupMessage, Serializable {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showEndGame();
+        view.showEndGame(winner);
     }
     /**
      * Get the message type

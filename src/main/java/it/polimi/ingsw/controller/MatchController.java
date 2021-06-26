@@ -5,12 +5,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.model.cards.leadercards.ExtraProduction;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
-import it.polimi.ingsw.model.gameboard.Marble;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Strongbox;
@@ -342,11 +341,11 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates production on active leader cards
      * @param nickname the player's nickname
-     * @param leaderCards the leaderCards chosen for production
+     * @param userChoice map with the leaderCards chosen for production ant the chosen resources to get
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards){
+    public List<Error> onActivateLeaderProduction(String nickname, Map<LeaderCard, ResourceType> userChoice){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors;
@@ -359,12 +358,13 @@ public class MatchController implements ControllerInterface{
             errors.add(Error.INVALID_ACTION);
         else {
             int i = 0;
-            for (LeaderCard c : leaderCards) {
+            for (LeaderCard c : userChoice.keySet()) {
                 if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
 
                     for(LeaderCard l : game.getCurrentPlayer().getActiveLeaderCards()) {
                         if (l.getId().equals(c.getId())) {
                             try {
+                                ((ExtraProduction)l).setProductionResult(userChoice.get(c));
                                 currPlayer.activateProductionLeader(i);
                                 leaderProductionActivated = true;
                                 game.getCurrentPlayer().setStandardActionPlayed(true);
@@ -386,8 +386,6 @@ public class MatchController implements ControllerInterface{
                 i++;
             }
         }
-
-        System.out.println(errors);
         return errors;
     }
 

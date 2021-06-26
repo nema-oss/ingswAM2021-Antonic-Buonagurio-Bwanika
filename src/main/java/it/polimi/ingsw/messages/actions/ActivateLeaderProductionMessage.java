@@ -1,11 +1,14 @@
 package it.polimi.ingsw.messages.actions;
 
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.gameboard.Producible;
+import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * message sent when a client chooses to activate the production on an active leaderCard
@@ -14,7 +17,7 @@ import java.util.List;
 public class ActivateLeaderProductionMessage implements Serializable, ActionMessage {
     private final ActionMessageType messageType;
     private final String user;
-    private List<LeaderCard> choice;
+    private Map<LeaderCard, ResourceType> choice;
     boolean accepted;
 
     /**
@@ -22,7 +25,7 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
      * @param choice: target leaderCard
      * @param accepted: the result of the request
      */
-    public ActivateLeaderProductionMessage(String user,List<LeaderCard> choice, boolean accepted) {
+    public ActivateLeaderProductionMessage(String user, Map<LeaderCard, ResourceType> choice, boolean accepted) {
         this.choice = choice;
         this.user = user;
         this.accepted = accepted;

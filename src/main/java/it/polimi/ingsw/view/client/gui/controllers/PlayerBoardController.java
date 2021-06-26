@@ -6,17 +6,14 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -53,10 +50,13 @@ public class PlayerBoardController {
     @FXML
     ImageView p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24;
 
+    @FXML
+    ComboBox<String> resourceChoiceBox1, resourceChoiceBox2;
+
     public Gui gui;
     private LeaderCard l1, l2;
     private List<DevelopmentCard> prodCardsList;
-    private List<LeaderCard> leaderCardsList;
+    private Map<LeaderCard, ResourceType> leaderProductionChoice;
     private String extraDeposit1Type, extraDeposit2Type;
     private boolean is1active, is2active, isLeaderAction, isDev1Selected, isDev2Selected, isDev3Selected, isL1Selected, isL2Selected;
     private int currentPosition;
@@ -130,15 +130,17 @@ public class PlayerBoardController {
                 inactiveMenu1.getItems().addAll(activate, discard);
 
                 inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
+
+
             } else if(leaderProdButton.isVisible()){
                 if(!isL1Selected) {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
-                    leaderCardsList.add(l1);
+                    resourceChoiceBox1.setVisible(true);
                     isL1Selected = true;
                 }
                 else {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    leaderCardsList.remove(l1);
+                    leaderProductionChoice.remove(l1);
                     isL1Selected = false;
                 }
             }
@@ -179,17 +181,38 @@ public class PlayerBoardController {
             } else if(leaderProdButton.isVisible()) {
                 if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
-                    leaderCardsList.add(l2);
+
+                    resourceChoiceBox2.setVisible(true);
                     isL2Selected = true;
                 } else {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    leaderCardsList.remove(l2);
+                    leaderProductionChoice.remove(l2);
                     isL2Selected = false;
                 }
             }
         }
     }
 
+    /**
+     * this method prepares the combobox containing the resources to choose when activating production on a leader card
+     * @param resourceChoiceBox the combo box to set up
+     */
+    public void setUpProductionMenu(ComboBox<String> resourceChoiceBox){
+
+        ObservableList<String> list = FXCollections.observableArrayList("coin","shield","servant","stone");
+        resourceChoiceBox.setItems(list);
+    }
+
+    public ResourceType convertIntoResourceType(String text){
+        if(text.equals(ResourceType.COIN.label))
+            return ResourceType.COIN;
+        if(text.equals(ResourceType.SHIELD.label))
+            return ResourceType.SHIELD;
+        if(text.equals(ResourceType.SERVANT.label))
+            return ResourceType.SERVANT;
+        return ResourceType.STONE;
+
+    }
     /**
      * this method removes the green border if the leader action was not accepted
      */
@@ -284,12 +307,25 @@ public class PlayerBoardController {
      */
     @FXML
     public void activateLeaderProduction(){
-        if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
+
+        if(isL1Selected){
+            leaderProductionChoice.put(l1, convertIntoResourceType(resourceChoiceBox1.getSelectionModel().getSelectedItem()));
+        }
+
+        if (isL2Selected) {
+            leaderProductionChoice.put(l2, convertIntoResourceType(resourceChoiceBox2.getSelectionModel().getSelectedItem()));
+        }
+
+        if(leaderProductionChoice.size()!=0) {
+
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderProductionChoice, false);
             gui.sendMessage(msg);
-            leaderCardsList.clear();
+            leaderProductionChoice.clear();
+            resourceChoiceBox1.setVisible(false);
+            resourceChoiceBox2.setVisible(false);
             isL1Selected = false;
             isL2Selected = false;
+
             if(is1active){
                 leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             }
@@ -548,7 +584,10 @@ public class PlayerBoardController {
     public void initialize(ClientPlayer clientPlayer){
 
         prodCardsList = new ArrayList<>();
-        leaderCardsList = new ArrayList<>();
+        leaderProductionChoice = new HashMap<>();
+
+        setUpProductionMenu(resourceChoiceBox1);
+        setUpProductionMenu(resourceChoiceBox2);
 
         l1 = clientPlayer.getHand().get(0);
         leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
@@ -724,6 +763,10 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method adds a leader card to a player tab different from the client's one
+     * @param card the leader card to add
+     */
     public void addLeaderOnOtherClient(LeaderCard card) {
 
         if(l1 == null) {

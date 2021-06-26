@@ -624,9 +624,13 @@ public class Gui extends View {
     public void showEndGame(String winner) {
 
         Platform.runLater(()->{
-            endGameController.setWinner(winner);
-            endGameController.setMessage(winner + " has won the match");
-            primaryStage.setScene(endGameScene);
+            try {
+                endGameController.setWinner(winner);
+                endGameController.setMessage(winner + " has won the match");
+                primaryStage.setScene(endGameScene);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         });
     }
 

@@ -710,8 +710,18 @@ public class MatchController implements ControllerInterface{
             sendPlayTurn();
         }
 
-        System.out.println(errors.size());
+        checkLastRound();
+
         return errors;
+    }
+
+    private void checkLastRound() {
+
+        if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+            Player winner = game.endGame();
+            viewInterface.notifyWinner(winner.getNickname());
+        }
+
     }
 
     /**
@@ -841,18 +851,13 @@ public class MatchController implements ControllerInterface{
 
             game.nextPlayer();
 
-            if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
-                Player winner = game.endGame();
-                viewInterface.notifyWinner(winner.getNickname());
-            }
 
-            else {
-                game.getCurrentPlayer().setStandardActionPlayed(false);
-                game.getCurrentPlayer().setLeaderActionPlayed(false);
-                if (game.getListOfPlayers().size() == 1)
-                    game.lorenzoTurn();
-                sendPlayTurn();
-            }
+            game.getCurrentPlayer().setStandardActionPlayed(false);
+            game.getCurrentPlayer().setLeaderActionPlayed(false);
+            if (game.getListOfPlayers().size() == 1)
+                game.lorenzoTurn();
+            sendPlayTurn();
+
 
         }
     }

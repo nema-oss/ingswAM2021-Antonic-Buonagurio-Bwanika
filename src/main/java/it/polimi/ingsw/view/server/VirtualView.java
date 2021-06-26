@@ -542,7 +542,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCards the selected cards
      * @param user the current user
      */
-    public void activateProductionLeaderCard(String user, List<LeaderCard> leaderCards){
+    public void activateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> leaderCards){
         List<Error> errors = matchController.onActivateLeaderProduction(user,leaderCards);
         System.out.println(errors.size());
         System.out.println(errors);
@@ -557,10 +557,10 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * this method alerts the user that his activate production action on leader cards has been accepted
      * @param user the player's nickname
-     * @param cards the cards
+     * @param choice a map with the cards and the resource type wanted
      */
-    private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
-        Message message = new UpdateWriter().productionLeaderAccepted(user,cards);
+    private void onAcceptedActivateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> choice){
+        Message message = new UpdateWriter().productionLeaderAccepted(user,choice);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
 
@@ -569,11 +569,11 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * this method alerts the user that his activate production action on leader cards has been rejected
      * @param user the player's nickname
-     * @param cards the cards
+     * @param @param choice a map with the cards and the resource type wanted
      */
-    private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
+    private void onRejectedActivateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> choice){
         System.out.println("Rejected leader prod");
-        Message message = new ErrorWriter().productionLeaderRejected(user,cards);
+        Message message = new ErrorWriter().productionLeaderRejected(user,choice);
         sendMessage(clients.get(user), message);
 
     }

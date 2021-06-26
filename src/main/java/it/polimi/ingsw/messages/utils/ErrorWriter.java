@@ -67,8 +67,8 @@ public class ErrorWriter {
         return new ActivateBoardProductionMessage(user,resourceType,false);
     }
 
-    public Message productionLeaderRejected(String user, List<LeaderCard> card) {
-        return new ActivateLeaderProductionMessage(user, card, false);
+    public Message productionLeaderRejected(String user, Map<LeaderCard, ResourceType> choice) {
+        return new ActivateLeaderProductionMessage(user, choice, false);
     }
 
     public Message activateLeaderRejected(LeaderCard card) {

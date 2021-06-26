@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.cards.leadercards;
 
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
-import it.polimi.ingsw.model.gameboard.Producible;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.model.player.Effects;
 
 import java.util.ArrayList;
@@ -52,6 +51,16 @@ public class ExtraProduction extends LeaderCard{
     @Override
     public String getId() {
         return id;
+    }
+
+    /**
+     * this method sets the result resource
+     * @param resourceType the type  of resource wanted
+     */
+    public void setProductionResult(ResourceType resourceType){
+        productionResult.clear();
+        productionResult.add(new FaithPoint(FaithType.FAITH));
+        productionResult.add(new Resource(resourceType));
     }
 
 }

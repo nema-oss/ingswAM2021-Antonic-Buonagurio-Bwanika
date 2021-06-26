@@ -104,11 +104,11 @@ public class UpdateWriter {
     /**
      * this method creates and returns the message that tells that the player wants to activate his leader cards production
      * @param user the player's nickname
-     * @param leaderCards the cards to activate the production on
+     * @param choice the cards to activate the production on and the resources to get
      * @return the message to activate leader card production
      */
-    public Message productionLeaderAccepted(String user, List<LeaderCard> leaderCards) {
-        return new ActivateLeaderProductionMessage(user, leaderCards, true);
+    public Message productionLeaderAccepted(String user, Map<LeaderCard, ResourceType> choice) {
+        return new ActivateLeaderProductionMessage(user, choice, true);
     }
 
     /**

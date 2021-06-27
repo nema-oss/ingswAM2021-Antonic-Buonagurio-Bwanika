@@ -105,6 +105,7 @@ public class ActionButtonsController implements Initializable {
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);
             setRowOrColumnVisible(true);
+            setEndTurnVisible(false);
 
         });
         cheat.setVisible(false);
@@ -219,6 +220,7 @@ public class ActionButtonsController implements Initializable {
             setResourcePaneVisible(false);
             setActivateProductionVisible(false);
             setBuyCardVisible(false);
+            gameController.makeProductionClickable(false);
             if(!leaderAction.isVisible()) {
                 setChooseActionTypeVisible(true);
                 setBackButtonVisible(false);

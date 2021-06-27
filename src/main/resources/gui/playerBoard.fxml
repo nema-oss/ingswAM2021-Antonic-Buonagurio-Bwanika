@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -113,6 +114,8 @@
          </AnchorPane>
         </AnchorPane>
       <Button fx:id="leaderProdButton" layoutY="402.0" mnemonicParsing="false" onMouseClicked="#activateLeaderProduction" prefHeight="31.0" prefWidth="130.0" styleClass="round" stylesheets="@gameBoard.css" text="Activate" visible="false" />
+      <ComboBox fx:id="resourceChoiceBox1" layoutX="6.0" layoutY="177.0" prefHeight="33.0" prefWidth="121.0" promptText="Resource" styleClass="round" stylesheets="@gameBoard.css" visible="false" />
+      <ComboBox fx:id="resourceChoiceBox2" layoutX="8.0" layoutY="358.0" prefHeight="33.0" prefWidth="121.0" promptText="Resource" styleClass="round" stylesheets="@gameBoard.css" visible="false" />
     </AnchorPane>
     <GridPane fx:id="popeRoad" layoutX="152.0" layoutY="22.0" prefHeight="94.0" prefWidth="575.0">
         <columnConstraints>

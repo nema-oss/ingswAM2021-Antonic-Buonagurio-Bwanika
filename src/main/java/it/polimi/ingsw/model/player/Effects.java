@@ -162,4 +162,10 @@ public class Effects{
         return null;
     }
 
+    /**
+     * this method returns all auxiliary deposits
+     */
+    public List<AuxiliaryDeposit> getAuxiliaryDeposits() {
+        return auxiliaryDeposits;
+    }
 }

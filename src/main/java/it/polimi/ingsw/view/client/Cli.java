@@ -584,6 +584,7 @@ public class Cli extends View {
                 System.out.print(color + DOWN_RIGHT.escape() + "\t" + ANSI_RESET.escape() + "\t\t");
             }
         }
+        System.out.println();
     }
 
     /**

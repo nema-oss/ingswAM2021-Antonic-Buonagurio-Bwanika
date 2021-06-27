@@ -63,4 +63,11 @@ public class AuxiliaryDeposit {
     public List<Resource> getAuxiliaryDeposit() {
         return auxiliaryDeposit;
     }
+
+    /**
+     * @return the type of auxiliary deposit
+     */
+    public ResourceType getType() {
+        return type;
+    }
 }

@@ -762,7 +762,7 @@ public class Gui extends View {
                 DevelopmentCard cardChosen =player.buyDevelopmentCard(x, y);
                 player.setStandardActionDone();
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
-                alertUser("Information", "Accepted buy card; select where to place your card", Alert.AlertType.INFORMATION);
+                alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
                 //playerTabController.setPlaceCard(player.getNickname(), cardChosen);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);

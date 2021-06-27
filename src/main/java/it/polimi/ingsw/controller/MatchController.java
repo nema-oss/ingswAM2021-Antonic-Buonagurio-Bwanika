@@ -4,12 +4,12 @@ import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.model.cards.leadercards.ExtraProduction;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
-import it.polimi.ingsw.model.gameboard.Marble;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Strongbox;
@@ -235,13 +235,20 @@ public class MatchController implements ControllerInterface{
         }
 
         int j=3;
+
         for(ResourceType r : resourcesChosen.keySet()) {
+            boolean putCorrectly = false;
             try {
                 for(int i=0; i<resourcesChosen.get(r); i++)
                     game.getCurrentPlayer().addResourceToDeposit(j, new Resource(r));
                 j--;
-            }catch(Exception | FullDepositException e){
-                errors.add(Error.DEPOSIT_IS_FULL);
+            }catch(FullDepositException e){
+                if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+                        for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
+                            if(!putCorrectly && auxiliaryDeposit.getType().equals(r))
+                                putCorrectly = auxiliaryDeposit.addResource(new Resource(r));
+                }
+                 else errors.add(Error.DEPOSIT_IS_FULL);
             }
         }
 
@@ -334,11 +341,11 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates production on active leader cards
      * @param nickname the player's nickname
-     * @param leaderCards the leaderCards chosen for production
+     * @param userChoice map with the leaderCards chosen for production ant the chosen resources to get
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards){
+    public List<Error> onActivateLeaderProduction(String nickname, Map<LeaderCard, ResourceType> userChoice){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors;
@@ -351,12 +358,13 @@ public class MatchController implements ControllerInterface{
             errors.add(Error.INVALID_ACTION);
         else {
             int i = 0;
-            for (LeaderCard c : leaderCards) {
+            for (LeaderCard c : userChoice.keySet()) {
                 if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
 
                     for(LeaderCard l : game.getCurrentPlayer().getActiveLeaderCards()) {
                         if (l.getId().equals(c.getId())) {
                             try {
+                                ((ExtraProduction)l).setProductionResult(userChoice.get(c));
                                 currPlayer.activateProductionLeader(i);
                                 leaderProductionActivated = true;
                                 game.getCurrentPlayer().setStandardActionPlayed(true);
@@ -378,8 +386,6 @@ public class MatchController implements ControllerInterface{
                 i++;
             }
         }
-
-        System.out.println(errors);
         return errors;
     }
 
@@ -610,8 +616,6 @@ public class MatchController implements ControllerInterface{
     public List<Error> onActivateLeader(String nickname, LeaderCard leaderCard) {
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
-        System.out.println(game.getGamePhase());
-        System.out.println(game.getCurrentPlayer().getNickname());
 
         if(errors.isEmpty())
             errors.addAll(controlLeaderAction());
@@ -635,7 +639,6 @@ public class MatchController implements ControllerInterface{
                 e.printStackTrace();
             }
         }
-
 
         nextTurn();
 
@@ -741,18 +744,24 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()){
             for(Resource r : resources.keySet()){
+                boolean putCorrectly = false;
                 try {
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
                     resourcesPut.put(r, resources.get(r));
-                    System.out.println(resourcesPut);
                 } catch (FullDepositException e) {
-                    errors.add(Error.DEPOSIT_IS_FULL);
-                    for(Resource put : resourcesPut.keySet()) {
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
-                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
+                    if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+                        for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
+                            if(!putCorrectly && auxiliaryDeposit.getType().equals(r.getType()))
+                                putCorrectly =auxiliaryDeposit.addResource(r);
                     }
-                    break;
+                    if(!putCorrectly) {
+                        errors.add(Error.DEPOSIT_IS_FULL);
+
+                        for (Resource put : resourcesPut.keySet()) {
+                            game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
+                        }
+                        break;
+                    }
                 } catch (Exception e) {
                     errors.add(Error.INVALID_ACTION);
                     for(Resource put : resourcesPut.keySet())

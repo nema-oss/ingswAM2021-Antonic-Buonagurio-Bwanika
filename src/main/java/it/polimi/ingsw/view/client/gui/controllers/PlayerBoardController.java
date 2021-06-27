@@ -749,6 +749,7 @@ public class PlayerBoardController {
     public void showExtraDeposit(AnchorPane extraDeposit, int amount){
 
         System.out.println("sono in show extra deposit");
+        System.out.println(amount);
         if(extraDeposit.equals(extraDeposit1)) {
             if (amount == 1)
                 dep1a.setVisible(true);

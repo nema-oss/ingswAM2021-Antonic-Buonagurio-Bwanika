@@ -14,7 +14,7 @@ public class Effects{
     private final List<Resource> toResources;
 
     private boolean isExtraDeposit;
-    private final List<AuxiliaryDeposit> auxiliaryDeposits;
+    private List<AuxiliaryDeposit> auxiliaryDeposits;
 
     private boolean isDiscount;
     private final Map<ResourceType, Integer> discountAmounts;
@@ -167,5 +167,24 @@ public class Effects{
      */
     public List<AuxiliaryDeposit> getAuxiliaryDeposits() {
         return auxiliaryDeposits;
+    }
+
+    /**
+     * Returns the list of available resource types for the white To Resource effect
+     * @return the available resource types
+     */
+    public List<ResourceType> getWhiteToResourceList() {
+        List<ResourceType> whiteToResourceList = new ArrayList<>();
+        toResources.forEach(p->whiteToResourceList.add(p.getType()));
+        return whiteToResourceList;
+    }
+
+
+    /**
+     * Update the auxiliary deposit
+     * @param auxiliaryDeposits the updated auxiliary deposit
+     */
+    public void updateAuxiliaryDeposits(List<AuxiliaryDeposit> auxiliaryDeposits) {
+        this.auxiliaryDeposits = auxiliaryDeposits;
     }
 }

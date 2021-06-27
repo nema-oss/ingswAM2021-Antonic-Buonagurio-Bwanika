@@ -585,17 +585,24 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()) {
 
-            try {
-                resourcesBought = game.getCurrentPlayer().buyResources(row, column);
-                game.getCurrentPlayer().setStandardActionPlayed(true);
-                if (game.getCurrentPlayer().getPosition().isPopeSpace())
-                    game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
-                controlEndOfGame();
-                viewInterface.sendResourcesBought(resourcesBought);
-            } catch (FullDepositException e) {
-                errors.add(Error.DEPOSIT_IS_FULL);
-                e.printStackTrace();
+            Player player = game.getCurrentPlayer();
+            resourcesBought = player.buyResources(row, column);
+            player.setStandardActionPlayed(true);
+            if(player.getActiveEffects().isExtraDeposit()){
+                int numberOfExtraDeposit = player.getActiveEffects().getAuxiliaryDeposits().size();
+                while(numberOfExtraDeposit > 0){
+                    player.getActiveEffects().useExtraDepositEffect(resourcesBought,numberOfExtraDeposit - 1);
+                    --numberOfExtraDeposit;
+                }
+                System.out.println("[SERVER]");
+                System.out.println("extra deposit size == " + player.getActiveEffects().getAuxiliaryDeposits().get(0).getSize());
             }
+
+            if (game.getCurrentPlayer().getPosition().isPopeSpace())
+                game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
+            controlEndOfGame();
+            viewInterface.sendResourcesBought(resourcesBought);
+
         }
 
 
@@ -759,11 +766,16 @@ public class MatchController implements ControllerInterface{
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
                     resourcesPut.put(r, resources.get(r));
                 } catch (FullDepositException e) {
+                    /*
                     if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+
+
                         for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
                             if(!putCorrectly && auxiliaryDeposit.getType().equals(r.getType()))
-                                putCorrectly =auxiliaryDeposit.addResource(r);
+                                putCorrectly = auxiliaryDeposit.addResource(r);
                     }
+
+
                     if(!putCorrectly) {
                         errors.add(Error.DEPOSIT_IS_FULL);
 
@@ -772,6 +784,11 @@ public class MatchController implements ControllerInterface{
                         }
                         break;
                     }
+
+                     */
+
+                    errors.add(Error.DEPOSIT_IS_FULL);
+                    break;
                 } catch (Exception e) {
                     errors.add(Error.INVALID_ACTION);
                     for(Resource put : resourcesPut.keySet())
@@ -844,6 +861,11 @@ public class MatchController implements ControllerInterface{
                 viewInterface.lastRound();
                 isLastRound=true;
             }
+        }else{
+            if(game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+                Player winner = game.endGame();
+                viewInterface.notifyWinner(winner.getNickname());
+            }
         }
 
     }
@@ -853,6 +875,7 @@ public class MatchController implements ControllerInterface{
      * if it is the last turn, game ends
      */
     public void nextTurn(){
+
 
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
 
@@ -869,6 +892,7 @@ public class MatchController implements ControllerInterface{
 
 
         }
+
     }
 
     /**
@@ -1036,6 +1060,21 @@ public class MatchController implements ControllerInterface{
     @Override
     public List<LeaderCard> getPlayerHand(String player) {
         return game.getPlayerByNickname(player).getHand();
+    }
+
+    /**
+     * Get the updated auxiliary deposit
+     *
+     * @param user the player
+     * @return the updated auxiliary deposit
+     */
+    @Override
+    public List<AuxiliaryDeposit> getUpdateAuxiliaryDeposit(String user) {
+        Player player = game.getPlayerByNickname(user);
+        if(player.getActiveEffects().isExtraDeposit()){
+            return player.getActiveEffects().getAuxiliaryDeposits();
+        }
+        return new ArrayList<AuxiliaryDeposit>();
     }
 
 }

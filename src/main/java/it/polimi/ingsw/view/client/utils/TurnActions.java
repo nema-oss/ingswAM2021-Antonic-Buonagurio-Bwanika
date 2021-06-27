@@ -12,13 +12,15 @@ import java.util.Map;
 public enum TurnActions {
 
     BUY_CARD("buy card"),
+    RESET("reset"),
     BUY_RESOURCES("buy resources"),
     ACTIVATE_PRODUCTION("activate production"),
     LEADER_ACTION("leader action"),
     END_TURN("end turn"),
     SHOW_GAMEBOARD("show gameboard"),
     SHOW_OTHER_PLAYERS("show other players"),
-    SHOW_ACTIVE_EFFECTS("show active effects");
+    SHOW_ACTIVE_EFFECTS("show active effects"),
+    CHEAT("cheat");
 
 
     private static final Map<String, TurnActions> BY_LABEL = new HashMap<>();

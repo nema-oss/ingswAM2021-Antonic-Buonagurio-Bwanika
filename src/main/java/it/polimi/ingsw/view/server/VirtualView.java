@@ -6,7 +6,6 @@ import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.actions.EndProductionMessage;
 import it.polimi.ingsw.messages.actions.server.LorenzoTurnMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
-import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
@@ -15,10 +14,10 @@ import it.polimi.ingsw.messages.utils.UpdateWriter;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.server.ClientHandler;
 
@@ -313,8 +312,6 @@ public class VirtualView implements VirtualViewInterface{
         Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(user, resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
     /**
      * This method sends alerts the client that its resourceType selection has been rejected
@@ -348,8 +345,6 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().moveDepositRequestAccepted(user,a, b);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
 
     /**
@@ -430,6 +425,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
         updatePlayerPosition(user);
+        updateDepositAfterAction(user, matchController.getUpdatedStrongbox(user), matchController.getUpdatedDeposit(user));
 
         /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
@@ -811,8 +807,6 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -891,6 +885,10 @@ public class VirtualView implements VirtualViewInterface{
 
         EndProductionMessage message = new EndProductionMessage(user);
         message.setProductionResult(updateStrongbox, updatedWarehouse);
+        List<AuxiliaryDeposit> auxiliaryDeposit = matchController.getUpdateAuxiliaryDeposit(user);
+        if(auxiliaryDeposit != null){
+            message.setAuxiliaryDeposit(auxiliaryDeposit);
+        }
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
     }

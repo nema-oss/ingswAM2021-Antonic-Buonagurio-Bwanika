@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.actions.server.LeaderActionAccepted;
 import it.polimi.ingsw.messages.setup.server.ChooseLeadersMessage;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.gui.Gui;
@@ -11,8 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

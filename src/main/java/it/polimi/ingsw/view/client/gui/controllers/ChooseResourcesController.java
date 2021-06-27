@@ -6,7 +6,6 @@ import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,7 +31,7 @@ public class ChooseResourcesController implements Initializable {
     private Label title;
 
     @FXML
-    private AnchorPane coinView, servantView, shieldView, stoneView;
+    private AnchorPane coinView, servantView, stoneView;
 
     @FXML
     private Button button;
@@ -68,7 +67,7 @@ public class ChooseResourcesController implements Initializable {
 
     /**
      * this method updates the label, writing how many resources the client can choose
-     * @param text
+     * @param text the text to set
      */
     public void setInstructionalLabel(String text){
         title.setText(text);
@@ -79,10 +78,10 @@ public class ChooseResourcesController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         ObservableList<Integer> numbers = FXCollections.observableArrayList(0,1,2);
-        SpinnerValueFactory<Integer> coinValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> servantValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> shieldValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> stoneValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
+        SpinnerValueFactory<Integer> coinValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> servantValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> shieldValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> stoneValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
 
         coin.setValueFactory(coinValueFactory);
         coinValueFactory.setValue(0);

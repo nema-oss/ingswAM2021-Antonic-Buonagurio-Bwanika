@@ -31,6 +31,22 @@ public class GameBoardController{
         this.gui = gui;
     }
 
+
+    /**
+     *
+     */
+    public void setCard(ImageView card, int i, int j){
+        card.setFitWidth(140.0);
+        card.setFitHeight(200.0);
+        cardMarket.add(card, j, i);
+
+        card.setOnMouseClicked(event -> {
+            card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+            buyDevelopmentCard(i, j);
+            card.setStyle("");
+        });
+    }
+
     /**
      * this method initializes the general game board
      * @param clientGameBoard the game's game board
@@ -45,17 +61,7 @@ public class GameBoardController{
                 if (clientCardMarket.getStack(i, j).getListOfCards().size() != 0) {
                     ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientCardMarket.getCard(i, j).getId() + ".png"));
                     card.setId(clientCardMarket.getCard(i, j).getId());
-                    card.setFitWidth(140.0);
-                    card.setFitHeight(200.0);
-                    cardMarket.add(card, j, i);
-
-                    int finalJ = j;
-                    int finalI = i;
-                    card.setOnMouseClicked(event -> {
-                        card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                        buyDevelopmentCard(finalI, finalJ);
-                        card.setStyle("");
-                    });
+                    setCard(card, i,  j);
                     card.setDisable(true);
                 }
 
@@ -70,6 +76,8 @@ public class GameBoardController{
         freeMarble.setImage(new Image("/gui/Images/Marbles/" + clientMarbleMarket.getFreeMarble().getColor().toString() + ".png"));
         freeMarble.setFitWidth(40);
         freeMarble.setFitHeight(40);
+
+        setCardMarketClickable(false);
 
 
     }
@@ -134,17 +142,7 @@ public class GameBoardController{
                 if(clientGameBoard.getCardMarket().getStack(i,j).getListOfCards().size()!=0) {
                     ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
                     card.setId(clientGameBoard.getCardMarket().getCard(i, j).getId());
-                    card.setFitWidth(140.0);
-                    card.setFitHeight(200.0);
-                    cardMarket.add(card, j, i);
-
-                    int finalI = i;
-                    int finalJ = j;
-                    card.setOnMouseClicked(event -> {
-                        card.setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                        buyDevelopmentCard(finalI, finalJ);
-                        card.setStyle("");
-                    });
+                    setCard(card, i, j);
                 }
             }
     }

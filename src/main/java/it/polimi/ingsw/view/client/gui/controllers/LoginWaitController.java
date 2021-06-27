@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.view.client.gui.Gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -13,12 +12,9 @@ public class LoginWaitController {
     @FXML
     private Label waitingMessage;
 
-    public void setGui(Gui gui) {
-    }
-
     /**
      * this method sets the message to be put on screen during the waiting scene
-     * @param infoMessage
+     * @param infoMessage the message to show
      */
     public void setInformationBox(String infoMessage){
         waitingMessage.setText(infoMessage);

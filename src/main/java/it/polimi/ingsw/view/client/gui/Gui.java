@@ -152,7 +152,6 @@ public class Gui extends View {
             Parent root = loader.load();
             loginWaitScene = new Scene(root);
             loginWaitController = loader.getController();
-            loginWaitController.setGui(this);
         } catch (IOException e) {
             System.out.println("Could not initialize loginWait Scene");
         }
@@ -229,7 +228,7 @@ public class Gui extends View {
     private void initGameBoard(){
 
         try{
-            gameSceneController.initializeGameBoard(player,gameBoard);
+            gameSceneController.initializeGameBoard(gameBoard);
         }catch (NullPointerException e){
             System.out.println("Could not initialize Game Board Scene");
         }
@@ -768,6 +767,7 @@ public class Gui extends View {
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setEndTurnVisible(true);
+                gameSceneController.makeCardMarketClickable(false);
             }else{
                 alertUser("Information", user + "has bought a card from market.", Alert.AlertType.INFORMATION);
             }

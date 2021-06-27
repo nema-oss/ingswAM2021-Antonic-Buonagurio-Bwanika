@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -220,6 +219,7 @@ public class ActionButtonsController implements Initializable {
             setResourcePaneVisible(false);
             setActivateProductionVisible(false);
             setBuyCardVisible(false);
+            gameController.makeCardMarketClickable(false);
             gameController.makeProductionClickable(false);
             if(!leaderAction.isVisible()) {
                 setChooseActionTypeVisible(true);

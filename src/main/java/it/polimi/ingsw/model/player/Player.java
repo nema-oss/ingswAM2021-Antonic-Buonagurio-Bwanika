@@ -249,7 +249,7 @@ public class Player{
      * @param y column index in market
      */
 
-    public List<Resource> buyResources(int x, int y) throws FullDepositException {
+    public List<Resource> buyResources(int x, int y) {
 
         MarbleMarket market = gameBoard.getMarket();
         List<Marble> marbles = market.buy(x,y);

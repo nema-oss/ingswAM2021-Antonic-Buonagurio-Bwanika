@@ -60,7 +60,6 @@ public class PlayerBoardController {
     private String extraDeposit1Type, extraDeposit2Type;
     private boolean is1active, is2active, isLeaderAction, isDev1Selected, isDev2Selected, isDev3Selected, isL1Selected, isL2Selected;
     private int currentPosition;
-    public List<Node> popeSpaces;
 
 
     /**
@@ -83,54 +82,17 @@ public class PlayerBoardController {
             leader2.setVisible(true);
     }
 
-    /**
-     * this method shows the active leader cards
-     */
-    public void showActiveLeaders(ClientPlayerBoard clientPlayerBoard){
-
-        if(clientPlayerBoard.getActiveLeaderCards().size() > 0)
-            System.out.println(clientPlayerBoard.getActiveLeaderCards().get(0).getId());
-        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l1.getId())))
-            leader1.setVisible(true);
-        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l2.getId())))
-            leader2.setVisible(true);
-    }
 
     /**
      * this method shows tha actions which can be performed on a inactive leader
-     * @param event
+     * @param event the mouse click
      */
     @FXML
     private void actionsOnLeader1(MouseEvent event) {
 
         if (isLeaderAction) {
             if (!is1active) {
-                ContextMenu inactiveMenu1 = new ContextMenu();
-
-                MenuItem activate = new MenuItem("Activate leader card");
-                activate.setOnAction(event1 -> {
-                    is1active = true;
-                    leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    gui.sendMessage(msg);
-
-                });
-
-                MenuItem discard = new MenuItem("Discard leader card");
-                discard.setOnAction(event2 -> {
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    leader1.setVisible(false);
-                    gui.sendMessage(msg);
-                });
-
-                inactiveMenu1.getItems().addAll(activate, discard);
-
-                inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
-
+                createCardMenu(leader1, l1, event, true);
 
             } else if(leaderProdButton.isVisible()){
                 if(!isL1Selected) {
@@ -144,6 +106,9 @@ public class PlayerBoardController {
                     isL1Selected = false;
                 }
             }
+            else{
+                createCardMenu(leader1, l1, event, false);
+            }
         }
     }
 
@@ -152,32 +117,8 @@ public class PlayerBoardController {
 
         if(isLeaderAction) {
             if (!is2active) {
-                ContextMenu inactiveMenu2 = new ContextMenu();
+                createCardMenu(leader2, l2, event, true);
 
-                MenuItem activate = new MenuItem("Activate leader card");
-                activate.setOnAction(event1 -> {
-                    is2active = true;
-                    leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    gui.sendMessage(msg);
-
-                });
-
-                MenuItem discard = new MenuItem("Discard leader card");
-                discard.setOnAction(event2 -> {
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    leader2.setVisible(false);
-                    gui.sendMessage(msg);
-                });
-
-                inactiveMenu2.getItems().addAll(activate, discard);
-
-                inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
             } else if(leaderProdButton.isVisible()) {
                 if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
@@ -190,7 +131,49 @@ public class PlayerBoardController {
                     isL2Selected = false;
                 }
             }
+            else{
+                createCardMenu(leader2, l2, event, false);
+            }
         }
+    }
+
+    private void createCardMenu( ImageView leader, LeaderCard l, MouseEvent event, boolean activateVisible){
+        ContextMenu inactiveMenu = new ContextMenu();
+
+        if(activateVisible) {
+            MenuItem activate = new MenuItem("Activate leader card");
+            activate.setOnAction(event1 -> {
+                if (l.equals(l1))
+                    is1active = true;
+                else if (l.equals(l2))
+                    is2active = true;
+                leader.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+
+                Map<LeaderCard, Boolean> userChoice = new HashMap<>();
+                userChoice.put(l, true);
+                Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                gui.sendMessage(msg);
+
+            });
+            inactiveMenu.getItems().add(activate);
+        }
+
+        MenuItem discard = new MenuItem("Discard leader card");
+        discard.setOnAction(event2 -> {
+            Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+            userChoice.put(l,false);
+            Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+            leader.setVisible(false);
+            leader.getParent().setStyle("");
+            if(l.equals(l1))
+                is1active = false;
+            else if (l.equals(l2))
+                is2active = false;
+            gui.sendMessage(msg);
+        });
+
+        inactiveMenu.getItems().add(discard);
+        inactiveMenu.show(leader, event.getSceneX(), event.getSceneY());
     }
 
     /**
@@ -676,7 +659,7 @@ public class PlayerBoardController {
 
     /**
      * this method sets the fact that a leader action is being played
-     * @param bool
+     * @param bool true or false
      */
     public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
@@ -749,6 +732,7 @@ public class PlayerBoardController {
     public void showExtraDeposit(AnchorPane extraDeposit, int amount){
 
         System.out.println("sono in show extra deposit");
+        System.out.println(amount);
         if(extraDeposit.equals(extraDeposit1)) {
             if (amount == 1)
                 dep1a.setVisible(true);

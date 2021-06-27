@@ -1,15 +1,13 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
-import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class ClientPlayer {
     private boolean[] actionLeaderPlayed;
     private String nickname;
     private final int victoryPoints;
-    private final ClientActiveEffects activeEffects;
+    private final Effects activeEffects;
     private List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> hand;
     private ClientGameBoard gameBoard;
@@ -38,7 +36,8 @@ public class ClientPlayer {
         playerBoard = new ClientPlayerBoard();
         this.nickname = nickname;
         victoryPoints = 0;
-        activeEffects = new ClientActiveEffects();
+        activeEffects = new Effects();
+        hand = new ArrayList<>();
         activeLeaderCards = new ArrayList<>();
         this.standardActionPlayed = false;
         this.actionLeaderPlayed = new boolean[2];
@@ -114,7 +113,7 @@ public class ClientPlayer {
     /**
      * @return the player's active leader effects
      */
-    public ClientActiveEffects getActiveEffects() {
+    public Effects getActiveEffects() {
         return activeEffects;
     }
 
@@ -277,6 +276,8 @@ public class ClientPlayer {
 
         if(activate){
             LeaderCard leaderCard = hand.stream().filter(p->p.getId().equals(card.getId())).findAny().orElse(null);
+
+            card.useEffect(activeEffects);
             if(leaderCard != null) {
                 activeLeaderCards.add(leaderCard);
                 playerBoard.addActiveLeaderCard(leaderCard);
@@ -290,11 +291,15 @@ public class ClientPlayer {
      * this method updates the deposit and the strongbox
      * @param updatedStrongbox the updated strongbox
      * @param updatedWarehouse the updated warehouse
+     * @param auxiliaryDeposits the update auxiliary deposits
      */
-    public void updateDeposit(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+    public void updateDeposit(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposits) {
 
         ClientStrongbox strongbox = playerBoard.getStrongbox();
         ClientDeposit deposit = playerBoard.getDeposit();
+
+        if(activeEffects.isExtraDeposit())
+            activeEffects.updateAuxiliaryDeposits(auxiliaryDeposits);
 
         strongbox.update(updatedStrongbox);
         deposit.update(updatedWarehouse);

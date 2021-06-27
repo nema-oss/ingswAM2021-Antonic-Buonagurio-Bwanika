@@ -229,7 +229,7 @@ public class Gui extends View {
     private void initGameBoard(){
 
         try{
-            gameSceneController.initializeGameBoard(gameBoard);
+            gameSceneController.initializeGameBoard();
         }catch (NullPointerException e){
             System.out.println("Could not initialize Game Board Scene");
         }

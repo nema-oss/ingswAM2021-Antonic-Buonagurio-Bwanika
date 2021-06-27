@@ -61,7 +61,7 @@ public class ChooseResourcesController implements Initializable {
         if(stone.getValue()!=0)
             selectedResourceTypes.put(ResourceType.STONE, stone.getValue());
 
-        Message message = new ChooseResourcesMessage(gui.getPlayerNickname(),selectedResourceTypes,false);
+        Message message = new ChooseResourcesMessage(gui.getClientPlayer().getNickname(),selectedResourceTypes,false);
         gui.sendMessage(message);
 
     }

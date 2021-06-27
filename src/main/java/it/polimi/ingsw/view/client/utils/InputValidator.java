@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.utils;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
@@ -203,34 +204,33 @@ public class InputValidator {
     }
 
 
-    public static List<LeaderCard> isValidLeaderCardChoice(List<LeaderCard> cards, String input) {
-
+    public static Map<LeaderCard, ResourceType> isValidLeaderCardChoice(List<LeaderCard> cards, String input) {
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
         if(rawList.size() != 2) return null;
 
-        String command = rawList.get(0).toLowerCase(Locale.ROOT);
-        if(!command.equals(DEVELOPMENT_CARD)) return null;
+        String card = rawList.get(0).toLowerCase(Locale.ROOT);
+        String resource = rawList.get(1).toLowerCase(Locale.ROOT);
+        ResourceType resourceType = isResourceType(resource);
+        if(resourceType == null) return null;
 
-        List<String> list = Arrays.asList(rawList.get(1).split("\\s*,\\s*"));
-        List<String> splitInput = list.stream()
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<LeaderCard> userChoice;
-        int idx;
-
-        try{
-            userChoice = new ArrayList<>();
-            for(String choice: splitInput) {
-                idx = Integer.parseInt(choice);
-                userChoice.add(cards.get(idx));
-            }
-        }catch (NumberFormatException | IndexOutOfBoundsException e){
-            return null;
+        Map<LeaderCard, ResourceType> result = new HashMap<>();
+        switch (card){
+            case "l1":
+                if(cards.get(0).getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)){
+                    result.put(cards.get(0), resourceType);
+                    return result;
+                }
+                break;
+            case "l2":
+                if(cards.get(1).getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)){
+                    result.put(cards.get(1), resourceType);
+                    return result;
+                }
+                break;
         }
 
-        return userChoice;
+        return null;
     }
 
     public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {

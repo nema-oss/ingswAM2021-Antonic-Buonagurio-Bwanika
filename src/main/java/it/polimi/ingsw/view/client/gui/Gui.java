@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -88,7 +89,7 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         initTurnActions();
-        intEndGame();
+        initEndGame();
         isGameScene = false;
 
     }
@@ -103,7 +104,7 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         initTurnActions();
-        intEndGame();
+        //initEndGame();
 
     }
 
@@ -236,9 +237,9 @@ public class Gui extends View {
     }
 
     /**
-     * this method initalizes the final scene
+     * this method initializes the final scene
      */
-    private void intEndGame() {
+    private void initEndGame() {
 
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/winner");
@@ -326,8 +327,6 @@ public class Gui extends View {
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
             gameSceneController.addLeadersToPlayer();
-           /* primaryStage.setScene(chooseResourcesScene);
-            primaryStage.show(); */
         });
     }
 
@@ -371,10 +370,10 @@ public class Gui extends View {
     }
 
     @Override
-    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
 
         Platform.runLater(()->{
-            player.updateDeposit(updatedStrongbox,updatedWarehouse);
+            player.updateDeposit(updatedStrongbox,updatedWarehouse,auxiliaryDeposit);
             player.setStandardActionDone();
             playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
@@ -623,11 +622,14 @@ public class Gui extends View {
     @Override
     public void showEndGame(String winner) {
 
+        /*
         Platform.runLater(()->{
             endGameController.setWinner(winner);
             endGameController.setMessage(winner + " has won the match");
             primaryStage.setScene(endGameScene);
         });
+
+         */
     }
 
     /**
@@ -722,7 +724,7 @@ public class Gui extends View {
                 alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
                 player.useLeaderCard(card, activate);
                 playerTabController.controlLeaders(player);
-                actionButtonsController.setLeaderActionVisible(false);
+                actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setChooseLeaderActionVisible(false);
                 actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
                 actionButtonsController.setEndTurnVisible(true);
@@ -884,7 +886,8 @@ public class Gui extends View {
                     player.getDeposit().addResource(j, new Resource(resourceType));
                 j--;
             }
-            playerBoardController.updateDeposit(player.getDeposit());
+            playerBoardController.update(player.getPlayerBoard());
+            //playerBoardController.updateDeposit(player.getDeposit());
 
         });
 

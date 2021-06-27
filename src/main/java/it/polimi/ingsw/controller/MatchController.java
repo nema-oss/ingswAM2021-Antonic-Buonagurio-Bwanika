@@ -851,6 +851,11 @@ public class MatchController implements ControllerInterface{
                 viewInterface.lastRound();
                 isLastRound=true;
             }
+        }else{
+            if(game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+                Player winner = game.endGame();
+                viewInterface.notifyWinner(winner.getNickname());
+            }
         }
 
     }
@@ -861,7 +866,7 @@ public class MatchController implements ControllerInterface{
      */
     public void nextTurn(){
 
-        /*
+
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
 
             sendEndTurn();
@@ -883,7 +888,6 @@ public class MatchController implements ControllerInterface{
 
         }
 
-         */
     }
 
     /**

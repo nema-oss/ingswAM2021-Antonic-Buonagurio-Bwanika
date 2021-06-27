@@ -104,7 +104,7 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         initTurnActions();
-        //initEndGame();
+        initEndGame();
 
     }
 
@@ -244,11 +244,11 @@ public class Gui extends View {
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/winner");
             Parent root = loader.load();
-            gameScene = new Scene(root);
+            endGameScene = new Scene(root);
             endGameController = loader.getController();
 
         } catch (IOException e) {
-            System.out.println("Could not initialize Game Scene");
+            System.out.println("Could not initialize End game Scene");
         }
     }
 
@@ -622,14 +622,12 @@ public class Gui extends View {
     @Override
     public void showEndGame(String winner) {
 
-        /*
         Platform.runLater(()->{
             endGameController.setWinner(winner);
             endGameController.setMessage(winner + " has won the match");
             primaryStage.setScene(endGameScene);
         });
 
-         */
     }
 
     /**

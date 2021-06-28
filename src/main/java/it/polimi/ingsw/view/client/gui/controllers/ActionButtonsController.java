@@ -194,6 +194,7 @@ public class ActionButtonsController implements Initializable {
                 UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
                 gui.sendMessage(updateClientPlayerBoardsMessage);
                 gui.sendMessage(msg);
+                gameController.makeCardMarketClickable(false);
             }
         });
         setEndTurnVisible(false);

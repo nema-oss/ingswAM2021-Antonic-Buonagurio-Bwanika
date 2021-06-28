@@ -1438,6 +1438,8 @@ public class Cli extends View {
                     deposit.addResource(j, new Resource(resourceType));
                 j--;
             }
+            UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+            sendMessage(socket, message);
     }
 
 

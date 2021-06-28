@@ -46,7 +46,6 @@ class PopeRoadTest {
                 System.out.println(popeRoad.getCurrentPosition().getPoints());
                 p += popeRoad.getCurrentPosition().getPoints();
                 popeRoad.move();
-                //assertEquals(prevPosition + i, popeRoad.getCurrentPositionIndex());
             }
             System.out.println(p);
         }
@@ -61,6 +60,7 @@ class PopeRoadTest {
             popeRoad.move(steps);
             assertEquals(popeRoad.getSize() - 1, popeRoad.getCurrentPositionIndex(),
                     "Players should be able to move till the end");
+            assertEquals(20, popeRoad.getCurrentPosition().getPoints());
             popeRoad.move();
             assertEquals(popeRoad.getSize() - 1, popeRoad.getCurrentPositionIndex(),
                     "Players should be able to move till the end");

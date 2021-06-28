@@ -31,7 +31,7 @@ public class ActionTokenDiscard extends ActionToken{
     }
 
     /**
-     * @return type of crads to discard
+     * @return type of cards to discard
      */
     public DevelopmentCardType getType() {
         return type;

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,17 +53,23 @@ class BoardTest {
 
     @Test
     void addDevelopmentCard() throws NonExistentCardException {
-        DevelopmentCard developmentCard = developmentDeck.drawCard();
-        board.addDevelopmentCard(developmentCard, 1);
-        assertEquals(developmentCard, board.getDevelopmentCard(1));
 
         CardFactory cardFactory = new CardFactory();
-        DevelopmentCard secondCard = cardFactory.getDevelopmentCards().get(17);
-        board.addDevelopmentCard(secondCard, 1);
-        assertEquals(secondCard, board.getDevelopmentCard(1));
+        Stream<DevelopmentCard> level1cards = cardFactory.getDevelopmentCards().stream().filter(DevelopmentCard -> DevelopmentCard.getLevel()==1);
+
+        DevelopmentCard developmentCard = level1cards.findFirst().get();
+        board.addDevelopmentCard(developmentCard, 0);
+        assertEquals(developmentCard, board.getDevelopmentCard(0));
+
+        for (DevelopmentCard c : cardFactory.getDevelopmentCards()) {
+            if (c.getType().equals(developmentCard.getType()) && c.getLevel() == developmentCard.getLevel() + 1) {
+                board.addDevelopmentCard(c);
+                break;
+            }
+        }
 
         DevelopmentCard illegalCard = developmentDeck.drawCard();
-        assertThrows(IllegalArgumentException.class,()-> board.addDevelopmentCard(illegalCard, 1));
+        assertThrows(IllegalArgumentException.class,()-> board.addDevelopmentCard(illegalCard, 0));
 
     }
 }

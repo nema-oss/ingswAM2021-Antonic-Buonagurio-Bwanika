@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ActionTokenTest {
 
@@ -60,5 +59,22 @@ class ActionTokenTest {
         ActionTokenDiscard actionTokenDiscard = new ActionTokenDiscard(DevelopmentCardType.BLUE, 2);
         assertEquals(2, actionTokenDiscard.getAmount());
 
+    }
+
+    @Test
+    void specificTokenTest(){
+        for(ActionToken token : tokens){
+            if(token.getId().equals("7")){
+                assertTrue(((ActionTokenMove)token).isShuffle());
+                assertEquals(1, ((ActionTokenMove)token).getSteps());
+            }
+            else if(token.getId().equals("5")){
+                assertFalse(((ActionTokenMove) token).isShuffle());
+                assertEquals(2, ((ActionTokenMove)token).getSteps());
+            }
+            else if(token.getId().equals("1")){
+                assertEquals(DevelopmentCardType.BLUE, ((ActionTokenDiscard)token).getType());
+            }
+        }
     }
 }

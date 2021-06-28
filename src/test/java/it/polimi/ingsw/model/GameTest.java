@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PopeRoad;
@@ -38,7 +40,13 @@ class GameTest {
 
     @Test
     @DisplayName("Testing the starting configuration of the match")
-    void startGame(){}
+    void startGame(){
+        LeaderDeck leaderDeck = new LeaderDeck(new CardFactory().getLeaderCards());
+        for (LeaderCard card : leaderDeck.getListOfCards()) {
+            String id = card.getId();
+            assertTrue(game.getLeaderDeck().getListOfCards().stream().anyMatch(LeaderCard -> LeaderCard.getId().equals(id)));
+        }
+    }
 
 
     @Test
@@ -47,7 +55,7 @@ class GameTest {
         CardFactory cardFactory = new CardFactory();
         player1.getPlayerBoard().addDevelopmentCard(cardFactory.getDevelopmentCards().get(4));
         Player winner = game.endGame();
-        assertEquals(true, winner.equals(player1));
+        assertTrue(winner.equals(player1));
     }
 
     @Test
@@ -76,6 +84,7 @@ class GameTest {
 
         game.setSinglePlayerCPU();
         game.lorenzoTurn();
+        assertEquals(25, game.getLorenzoPopeRoad().getSize());
 
     }
 
@@ -89,9 +98,11 @@ class GameTest {
         List<Player> expected = new ArrayList<>();
         expected.add(player1);
         expected.add(player2);
-        assertEquals(true, game.getListOfPlayers().equals(expected));
+        assertEquals(game.getListOfPlayers(), expected);
 
-
+        game.setPlayersOrder();
+        game.setCurrentPlayer(player1);
+        assertEquals(player1, game.getCurrentPlayer());
     }
 
     @Test
@@ -121,8 +132,10 @@ class GameTest {
     @Test
     void removePlayer(){
         game.removePlayer("Player1");
-        assertEquals(false, game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
-        assertEquals(true, game.getListOfPlayers().contains(game.getPlayerByNickname("Player2")));
+        assertFalse(game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
+        assertTrue(game.getListOfPlayers().contains(game.getPlayerByNickname("Player2")));
+        game.reconnectPlayer("Player1");
+        assertTrue(game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
 
     }
 

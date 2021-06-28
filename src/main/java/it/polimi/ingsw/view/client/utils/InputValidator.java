@@ -173,6 +173,14 @@ public class InputValidator {
         return null;
     }
 
+    /**
+     * Checks if the development card production request is correct.
+     * @param cards the development cards available
+     * @param input the user's input. Format example = "develop-1" to use the first development card or "develop-1,2"
+     *              to use the first and the second card.
+     * @return the user's choice
+     */
+
     public static List<DevelopmentCard> isValidDevelopmentCardChoice(List<DevelopmentCard> cards, String input) {
 
 
@@ -180,19 +188,16 @@ public class InputValidator {
         if(rawList.size() != 2) return null;
 
         String command = rawList.get(0).toLowerCase(Locale.ROOT);
-        if(!command.equals(LEADER)) return null;
+        if(!command.equals(DEVELOPMENT_CARD)) return null;
 
         List<String> list = Arrays.asList(rawList.get(1).split("\\s*,\\s*"));
-        List<String> splitInput = list.stream()
-                .distinct()
-                .collect(Collectors.toList());
 
         List<DevelopmentCard> userChoice;
         int idx;
 
         try{
             userChoice = new ArrayList<>();
-            for(String choice: splitInput) {
+            for(String choice: list) {
                 idx = Integer.parseInt(choice);
                 userChoice.add(cards.get(idx));
             }
@@ -204,6 +209,12 @@ public class InputValidator {
     }
 
 
+    /**
+     * Check if the leader production request input is correct
+     * @param cards the leader cards available
+     * @param input the user's input. Format example = "l1-shield" to receive 1 shield using the first card
+     * @return the user's choice
+     */
     public static Map<LeaderCard, ResourceType> isValidLeaderCardChoice(List<LeaderCard> cards, String input) {
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
@@ -233,9 +244,14 @@ public class InputValidator {
         return null;
     }
 
+    /**
+     * Check if the board production input is correct
+     * @param input user's input. Format example = " board/shield,coin=stone" to give 1 shield and 1 coin and get 1 stone
+     * @return the user's choice
+     */
     public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {
 
-        List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
+        List<String> rawList = Arrays.asList(input.split("\\s*/\\s*"));
         if(rawList.size() != 2) return null;
 
         String command = rawList.get(0).toLowerCase(Locale.ROOT);

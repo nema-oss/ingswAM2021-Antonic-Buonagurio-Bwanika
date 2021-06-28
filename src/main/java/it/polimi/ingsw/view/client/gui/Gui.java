@@ -701,6 +701,7 @@ public class Gui extends View {
             if(player.getBoughtResources().size()!=0) {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
+                actionButtonsController.setChooseActionTypeVisible(false);
             }
             else{
                 player.setStandardActionDone();

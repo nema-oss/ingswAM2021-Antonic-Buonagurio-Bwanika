@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
+
+import javax.naming.InsufficientResourcesException;
 import java.util.*;
 
 public class Effects{
@@ -119,16 +121,22 @@ public class Effects{
      * @param player the current player
      * @param positionIndex the index of the selected effect
      */
-    public void useExtraProductionEffect(Player player, int positionIndex) throws InsufficientPaymentException {
+    public void useExtraProductionEffect(Player player, int positionIndex) throws InsufficientPaymentException{
 
-        player.checkCardRequirements(productionRequirementsList.get(positionIndex));
-        List<Resource> result = new ArrayList<>();
-        for(Producible producible: productionResultList.get(positionIndex)){
-            if(!producible.useEffect(player.getPopeRoad())) {
-                result.add(new Resource((ResourceType) producible.getType()));
+        try {
+            player.checkCardRequirements(productionRequirementsList.get(positionIndex));
+            player.takeResourceForAction(productionRequirementsList.get(positionIndex));
+            List<Resource> result = new ArrayList<>();
+            for (Producible producible : productionResultList.get(positionIndex)) {
+                if (!producible.useEffect(player.getPopeRoad())) {
+                    result.add(new Resource((ResourceType) producible.getType()));
+                }
             }
+            player.getStrongbox().addResourceTemporary(result);
         }
-        player.getStrongbox().addResourceTemporary(result);
+        catch (InsufficientPaymentException | InsufficientResourcesException e){
+            throw new InsufficientPaymentException();
+        }
 
     }
 

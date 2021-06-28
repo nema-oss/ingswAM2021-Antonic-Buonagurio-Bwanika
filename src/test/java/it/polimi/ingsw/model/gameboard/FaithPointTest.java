@@ -22,7 +22,7 @@ public class FaithPointTest {
     }
 
     @Test
-    @DisplayName("tests effect of a faithpoint on a player's poperoad")
+    @DisplayName("tests effect of a faith point on a player's pope road")
     public void useEffectTest() {
         faithPoint = new FaithPoint(FaithType.FAITH);
         PopeRoad popeRoad = new PopeRoad(Arrays.asList(new CellFactory().getCells().clone()));
@@ -38,6 +38,7 @@ public class FaithPointTest {
     }
 
     @Test
+    @DisplayName("testing getter of class name")
     public void getClassNameTest(){
         faithPoint = new FaithPoint(FaithType.FAITH);
         assertEquals("it.polimi.ingsw.model.gameboard.FaithPoint",faithPoint.getClassName());

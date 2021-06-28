@@ -130,6 +130,7 @@ class EffectsTest {
     }
 
     @Test
+    @DisplayName("testing usage of extra production")
     void useExtraProduction() throws InsufficientPaymentException {
         CardFactory cardFactory = new CardFactory();
         ArrayList<LeaderCard> card = new ArrayList<>();

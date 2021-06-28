@@ -89,6 +89,7 @@ class DepositTest {
     }
 
     @Test
+    @DisplayName("testing floor getter")
     void getFloor() throws FullDepositException {
         deposit = new Deposit();
         deposit.addResource(1, new Resource(ResourceType.COIN));
@@ -98,6 +99,7 @@ class DepositTest {
     }
 
     @Test
+    @DisplayName("testing adding and getting resources from deposit")
     void getResources2() throws FullDepositException, InsufficientResourcesException {
         deposit = new Deposit();
         List<Resource> resources = new ArrayList<Resource>();
@@ -114,7 +116,8 @@ class DepositTest {
     }
 
     @Test
-    void swapFloors() throws FullDepositException {
+    @DisplayName("testing swap floors, adding in full floor, getter of entire deposit")
+    void swapAndExceptionsTest() throws FullDepositException {
         deposit = new Deposit();
         Resource firstRes = new Resource(ResourceType.SHIELD);
         Resource secondRes = new Resource(ResourceType.COIN);

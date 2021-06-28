@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ class BoardTest {
 
 
     @Test
+    @DisplayName("testing usage of board's production")
     void useProductionPower() throws Exception {
 
         List<Resource> toGive = new ArrayList<>();
@@ -52,6 +54,7 @@ class BoardTest {
     }
 
     @Test
+    @DisplayName("testing development card add on board")
     void addDevelopmentCard() throws NonExistentCardException {
 
         CardFactory cardFactory = new CardFactory();

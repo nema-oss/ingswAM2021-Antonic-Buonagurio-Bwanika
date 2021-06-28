@@ -17,6 +17,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing setting virtual view in the controller")
     public void setVirtualViewTest(){
 
         controller = new MatchController();
@@ -52,6 +54,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing connection of new player")
     public void onControllerNewPlayerTest(){
 
         controller = new MatchController();
@@ -87,6 +90,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing start of game")
     public void onStartGameTest(){
 
         controller = new MatchController();
@@ -110,6 +114,7 @@ public class ControllerTest {
 
 
     @Test
+    @DisplayName("testing initial leader cards choice")
     public void onLeaderCardsChosenTest(){
 
         controller = new MatchController();
@@ -148,6 +153,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing initial resources choice")
     public void onResourcesChosenTest(){
 
         controller = new MatchController();
@@ -176,6 +182,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing production activation")
     public void onActivateProductionTest(){
 
         controller = new MatchController();
@@ -225,6 +232,7 @@ public class ControllerTest {
     public void onActivateLeaderTest(){} */
 
     @Test
+    @DisplayName("testing leader card discard")
     public void onDiscardLeaderTest(){
 
         controller = new MatchController();
@@ -255,6 +263,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing end of turn")
     public void EndTurnTest(){
 
         controller = new MatchController();
@@ -279,6 +288,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing deposit swaps")
     public void onMoveDepositTest(){
 
         controller = new MatchController();
@@ -309,6 +319,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing resources discard")
     public void onDiscardResourceTest(){
 
         controller = new MatchController();
@@ -335,6 +346,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing pass of turn")
     public void nextTurnTest(){
 
         controller = new MatchController();
@@ -366,6 +378,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing control on game phases and current player")
     public void controlTurnTest(){
 
         controller = new MatchController();
@@ -390,6 +403,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing control on player's turn: standard action")
     public void onControlStandardActionTest(){
 
         controller = new MatchController();
@@ -412,6 +426,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing control on player's turn: leader action")
     public void onControlLeaderActionTest(){
 
         controller = new MatchController();
@@ -436,6 +451,7 @@ public class ControllerTest {
     }
 
     @Test
+    @DisplayName("testing player disconnection")
     public void onPlayerDisconnectionTest(){
 
         controller = new MatchController();

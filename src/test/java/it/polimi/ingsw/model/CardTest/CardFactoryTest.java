@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.FaithType;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class CardFactoryTest {
     }
 
     @Test
+    @DisplayName("testing creation of development cards")
     void getDevelopmentCardsTest(){
         assertEquals(48, developmentCards.size());
 
@@ -50,6 +52,7 @@ public class CardFactoryTest {
     }
 
     @Test
+    @DisplayName("testing creation of leader cards")
     void getLeaderCardsTest(){
         assertEquals(16, leaderCards.size());
         System.out.println(leaderCards);

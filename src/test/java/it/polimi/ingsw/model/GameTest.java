@@ -89,11 +89,13 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing return of correct player from getter")
     void getPlayerByNickname(){
         assertEquals(game.getPlayerByNickname("Player1").getNickname(), "Player1");
     }
 
     @Test
+    @DisplayName("testing correct return of list of players")
     void getListOfPlayers(){
         List<Player> expected = new ArrayList<>();
         expected.add(player1);
@@ -106,6 +108,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing lorenzo's position")
     void checkLorenzoPosition(){
         Game game1 = new Game();
         Player single = new Player("single", new GameBoard(), game1);
@@ -123,6 +126,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing other player's move on pope road when discarding a leader")
     void movePlayersDiscard(){
         game.movePlayersDiscard("Player1", 7);
         assertEquals(player2.getVictoryPoints(), 3);
@@ -130,6 +134,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing player's removal from game")
     void removePlayer(){
         game.removePlayer("Player1");
         assertFalse(game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
@@ -140,6 +145,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing correct return of game phase")
     void setGamePhase(){
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
         assertEquals(GamePhase.CHOOSE_LEADERS, game.getGamePhase());

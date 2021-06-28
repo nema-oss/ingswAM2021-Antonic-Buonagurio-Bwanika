@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Cell;
 import it.polimi.ingsw.model.player.CellFactory;
 import it.polimi.ingsw.model.player.PopeRoad;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ class ActionTokenTest {
     }
 
     @Test
+    @DisplayName("testing token deck")
     void tokenDeckTest(){
 
         assertEquals(tokens.get(0), actionTokenDeck.getTop());
@@ -55,6 +57,7 @@ class ActionTokenTest {
     }
 
     @Test
+    @DisplayName("testing action token discard amount getter")
     void getAmount(){
         ActionTokenDiscard actionTokenDiscard = new ActionTokenDiscard(DevelopmentCardType.BLUE, 2);
         assertEquals(2, actionTokenDiscard.getAmount());
@@ -62,6 +65,7 @@ class ActionTokenTest {
     }
 
     @Test
+    @DisplayName("testing specific tokens: move and shuffle, move and don't shuffle, discard")
     void specificTokenTest(){
         for(ActionToken token : tokens){
             if(token.getId().equals("7")){

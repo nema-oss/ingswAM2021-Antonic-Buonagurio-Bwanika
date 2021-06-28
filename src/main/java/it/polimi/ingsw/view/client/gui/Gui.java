@@ -325,7 +325,7 @@ public class Gui extends View {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
-            //gameSceneController.addLeadersToPlayer();
+            chooseResourcesController.setNumberOfResources(numberOfResources);
         });
     }
 

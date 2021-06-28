@@ -139,6 +139,7 @@ public class VirtualView implements VirtualViewInterface{
                 if (!socket.isClosed())
                     sendMessage(socket, message);
             }
+            matchController.onEndTurn(nickname);
             if (isActive()) inGameReconnectionHandler.onClientDown(this, nickname);
         }
     }
@@ -679,7 +680,9 @@ public class VirtualView implements VirtualViewInterface{
      * @param disconnectedPlayer the disconnected player's nickname
      */
     public void inGameDisconnection(String disconnectedPlayer) {
+
         matchController.onPlayerDisconnection(disconnectedPlayer);
+        clients.remove(disconnectedPlayer);
     }
 
     /**
@@ -914,6 +917,17 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void addClientHandler(String nickname, ClientHandler clientHandler) {
         inGameReconnectionHandler.addClientHandler(nickname,clientHandler);
+    }
+
+    /**
+     * End the games if after disconnection, only one player remains
+     */
+    public void endMatchDisconnection() {
+
+        if(clients.values().size() == 1){
+            String player = clients.keySet().stream().findFirst().get();
+            notifyWinner(player);
+        }
     }
 }
 

@@ -148,7 +148,6 @@ public class ClientHandler implements Runnable{
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        // this should manage the disconnection in game from the logic side ---> advanced functionality
         if(virtualView.isActive())
             virtualView.clientDown(client);
     }

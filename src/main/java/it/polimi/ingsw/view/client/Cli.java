@@ -1382,8 +1382,11 @@ public class Cli extends View {
      */
     @Override
     public void showProductionRequestResults(boolean accepted) {
-        System.out.println("Production request rejected. Try again.");
-        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
+        if(!accepted) {
+            setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(), true);
+        }else{
+            System.out.println("Your production request has been accepted");
+        }
     }
 
     /**
@@ -1435,6 +1438,8 @@ public class Cli extends View {
                     deposit.addResource(j, new Resource(resourceType));
                 j--;
             }
+            UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+            sendMessage(socket, message);
     }
 
 
@@ -1479,6 +1484,7 @@ public class Cli extends View {
     @Override
     public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
         player.updateDeposit(updatedStrongbox,updatedWarehouse, auxiliaryDeposit);
+
     }
 
     /**
@@ -1562,6 +1568,7 @@ public class Cli extends View {
         });
     }
 
+
     /**
      * Asks the user what card productions it wants to use
      *
@@ -1603,19 +1610,23 @@ public class Cli extends View {
                         return;
                     }
                     developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input); // develop 1 or develop 3
+                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
+
                     leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input); // l1,coin or l2,shield
+                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
+
                     boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
+                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
+
                     correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
                     if (!correct.get() && !selectionDone.get())
                         System.out.println("Incorrect production choices. Try again");
 
                     if (Thread.interrupted()) return;
-                } while (!correct.get() && !selectionDone.get());
+                } while(!selectionDone.get());
 
                 if (!Thread.interrupted()) {
-                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
-                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
-                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
+                    sendMessage(socket, new EndProductionMessage(player.getNickname()));
                 }
 
                 player.setStandardActionDone();

@@ -923,6 +923,12 @@ public class MatchController implements ControllerInterface{
 
         }
 
+        if(errors.isEmpty()) {
+            game.nextPlayer();
+            sendPlayTurn();
+
+        }
+
         return errors;
     }
 

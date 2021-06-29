@@ -139,8 +139,10 @@ public class VirtualView implements VirtualViewInterface{
                 if (!socket.isClosed())
                     sendMessage(socket, message);
             }
-            matchController.onEndTurn(nickname);
-            if (isActive()) inGameReconnectionHandler.onClientDown(this, nickname);
+            if (isActive()) {
+                inGameReconnectionHandler.onClientDown(this, nickname);
+
+            }
         }
     }
 

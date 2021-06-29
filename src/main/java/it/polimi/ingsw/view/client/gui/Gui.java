@@ -903,6 +903,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             try {
+                gameSceneController.initializeGameBoard();
                 gameSceneController.initializePlayerBoard();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -983,6 +984,23 @@ public class Gui extends View {
                 localMatchHandler = new LocalMatchHandler(this);
                 primaryStage.setScene(nicknameScene);
                 primaryStage.show();
+        });
+
+    }
+
+    /**
+     * Update the player's hand and the active leader cards after reconnection
+     * @param hand player's hand
+     * @param activeLeaderCards player's active leader cards
+     */
+    @Override
+    public void showLeaderCardUpdate(List<LeaderCard> hand, List<LeaderCard> activeLeaderCards){
+
+        Platform.runLater(()->{
+            player.setHand(hand);
+            gameSceneController.addLeadersToPlayer();
+            activeLeaderCards.forEach(p->player.useLeaderCard(p,true));
+
         });
 
     }

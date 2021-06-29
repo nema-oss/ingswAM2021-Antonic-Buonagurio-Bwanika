@@ -1,28 +1,21 @@
-package communicationTest.messageTest;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.Error;
-import it.polimi.ingsw.controller.GamePhase;
-import it.polimi.ingsw.controller.MatchController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.exception.FullDepositException;
+import it.polimi.ingsw.model.exception.InsufficientDevelopmentCardsException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.server.EchoServer;
-import it.polimi.ingsw.view.server.InGameReconnectionHandler;
 import it.polimi.ingsw.view.server.VirtualView;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.naming.InsufficientResourcesException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,16 +31,12 @@ public class ControllerTest {
         game = controller.getGame();
         p = new Player("Pippo", game.getGameBoard(), game);
         p2 = new Player("Pluto", game.getGameBoard(), game);
+        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
     }
 
     @Test
     @DisplayName("testing setting virtual view in the controller")
     public void setVirtualViewTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
 
         controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234) {
         }));
@@ -57,13 +46,10 @@ public class ControllerTest {
     @DisplayName("testing connection of new player")
     public void onControllerNewPlayerTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
         List<Error> error;
 
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        assertTrue((controller.onNewPlayer(p.getNickname())).contains(Error.WRONG_GAME_PHASE));
         game.setGamePhase(GamePhase.LOGIN);
         error = controller.onNewPlayer(p.getNickname());
         assertEquals(p.getNickname(), game.getPlayerByNickname(p.getNickname()).getNickname());
@@ -76,6 +62,8 @@ public class ControllerTest {
 
         error = controller.onNewPlayer(p.getNickname());
         assertTrue(error.contains(Error.NICKNAME_ALREADY_EXISTS));
+
+
 
         try {
             controller.onNewPlayer("");
@@ -93,35 +81,59 @@ public class ControllerTest {
     @DisplayName("testing start of game")
     public void onStartGameTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        game.setCurrentPlayer(p);
 
+        assertTrue((controller.onStartGame()).contains(Error.WRONG_GAME_PHASE));
+    }
+
+    @Test
+    @DisplayName("testing placing resources into deposit")
+    public void onPlaceResourceTest(){
+
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+
+        Map<Resource, Integer> placingMap = new HashMap<>();
+
+        placingMap.put(new Resource(ResourceType.SHIELD), 1);
+        placingMap.put(new Resource(ResourceType.COIN), 2);
+        placingMap.put(new Resource(ResourceType.COIN),2);
+
+        assertTrue((controller.onPlaceResources(p.getNickname(), placingMap)).isEmpty());
+
+
+        Resource wrongResource = new Resource(ResourceType.COIN);
+        placingMap.put(wrongResource, 2);
+        game.setCurrentPlayer(p);
+        assertTrue((controller.onPlaceResources(p.getNickname(), placingMap)).contains(Error.DEPOSIT_IS_FULL));
+
+        game.setCurrentPlayer(p);
+        placingMap.replace(wrongResource, 2, 3);
+        assertTrue((controller.onPlaceResources(p.getNickname(), placingMap)).contains(Error.DEPOSIT_IS_FULL));
+
+    }
+
+    @Test
+    @DisplayName("testing player reconnection")
+    public void onPlayerReconnection(){
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
+        controller.onNewPlayer(new Player("paperino", game.getGameBoard(), game ).getNickname());
 
-/*        List<Error> errors = controller.onStartGame();
-        assertEquals(game.getGamePhase(), GamePhase.CHOOSE_LEADERS);
-        assertTrue(errors.isEmpty());
+        controller.onPlayerDisconnection(p.getNickname());
+        assertFalse(game.getListOfPlayers().contains(p));
 
-        game.setGamePhase(GamePhase.PLAY_TURN);
-        errors = controller.onStartGame();
-        assertFalse(errors.isEmpty()); */
+        controller.onPlayerReconnection(p.getNickname());
+        //assertTrue(game.getListOfPlayers().contains(p));
+
     }
 
 
     @Test
     @DisplayName("testing initial leader cards choice")
     public void onLeaderCardsChosenTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -131,6 +143,8 @@ public class ControllerTest {
         List<LeaderCard> leaderCardsChosen = new ArrayList<>();
         leaderCardsChosen.add(game.getLeaderDeck().drawCard());
 
+        assertTrue((controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen)).contains(Error.WRONG_GAME_PHASE));
+
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
 
         List<Error> errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), null);
@@ -139,28 +153,14 @@ public class ControllerTest {
         errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen );
         assertTrue(errors.contains(Error.INVALID_ACTION));
 
-        leaderCardsChosen.add(game.getLeaderDeck().drawCard());
-
-     /*   Player player = game.getCurrentPlayer();
-        errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen);
-
-        assertTrue(errors.isEmpty());
-        assertTrue(player.getHand().containsAll(leaderCardsChosen));
-
-        game.setGamePhase(GamePhase.LOGIN);
-        errors = controller.onLeaderCardsChosen(game.getCurrentPlayer().getNickname(), leaderCardsChosen);
-        assertTrue(errors.contains(Error.WRONG_GAME_PHASE)); */
+        game.setCurrentPlayer(p);
+        assertTrue((controller.onLeaderCardsChosen(p2.getNickname(), leaderCardsChosen)).contains(Error.NOT_YOUR_TURN));
     }
+
 
     @Test
     @DisplayName("testing initial resources choice")
     public void onResourcesChosenTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -185,12 +185,6 @@ public class ControllerTest {
     @DisplayName("testing production activation")
     public void onActivateProductionTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
@@ -210,39 +204,165 @@ public class ControllerTest {
         assertTrue(errors.isEmpty());
     }
 
-    /* @Test
-    public void onActivateDevelopmentProductionTest(){}
+    @Test
+    @DisplayName("testing development card production activation")
+    public void onActivateDevelopmentProductionTest() throws FullDepositException {
+
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        controller.onActivateProduction(p.getNickname());
+        assertTrue(controller.onActivateDevelopmentProduction(p.getNickname(), new ArrayList<>()).contains(Error.GENERIC));
+
+        game.getCurrentPlayer().getPlayerBoard().addDevelopmentCard(game.getDevelopmentDeck().getTop());
+        List<DevelopmentCard> listOfCards = new ArrayList<>();
+        listOfCards.add(game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards().get(0).peek());
+        assertTrue((controller.onActivateDevelopmentProduction(p.getNickname(), listOfCards)).contains(Error.INSUFFICIENT_PAYMENT));
+
+        p.addResourceToDeposit(1, new Resource(ResourceType.COIN));
+        assertTrue((controller.onActivateDevelopmentProduction(p.getNickname(), listOfCards)).isEmpty());
+
+        assertTrue((controller.onActivateDevelopmentProduction(p.getNickname(), listOfCards)).contains(Error.INVALID_ACTION));
+
+
+    }
 
     @Test
-    public void onActivateLeaderProductionTest(){}
+    @DisplayName("testing leader card production activation")
+    public void onActivateLeaderProductionTest() throws FullDepositException, InsufficientResourcesException, InsufficientDevelopmentCardsException, NonExistentCardException {
+
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        controller.onActivateProduction(p.getNickname());
+
+        List<LeaderCard> leaderCards = new ArrayList<>();
+        leaderCards.add(game.getLeaderDeck().getListOfCards().get(12));
+        game.getCurrentPlayer().setHand(leaderCards);
+
+        game.getCurrentPlayer().getPlayerBoard().addDevelopmentCard(game.getDevelopmentDeck().getListOfCards().get(3));
+        game.getCurrentPlayer().getPlayerBoard().addDevelopmentCard(game.getDevelopmentDeck().getListOfCards().get(19));
+
+        System.out.println(p.getHand().get(0).getCostDevelopment());
+        game.getCurrentPlayer().activateLeaderCard(0);
+
+        Map<LeaderCard, ResourceType> productionMap = new HashMap<>();
+        productionMap.put(leaderCards.get(0), ResourceType.COIN);
+
+        assertTrue((controller.onActivateLeaderProduction(p.getNickname(), productionMap)).contains(Error.INSUFFICIENT_PAYMENT));
+
+        p.addResourceToDeposit(1, new Resource(ResourceType.SHIELD));
+        assertTrue((controller.onActivateLeaderProduction(p.getNickname(), productionMap)).isEmpty());
+
+        assertTrue((controller.onActivateLeaderProduction(p.getNickname(), productionMap)).contains(Error.INVALID_ACTION));
+        productionMap.put(game.getLeaderDeck().getListOfCards().get(0), ResourceType.COIN);
+        assertTrue(controller.onActivateLeaderProduction(p.getNickname(), productionMap).contains(Error.INVALID_ACTION));
+
+    }
 
     @Test
-    public void onActivateBoardTest(){}
+    @DisplayName("testing board production activation and end production")
+    public void onActivateBoardTest() throws FullDepositException {
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        controller.onActivateProduction(p.getNickname());
+
+        assertTrue(controller.onEndProduction(p.getNickname()).contains(Error.INVALID_ACTION));
+
+        List<ResourceType> toGive = new ArrayList<>();
+        toGive.add(ResourceType.COIN);
+        toGive.add(ResourceType.SHIELD);
+
+        Resource toGet = new Resource(ResourceType.SERVANT);
+
+        Map<Resource, List<ResourceType>> productionMap = new HashMap<>();
+        productionMap.put(toGet, toGive);
+
+        assertTrue((controller.onActivateBoardProduction(p.getNickname(), productionMap)).contains(Error.INSUFFICIENT_PAYMENT));
+
+        game.getCurrentPlayer().addResourceToDeposit(1, new Resource(ResourceType.SHIELD));
+        game.getCurrentPlayer().addResourceToDeposit(2, new Resource(ResourceType.COIN));
+
+        assertTrue((controller.onActivateBoardProduction(p.getNickname(), productionMap)).isEmpty());
+
+        assertTrue((controller.onActivateBoardProduction(p.getNickname(), productionMap)).contains(Error.INVALID_ACTION));
+
+
+    }
+
 
     @Test
-    public void onEndProductionTest(){}
+    @DisplayName("testing buying development card from market")
+    public void onBuyDevelopmentCardsTest(){
+
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        controller.onActivateProduction(p.getNickname());
+
+
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 2, 0)).contains(Error.INSUFFICIENT_PAYMENT));
+
+        game.setCurrentPlayer(p);
+        p.getStrongbox().addResourceCheat();
+
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 2, 0)).isEmpty());
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 2, 0)).contains(Error.INVALID_ACTION));
+
+        game.setCurrentPlayer(p);
+        p.setStandardActionPlayed(false);
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 2, 0)).isEmpty());
+        game.setCurrentPlayer(p);
+        p.setStandardActionPlayed(false);
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 2, 0)).isEmpty());
+        game.setCurrentPlayer(p);
+        p.setStandardActionPlayed(false);
+
+        assertTrue((controller.onBuyDevelopmentCards(p.getNickname(), 3, 0)).contains(Error.CARD_DOESNT_EXIST));
+
+    }
 
     @Test
-    public void onBuyDevelopmentCardsTest(){}
+    @DisplayName("testing buying resources from market")
+    public void onBuyResourcesTest(){
 
-    @Test
-    public void onBuyResourcesTest(){}
+        game.setGamePhase(GamePhase.LOGIN);
+        controller.onNewPlayer(p.getNickname());
+        game.setCurrentPlayer(p);
+        game.setGamePhase(GamePhase.PLAY_TURN);
+        controller.onActivateProduction(p.getNickname());
 
-    @Test
-    public void onActivateLeaderTest(){} */
+        assertTrue((controller.onBuyResources(p.getNickname(), 1, -1)).isEmpty());
+
+        List<LeaderCard> leaderCards = new ArrayList<>();
+        leaderCards.add(game.getLeaderDeck().getListOfCards().get(4));
+
+        p.setHand(leaderCards);
+        game.setCurrentPlayer(p);
+        p.getStrongbox().addResourceCheat();
+        controller.onActivateLeader(p.getNickname(), p.getHand().get(0));
+
+        game.setCurrentPlayer(p);
+
+        for(int i=0; i<3; i++)
+            if(Arrays.stream((game.getGameBoard().getMarket().marbles()[i])).anyMatch(Marble -> Marble.getColor().equals(MarbleType.GREY))){
+                controller.onBuyResources(p.getNickname(), i, -1);
+                assertEquals(0, p.getActiveEffects().getAuxiliaryDeposit(0).getAuxiliaryDeposit().size());
+                break;
+            }
+    }
+
 
     @Test
     @DisplayName("testing leader card discard")
     public void onDiscardLeaderTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         game.setCurrentPlayer(p);
+
         List<LeaderCard> hand = new ArrayList<>(game.getLeaderDeck().getListOfCards());
         p.setHand(hand);
 
@@ -266,12 +386,6 @@ public class ControllerTest {
     @DisplayName("testing end of turn")
     public void EndTurnTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         game.setGamePhase(GamePhase.PLAY_TURN);
@@ -290,11 +404,6 @@ public class ControllerTest {
     @Test
     @DisplayName("testing deposit swaps")
     public void onMoveDepositTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -322,11 +431,6 @@ public class ControllerTest {
     @DisplayName("testing resources discard")
     public void onDiscardResourceTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         controller.onNewPlayer(p2.getNickname());
@@ -348,14 +452,6 @@ public class ControllerTest {
     @Test
     @DisplayName("testing pass of turn")
     public void nextTurnTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -381,11 +477,6 @@ public class ControllerTest {
     @DisplayName("testing control on game phases and current player")
     public void controlTurnTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         game.setCurrentPlayer(p);
@@ -406,11 +497,6 @@ public class ControllerTest {
     @DisplayName("testing control on player's turn: standard action")
     public void onControlStandardActionTest(){
 
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
         game.setCurrentPlayer(p);
@@ -428,11 +514,6 @@ public class ControllerTest {
     @Test
     @DisplayName("testing control on player's turn: leader action")
     public void onControlLeaderActionTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());
@@ -453,12 +534,6 @@ public class ControllerTest {
     @Test
     @DisplayName("testing player disconnection")
     public void onPlayerDisconnectionTest(){
-
-        controller = new MatchController();
-        game = controller.getGame();
-        p = new Player("Pippo", game.getGameBoard(), game);
-        p2 = new Player("Pluto", game.getGameBoard(), game);
-        controller.setVirtualView(new VirtualView(controller, 1, new EchoServer(1234)));
 
         game.setGamePhase(GamePhase.LOGIN);
         controller.onNewPlayer(p.getNickname());

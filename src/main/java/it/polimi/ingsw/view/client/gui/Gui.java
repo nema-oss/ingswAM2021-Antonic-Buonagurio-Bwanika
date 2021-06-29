@@ -890,6 +890,7 @@ public class Gui extends View {
                 j--;
             }
             playerBoardController.update(player.getPlayerBoard());
+            chooseResourcesController.hide();
             //playerBoardController.updateDeposit(player.getDeposit());
 
         });

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.cards.ActionTokenDeck;
 import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.model.gameboard.GameBoard;
@@ -25,6 +26,7 @@ public class Game {
     private Player currentPlayer;
     private Player winner;
     private final LeaderDeck leaderDeck;
+    private final DevelopmentDeck developmentDeck;
     private final GameBoard gameBoard;
     private int lorenzoPoints;
     private final List<PopeSection> popeSectionList;
@@ -44,6 +46,7 @@ public class Game {
         gameBoard = new GameBoard();
         CardFactory cardFactory = new CardFactory();
         leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        developmentDeck = new DevelopmentDeck(cardFactory.getDevelopmentCards());
         listOfPlayers = new ArrayList<>();
         PopeSectionFactory popeSectionFactory = new PopeSectionFactory();
         popeSectionList = popeSectionFactory.getPopeSections();
@@ -278,6 +281,12 @@ public class Game {
      */
     public LeaderDeck getLeaderDeck(){
         return leaderDeck;
+    }
+
+    /**
+     * @return the deck of development cards
+     */
+    public DevelopmentDeck getDevelopmentDeck(){ return developmentDeck;
     }
 
     /**

@@ -30,7 +30,7 @@ import java.util.*;
 public class PlayerBoardController {
 
     @FXML
-    ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b;
+    ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b, firstVaticanSection, secondVaticanSection, thirdVaticanSection;
 
     @FXML
     Button boardProdButton, cardProdButton, leaderProdButton, place1, place2, place3;
@@ -84,7 +84,7 @@ public class PlayerBoardController {
 
 
     /**
-     * this method shows tha actions which can be performed on a inactive leader
+     * this method shows tha actions which can be performed on the first leader
      * @param event the mouse click
      */
     @FXML
@@ -112,6 +112,10 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method shows tha actions which can be performed on the second leader
+     * @param event the mouse click
+     */
     @FXML
     private void actionsOnLeader2(MouseEvent event){
 
@@ -137,6 +141,13 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method creates menus for leader cards
+     * @param leader the imageView to associate the menu to
+     * @param l the leader card corresponding to the image view
+     * @param event mouse click
+     * @param activateVisible true if it hasn't been activated yet
+     */
     private void createCardMenu( ImageView leader, LeaderCard l, MouseEvent event, boolean activateVisible){
         ContextMenu inactiveMenu = new ContextMenu();
 
@@ -186,6 +197,11 @@ public class PlayerBoardController {
         resourceChoiceBox.setItems(list);
     }
 
+    /**
+     * this method converts text ina  resource type
+     * @param text the text to convert
+     * @return the corresponding resource type
+     */
     public ResourceType convertIntoResourceType(String text){
         if(text.equals(ResourceType.COIN.label))
             return ResourceType.COIN;
@@ -605,8 +621,6 @@ public class PlayerBoardController {
         updatePopeRoad(clientPlayerBoard);
         showActiveLeaders();
 
-        System.out.println(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits());
-
         if(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits()!=null)
             updateExtraDeposits(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits());
     }
@@ -763,6 +777,22 @@ public class PlayerBoardController {
             is2active = true;
             leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
             initializeExtraDeposit(l2);
+        }
+    }
+
+    /**
+     * this method discards the vatican report tokens
+     * @param vaticanReportNumber the number of the report(1,2 or 3)
+     */
+    public void hideVaticanReport(int vaticanReportNumber){
+        if(vaticanReportNumber==1){
+            firstVaticanSection.setVisible(false);
+        }
+        else if(vaticanReportNumber==2){
+            secondVaticanSection.setVisible(false);
+        }
+        else if(vaticanReportNumber==3){
+            thirdVaticanSection.setVisible(false);
         }
     }
 }

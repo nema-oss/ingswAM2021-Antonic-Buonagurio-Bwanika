@@ -1484,7 +1484,7 @@ public class Cli extends View {
     @Override
     public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
         player.updateDeposit(updatedStrongbox,updatedWarehouse, auxiliaryDeposit);
-
+        askTurnAction();
     }
 
     /**
@@ -1587,8 +1587,9 @@ public class Cli extends View {
             System.out.println("Your production request has been rejected. Try again.");
         else
             System.out.println("Select which production power you want to activate. " +
-                    "E.g. 'board shield,coin/stone' to activate the board production or " +
+                    "E.g. 'board/shield,coin=stone' to activate the board production or " +
                     "'develop 1' to select the first development card. " +
+                    "or write \"l1-shield\" to receive 1 shield using the first leader card. " +
                     "Write 'done' to end the production action. Press Enter to continue.");
 
         AtomicBoolean correct = new AtomicBoolean(true);
@@ -1615,7 +1616,7 @@ public class Cli extends View {
                     leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input); // l1,coin or l2,shield
                     if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
 
-                    boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
+                    boardProductionChoice = InputValidator.isValidBoardProductionChoice(input); // board/shield,coin=stone
                     if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
 
                     correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);

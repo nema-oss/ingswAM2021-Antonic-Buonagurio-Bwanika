@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.GamePhase;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderDeck;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PopeRoad;
@@ -38,7 +40,13 @@ class GameTest {
 
     @Test
     @DisplayName("Testing the starting configuration of the match")
-    void startGame(){}
+    void startGame(){
+        LeaderDeck leaderDeck = new LeaderDeck(new CardFactory().getLeaderCards());
+        for (LeaderCard card : leaderDeck.getListOfCards()) {
+            String id = card.getId();
+            assertTrue(game.getLeaderDeck().getListOfCards().stream().anyMatch(LeaderCard -> LeaderCard.getId().equals(id)));
+        }
+    }
 
 
     @Test
@@ -47,7 +55,7 @@ class GameTest {
         CardFactory cardFactory = new CardFactory();
         player1.getPlayerBoard().addDevelopmentCard(cardFactory.getDevelopmentCards().get(4));
         Player winner = game.endGame();
-        assertEquals(true, winner.equals(player1));
+        assertTrue(winner.equals(player1));
     }
 
     @Test
@@ -76,25 +84,31 @@ class GameTest {
 
         game.setSinglePlayerCPU();
         game.lorenzoTurn();
+        assertEquals(25, game.getLorenzoPopeRoad().getSize());
 
     }
 
     @Test
+    @DisplayName("testing return of correct player from getter")
     void getPlayerByNickname(){
         assertEquals(game.getPlayerByNickname("Player1").getNickname(), "Player1");
     }
 
     @Test
+    @DisplayName("testing correct return of list of players")
     void getListOfPlayers(){
         List<Player> expected = new ArrayList<>();
         expected.add(player1);
         expected.add(player2);
-        assertEquals(true, game.getListOfPlayers().equals(expected));
+        assertEquals(game.getListOfPlayers(), expected);
 
-
+        game.setPlayersOrder();
+        game.setCurrentPlayer(player1);
+        assertEquals(player1, game.getCurrentPlayer());
     }
 
     @Test
+    @DisplayName("testing lorenzo's position")
     void checkLorenzoPosition(){
         Game game1 = new Game();
         Player single = new Player("single", new GameBoard(), game1);
@@ -112,6 +126,7 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing other player's move on pope road when discarding a leader")
     void movePlayersDiscard(){
         game.movePlayersDiscard("Player1", 7);
         assertEquals(player2.getVictoryPoints(), 3);
@@ -119,14 +134,18 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("testing player's removal from game")
     void removePlayer(){
         game.removePlayer("Player1");
-        assertEquals(false, game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
-        assertEquals(true, game.getListOfPlayers().contains(game.getPlayerByNickname("Player2")));
+        assertFalse(game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
+        assertTrue(game.getListOfPlayers().contains(game.getPlayerByNickname("Player2")));
+        game.reconnectPlayer("Player1");
+        assertTrue(game.getListOfPlayers().contains(game.getPlayerByNickname("Player1")));
 
     }
 
     @Test
+    @DisplayName("testing correct return of game phase")
     void setGamePhase(){
         game.setGamePhase(GamePhase.CHOOSE_LEADERS);
         assertEquals(GamePhase.CHOOSE_LEADERS, game.getGamePhase());

@@ -52,7 +52,6 @@ class PlayerTest {
     void buyDevelopmentCard() throws Exception, NonExistentCardException, InsufficientPaymentException, FullDepositException {
 
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(2,0);
-        System.out.println(developmentCard.getCost());
         Strongbox strongbox = player.getStrongbox();
         List<Resource> resources = new ArrayList<>();
         Map<ResourceType, Integer> cost = developmentCard.getCost();
@@ -60,9 +59,9 @@ class PlayerTest {
             IntStream.range(0, cost.get(type)).mapToObj(i -> new Resource(type)).forEach(resources::add);
         }
         Deposit deposit = player.getDeposit();
-        deposit.addResource(1, new Resource(ResourceType.COIN));
-        deposit.addResource(2, new Resource(ResourceType.STONE));
-        deposit.addResource(3, new Resource(ResourceType.SERVANT));
+        deposit.addResource(3, new Resource(ResourceType.STONE));
+        deposit.addResource(3, new Resource(ResourceType.STONE));
+        deposit.addResource(3, new Resource(ResourceType.STONE));
         strongbox.addResource(resources);
 
         player.buyDevelopmentCard(2, 0);
@@ -70,7 +69,8 @@ class PlayerTest {
         List<Stack<DevelopmentCard>> cards = player.getPlayerBoard().getDevelopmentCards();
         DevelopmentCard developmentCard1 = cards.get(0).peek();
         assertEquals(developmentCard1,developmentCard);
-        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(2,1));
+
+        assertThrows(InsufficientPaymentException.class, ()-> player.buyDevelopmentCard(0,0));
     }
 
     @Test
@@ -79,20 +79,27 @@ class PlayerTest {
 
         int previousPosition = player.getPositionIndex();
         List<Resource> newResources = player.buyResources(2,2);
+        player.setStandardActionPlayed(true);
         Deposit deposit = player.getDeposit();
-        deposit.addResource(1, newResources.get(0));
-//        deposit.addResource(2, newResources.get(1));
-  //      deposit.swapFloors(1,2);
-    //    deposit.swapFloors(2,3);
+        deposit.addResource(1, new Resource(ResourceType.SHIELD));
+
+        deposit.swapFloors(1,2);
+        player.swapDepositFloors(1,2);
+
+        assertEquals(player.getDeposit().getAll(), deposit.getAll());
+        assertTrue(player.hasPlayedStandardAction());
 
         System.out.println(deposit.getAll());
+
+        player.addResourceToDeposit(3, new Resource(ResourceType.COIN));
+        assertEquals(ResourceType.COIN, player.getDeposit().get(3).getType());
 
 
     }
 
     @Test
     @DisplayName("Testing the activate production action")
-    void activateProduction() throws FullDepositException, Exception, NonExistentCardException, InsufficientPaymentException {
+    void activateProduction() throws Exception, NonExistentCardException, InsufficientPaymentException {
 
         DevelopmentCard developmentCard = gameBoard.getCardMarket().getCard(1,1);
         developmentCard.getProductionResults().forEach(p -> System.out.println(p.getType()));

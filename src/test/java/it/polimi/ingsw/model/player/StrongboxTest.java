@@ -70,6 +70,7 @@ class StrongboxTest {
     }
 
     @Test
+    @DisplayName("testing cheats")
     void addResourceCheat(){
         strongbox = new Strongbox();
         strongbox.addResourceCheat();

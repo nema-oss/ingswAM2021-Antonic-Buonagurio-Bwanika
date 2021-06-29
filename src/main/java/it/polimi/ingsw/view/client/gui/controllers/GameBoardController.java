@@ -143,6 +143,7 @@ public class GameBoardController{
                     ImageView card = new ImageView(new Image("/gui/Images/DevelopmentCardsFront/" + clientGameBoard.getCardMarket().getCard(i, j).getId() + ".png"));
                     card.setId(clientGameBoard.getCardMarket().getCard(i, j).getId());
                     setCard(card, i, j);
+                    card.setDisable(true);
                 }
             }
     }
@@ -164,8 +165,9 @@ public class GameBoardController{
      */
     public void setCardMarketClickable(boolean bool){
 
-        for(Node img : cardMarket.getChildren())
+        for(Node img : cardMarket.getChildren()) {
             img.setDisable(!bool);
+        }
 
     }
 

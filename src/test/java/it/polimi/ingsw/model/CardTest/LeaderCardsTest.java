@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Effects;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class LeaderCardsTest {
     }
 
     @Test
+    @DisplayName("testing leader cards cost and ids")
     void leaderTest(){
 
         int i=1;
@@ -54,6 +56,7 @@ public class LeaderCardsTest {
     }
 
     @Test
+    @DisplayName("testing leader card discount")
     void discountTest(){
 
         Discount leaderCard = (Discount) leaderCards.get(0);
@@ -65,11 +68,12 @@ public class LeaderCardsTest {
         assertEquals(1, leaderCard.getDiscountAmount());
 
         leaderCard.useEffect(effects);
-        assertEquals(true,effects.isDiscount());
+        assertTrue(effects.isDiscount());
 
     }
 
     @Test
+    @DisplayName("testing leader card extra deposit")
     void extraDepositTest(){
 
         ExtraDeposit leaderCard = (ExtraDeposit) leaderCards.get(4);
@@ -80,10 +84,11 @@ public class LeaderCardsTest {
         assertEquals(ResourceType.STONE, card.getStorageType());
 
         leaderCard.useEffect(effects);
-        assertEquals(true,effects.isExtraDeposit());
+        assertTrue(effects.isExtraDeposit());
     }
 
     @Test
+    @DisplayName("testing leader card  extra production")
     void extraProductionTest(){
 
         ExtraProduction leaderCard = (ExtraProduction) leaderCards.get(12);
@@ -98,10 +103,11 @@ public class LeaderCardsTest {
         assertEquals( "it.polimi.ingsw.model.gameboard.FaithPoint", card.getProductionResult().get(1).getClassName());
 
         leaderCard.useEffect(effects);
-        assertEquals(true,effects.isExtraProduction());
+        assertTrue(effects.isExtraProduction());
     }
 
     @Test
+    @DisplayName("testing leader card white to resource")
     void whiteToResourceTest(){
 
         WhiteToResource leaderCard = (WhiteToResource) leaderCards.get(8);
@@ -117,6 +123,7 @@ public class LeaderCardsTest {
     }
 
     @Test
+    @DisplayName("testing leader deck")
     void leaderDeckTest(){
         LeaderDeck deck = new LeaderDeck(leaderCards);
         assertEquals(leaderCards.get(0), deck.getTop());

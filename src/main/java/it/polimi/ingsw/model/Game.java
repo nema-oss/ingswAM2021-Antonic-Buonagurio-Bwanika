@@ -122,12 +122,6 @@ public class Game {
      */
     public Player getCurrentPlayer(){ return currentPlayer;}
 
-    /**
-     * this method return the action token deck
-     */
-    public ActionTokenDeck getActionDeck() {
-        return actionDeck;
-    }
 
     /**
      * this method return the gameBoard

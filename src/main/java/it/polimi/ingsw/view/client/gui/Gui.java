@@ -325,7 +325,7 @@ public class Gui extends View {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
-            gameSceneController.addLeadersToPlayer();
+            chooseResourcesController.setNumberOfResources(numberOfResources);
         });
     }
 
@@ -701,6 +701,7 @@ public class Gui extends View {
             if(player.getBoughtResources().size()!=0) {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
+                actionButtonsController.setChooseActionTypeVisible(false);
             }
             else{
                 player.setStandardActionDone();

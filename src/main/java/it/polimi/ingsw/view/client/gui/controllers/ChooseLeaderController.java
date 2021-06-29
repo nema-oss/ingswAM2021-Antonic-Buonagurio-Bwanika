@@ -76,7 +76,7 @@ public class ChooseLeaderController {
             alert.showAndWait();
             return;
         }
-        Message message = new ChooseLeadersMessage(gui.getPlayerNickname(),selected,true);
+        Message message = new ChooseLeadersMessage(gui.getClientPlayer().getNickname(),selected,true);
         gui.sendMessage(message);
 
     }

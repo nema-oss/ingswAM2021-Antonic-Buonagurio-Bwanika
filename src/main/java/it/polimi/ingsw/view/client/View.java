@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.utils.MessageSender;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.network.LocalMatchHandler;
@@ -358,8 +359,9 @@ public abstract class View {
      * this method shows the result of the production
      * @param updatedStrongbox the updated strongbox
      * @param updatedWarehouse the updated warehouse
+     * @param auxiliaryDeposit the update auxiliary deposit
      */
-    public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse);
+    public abstract void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit);
 
     /**
      * Return true if the player can end the turn

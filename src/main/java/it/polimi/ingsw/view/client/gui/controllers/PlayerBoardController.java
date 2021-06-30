@@ -3,19 +3,17 @@ package it.polimi.ingsw.view.client.gui.controllers;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.viewComponents.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,7 +30,7 @@ import java.util.*;
 public class PlayerBoardController {
 
     @FXML
-    ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b;
+    ImageView leader1, leader2, res1, res2, result, dep1a, dep1b, dep2a, dep2b, firstVaticanSection, secondVaticanSection, thirdVaticanSection;
 
     @FXML
     Button boardProdButton, cardProdButton, leaderProdButton, place1, place2, place3;
@@ -52,23 +50,25 @@ public class PlayerBoardController {
     @FXML
     ImageView p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24;
 
+    @FXML
+    ComboBox<String> resourceChoiceBox1, resourceChoiceBox2;
+
     public Gui gui;
     private LeaderCard l1, l2;
     private List<DevelopmentCard> prodCardsList;
-    private List <LeaderCard> leaderCardsList;
-
+    private Map<LeaderCard, ResourceType> leaderProductionChoice;
+    private String extraDeposit1Type, extraDeposit2Type;
     private boolean is1active, is2active, isLeaderAction, isDev1Selected, isDev2Selected, isDev3Selected, isL1Selected, isL2Selected;
     private int currentPosition;
-    public List<Node> popeSpaces;
 
 
     /**
      * this method hides the inactive leader cards
      */
-    public void hideInactiveLeaders(){
-        if(!is1active)
+    public void hideInactiveLeaders() {
+        if (!is1active)
             leader1.setVisible(false);
-        if(!is2active)
+        if (!is2active)
             leader2.setVisible(false);
     }
 
@@ -82,114 +82,136 @@ public class PlayerBoardController {
             leader2.setVisible(true);
     }
 
-    /**
-     * this method shows the active leader cards
-     */
-    public void showActiveLeaders(ClientPlayerBoard clientPlayerBoard){
-
-        if(clientPlayerBoard.getActiveLeaderCards().size() > 0)
-            System.out.println(clientPlayerBoard.getActiveLeaderCards().get(0).getId());
-        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l1.getId())))
-            leader1.setVisible(true);
-        if(clientPlayerBoard.getActiveLeaderCards().stream().anyMatch(p->p.getId().equals(l2.getId())))
-            leader2.setVisible(true);
-    }
 
     /**
-     * this method shows tha actions which can be performed on a inactive leader
-     * @param event
+     * this method shows tha actions which can be performed on the first leader
+     * @param event the mouse click
      */
     @FXML
-    private void actionsOnLeader1(MouseEvent event){
+    private void actionsOnLeader1(MouseEvent event) {
 
-        if(isLeaderAction) {
+        if (isLeaderAction) {
             if (!is1active) {
-                ContextMenu inactiveMenu1 = new ContextMenu();
+                createCardMenu(leader1, l1, event, true);
 
-                MenuItem activate = new MenuItem("Activate leader card");
-                activate.setOnAction(event1 -> {
-                    is1active = true;
-                    leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    gui.sendMessage(msg);
-
-                });
-
-                MenuItem discard = new MenuItem("Discard leader card");
-                discard.setOnAction(event2 -> {
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l1,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    leader1.setVisible(false);
-                    gui.sendMessage(msg);
-                });
-
-                inactiveMenu1.getItems().addAll(activate, discard);
-
-                inactiveMenu1.show(leader1, event.getSceneX(), event.getSceneY());
             } else if(leaderProdButton.isVisible()){
                 if(!isL1Selected) {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
-                    leaderCardsList.add(l1);
+                    resourceChoiceBox1.setVisible(true);
                     isL1Selected = true;
                 }
                 else {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    leaderCardsList.remove(l1);
+                    leaderProductionChoice.remove(l1);
                     isL1Selected = false;
                 }
+            }
+            else{
+                createCardMenu(leader1, l1, event, false);
             }
         }
     }
 
+    /**
+     * this method shows tha actions which can be performed on the second leader
+     * @param event the mouse click
+     */
     @FXML
     private void actionsOnLeader2(MouseEvent event){
 
         if(isLeaderAction) {
             if (!is2active) {
-                ContextMenu inactiveMenu2 = new ContextMenu();
+                createCardMenu(leader2, l2, event, true);
 
-                MenuItem activate = new MenuItem("Activate leader card");
-                activate.setOnAction(event1 -> {
-                    is2active = true;
-                    leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2,true);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    gui.sendMessage(msg);
-
-                });
-
-                MenuItem discard = new MenuItem("Discard leader card");
-                discard.setOnAction(event2 -> {
-                    Map<LeaderCard,Boolean> userChoice = new HashMap<>();
-                    userChoice.put(l2,false);
-                    Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                    leader2.setVisible(false);
-                    gui.sendMessage(msg);
-                });
-
-                inactiveMenu2.getItems().addAll(activate, discard);
-
-                inactiveMenu2.show(leader2, event.getSceneX(), event.getSceneY());
             } else if(leaderProdButton.isVisible()) {
                 if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
-                    leaderCardsList.add(l2);
-                    isL1Selected = true;
-                }
-                else {
+
+                    resourceChoiceBox2.setVisible(true);
+                    isL2Selected = true;
+                } else {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
-                    leaderCardsList.remove(l2);
-                    isL1Selected = false;
+                    leaderProductionChoice.remove(l2);
+                    isL2Selected = false;
                 }
+            }
+            else{
+                createCardMenu(leader2, l2, event, false);
             }
         }
     }
 
+    /**
+     * this method creates menus for leader cards
+     * @param leader the imageView to associate the menu to
+     * @param l the leader card corresponding to the image view
+     * @param event mouse click
+     * @param activateVisible true if it hasn't been activated yet
+     */
+    private void createCardMenu( ImageView leader, LeaderCard l, MouseEvent event, boolean activateVisible){
+        ContextMenu inactiveMenu = new ContextMenu();
+
+        if(activateVisible) {
+            MenuItem activate = new MenuItem("Activate leader card");
+            activate.setOnAction(event1 -> {
+                if (l.equals(l1))
+                    is1active = true;
+                else if (l.equals(l2))
+                    is2active = true;
+                leader.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+
+                Map<LeaderCard, Boolean> userChoice = new HashMap<>();
+                userChoice.put(l, true);
+                Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+                gui.sendMessage(msg);
+
+            });
+            inactiveMenu.getItems().add(activate);
+        }
+
+        MenuItem discard = new MenuItem("Discard leader card");
+        discard.setOnAction(event2 -> {
+            Map<LeaderCard,Boolean> userChoice = new HashMap<>();
+            userChoice.put(l,false);
+            Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+            leader.setVisible(false);
+            leader.getParent().setStyle("");
+            if(l.equals(l1))
+                is1active = false;
+            else if (l.equals(l2))
+                is2active = false;
+            gui.sendMessage(msg);
+        });
+
+        inactiveMenu.getItems().add(discard);
+        inactiveMenu.show(leader, event.getSceneX(), event.getSceneY());
+    }
+
+    /**
+     * this method prepares the combobox containing the resources to choose when activating production on a leader card
+     * @param resourceChoiceBox the combo box to set up
+     */
+    public void setUpProductionMenu(ComboBox<String> resourceChoiceBox){
+
+        ObservableList<String> list = FXCollections.observableArrayList("coin","shield","servant","stone");
+        resourceChoiceBox.setItems(list);
+    }
+
+    /**
+     * this method converts text ina  resource type
+     * @param text the text to convert
+     * @return the corresponding resource type
+     */
+    public ResourceType convertIntoResourceType(String text){
+        if(text.equals(ResourceType.COIN.label))
+            return ResourceType.COIN;
+        if(text.equals(ResourceType.SHIELD.label))
+            return ResourceType.SHIELD;
+        if(text.equals(ResourceType.SERVANT.label))
+            return ResourceType.SERVANT;
+        return ResourceType.STONE;
+
+    }
     /**
      * this method removes the green border if the leader action was not accepted
      */
@@ -284,12 +306,25 @@ public class PlayerBoardController {
      */
     @FXML
     public void activateLeaderProduction(){
-        if(leaderCardsList.size()!=0) {
-            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderCardsList, false);
+
+        if(isL1Selected){
+            leaderProductionChoice.put(l1, convertIntoResourceType(resourceChoiceBox1.getSelectionModel().getSelectedItem()));
+        }
+
+        if (isL2Selected) {
+            leaderProductionChoice.put(l2, convertIntoResourceType(resourceChoiceBox2.getSelectionModel().getSelectedItem()));
+        }
+
+        if(leaderProductionChoice.size()!=0) {
+
+            Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderProductionChoice, false);
             gui.sendMessage(msg);
-            leaderCardsList.clear();
+            leaderProductionChoice.clear();
+            resourceChoiceBox1.setVisible(false);
+            resourceChoiceBox2.setVisible(false);
             isL1Selected = false;
             isL2Selected = false;
+
             if(is1active){
                 leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
             }
@@ -548,14 +583,17 @@ public class PlayerBoardController {
     public void initialize(ClientPlayer clientPlayer){
 
         prodCardsList = new ArrayList<>();
-        leaderCardsList = new ArrayList<>();
+        leaderProductionChoice = new HashMap<>();
+
+        setUpProductionMenu(resourceChoiceBox1);
+        setUpProductionMenu(resourceChoiceBox2);
 
         l1 = clientPlayer.getHand().get(0);
         leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
-        checkExtraDeposit(l1);
-        l2=clientPlayer.getHand().get(1);
+        initializeExtraDeposit(l1);
+        l2 = clientPlayer.getHand().get(1);
         leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
-        checkExtraDeposit(l2);
+        initializeExtraDeposit(l2);
 
         if(clientPlayer.getPositionIndex() == 1 ) {
             p0.setVisible(false);
@@ -582,7 +620,9 @@ public class PlayerBoardController {
         updateDevelopmentCards(clientPlayerBoard);
         updatePopeRoad(clientPlayerBoard);
         showActiveLeaders();
-        //showActiveLeaders(clientPlayerBoard);
+
+        if(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits()!=null)
+            updateExtraDeposits(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits());
     }
 
     public void setGui(Gui gui){
@@ -597,6 +637,15 @@ public class PlayerBoardController {
         boardProdButton.setVisible(bool);
         cardProdButton.setVisible(bool);
         leaderProdButton.setVisible(bool);
+    }
+
+    /**
+     * this method allows or denies to click on leader cards
+     * @param bool true to allow, false to deny
+     */
+    public void setLeadersClickable(Boolean bool){
+        leader1.setDisable(!bool);
+        leader2.setDisable(!bool);
     }
 
     /**
@@ -633,7 +682,7 @@ public class PlayerBoardController {
 
     /**
      * this method sets the fact that a leader action is being played
-     * @param bool
+     * @param bool true or false
      */
     public void setLeaderAction(Boolean bool){
         isLeaderAction = bool;
@@ -643,7 +692,7 @@ public class PlayerBoardController {
      * this method adds the extra deposit images to a leader card
      * @param leaderCard the leader card chosen
      */
-    public void checkExtraDeposit(LeaderCard leaderCard){
+    public void initializeExtraDeposit(LeaderCard leaderCard){
 
         if(leaderCard.getLeaderType().equals(LeaderCardType.EXTRA_DEPOSIT)){
             String resource;
@@ -664,6 +713,7 @@ public class PlayerBoardController {
 
             if(leaderCard.equals(l1)){
                 extraDeposit1.setVisible(true);
+                extraDeposit1Type = resource;
                 dep1a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
                 dep1a.setVisible(false);
                 dep1b.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
@@ -672,6 +722,7 @@ public class PlayerBoardController {
             }
             else {
                 extraDeposit2.setVisible(true);
+                extraDeposit2Type = resource;
                 dep2a.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
                 dep2a.setVisible(false);
                 dep2b.setImage(new Image("/gui/Images/Resources/" + resource + ".png"));
@@ -681,19 +732,76 @@ public class PlayerBoardController {
         }
     }
 
+    /**
+     * this method updates the extra deposits
+     */
+    public void updateExtraDeposits(List<AuxiliaryDeposit> auxiliaryDeposits){
 
+        System.out.println("sono in update extra deposits");
+        if(!auxiliaryDeposits.isEmpty())
+            for(AuxiliaryDeposit auxiliaryDeposit : auxiliaryDeposits) {
+                if(auxiliaryDeposit.getType().label.equals(extraDeposit1Type))
+                    showExtraDeposit(extraDeposit1, auxiliaryDeposit.getSize());
+                if(auxiliaryDeposit.getType().label.equals(extraDeposit2Type))
+                    showExtraDeposit(extraDeposit2, auxiliaryDeposit.getSize());
+            }
+    }
+
+    /**
+     * this method shows an extra deposit if it is not empty
+     * @param extraDeposit deposit to show
+     * @param amount number of resources present in the deposit
+     */
+    public void showExtraDeposit(AnchorPane extraDeposit, int amount){
+
+        System.out.println("sono in show extra deposit");
+        System.out.println(amount);
+        if(extraDeposit.equals(extraDeposit1)) {
+            if (amount == 1)
+                dep1a.setVisible(true);
+            if (amount == 2)
+                dep2a.setVisible(true);
+        }
+        else if(extraDeposit.equals(extraDeposit2)){
+            if(amount==1)
+                dep1a.setVisible(true);
+            if(amount == 2)
+                dep2a.setVisible(true);
+        }
+    }
+
+    /**
+     * this method adds a leader card to a player tab different from the client's one
+     * @param card the leader card to add
+     */
     public void addLeaderOnOtherClient(LeaderCard card) {
 
         if(l1 == null) {
             l1 = card;
             is1active = true;
             leader1.setImage(new Image("gui/Images/LeaderCardsFront/" + l1.getId() + ".png"));
-            checkExtraDeposit(l1);
+            initializeExtraDeposit(l1);
         }else{
             l2 = card;
             is2active = true;
             leader2.setImage(new Image("gui/Images/LeaderCardsFront/" + l2.getId() + ".png"));
-            checkExtraDeposit(l2);
+            initializeExtraDeposit(l2);
+        }
+    }
+
+    /**
+     * this method discards the vatican report tokens
+     * @param vaticanReportNumber the number of the report(1,2 or 3)
+     */
+    public void hideVaticanReport(int vaticanReportNumber){
+        if(vaticanReportNumber==1){
+            firstVaticanSection.setVisible(false);
+        }
+        else if(vaticanReportNumber==2){
+            secondVaticanSection.setVisible(false);
+        }
+        else if(vaticanReportNumber==3){
+            thirdVaticanSection.setVisible(false);
         }
     }
 }

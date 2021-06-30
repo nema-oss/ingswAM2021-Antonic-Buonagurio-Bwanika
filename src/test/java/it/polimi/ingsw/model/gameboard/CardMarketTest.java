@@ -24,9 +24,8 @@ class CardMarketTest {
         cardMarket = new CardMarket(developmentDeck,3,4);
     }
     @Test
-    @DisplayName("construction of the  cardMarket through cardFactory")
+    @DisplayName("testing c of the  cardMarket through cardFactory")
     void testCardMarket(){
-
 
         //controls that every miniDeck of the cardMarket contains cards of  the same color and level
         for (int i=0; i<3; i++)
@@ -147,6 +146,7 @@ class CardMarketTest {
     }
 
     @Test
+    @DisplayName("testing on card getter")
     void getCardTest(){
         try {
             cardMarket.getCard(5,5);

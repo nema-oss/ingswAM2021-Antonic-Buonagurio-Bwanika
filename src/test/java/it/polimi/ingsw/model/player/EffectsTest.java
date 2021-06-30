@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.WhiteToResource;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
@@ -123,9 +124,13 @@ class EffectsTest {
         List<Resource> resources = newResources.subList(0,0);
         assertEquals(resources, auxiliaryDeposit.getAuxiliaryDeposit());
 
+        assertEquals(1, player.getActiveEffects().getAuxiliaryDeposits().size());
+        assertEquals(auxiliaryDeposit, player.getActiveEffects().getAuxiliaryDeposit(0));
+
     }
 
     @Test
+    @DisplayName("testing usage of extra production")
     void useExtraProduction() throws InsufficientPaymentException {
         CardFactory cardFactory = new CardFactory();
         ArrayList<LeaderCard> card = new ArrayList<>();

@@ -6,13 +6,9 @@ import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.CssMetaData;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -32,12 +28,13 @@ public class ChooseResourcesController implements Initializable {
     private Label title;
 
     @FXML
-    private AnchorPane coinView, servantView, shieldView, stoneView;
+    private AnchorPane coinView, servantView, stoneView, shieldView;
 
     @FXML
     private Button button;
 
     private Gui gui;
+    private int numOfResourcesToChoose;
 
     public void setGui(Gui gui){
         this.gui = gui;
@@ -61,17 +58,37 @@ public class ChooseResourcesController implements Initializable {
         if(stone.getValue()!=0)
             selectedResourceTypes.put(ResourceType.STONE, stone.getValue());
 
-        Message message = new ChooseResourcesMessage(gui.getPlayerNickname(),selectedResourceTypes,false);
+        int amountRequested = 0;
+        for(ResourceType resourceType : selectedResourceTypes.keySet()){
+            amountRequested = amountRequested + selectedResourceTypes.get(resourceType);
+        }
+
+        if(amountRequested!=numOfResourcesToChoose) {
+            gui.alertUser("Warning", "Please choose the correct amount of resources!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        Message message = new ChooseResourcesMessage(gui.getClientPlayer().getNickname(),selectedResourceTypes,false);
         gui.sendMessage(message);
+
+        hide();
 
     }
 
     /**
      * this method updates the label, writing how many resources the client can choose
-     * @param text
+     * @param text the text to set
      */
     public void setInstructionalLabel(String text){
         title.setText(text);
+    }
+
+    /**
+     * this method sets the number of resources that the player can choose
+     * @param numberOfResources the amount
+     */
+    public void setNumberOfResources(int numberOfResources){
+        numOfResourcesToChoose = numberOfResources;
     }
 
 
@@ -79,10 +96,10 @@ public class ChooseResourcesController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         ObservableList<Integer> numbers = FXCollections.observableArrayList(0,1,2);
-        SpinnerValueFactory<Integer> coinValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> servantValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> shieldValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
-        SpinnerValueFactory<Integer> stoneValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(numbers);
+        SpinnerValueFactory<Integer> coinValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> servantValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> shieldValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
+        SpinnerValueFactory<Integer> stoneValueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(numbers);
 
         coin.setValueFactory(coinValueFactory);
         coinValueFactory.setValue(0);
@@ -100,13 +117,13 @@ public class ChooseResourcesController implements Initializable {
     public void hide(){
         coinView.setVisible(false);
         servantView.setVisible(false);
-        servantView.setVisible(false);
+        shieldView.setVisible(false);
         stoneView.setVisible(false);
         servant.setVisible(false);
         stone.setVisible(false);
         shield.setVisible(false);
         coin.setVisible(false);
         button.setVisible(false);
-        title.setText("Waiting for other players to setup their board");
+        title.setText("Waiting for other players");
     }
 }

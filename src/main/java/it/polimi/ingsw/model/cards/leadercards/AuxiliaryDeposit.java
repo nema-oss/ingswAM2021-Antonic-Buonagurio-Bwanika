@@ -3,13 +3,14 @@ package it.polimi.ingsw.model.cards.leadercards;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * this class represents the extra deposit given by leader cards
  */
-public class AuxiliaryDeposit {
+public class AuxiliaryDeposit implements Serializable {
 
     private final List<Resource> auxiliaryDeposit;
     private final ResourceType type;
@@ -62,5 +63,12 @@ public class AuxiliaryDeposit {
      */
     public List<Resource> getAuxiliaryDeposit() {
         return auxiliaryDeposit;
+    }
+
+    /**
+     * @return the type of auxiliary deposit
+     */
+    public ResourceType getType() {
+        return type;
     }
 }

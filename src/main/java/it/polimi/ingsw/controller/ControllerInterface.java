@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -76,10 +77,10 @@ public interface ControllerInterface {
      * this method activates production on active leader cards
      *
      * @param nickname    the player's nickname
-     * @param leaderCards the leaderCards chosen for production
+     * @param userChoice a map with the leader cards and the resource to get
      * @return the list of errors generated
      */
-    List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards);
+    List<Error> onActivateLeaderProduction(String nickname, Map<LeaderCard, ResourceType> userChoice);
 
     /**
      * this method activates the board production
@@ -288,4 +289,10 @@ public interface ControllerInterface {
      */
     List<LeaderCard> getPlayerHand(String player);
 
+    /**
+     * Get the updated auxiliary deposit
+     * @param user the player
+     * @return the updated auxiliary deposit
+     */
+    List<AuxiliaryDeposit> getUpdateAuxiliaryDeposit(String user);
 }

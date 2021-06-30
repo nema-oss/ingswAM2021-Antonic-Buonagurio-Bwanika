@@ -4,12 +4,12 @@ import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
+import it.polimi.ingsw.model.cards.leadercards.ExtraProduction;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.exception.*;
-import it.polimi.ingsw.model.gameboard.Marble;
-import it.polimi.ingsw.model.gameboard.Resource;
-import it.polimi.ingsw.model.gameboard.ResourceType;
+import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.model.player.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Strongbox;
@@ -123,8 +123,6 @@ public class MatchController implements ControllerInterface{
         }
 
         viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
-        //List<String> users = game.getListOfPlayers().stream().map(Player::getNickname).collect(Collectors.toList());
-        //viewInterface.toDoChooseLeaderCards(users, leaders );
 
     }
 
@@ -157,7 +155,6 @@ public class MatchController implements ControllerInterface{
         }
 
         game.getCurrentPlayer().setHand(leaderCardsChosen);
-        game.getCurrentPlayer().getHand().forEach(System.out::println);
 
         game.nextPlayer();
 
@@ -235,13 +232,20 @@ public class MatchController implements ControllerInterface{
         }
 
         int j=3;
+
         for(ResourceType r : resourcesChosen.keySet()) {
+            boolean putCorrectly = false;
             try {
                 for(int i=0; i<resourcesChosen.get(r); i++)
                     game.getCurrentPlayer().addResourceToDeposit(j, new Resource(r));
                 j--;
-            }catch(Exception | FullDepositException e){
-                errors.add(Error.DEPOSIT_IS_FULL);
+            }catch(FullDepositException e){
+                if(game.getCurrentPlayer().getActiveEffects().isExtraDeposit()){
+                        for(AuxiliaryDeposit auxiliaryDeposit : game.getCurrentPlayer().getActiveEffects().getAuxiliaryDeposits())
+                            if(!putCorrectly && auxiliaryDeposit.getType().equals(r))
+                                putCorrectly = auxiliaryDeposit.addResource(new Resource(r));
+                }
+                 else errors.add(Error.DEPOSIT_IS_FULL);
             }
         }
 
@@ -321,7 +325,6 @@ public class MatchController implements ControllerInterface{
                 } catch (InsufficientPaymentException | InsufficientResourcesException e) {
                     errors.add(Error.INSUFFICIENT_PAYMENT);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     errors.add(Error.GENERIC);
                 }
             }
@@ -334,11 +337,11 @@ public class MatchController implements ControllerInterface{
     /**
      * this method activates production on active leader cards
      * @param nickname the player's nickname
-     * @param leaderCards the leaderCards chosen for production
+     * @param userChoice map with the leaderCards chosen for production ant the chosen resources to get
      * @return the list of errors generated
      */
     @Override
-    public List<Error> onActivateLeaderProduction(String nickname, List<LeaderCard> leaderCards){
+    public List<Error> onActivateLeaderProduction(String nickname, Map<LeaderCard, ResourceType> userChoice){
 
         Player currPlayer = game.getCurrentPlayer();
         List<Error> errors;
@@ -351,17 +354,18 @@ public class MatchController implements ControllerInterface{
             errors.add(Error.INVALID_ACTION);
         else {
             int i = 0;
-            for (LeaderCard c : leaderCards) {
+            for (LeaderCard c : userChoice.keySet()) {
                 if (c.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
 
                     for(LeaderCard l : game.getCurrentPlayer().getActiveLeaderCards()) {
                         if (l.getId().equals(c.getId())) {
                             try {
+                                ((ExtraProduction)l).setProductionResult(userChoice.get(c));
                                 currPlayer.activateProductionLeader(i);
                                 leaderProductionActivated = true;
                                 game.getCurrentPlayer().setStandardActionPlayed(true);
                                 if (currPlayer.getPosition().isPopeSpace())
-                                    game.vaticanReport(currPlayer.getPositionIndex());;
+                                    game.vaticanReport(currPlayer.getPositionIndex());
                             } catch (InsufficientPaymentException e) {
                                 errors.add(Error.INSUFFICIENT_PAYMENT);
                             }
@@ -378,8 +382,6 @@ public class MatchController implements ControllerInterface{
                 i++;
             }
         }
-
-        System.out.println(errors);
         return errors;
     }
 
@@ -518,15 +520,7 @@ public class MatchController implements ControllerInterface{
             errors.addAll(controlStandardAction());
 
         if(errors.isEmpty()) {
-            if (game.getCurrentPlayer().hasPlayedStandardAction()) {
-                errors.add(Error.INVALID_ACTION);
-                return errors;
-            }
-
             try {
-                System.out.println("row = " + row + "col = " + column);
-                DevelopmentCard card = game.getGameBoard().getCardMarket().getCard(row,column);
-                System.out.println(card.getCost());
                 game.getCurrentPlayer().buyDevelopmentCard(row, column);
                 game.getCurrentPlayer().setStandardActionPlayed(true);
                 controlEndOfGame();
@@ -545,7 +539,7 @@ public class MatchController implements ControllerInterface{
     }
 
 
-    public List<Error> onPlaceCard(String nickname, DevelopmentCard card, int index){
+    /*public List<Error> onPlaceCard(String nickname, DevelopmentCard card, int index){
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
@@ -558,7 +552,7 @@ public class MatchController implements ControllerInterface{
            }
         }
         return errors;
-    }
+    } */
 
     /**
      * this method calls the Player's method buyResoources
@@ -579,17 +573,24 @@ public class MatchController implements ControllerInterface{
 
         if(errors.isEmpty()) {
 
-            try {
-                resourcesBought = game.getCurrentPlayer().buyResources(row, column);
-                game.getCurrentPlayer().setStandardActionPlayed(true);
-                if (game.getCurrentPlayer().getPosition().isPopeSpace())
-                    game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
-                controlEndOfGame();
-                viewInterface.sendResourcesBought(resourcesBought);
-            } catch (FullDepositException e) {
-                errors.add(Error.DEPOSIT_IS_FULL);
-                e.printStackTrace();
+            Player player = game.getCurrentPlayer();
+            resourcesBought = player.buyResources(row, column);
+            player.setStandardActionPlayed(true);
+            if(player.getActiveEffects().isExtraDeposit()){
+                int numberOfExtraDeposit = player.getActiveEffects().getAuxiliaryDeposits().size();
+                while(numberOfExtraDeposit > 0){
+                    player.getActiveEffects().useExtraDepositEffect(resourcesBought,numberOfExtraDeposit - 1);
+                    --numberOfExtraDeposit;
+                }
             }
+
+            if (game.getCurrentPlayer().getPosition().isPopeSpace()) {
+                game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
+            }
+
+            controlEndOfGame();
+            viewInterface.sendResourcesBought(resourcesBought);
+
         }
 
 
@@ -610,8 +611,6 @@ public class MatchController implements ControllerInterface{
     public List<Error> onActivateLeader(String nickname, LeaderCard leaderCard) {
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
-        System.out.println(game.getGamePhase());
-        System.out.println(game.getCurrentPlayer().getNickname());
 
         if(errors.isEmpty())
             errors.addAll(controlLeaderAction());
@@ -636,11 +635,7 @@ public class MatchController implements ControllerInterface{
             }
         }
 
-
         nextTurn();
-
-        System.out.println(errors);
-        System.out.println(errors.size());
         return errors;
     }
 
@@ -710,8 +705,18 @@ public class MatchController implements ControllerInterface{
             sendPlayTurn();
         }
 
-        System.out.println(errors.size());
+        checkLastRound();
+
         return errors;
+    }
+
+    private void checkLastRound() {
+
+        if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+            Player winner = game.endGame();
+            viewInterface.notifyWinner(winner.getNickname());
+        }
+
     }
 
     /**
@@ -737,26 +742,12 @@ public class MatchController implements ControllerInterface{
 
         List<Error> errors = new ArrayList<>(controlTurn(nickname));
 
-        Map<Resource, Integer> resourcesPut = new HashMap<>();
-
         if(errors.isEmpty()){
             for(Resource r : resources.keySet()){
                 try {
                     game.getCurrentPlayer().addResourceToDeposit(resources.get(r), r );
-                    resourcesPut.put(r, resources.get(r));
-                    System.out.println(resourcesPut);
                 } catch (FullDepositException e) {
                     errors.add(Error.DEPOSIT_IS_FULL);
-                    for(Resource put : resourcesPut.keySet()) {
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
-                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
-                        System.out.println(game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)));
-                    }
-                    break;
-                } catch (Exception e) {
-                    errors.add(Error.INVALID_ACTION);
-                    for(Resource put : resourcesPut.keySet())
-                        game.getCurrentPlayer().getDeposit().getFloor(resourcesPut.get(put)).remove(put);
                     break;
                 }
             }
@@ -825,6 +816,11 @@ public class MatchController implements ControllerInterface{
                 viewInterface.lastRound();
                 isLastRound=true;
             }
+        }else{
+            if(game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
+                Player winner = game.endGame();
+                viewInterface.notifyWinner(winner.getNickname());
+            }
         }
 
     }
@@ -835,26 +831,22 @@ public class MatchController implements ControllerInterface{
      */
     public void nextTurn(){
 
+
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
 
             sendEndTurn();
 
             game.nextPlayer();
 
-            if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
-                Player winner = game.endGame();
-                viewInterface.notifyWinner(winner.getNickname());
-            }
+            game.getCurrentPlayer().setStandardActionPlayed(false);
+            game.getCurrentPlayer().setLeaderActionPlayed(false);
+            if (game.getListOfPlayers().size() == 1)
+                game.lorenzoTurn();
+            sendPlayTurn();
 
-            else {
-                game.getCurrentPlayer().setStandardActionPlayed(false);
-                game.getCurrentPlayer().setLeaderActionPlayed(false);
-                if (game.getListOfPlayers().size() == 1)
-                    game.lorenzoTurn();
-                sendPlayTurn();
-            }
 
         }
+
     }
 
     /**
@@ -921,12 +913,16 @@ public class MatchController implements ControllerInterface{
         if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
             errors.add(Error.INVALID_ACTION);
         else {
-            //game.nextPlayer();
             game.removePlayer(nickname);
-
 
             if(game.getListOfPlayers().size() <= 1)
                 viewInterface.endMatch();
+
+        }
+
+        if(errors.isEmpty()) {
+            game.nextPlayer();
+            sendPlayTurn();
 
         }
 
@@ -991,8 +987,7 @@ public class MatchController implements ControllerInterface{
     }
 
     public List<List<Resource>> getUpdatedDeposit(String player){
-        List<List<Resource>> warehouse = game.getPlayerByNickname(player).getPlayerBoard().getDeposit().getWarehouse();
-        return warehouse;
+        return game.getPlayerByNickname(player).getPlayerBoard().getDeposit().getWarehouse();
     }
 
     public Map<ResourceType, List<Resource>> getUpdatedStrongbox(String player) {
@@ -1022,6 +1017,21 @@ public class MatchController implements ControllerInterface{
     @Override
     public List<LeaderCard> getPlayerHand(String player) {
         return game.getPlayerByNickname(player).getHand();
+    }
+
+    /**
+     * Get the updated auxiliary deposit
+     *
+     * @param user the player
+     * @return the updated auxiliary deposit
+     */
+    @Override
+    public List<AuxiliaryDeposit> getUpdateAuxiliaryDeposit(String user) {
+        Player player = game.getPlayerByNickname(user);
+        if(player.getActiveEffects().isExtraDeposit()){
+            return player.getActiveEffects().getAuxiliaryDeposits();
+        }
+        return new ArrayList<>();
     }
 
 }

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class DevelopmentCardTest {
     }
 
     @Test
+    @DisplayName("testing development cards' id, production requirements and production result ")
     void developmentTest() throws Exception {
 
         assertEquals("d6", developmentCards.get(5).getId());
@@ -43,10 +45,11 @@ public class DevelopmentCardTest {
     }
 
     @Test
+    @DisplayName("testing drawing card from empty deck")
     void developmentDeckTest(){
         ArrayList<DevelopmentCard> developmentCards = new ArrayList<>();
         DevelopmentDeck developmentDeck = new DevelopmentDeck(developmentCards);
-        assertThrows(NonExistentCardException.class,()->developmentDeck.drawCard());
+        assertThrows(NonExistentCardException.class, developmentDeck::drawCard);
     }
 
 }

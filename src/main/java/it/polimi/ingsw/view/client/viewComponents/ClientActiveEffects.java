@@ -99,4 +99,12 @@ public class ClientActiveEffects {
     public List<AuxiliaryDeposit> getAuxiliaryDeposits() {
         return auxiliaryDeposits;
     }
+
+    /**
+     * Update the auxiliary deposit
+     * @param auxiliaryDeposits the updated auxiliary deposit
+     */
+    public void updateAuxiliaryDeposits(List<AuxiliaryDeposit> auxiliaryDeposits) {
+        this.auxiliaryDeposits = auxiliaryDeposits;
+    }
 }

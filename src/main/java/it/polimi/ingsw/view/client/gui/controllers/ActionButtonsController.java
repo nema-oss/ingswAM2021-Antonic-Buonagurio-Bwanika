@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -98,6 +97,7 @@ public class ActionButtonsController implements Initializable {
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
             setBackButtonVisible(true);
+            gameController.makeLeadersClickable(true);
         });
         setChooseActionTypeVisible(true);
 
@@ -105,6 +105,7 @@ public class ActionButtonsController implements Initializable {
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);
             setRowOrColumnVisible(true);
+            setEndTurnVisible(false);
 
         });
         cheat.setVisible(false);
@@ -194,6 +195,8 @@ public class ActionButtonsController implements Initializable {
                 UpdateClientPlayerBoardsMessage updateClientPlayerBoardsMessage = new UpdateClientPlayerBoardsMessage(gui.getPlayerNickname(), gui.getClientPlayer().getPlayerBoard());
                 gui.sendMessage(updateClientPlayerBoardsMessage);
                 gui.sendMessage(msg);
+                gameController.makeCardMarketClickable(false);
+                gameController.makeLeadersClickable(false);
             }
         });
         setEndTurnVisible(false);
@@ -219,6 +222,9 @@ public class ActionButtonsController implements Initializable {
             setResourcePaneVisible(false);
             setActivateProductionVisible(false);
             setBuyCardVisible(false);
+            gameController.makeCardMarketClickable(false);
+            gameController.makeLeadersClickable(false);
+            gameController.makeProductionClickable(false);
             if(!leaderAction.isVisible()) {
                 setChooseActionTypeVisible(true);
                 setBackButtonVisible(false);

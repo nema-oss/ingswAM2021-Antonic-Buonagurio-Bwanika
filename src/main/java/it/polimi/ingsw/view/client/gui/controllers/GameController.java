@@ -67,7 +67,7 @@ public class GameController implements Initializable{
     }
 
     /**
-     * this method initializes the game putting the general gameboard, the players gameboards and the leader choice scene into it
+     * this method initializes the game putting the general game board, the players' boards and the leader choice scene into it
      * @param location
      * @param resources
      */
@@ -104,7 +104,7 @@ public class GameController implements Initializable{
     }
 
     /**
-     * this method initializes the gameboard
+     * this method initializes the game board
      */
     public void initializeGameBoard(){
         gameBoardController.initialize(gui.getClientGameBoard());
@@ -113,8 +113,8 @@ public class GameController implements Initializable{
 
 
     /**
-     * this method initializes each player's gameboard
-     * @throws IOException
+     * this method initializes each player's game  board
+     * @throws IOException if unable to add the player board
      */
     public void initializePlayerBoard() throws IOException {
 
@@ -143,10 +143,9 @@ public class GameController implements Initializable{
 
     /**
      * this method sets up thew player's board
-     * @param player player to initialise
      * @param gameBoard his board
      */
-    public void initializeGameBoard(ClientPlayer player, ClientGameBoard gameBoard) {
+    public void initializeGameBoard(ClientGameBoard gameBoard) {
 
         gameBoardController.updateCardMarket(gameBoard);
         gameBoardController.updateMarbleMarket(gameBoard);
@@ -173,6 +172,14 @@ public class GameController implements Initializable{
      */
     public void makeProductionClickable(boolean bool) {
         playerTabController.setProductionClickable(gui.getClientPlayer(), bool);
+    }
+
+    /**
+     * this method allows or denies clicks on leaders
+     * @param bool true to allow, false to deny
+     */
+    public void makeLeadersClickable(boolean bool) {
+        playerTabController.setLeadersClickable(gui.getClientPlayer(), bool);
     }
 
     /**

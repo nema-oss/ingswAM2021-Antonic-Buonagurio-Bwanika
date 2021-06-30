@@ -87,7 +87,7 @@ public class Board implements Serializable {
     public void addDevelopmentCard(DevelopmentCard card){
 
 
-        for (Stack<DevelopmentCard> developmentCard : developmentCards) {
+        for (Stack<DevelopmentCard> developmentCard : developmentCards)
             if (developmentCard.empty()) {
                 developmentCard.push(card);
                 break;
@@ -98,7 +98,6 @@ public class Board implements Serializable {
                     break;
                 }
             }
-        }
     }
 
     public void addDevelopmentCard(DevelopmentCard card, int index) throws IllegalArgumentException{

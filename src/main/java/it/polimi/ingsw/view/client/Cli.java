@@ -899,8 +899,10 @@ public class Cli extends View {
      * This method shows the user's leader cards
      */
     public void showLeaderCards(List<LeaderCard> leaderCards) {
+
+
         String color;
-       showFullLineTop(leaderCards.size());
+        showFullLineTop(leaderCards.size());
         System.out.print("\n");
         for(int i = 0; i< leaderCards.size(); i++){//for every card in the list
             LeaderCard leaderCard = leaderCards.get(i);
@@ -1370,10 +1372,8 @@ public class Cli extends View {
     @Override
     public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
         player.buyDevelopmentCard(x,y);
-        Formatting.clearScreen();
-        showBoard(gameBoard,player);
-        askTurnAction();
         System.out.println("Buy development card request accepted");
+        askTurnAction();
     }
 
     /**
@@ -1382,8 +1382,11 @@ public class Cli extends View {
      */
     @Override
     public void showProductionRequestResults(boolean accepted) {
-        System.out.println("Production request rejected. Try again.");
-        setProductionChoice(player.getDevelopmentCards(),player.getProductionLeaderCards(),true);
+        if(!accepted) {
+            setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(), true);
+        }else{
+            System.out.println("Your production request has been accepted");
+        }
     }
 
     /**
@@ -1435,6 +1438,8 @@ public class Cli extends View {
                     deposit.addResource(j, new Resource(resourceType));
                 j--;
             }
+            UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+            sendMessage(socket, message);
     }
 
 
@@ -1477,8 +1482,8 @@ public class Cli extends View {
     }
 
     @Override
-    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
-        player.updateDeposit(updatedStrongbox,updatedWarehouse);
+    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
+        player.updateDeposit(updatedStrongbox,updatedWarehouse, auxiliaryDeposit);
 
     }
 
@@ -1536,9 +1541,18 @@ public class Cli extends View {
                                 showGameBoard(gameBoard);
                                 askTurnAction();
                                 break;
+                            case CHEAT:
+                                sendMessage(socket, new CheatMessage(player.getNickname()));
+                                player.setStandardActionDone();
+                                askTurnAction();
+                                break;
+                            case RESET:
+                                askTurnAction();
+                                return;
                             case END_TURN:
                                 if(!checkTurnEnd()) {
                                     System.out.println("You can't end your turn without playing a standard action");
+                                    askTurnAction();
                                     break;
                                 }else {
                                     player.resetTurnActionCounter();
@@ -1553,6 +1567,7 @@ public class Cli extends View {
             }while(!correct.get() && !player.allPossibleActionDone());
         });
     }
+
 
     /**
      * Asks the user what card productions it wants to use
@@ -1582,7 +1597,7 @@ public class Cli extends View {
 
             inputWithTimeout();
             List<DevelopmentCard> developmentCardChoice;
-            List<LeaderCard> leaderCardChoice;
+            Map<LeaderCard, ResourceType> leaderCardChoice;
             Map<Resource,List<ResourceType>> boardProductionChoice;
 
             if(!Thread.interrupted()) {
@@ -1594,20 +1609,24 @@ public class Cli extends View {
                         askTurnAction();
                         return;
                     }
-                    developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input);
-                    leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input);
+                    developmentCardChoice = InputValidator.isValidDevelopmentCardChoice(developmentCards, input); // develop 1 or develop 3
+                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
+
+                    leaderCardChoice = InputValidator.isValidLeaderCardChoice(leaderCards, input); // l1,coin or l2,shield
+                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
+
                     boardProductionChoice = InputValidator.isValidBoardProductionChoice(input);
+                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
+
                     correct.set(developmentCardChoice != null || leaderCardChoice != null || boardProductionChoice != null);
                     if (!correct.get() && !selectionDone.get())
                         System.out.println("Incorrect production choices. Try again");
 
                     if (Thread.interrupted()) return;
-                } while (!correct.get() && !selectionDone.get());
+                } while(!selectionDone.get());
 
                 if (!Thread.interrupted()) {
-                    if(developmentCardChoice != null) sendMessage(socket, new ActivateCardProductionMessage(player.getNickname(),developmentCardChoice,true));
-                    if(leaderCardChoice != null) sendMessage(socket, new ActivateLeaderProductionMessage(player.getNickname(),leaderCardChoice,true));
-                    if(boardProductionChoice != null) sendMessage(socket, new ActivateBoardProductionMessage(player.getNickname(),boardProductionChoice,true));
+                    sendMessage(socket, new EndProductionMessage(player.getNickname()));
                 }
 
                 player.setStandardActionDone();
@@ -1647,7 +1666,7 @@ public class Cli extends View {
             if(!Thread.interrupted()) {
 
                 String input = inputWithTimeout();
-                while(!input.equals("done") && userChoice.size() < 2){
+                while(!input.equals("done")){
 
                     switch(input){
                         case "A1":

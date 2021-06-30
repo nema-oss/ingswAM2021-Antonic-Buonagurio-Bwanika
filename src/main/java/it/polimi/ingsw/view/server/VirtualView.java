@@ -6,7 +6,6 @@ import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.actions.EndProductionMessage;
 import it.polimi.ingsw.messages.actions.server.LorenzoTurnMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
-import it.polimi.ingsw.messages.actions.server.UpdatePlayerBoardMessage;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
@@ -15,10 +14,10 @@ import it.polimi.ingsw.messages.utils.UpdateWriter;
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.server.ClientHandler;
 
@@ -140,7 +139,10 @@ public class VirtualView implements VirtualViewInterface{
                 if (!socket.isClosed())
                     sendMessage(socket, message);
             }
-            if (isActive()) inGameReconnectionHandler.onClientDown(this, nickname);
+            if (isActive()) {
+                inGameReconnectionHandler.onClientDown(this, nickname);
+
+            }
         }
     }
 
@@ -313,8 +315,6 @@ public class VirtualView implements VirtualViewInterface{
         Message resourceTypeSelectionAccepted = new UpdateWriter().resourceTypeSelectionAccepted(user, resourceType);
         sendMessage(clients.get(user), resourceTypeSelectionAccepted);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
     /**
      * This method sends alerts the client that its resourceType selection has been rejected
@@ -348,8 +348,6 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().moveDepositRequestAccepted(user,a, b);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
 
     /**
@@ -430,6 +428,7 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().buyResourceAccepted(user,x,y);
         ((BuyResourcesMessage) message).setResourceList(boughtResources);
         updatePlayerPosition(user);
+        updateDepositAfterAction(user, matchController.getUpdatedStrongbox(user), matchController.getUpdatedDeposit(user));
 
         /*
         Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
@@ -542,7 +541,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param leaderCards the selected cards
      * @param user the current user
      */
-    public void activateProductionLeaderCard(String user, List<LeaderCard> leaderCards){
+    public void activateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> leaderCards){
         List<Error> errors = matchController.onActivateLeaderProduction(user,leaderCards);
         System.out.println(errors.size());
         System.out.println(errors);
@@ -557,10 +556,10 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * this method alerts the user that his activate production action on leader cards has been accepted
      * @param user the player's nickname
-     * @param cards the cards
+     * @param choice a map with the cards and the resource type wanted
      */
-    private void onAcceptedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
-        Message message = new UpdateWriter().productionLeaderAccepted(user,cards);
+    private void onAcceptedActivateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> choice){
+        Message message = new UpdateWriter().productionLeaderAccepted(user,choice);
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
 
@@ -569,11 +568,11 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * this method alerts the user that his activate production action on leader cards has been rejected
      * @param user the player's nickname
-     * @param cards the cards
+     * @param @param choice a map with the cards and the resource type wanted
      */
-    private void onRejectedActivateProductionLeaderCard(String user, List<LeaderCard> cards){
+    private void onRejectedActivateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> choice){
         System.out.println("Rejected leader prod");
-        Message message = new ErrorWriter().productionLeaderRejected(user,cards);
+        Message message = new ErrorWriter().productionLeaderRejected(user,choice);
         sendMessage(clients.get(user), message);
 
     }
@@ -683,7 +682,9 @@ public class VirtualView implements VirtualViewInterface{
      * @param disconnectedPlayer the disconnected player's nickname
      */
     public void inGameDisconnection(String disconnectedPlayer) {
+
         matchController.onPlayerDisconnection(disconnectedPlayer);
+        clients.remove(disconnectedPlayer);
     }
 
     /**
@@ -811,8 +812,6 @@ public class VirtualView implements VirtualViewInterface{
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
         sendMessage(clients.get(user), message);
 
-        Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -891,6 +890,10 @@ public class VirtualView implements VirtualViewInterface{
 
         EndProductionMessage message = new EndProductionMessage(user);
         message.setProductionResult(updateStrongbox, updatedWarehouse);
+        List<AuxiliaryDeposit> auxiliaryDeposit = matchController.getUpdateAuxiliaryDeposit(user);
+        if(auxiliaryDeposit != null){
+            message.setAuxiliaryDeposit(auxiliaryDeposit);
+        }
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
     }
@@ -916,6 +919,17 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void addClientHandler(String nickname, ClientHandler clientHandler) {
         inGameReconnectionHandler.addClientHandler(nickname,clientHandler);
+    }
+
+    /**
+     * End the games if after disconnection, only one player remains
+     */
+    public void endMatchDisconnection() {
+
+        if(clients.values().size() == 1){
+            String player = clients.keySet().stream().findFirst().get();
+            notifyWinner(player);
+        }
     }
 }
 

@@ -19,13 +19,9 @@ public class NumOfPlayersController implements Initializable {
     @FXML
     ComboBox<Integer> comboBox;
 
-    private int numOfPlayers;
-
     private Gui gui;
 
     private LoginRequest message;
-
-    private boolean isLocalMatch;
 
     /**
      * this method sens the message with the number of players chosen
@@ -33,7 +29,7 @@ public class NumOfPlayersController implements Initializable {
     @FXML
     public void switchToLobby() {
 
-        numOfPlayers = comboBox.getValue();
+        int numOfPlayers = comboBox.getValue();
         message.setNumberOfPlayers(numOfPlayers);
         gui.sendMessage(message);
     }

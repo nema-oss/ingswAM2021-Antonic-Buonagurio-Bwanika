@@ -140,7 +140,7 @@ public class EchoServer implements InGameReconnectionHandler {
             matchesWithDisconnectedPlayers.put(virtualView.getLobbyID(),virtualView);
         }
         else{
-            virtualView.endMatch();
+            virtualView.endMatchDisconnection();
         }
     }
 

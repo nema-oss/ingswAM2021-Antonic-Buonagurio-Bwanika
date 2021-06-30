@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.exception.InsufficientDevelopmentCardsException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ActivateLeaderTest {
 
     @Test
+    @DisplayName("testing player's hand setting")
     public void activationTest() throws InsufficientDevelopmentCardsException, NonExistentCardException, InsufficientResourcesException {
         Player player = new Player("mario", new GameBoard(), new Game());
         CardFactory cardFactory = new CardFactory();

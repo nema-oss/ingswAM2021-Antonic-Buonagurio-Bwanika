@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.client.gui.controllers;
 
-import it.polimi.ingsw.view.client.gui.Gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

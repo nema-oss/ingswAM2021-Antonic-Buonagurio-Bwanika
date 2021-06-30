@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.client.utils;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
+import it.polimi.ingsw.model.cards.leadercards.LeaderCardType;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 
@@ -172,38 +173,15 @@ public class InputValidator {
         return null;
     }
 
+    /**
+     * Checks if the development card production request is correct.
+     * @param cards the development cards available
+     * @param input the user's input. Format example = "develop-1" to use the first development card or "develop-1,2"
+     *              to use the first and the second card.
+     * @return the user's choice
+     */
+
     public static List<DevelopmentCard> isValidDevelopmentCardChoice(List<DevelopmentCard> cards, String input) {
-
-
-        List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
-        if(rawList.size() != 2) return null;
-
-        String command = rawList.get(0).toLowerCase(Locale.ROOT);
-        if(!command.equals(LEADER)) return null;
-
-        List<String> list = Arrays.asList(rawList.get(1).split("\\s*,\\s*"));
-        List<String> splitInput = list.stream()
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<DevelopmentCard> userChoice;
-        int idx;
-
-        try{
-            userChoice = new ArrayList<>();
-            for(String choice: splitInput) {
-                idx = Integer.parseInt(choice);
-                userChoice.add(cards.get(idx));
-            }
-        }catch (NumberFormatException | IndexOutOfBoundsException e){
-            return null;
-        }
-
-        return userChoice;
-    }
-
-
-    public static List<LeaderCard> isValidLeaderCardChoice(List<LeaderCard> cards, String input) {
 
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
@@ -213,16 +191,13 @@ public class InputValidator {
         if(!command.equals(DEVELOPMENT_CARD)) return null;
 
         List<String> list = Arrays.asList(rawList.get(1).split("\\s*,\\s*"));
-        List<String> splitInput = list.stream()
-                .distinct()
-                .collect(Collectors.toList());
 
-        List<LeaderCard> userChoice;
+        List<DevelopmentCard> userChoice;
         int idx;
 
         try{
             userChoice = new ArrayList<>();
-            for(String choice: splitInput) {
+            for(String choice: list) {
                 idx = Integer.parseInt(choice);
                 userChoice.add(cards.get(idx));
             }
@@ -233,9 +208,50 @@ public class InputValidator {
         return userChoice;
     }
 
-    public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {
+
+    /**
+     * Check if the leader production request input is correct
+     * @param cards the leader cards available
+     * @param input the user's input. Format example = "l1-shield" to receive 1 shield using the first card
+     * @return the user's choice
+     */
+    public static Map<LeaderCard, ResourceType> isValidLeaderCardChoice(List<LeaderCard> cards, String input) {
 
         List<String> rawList = Arrays.asList(input.split("\\s*-\\s*"));
+        if(rawList.size() != 2) return null;
+
+        String card = rawList.get(0).toLowerCase(Locale.ROOT);
+        String resource = rawList.get(1).toLowerCase(Locale.ROOT);
+        ResourceType resourceType = isResourceType(resource);
+        if(resourceType == null) return null;
+
+        Map<LeaderCard, ResourceType> result = new HashMap<>();
+        switch (card){
+            case "l1":
+                if(cards.get(0).getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)){
+                    result.put(cards.get(0), resourceType);
+                    return result;
+                }
+                break;
+            case "l2":
+                if(cards.get(1).getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)){
+                    result.put(cards.get(1), resourceType);
+                    return result;
+                }
+                break;
+        }
+
+        return null;
+    }
+
+    /**
+     * Check if the board production input is correct
+     * @param input user's input. Format example = " board/shield,coin=stone" to give 1 shield and 1 coin and get 1 stone
+     * @return the user's choice
+     */
+    public static Map<Resource, List<ResourceType>> isValidBoardProductionChoice(String input) {
+
+        List<String> rawList = Arrays.asList(input.split("\\s*/\\s*"));
         if(rawList.size() != 2) return null;
 
         String command = rawList.get(0).toLowerCase(Locale.ROOT);

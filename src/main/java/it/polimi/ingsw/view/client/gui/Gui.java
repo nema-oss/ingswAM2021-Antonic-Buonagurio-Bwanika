@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.ActionTokenMove;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.DevelopmentDeck;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Marble;
 import it.polimi.ingsw.model.gameboard.Resource;
@@ -88,7 +89,7 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         initTurnActions();
-        intEndGame();
+        initEndGame();
         isGameScene = false;
 
     }
@@ -103,7 +104,7 @@ public class Gui extends View {
         initNumberOfPlayers();
         initGameScene();
         initTurnActions();
-        intEndGame();
+        initEndGame();
 
     }
 
@@ -152,7 +153,6 @@ public class Gui extends View {
             Parent root = loader.load();
             loginWaitScene = new Scene(root);
             loginWaitController = loader.getController();
-            loginWaitController.setGui(this);
         } catch (IOException e) {
             System.out.println("Could not initialize loginWait Scene");
         }
@@ -229,25 +229,25 @@ public class Gui extends View {
     private void initGameBoard(){
 
         try{
-            gameSceneController.initializeGameBoard(player,gameBoard);
+            gameSceneController.initializeGameBoard();
         }catch (NullPointerException e){
             System.out.println("Could not initialize Game Board Scene");
         }
     }
 
     /**
-     * this method initalizes the final scene
+     * this method initializes the final scene
      */
-    private void intEndGame() {
+    private void initEndGame() {
 
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/winner");
             Parent root = loader.load();
-            gameScene = new Scene(root);
+            endGameScene = new Scene(root);
             endGameController = loader.getController();
 
         } catch (IOException e) {
-            System.out.println("Could not initialize Game Scene");
+            System.out.println("Could not initialize End game Scene");
         }
     }
 
@@ -325,9 +325,7 @@ public class Gui extends View {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
-            gameSceneController.addLeadersToPlayer();
-           /* primaryStage.setScene(chooseResourcesScene);
-            primaryStage.show(); */
+            chooseResourcesController.setNumberOfResources(numberOfResources);
         });
     }
 
@@ -371,10 +369,10 @@ public class Gui extends View {
     }
 
     @Override
-    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse) {
+    public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
 
         Platform.runLater(()->{
-            player.updateDeposit(updatedStrongbox,updatedWarehouse);
+            player.updateDeposit(updatedStrongbox,updatedWarehouse,auxiliaryDeposit);
             player.setStandardActionDone();
             playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
@@ -624,10 +622,15 @@ public class Gui extends View {
     public void showEndGame(String winner) {
 
         Platform.runLater(()->{
-            endGameController.setWinner(winner);
-            endGameController.setMessage(winner + " has won the match");
-            primaryStage.setScene(endGameScene);
+            try {
+                endGameController.setWinner(winner);
+                endGameController.setMessage(winner + " has won the match");
+                primaryStage.setScene(endGameScene);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         });
+
     }
 
     /**
@@ -698,6 +701,7 @@ public class Gui extends View {
             if(player.getBoughtResources().size()!=0) {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
+                actionButtonsController.setChooseActionTypeVisible(false);
             }
             else{
                 player.setStandardActionDone();
@@ -722,7 +726,7 @@ public class Gui extends View {
                 alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
                 player.useLeaderCard(card, activate);
                 playerTabController.controlLeaders(player);
-                actionButtonsController.setLeaderActionVisible(false);
+                actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setChooseLeaderActionVisible(false);
                 actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
                 actionButtonsController.setEndTurnVisible(true);
@@ -762,12 +766,13 @@ public class Gui extends View {
                 DevelopmentCard cardChosen =player.buyDevelopmentCard(x, y);
                 player.setStandardActionDone();
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
-                alertUser("Information", "Accepted buy card; select where to place your card", Alert.AlertType.INFORMATION);
+                alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
                 //playerTabController.setPlaceCard(player.getNickname(), cardChosen);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setEndTurnVisible(true);
+                gameSceneController.makeCardMarketClickable(false);
             }else{
                 alertUser("Information", user + "has bought a card from market.", Alert.AlertType.INFORMATION);
             }
@@ -884,7 +889,12 @@ public class Gui extends View {
                     player.getDeposit().addResource(j, new Resource(resourceType));
                 j--;
             }
-            playerBoardController.updateDeposit(player.getDeposit());
+            playerBoardController.update(player.getPlayerBoard());
+            gameSceneController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
+
+            UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
+            sendMessage(message);
+            //playerBoardController.updateDeposit(player.getDeposit());
 
         });
 
@@ -896,6 +906,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             try {
+                gameSceneController.initializeGameBoard();
                 gameSceneController.initializePlayerBoard();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -976,6 +987,23 @@ public class Gui extends View {
                 localMatchHandler = new LocalMatchHandler(this);
                 primaryStage.setScene(nicknameScene);
                 primaryStage.show();
+        });
+
+    }
+
+    /**
+     * Update the player's hand and the active leader cards after reconnection
+     * @param hand player's hand
+     * @param activeLeaderCards player's active leader cards
+     */
+    @Override
+    public void showLeaderCardUpdate(List<LeaderCard> hand, List<LeaderCard> activeLeaderCards){
+
+        Platform.runLater(()->{
+            player.setHand(hand);
+            gameSceneController.addLeadersToPlayer();
+            activeLeaderCards.forEach(p->player.useLeaderCard(p,true));
+
         });
 
     }

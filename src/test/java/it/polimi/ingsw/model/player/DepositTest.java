@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.exception.FullDepositException;
+import it.polimi.ingsw.model.exception.WrongDepositSwapException;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,10 +27,10 @@ class DepositTest {
         resources = new ArrayList<Resource>();
         Resource gold = new Resource(ResourceType.COIN);
         Resource servant1 = new Resource(ResourceType.SERVANT);
-        Resource servant2 = new Resource(ResourceType.STONE);
+        Resource stone = new Resource(ResourceType.STONE);
         resources.add(gold);
         resources.add(servant1);
-        resources.add(servant2);
+        resources.add(stone);
         singleResource = new Resource(ResourceType.SHIELD);
     }
 
@@ -88,6 +89,7 @@ class DepositTest {
     }
 
     @Test
+    @DisplayName("testing floor getter")
     void getFloor() throws FullDepositException {
         deposit = new Deposit();
         deposit.addResource(1, new Resource(ResourceType.COIN));
@@ -97,6 +99,7 @@ class DepositTest {
     }
 
     @Test
+    @DisplayName("testing adding and getting resources from deposit")
     void getResources2() throws FullDepositException, InsufficientResourcesException {
         deposit = new Deposit();
         List<Resource> resources = new ArrayList<Resource>();
@@ -110,5 +113,33 @@ class DepositTest {
         for(Resource resource: result){
             assertEquals(resource.getType(), ResourceType.COIN);
         }
+    }
+
+    @Test
+    @DisplayName("testing swap floors, adding in full floor, getter of entire deposit")
+    void swapAndExceptionsTest() throws FullDepositException {
+        deposit = new Deposit();
+        Resource firstRes = new Resource(ResourceType.SHIELD);
+        Resource secondRes = new Resource(ResourceType.COIN);
+        Resource thirdRes = new Resource(ResourceType.COIN);
+        deposit.addResource(1, firstRes );
+        deposit.addResource(2, secondRes);
+        deposit.addResource(2, thirdRes);
+
+        assertThrows(WrongDepositSwapException.class, () -> deposit.swapFloors(1,2));
+
+        assertThrows(FullDepositException.class, () -> deposit.addResource(2, new Resource(ResourceType.COIN)));
+
+        List<List<Resource>> depositResources = new ArrayList<>();
+        List<Resource> firstFloor = new ArrayList<>();
+        firstFloor.add(firstRes);
+        List<Resource> secondFloor = new ArrayList<>();
+        secondFloor.add(secondRes);
+        secondFloor.add(thirdRes);
+        depositResources.add(secondFloor);
+        depositResources.add(new ArrayList<>());
+        depositResources.add(firstFloor);
+
+        assertEquals(depositResources, deposit.getWarehouse());
     }
 }

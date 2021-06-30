@@ -640,6 +640,15 @@ public class PlayerBoardController {
     }
 
     /**
+     * this method allows or denies to click on leader cards
+     * @param bool true to allow, false to deny
+     */
+    public void setLeadersClickable(Boolean bool){
+        leader1.setDisable(!bool);
+        leader2.setDisable(!bool);
+    }
+
+    /**
      * this method sets the messages to send when placing a development card
      * @param card card bought
      */

@@ -175,6 +175,14 @@ public class GameController implements Initializable{
     }
 
     /**
+     * this method allows or denies clicks on leaders
+     * @param bool true to allow, false to deny
+     */
+    public void makeLeadersClickable(boolean bool) {
+        playerTabController.setLeadersClickable(gui.getClientPlayer(), bool);
+    }
+
+    /**
      * this method updates one's board
      * @param clientPlayer the player
      * @param clientPlayerBoard the board to be updated

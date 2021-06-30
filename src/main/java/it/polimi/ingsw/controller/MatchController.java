@@ -636,9 +636,6 @@ public class MatchController implements ControllerInterface{
         }
 
         nextTurn();
-
-        System.out.println(errors);
-        System.out.println(errors.size());
         return errors;
     }
 

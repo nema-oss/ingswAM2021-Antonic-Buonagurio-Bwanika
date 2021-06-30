@@ -890,6 +890,8 @@ public class Gui extends View {
                 j--;
             }
             playerBoardController.update(player.getPlayerBoard());
+            gameSceneController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
+
             UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
             sendMessage(message);
             //playerBoardController.updateDeposit(player.getDeposit());

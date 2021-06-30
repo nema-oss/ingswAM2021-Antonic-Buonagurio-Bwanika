@@ -47,7 +47,7 @@ public class PlayerTabController implements Initializable {
         tabSpace.setTop(tabPane);
         tabPane.setMaxWidth(744.0);
         tabPane.setMaxHeight(475.0);
-        tabPane.setStyle("-fx-border-color: white");
+        tabPane.setStyle("-fx-border-color: #ffffff");
 
         controllersMap = new HashMap<>();
     }
@@ -62,7 +62,7 @@ public class PlayerTabController implements Initializable {
 
         FXMLLoader loader = GuiManager.loadFXML("/gui/playerBoard");
         Tab tab = new Tab(clientPlayer, loader.load());
-        tab.setStyle("-fx-background-color: radial-gradient(center 50% -40%, radius 200%, #fffefe 45%, #edeff8 50%) ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
+        tab.setStyle("-fx-background-color: white ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
         tab.setClosable(false);
 
         PlayerBoardController controller = loader.getController();
@@ -75,6 +75,7 @@ public class PlayerTabController implements Initializable {
        if(!isCurrent) {
            controllersMap.get(clientPlayer).hideInactiveLeaders();
            tab.getContent().setDisable(true);
+           tab.setStyle("-fx-background-color: EFEFEFFF ;-fx-text-fill: black; -fx-font-size: 14px; -fx-padding: 5 30 5 30;");
        }
     }
 
@@ -102,12 +103,21 @@ public class PlayerTabController implements Initializable {
     }
 
     /**
-     * this method makes the producton elements in one's board clickable
+     * this method makes the production elements in one's board clickable
      * @param clientPlayer the player on which to perform the action
      * @param bool true to allow, false to deny
      */
     public void setProductionClickable(ClientPlayer clientPlayer, boolean bool){
         controllersMap.get(clientPlayer.getNickname()).setProductionClickable(bool);
+    }
+
+    /**
+     * this method makes leaders clickable in one's board
+     * @param clientPlayer the client player to activate leaders on
+     * @param bool true to allow, false to deny
+     */
+    public void setLeadersClickable(ClientPlayer clientPlayer, boolean bool){
+        controllersMap.get(clientPlayer.getNickname()).setLeadersClickable(bool);
     }
 
     /**

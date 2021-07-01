@@ -36,13 +36,15 @@ public class PlayerBoardController {
     Button boardProdButton, cardProdButton, leaderProdButton, place1, place2, place3;
 
     @FXML
-    GridPane devCards1, devCards2, devCards3, floor1, floor2, floor3, popeRoad;
+    GridPane floor1, floor2, floor3, popeRoad;
 
     @FXML
     AnchorPane strongbox, pBoard, extraDeposit1, extraDeposit2;
 
     @FXML
-    BorderPane dev11, dev21, dev31, dev12, dev22, dev32, dev13, dev23, dev33;
+    BorderPane dev11, dev12, dev13, dev21, dev22, dev23, dev31, dev32, dev33;
+
+    BorderPane firstDevCard, secondDevCard, thirdDevCard;
 
     @FXML
     Label strongboxCoinCount, strongboxShieldCount, strongboxServantCount, strongboxStoneCount;
@@ -284,13 +286,13 @@ public class PlayerBoardController {
             gui.sendMessage(msg);
             prodCardsList.clear();
             dev11.setStyle("");
-            dev21.setStyle("");
-            dev31.setStyle("");
             dev12.setStyle("");
-            dev22.setStyle("");
-            dev32.setStyle("");
             dev13.setStyle("");
+            dev21.setStyle("");
+            dev22.setStyle("");
             dev23.setStyle("");
+            dev31.setStyle("");
+            dev32.setStyle("");
             dev33.setStyle("");
             isDev1Selected = false;
             isDev2Selected = false;
@@ -390,41 +392,68 @@ public class PlayerBoardController {
                         prodCardsList.remove(clientPlayerBoard.getDevelopmentCard(finalI));
                 });
 
-                if(i==0) {
-                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
-                        case 1:
-                            dev11.setCenter(card);
-                            break;
-                        case 2:
-                            dev12.setCenter(card);
-                            break;
-                        case 3:
-                            dev13.setCenter(card);
-                    }
-
-                }
-                else if(i==1) {
-                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
-                        case 1:
-                            dev21.setCenter(card);
-                            break;
-                        case 2:
-                            dev22.setCenter(card);
-                            break;
-                        case 3:
-                            dev23.setCenter(card);
+                int level = clientPlayerBoard.getDevelopmentCard(i).getLevel();
+                if(level == 1) {
+                    if (i == 0) {
+                        dev11.setCenter(card);
+                        dev11.toFront();
+                        firstDevCard = dev11;
+                        dev21.setVisible(false);
+                        dev31.setVisible(false);
+                    } else if (i == 1) {
+                        dev12.setCenter(card);
+                        dev12.toFront();
+                        secondDevCard = dev12;
+                        dev22.setVisible(false);
+                        dev32.setVisible(false);
+                    } else {
+                        dev13.setCenter(card);
+                        dev13.toFront();
+                        thirdDevCard = dev13;
+                        dev23.setVisible(false);
+                        dev33.setVisible(false);
                     }
                 }
-                else{
-                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
-                        case 1:
-                            dev31.setCenter(card);
-                            break;
-                        case 2:
-                            dev32.setCenter(card);
-                            break;
-                        case 3:
-                            dev33.setCenter(card);
+                else if(level == 2) {
+                    if (i == 0) {
+                        dev21.setCenter(card);
+                        dev21.toFront();
+                        firstDevCard = dev21;
+                        dev21.setVisible(true);
+                        dev11.setDisable(true);
+                    } else if (i == 1) {
+                        dev22.setCenter(card);
+                        dev22.toFront();
+                        secondDevCard = dev22;
+                        dev22.setVisible(true);
+                        dev12.setDisable(true);
+                    } else {
+                        dev23.setCenter(card);
+                        dev23.toFront();
+                        thirdDevCard = dev23;
+                        dev23.setVisible(true);
+                        dev13.setDisable(true);
+                    }
+                }
+                else if(level == 3) {
+                    if (i == 0) {
+                        dev31.setCenter(card);
+                        dev31.toFront();
+                        firstDevCard = dev31;
+                        dev31.setVisible(true);
+                        dev21.setDisable(true);
+                    } else if (i == 1) {
+                        dev32.setCenter(card);
+                        dev32.toFront();
+                        secondDevCard = dev32;
+                        dev32.setVisible(true);
+                        dev22.setDisable(true);
+                    } else {
+                        dev33.setCenter(card);
+                        dev33.toFront();
+                        thirdDevCard = dev33;
+                        dev33.setVisible(true);
+                        dev23.setDisable(true);
                     }
                 }
 
@@ -437,121 +466,44 @@ public class PlayerBoardController {
      * @param card the card clicked
      * @return true if card is selected, false otherwise
      */
-    public boolean controlDevelopmentCard(ImageView card){
-        if(card.getParent().equals(dev11)){
-            if(!isDev1Selected){
-                isDev1Selected = true;
-                dev11.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev1Selected = false;
-                dev11.setStyle("");
-                return false;
-            }
-        }
-        else if(card.getParent().equals(dev12)){
-            if(!isDev1Selected){
-                isDev1Selected = true;
-                dev12.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev1Selected = false;
-                dev12.setStyle("");
-                return false;
-            }
-        }
-        else if(card.getParent().equals(dev13)){
-            if(!isDev1Selected){
-                isDev1Selected = true;
-                dev13.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev1Selected = false;
-                dev13.setStyle("");
-                return false;
-            }
-        }
-        else if(card.getParent().equals(dev21)){
-            if(!isDev2Selected){
-                isDev2Selected = true;
-                dev21.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev2Selected = false;
-                dev21.setStyle("");
-                return false;
-            }
+    public boolean controlDevelopmentCard(ImageView card) {
 
-        }
-        else if(card.getParent().equals(dev22)){
-            if(!isDev2Selected){
-                isDev2Selected = true;
-                dev22.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev2Selected = false;
-                dev22.setStyle("");
-                return false;
-            }
+        if (cardProdButton.isVisible()) {
+            if (card.getParent().equals(firstDevCard)) {
+                if (!isDev1Selected) {
+                    isDev1Selected = true;
+                    firstDevCard.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                    return true;
+                } else {
+                    isDev1Selected = false;
+                    firstDevCard.setStyle("");
+                    return false;
+                }
+            } else if (card.getParent().equals(secondDevCard)) {
+                if (!isDev2Selected) {
+                    isDev2Selected = true;
+                    secondDevCard.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                    return true;
+                } else {
+                    isDev2Selected = false;
+                    secondDevCard.setStyle("");
+                    return false;
+                }
 
-        }
-        else if(card.getParent().equals(dev23)){
-            if(!isDev2Selected){
-                isDev2Selected = true;
-                dev23.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev2Selected = false;
-                dev23.setStyle("");
-                return false;
-            }
+            } else {
+                if (!isDev3Selected) {
+                    isDev3Selected = true;
+                    thirdDevCard.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                    return true;
+                } else {
+                    isDev3Selected = false;
+                    thirdDevCard.setStyle("");
+                    return false;
+                }
 
+            }
         }
-        else if(card.getParent().equals(dev31)){
-            if(!isDev3Selected){
-                isDev3Selected = true;
-                dev31.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev3Selected = false;
-                dev31.setStyle("");
-                return false;
-            }
-
-        }
-        else if(card.getParent().equals(dev32)){
-            if(!isDev3Selected){
-                isDev3Selected = true;
-                dev32.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev3Selected = false;
-                dev32.setStyle("");
-                return false;
-            }
-
-        }
-        else{
-            if(!isDev3Selected){
-                isDev3Selected = true;
-                dev33.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
-                return true;
-            }
-            else{
-                isDev3Selected = false;
-                dev33.setStyle("");
-                return false;
-            }
-
-        }
+        return false;
     }
 
     /**
@@ -903,4 +855,6 @@ public class PlayerBoardController {
             thirdVaticanSection.setVisible(false);
         }
     }
+
+
 }

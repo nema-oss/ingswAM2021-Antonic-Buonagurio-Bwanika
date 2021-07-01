@@ -130,7 +130,7 @@ public class PlayerTabController implements Initializable {
     }
 
     /**
-     * this metod updates one's position in the pope road
+     * this method updates one's position in the pope road
      * @param playerNickname player's nickname
      * @param clientPlayer player
      */

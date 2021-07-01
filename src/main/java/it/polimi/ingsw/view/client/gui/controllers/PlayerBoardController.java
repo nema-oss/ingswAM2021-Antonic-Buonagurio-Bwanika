@@ -82,7 +82,6 @@ public class PlayerBoardController {
             leader2.setVisible(true);
     }
 
-
     /**
      * this method shows tha actions which can be performed on the first leader
      * @param event the mouse click
@@ -92,7 +91,7 @@ public class PlayerBoardController {
 
         if (isLeaderAction) {
             if (!is1active) {
-                createCardMenu(leader1, l1, event, true);
+                createCardMenu(leader1, l1, event);
 
             } else if(leaderProdButton.isVisible()){
                 if(!isL1Selected) {
@@ -106,9 +105,6 @@ public class PlayerBoardController {
                     isL1Selected = false;
                 }
             }
-            else{
-                createCardMenu(leader1, l1, event, false);
-            }
         }
     }
 
@@ -121,7 +117,7 @@ public class PlayerBoardController {
 
         if(isLeaderAction) {
             if (!is2active) {
-                createCardMenu(leader2, l2, event, true);
+                createCardMenu(leader2, l2, event);
 
             } else if(leaderProdButton.isVisible()) {
                 if(!isL2Selected) {
@@ -135,9 +131,6 @@ public class PlayerBoardController {
                     isL2Selected = false;
                 }
             }
-            else{
-                createCardMenu(leader2, l2, event, false);
-            }
         }
     }
 
@@ -146,28 +139,26 @@ public class PlayerBoardController {
      * @param leader the imageView to associate the menu to
      * @param l the leader card corresponding to the image view
      * @param event mouse click
-     * @param activateVisible true if it hasn't been activated yet
      */
-    private void createCardMenu( ImageView leader, LeaderCard l, MouseEvent event, boolean activateVisible){
+    private void createCardMenu( ImageView leader, LeaderCard l, MouseEvent event){
         ContextMenu inactiveMenu = new ContextMenu();
 
-        if(activateVisible) {
-            MenuItem activate = new MenuItem("Activate leader card");
-            activate.setOnAction(event1 -> {
-                if (l.equals(l1))
-                    is1active = true;
-                else if (l.equals(l2))
-                    is2active = true;
-                leader.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
+        MenuItem activate = new MenuItem("Activate leader card");
+        activate.setOnAction(event1 -> {
+            if (l.equals(l1))
+                is1active = true;
+            else if (l.equals(l2))
+                is2active = true;
+            leader.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #51db51");
 
-                Map<LeaderCard, Boolean> userChoice = new HashMap<>();
-                userChoice.put(l, true);
-                Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
-                gui.sendMessage(msg);
+            Map<LeaderCard, Boolean> userChoice = new HashMap<>();
+            userChoice.put(l, true);
+            Message msg = new LeaderActionMessage(gui.getPlayerNickname(), userChoice, false);
+            gui.sendMessage(msg);
 
-            });
-            inactiveMenu.getItems().add(activate);
-        }
+        });
+        inactiveMenu.getItems().add(activate);
+
 
         MenuItem discard = new MenuItem("Discard leader card");
         discard.setOnAction(event2 -> {
@@ -621,8 +612,9 @@ public class PlayerBoardController {
         updatePopeRoad(clientPlayerBoard);
         showActiveLeaders();
 
-        if(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits()!=null)
-            updateExtraDeposits(gui.getClientPlayer().getActiveEffects().getAuxiliaryDeposits());
+        if(clientPlayerBoard.getPlayerAuxiliaryDeposits()!=null)
+            updateExtraDeposits(clientPlayerBoard.getPlayerAuxiliaryDeposits());
+
     }
 
     public void setGui(Gui gui){
@@ -737,7 +729,6 @@ public class PlayerBoardController {
      */
     public void updateExtraDeposits(List<AuxiliaryDeposit> auxiliaryDeposits){
 
-        System.out.println("sono in update extra deposits");
         if(!auxiliaryDeposits.isEmpty())
             for(AuxiliaryDeposit auxiliaryDeposit : auxiliaryDeposits) {
                 if(auxiliaryDeposit.getType().label.equals(extraDeposit1Type))
@@ -754,8 +745,6 @@ public class PlayerBoardController {
      */
     public void showExtraDeposit(AnchorPane extraDeposit, int amount){
 
-        System.out.println("sono in show extra deposit");
-        System.out.println(amount);
         if(extraDeposit.equals(extraDeposit1)) {
             if (amount >= 1)
                 dep1a.setVisible(true);

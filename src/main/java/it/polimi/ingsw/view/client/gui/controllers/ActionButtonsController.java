@@ -124,6 +124,7 @@ public class ActionButtonsController implements Initializable {
             setChooseActionTypeVisible(false);
             setEndTurnVisible(false);
             setActivateProductionVisible(true);
+            gameController.makeLeadersClickable(true);
 
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
             gui.sendMessage(msg);

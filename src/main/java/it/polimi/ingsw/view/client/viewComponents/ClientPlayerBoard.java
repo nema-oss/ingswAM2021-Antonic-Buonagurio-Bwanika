@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.*;
@@ -21,6 +22,7 @@ public class ClientPlayerBoard implements Serializable {
     private final CellFactory cellFactory;
     private final List<LeaderCard> activeLeaderCard;
     private final int victoryPoints;
+    private List<AuxiliaryDeposit> playerAuxiliaryDeposits;
 
 
     public ClientPlayerBoard(){
@@ -133,4 +135,18 @@ public class ClientPlayerBoard implements Serializable {
         activeLeaderCard.add(card);
     }
 
+    /**
+     * @return player's auxiliary deposits
+     */
+    public List<AuxiliaryDeposit> getPlayerAuxiliaryDeposits() {
+        return playerAuxiliaryDeposits;
+    }
+
+    /**
+     * this  method sets player's auxiliary deposits
+     * @param playerAuxiliaryDeposits player's deposits
+     */
+    public void setPlayerAuxiliaryDeposit(List<AuxiliaryDeposit> playerAuxiliaryDeposits) {
+        this.playerAuxiliaryDeposits = playerAuxiliaryDeposits;
+    }
 }

@@ -25,10 +25,12 @@ public class LocalMatchHandler {
     }
 
     public void executeMessageFromClient(Message message){
+        System.out.println("client----" + message);
         message.execute(virtualView);
     }
 
     public void executeMessageFromServer(Message message){
+        System.out.println("server----" + message);
         message.execute(view);
     }
 

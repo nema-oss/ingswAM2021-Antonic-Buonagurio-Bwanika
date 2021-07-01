@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client;
 
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
@@ -245,9 +246,10 @@ public abstract class View {
 
     /**
      * This method tells the user that the activate production request has been rejected
+     * @param user
      * @param accepted the result of the request
      */
-    public abstract void showProductionRequestResults(boolean accepted);
+    public abstract void showProductionRequestResults(String user, boolean accepted);
 
     /**
      * This method add the leader cards to the user's hand
@@ -265,10 +267,11 @@ public abstract class View {
 
     /**
      * Shows the result of the place resources request.
+     * @param user the current user
      * @param accepted true if the request has been accepted
      * @param userChoice the user choice
      */
-    public abstract void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice);
+    public abstract void showPlaceResourcesResult(String user, boolean accepted, Map<Resource, Integer> userChoice);
 
     /**
      * Sets the recently bought resources from market
@@ -385,5 +388,25 @@ public abstract class View {
 
         player.setHand(hand);
         activeLeaderCards.forEach(p->player.useLeaderCard(p,true));
+    }
+
+    /**
+     * Shows the vatican report action
+     * @param view the client's view
+     */
+    public abstract void showVaticanReport(View view);
+
+    /**
+     * End the local match and prepare to start another game
+     */
+    public void endLocalMatch(){
+        if(isLocalMatch){
+            String[] args = new String[3];
+            args[0] = "-client";
+            args[1] = "-local";
+            args[2] = "-gui";
+            Main.main(args);
+        }
+
     }
 }

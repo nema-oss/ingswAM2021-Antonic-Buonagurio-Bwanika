@@ -50,7 +50,7 @@ public enum TurnActions {
 
     public static List<TurnActions> getLocalMatchTurnAction(){
         List<TurnActions> turnActions = Arrays.asList(TurnActions.values());
-        turnActions.remove(TurnActions.SHOW_OTHER_PLAYERS);
+        //turnActions.remove(TurnActions.SHOW_OTHER_PLAYERS);
         return turnActions;
     }
 }

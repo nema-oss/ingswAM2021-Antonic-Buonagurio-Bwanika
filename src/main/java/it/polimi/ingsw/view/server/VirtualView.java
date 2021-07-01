@@ -4,8 +4,10 @@ import it.polimi.ingsw.controller.ControllerInterface;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.actions.BuyResourcesMessage;
 import it.polimi.ingsw.messages.actions.EndProductionMessage;
+import it.polimi.ingsw.messages.actions.server.ActionPlayedMessage;
 import it.polimi.ingsw.messages.actions.server.LorenzoTurnMessage;
 import it.polimi.ingsw.messages.actions.server.MoveOnPopeRoadMessage;
+import it.polimi.ingsw.messages.actions.server.VaticanReportMessage;
 import it.polimi.ingsw.messages.setup.client.UpdateClientPlayerBoardsMessage;
 import it.polimi.ingsw.messages.setup.server.*;
 import it.polimi.ingsw.messages.utils.ErrorWriter;
@@ -20,7 +22,9 @@ import it.polimi.ingsw.model.gameboard.*;
 import it.polimi.ingsw.controller.Error;
 import it.polimi.ingsw.network.LocalMatchHandler;
 import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.client.utils.TurnActions;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -386,9 +390,7 @@ public class VirtualView implements VirtualViewInterface{
 
         Message message = new UpdateWriter().buyCardAccepted(user, x, y);
         updateDepositAfterAction(user, matchController.getUpdatedStrongbox(user), matchController.getUpdatedDeposit(user));
-      //  for(Socket socket: clients.values())
-        //    sendMessage(socket, message);
-        sendMessage(clients.get(user), message);
+        clients.values().forEach(p->sendMessage(p,message));
     }
 
     /**
@@ -461,6 +463,7 @@ public class VirtualView implements VirtualViewInterface{
      * @param user the current user
      */
     public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards) {
+
         List<Error> errors = matchController.onActivateDevelopmentProduction(user, developmentCards);
         if (isActive) {
             if (errors.isEmpty())
@@ -478,11 +481,8 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedActivateProductionDevelopmentCard(String user, List<DevelopmentCard> cards) {
 
         Message message = new UpdateWriter().productionCardAccepted(user,cards);
-        sendMessage(clients.get(user), message);
+        clients.values().forEach(p->sendMessage(p,message));
         updatePlayerPosition(user);
-
-        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        //sendMessage(clients.get(user), boardUpdate);
     }
 
     /**
@@ -506,9 +506,7 @@ public class VirtualView implements VirtualViewInterface{
                 onAcceptedActivateProductionBoard(user, userChoice);
             else
                 onRejectedActivateProductionBoard(user, userChoice);
-
         }
-
     }
 
     /**
@@ -518,10 +516,8 @@ public class VirtualView implements VirtualViewInterface{
      */
     private void onAcceptedActivateProductionBoard(String user, Map<Resource,List<ResourceType>> userChoice) {
         Message message = new UpdateWriter().productionBoardAccepted(user,userChoice);
-        sendMessage(clients.get(user), message);
+        clients.values().forEach(p->sendMessage(p,message));
         updatePlayerPosition(user);
-        //Message boardUpdate = new UpdatePlayerBoardMessage(matchController.sendBoardUpdate(user));
-        //sendMessage(clients.get(user), boardUpdate);
     }
 
 
@@ -543,8 +539,6 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void activateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> leaderCards){
         List<Error> errors = matchController.onActivateLeaderProduction(user,leaderCards);
-        System.out.println(errors.size());
-        System.out.println(errors);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedActivateProductionLeaderCard(user,leaderCards);
@@ -560,7 +554,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     private void onAcceptedActivateProductionLeaderCard(String user, Map<LeaderCard, ResourceType> choice){
         Message message = new UpdateWriter().productionLeaderAccepted(user,choice);
-        sendMessage(clients.get(user), message);
+        clients.values().forEach(p->sendMessage(p,message));
         updatePlayerPosition(user);
 
     }
@@ -584,10 +578,7 @@ public class VirtualView implements VirtualViewInterface{
     public void endProduction(String user){
 
         List<Error> errors = matchController.onEndProduction(user);
-        if(!errors.isEmpty()) {
-            System.out.println("End production not successful");
-            errors.forEach(System.out::println);
-        }
+
     }
 
     /**
@@ -710,31 +701,47 @@ public class VirtualView implements VirtualViewInterface{
     @Override
     public void endMatch() {
 
-           /*
-        for(Socket socket: clients.values()){
-            if(!socket.isClosed()){
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if(!isLocalMatch) {
+            for (Socket socket : clients.values()) {
+                if (!socket.isClosed()) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            System.out.println("[SERVER] Disconnection! Match in lobby number " + lobbyID + " finished");
+        }else{
+            EndLocalMatchMessage message = new EndLocalMatchMessage();
+            clients.values().forEach(p -> sendMessage(clients.get(p), message));
         }
-        System.out.println("[SERVER] Disconnection! Match in lobby number = " + lobbyID + "finished");
 
-         */
     }
 
     /**
      * Notify the winner and the losers
      *
-     * @param winner
+     * @param winner the winner
      */
     @Override
     public void notifyWinner(String winner) {
 
         EndGameMessage message = new EndGameMessage(winner);
         clients.values().forEach(p->sendMessage(p,message));
+        clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
+        endMatch();
+        /*
+        if(!isLocalMatch) {
+            try {
+                Thread.sleep(30000);
+                endMatch();
+            } catch (InterruptedException ignored) {
+
+            }
+        }
+
+         */
     }
 
     /**
@@ -810,7 +817,7 @@ public class VirtualView implements VirtualViewInterface{
      */
     private void onAcceptedPlaceResource(String user, Map<Resource, Integer> userChoice) {
         Message message = new UpdateWriter().placeResourceAccepted(user, userChoice);
-        sendMessage(clients.get(user), message);
+        clients.values().forEach(p->sendMessage(p,message));
 
     }
 
@@ -896,6 +903,16 @@ public class VirtualView implements VirtualViewInterface{
         }
         sendMessage(clients.get(user), message);
         updatePlayerPosition(user);
+    }
+
+    /**
+     * Notify players that vatican report has started
+     */
+    @Override
+    public void notifyVaticanReport() {
+
+        VaticanReportMessage message = new VaticanReportMessage();
+        clients.values().forEach(p->sendMessage(clients.get(p), message));
     }
 
     /**

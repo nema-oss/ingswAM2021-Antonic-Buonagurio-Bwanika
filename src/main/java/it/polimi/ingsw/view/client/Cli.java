@@ -1306,7 +1306,7 @@ public class Cli extends View {
             player.setLeaderActionDone();
             player.useLeaderCard(card, activate);
             askTurnAction();
-        }else
+        } else
             System.out.println(user + " has activated a leader of type " + card.getLeaderType());
     }
 
@@ -1371,7 +1371,7 @@ public class Cli extends View {
     @Override
     public void showPlaceResourcesResult(String user, boolean accepted, Map<Resource, Integer> userChoice) {
 
-        if(player.getNickname().equals(user)) {
+        if (player.getNickname().equals(user)) {
             if (accepted) {
                 System.out.println("The other resources will be discarded. Press Enter to continue");
                 player.addResource(userChoice);
@@ -1381,9 +1381,8 @@ public class Cli extends View {
                 System.out.println("Incorrect place resources. Try again.");
                 setPlaceResourcesAction();
             }
-        }else
-            if(accepted)
-                System.out.println(user + " has bought resources from market");
+        } else if (accepted)
+            System.out.println(user + " has bought resources from market");
     }
 
     /**
@@ -2396,6 +2395,15 @@ public class Cli extends View {
     public void showYouLose(String winner) {
         Formatting.clearScreen();
         System.out.println("You LOSE. " + winner + " won the match");
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ignored) {
+        }
+
+        System.out.println("Do you want to reconnect again? Type 'YES' to reconnect.");
+        if (inputWithTimeout().toLowerCase(Locale.ROOT).equals("yes"))
+            gameSetup();
     }
 
     /**
@@ -2403,8 +2411,20 @@ public class Cli extends View {
      */
     @Override
     public void showYouWin() {
+
         Formatting.clearScreen();
         System.out.println("You are the champion! VICTORY!");
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ignored) {
+        }
+
+        System.out.println("Do you want to reconnect again? Type 'YES' to reconnect.");
+        if (inputWithTimeout().toLowerCase(Locale.ROOT).equals("yes"))
+            gameSetup();
+
+
     }
 
     /**

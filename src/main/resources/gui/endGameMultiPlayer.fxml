@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.EndGameController">
+    <children>
+        <Label fx:id="message" alignment="CENTER" layoutX="102.0" layoutY="89.0" prefHeight="137.0" prefWidth="1419.0" text="CONGRATULATIONS! YOU WON THE GAME!" textFill="#7c2929">
+         <font>
+            <Font size="69.0" />
+         </font>
+        </Label>
+      <Label layoutX="307.0" layoutY="272.0" />
+      <Label fx:id="firstPlace" alignment="CENTER" layoutX="369.0" layoutY="295.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondPlace" layoutX="369.0" layoutY="400.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdPlace" layoutX="369.0" layoutY="508.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourthPlace" layoutX="369.0" layoutY="612.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1087.0" layoutY="289.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="396.0" fitWidth="381.0" layoutX="925.0" layoutY="352.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/Lorenzo_de_Medici.jpg" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>

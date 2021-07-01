@@ -623,7 +623,7 @@ public class Gui extends View {
 
         Platform.runLater(()->{
             try {
-                endGameController.setWinner(winner);
+               // endGameController.setWinner(winner);
                 endGameController.setMessage(winner + " has won the match");
                 primaryStage.setScene(endGameScene);
             }catch (Exception e){
@@ -702,6 +702,7 @@ public class Gui extends View {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
                 actionButtonsController.setChooseActionTypeVisible(false);
+                actionButtonsController.setBackButtonVisible(false); //added recently
             }
             else{
                 player.setStandardActionDone();
@@ -792,6 +793,7 @@ public class Gui extends View {
                 alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
             }else{
                 alertUser("Information", "Production activated. End the production to see your new resources", Alert.AlertType.INFORMATION);
+                playerBoardController.hideProductionButton();
             }
         });
     }

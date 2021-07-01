@@ -391,7 +391,7 @@ public class Gui extends View {
     public void showLastRound() {
 
         Platform.runLater(()->{
-            alertUser("Last Round","GET READY! We are at the end of the journey! LAST ROUND START!" , Alert.AlertType.INFORMATION);
+            alertUser("Last Round","GET READY! We are at the end of the journey! LAST ROUND STARTS NOW!" , Alert.AlertType.INFORMATION);
         });
     }
 

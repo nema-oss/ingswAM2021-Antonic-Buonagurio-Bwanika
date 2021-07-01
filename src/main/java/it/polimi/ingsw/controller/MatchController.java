@@ -316,8 +316,10 @@ public class MatchController implements ControllerInterface{
                             currPlayer.activateProduction(i);
                             game.getCurrentPlayer().setStandardActionPlayed(true);
                             developmentProductionActivated = true;
-                            if (currPlayer.getPosition().isPopeSpace())
+                            if (currPlayer.getPosition().isPopeSpace()) {
                                 game.vaticanReport(currPlayer.getPositionIndex());
+                                viewInterface.notifyVaticanReport();
+                            }
                         }
                         i++;
                     }
@@ -364,8 +366,10 @@ public class MatchController implements ControllerInterface{
                                 currPlayer.activateProductionLeader(i);
                                 leaderProductionActivated = true;
                                 game.getCurrentPlayer().setStandardActionPlayed(true);
-                                if (currPlayer.getPosition().isPopeSpace())
+                                if (currPlayer.getPosition().isPopeSpace()) {
                                     game.vaticanReport(currPlayer.getPositionIndex());
+                                    viewInterface.notifyVaticanReport();
+                                }
                             } catch (InsufficientPaymentException e) {
                                 errors.add(Error.INSUFFICIENT_PAYMENT);
                             }
@@ -438,8 +442,10 @@ public class MatchController implements ControllerInterface{
                     }
                 }
                 else errors.add(Error.INVALID_ACTION);
-                if(currPlayer.getPosition().isPopeSpace())
+                if(currPlayer.getPosition().isPopeSpace()) {
                     game.vaticanReport(currPlayer.getPositionIndex());
+                    viewInterface.notifyVaticanReport();
+                }
             } catch (Exception e) {
                 errors.add(Error.GENERIC);
             }
@@ -586,8 +592,8 @@ public class MatchController implements ControllerInterface{
 
             if (game.getCurrentPlayer().getPosition().isPopeSpace()) {
                 game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
+                viewInterface.notifyVaticanReport();
             }
-
             controlEndOfGame();
             viewInterface.sendResourcesBought(resourcesBought);
 
@@ -662,8 +668,10 @@ public class MatchController implements ControllerInterface{
                     if(l.getId().equals(leaderCard.getId())) {
                         curr.discardLeader(curr.getHand().indexOf(l));
                         curr.setLeaderActionPlayed(true);
-                        if (curr.getPosition().isPopeSpace())
+                        if (curr.getPosition().isPopeSpace()) {
                             game.vaticanReport(curr.getPositionIndex());
+                            viewInterface.notifyVaticanReport();
+                        }
                         controlEndOfGame();
                         break;
                     }
@@ -705,7 +713,7 @@ public class MatchController implements ControllerInterface{
             sendPlayTurn();
         }
 
-        checkLastRound();
+        //checkLastRound();
 
         return errors;
     }
@@ -811,7 +819,7 @@ public class MatchController implements ControllerInterface{
             for (Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
                 numOfCards = numOfCards + stack.size();
 
-            if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
+            if (numOfCards == 1 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
 
                 viewInterface.lastRound();
                 isLastRound=true;
@@ -831,7 +839,14 @@ public class MatchController implements ControllerInterface{
      */
     public void nextTurn(){
 
+        if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
+            if (game.getListOfPlayers().size() == 1) {
+                game.lorenzoTurn();
+                sendPlayTurn();
+            }
+        }
 
+        /*
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
 
             sendEndTurn();
@@ -846,6 +861,8 @@ public class MatchController implements ControllerInterface{
 
 
         }
+
+         */
 
     }
 

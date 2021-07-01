@@ -34,7 +34,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showPlaceResourcesResult(accepted,userChoice);
+        view.showPlaceResourcesResult(user,accepted,userChoice);
     }
     /**
      * Execute the request server side

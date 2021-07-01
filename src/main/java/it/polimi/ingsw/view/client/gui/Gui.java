@@ -79,7 +79,7 @@ public class Gui extends View {
     private EndGameController endGameController;
     private Scene endGameScene;
 
-    public Gui(String ip, int port, Stage stage, Scene scene){
+    public Gui(String ip, int port, Stage stage, Scene scene) {
 
         myIp = ip;
         myPort = port;
@@ -114,15 +114,15 @@ public class Gui extends View {
      */
     private void initLoginUsername() {
 
-        try{
+        try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/nickname");
             Parent root = loader.load();
             nicknameScene = new Scene(root);
             nicknameController = loader.getController();
             nicknameController.setGui(this);
-            if(isLocalMatch)
+            if (isLocalMatch)
                 nicknameController.setLocalMatch(true);
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Could not initialize Nickname Scene");
         }
     }
@@ -132,13 +132,13 @@ public class Gui extends View {
      */
     private void initNumberOfPlayers() {
 
-        try{
+        try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/numOfPlayers");
             Parent root = loader.load();
             numberOfPlayersScene = new Scene(root);
             numOfPlayersController = loader.getController();
             numOfPlayersController.setGui(this);
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Could not initialize Number Of Players Scene");
         }
     }
@@ -161,19 +161,20 @@ public class Gui extends View {
 
     /**
      * this method initializes the scene to choose leader cards
+     *
      * @param leaderCards the cards to choose from
      */
-    private void initChooseLeadersSelection(List<LeaderCard> leaderCards){
+    private void initChooseLeadersSelection(List<LeaderCard> leaderCards) {
 
-            chooseLeaderController = gameSceneController.getChooseLeaderController();
-            chooseLeaderController.setGui(this);
-            chooseLeaderController.initializeLeaderCards(leaderCards);
+        chooseLeaderController = gameSceneController.getChooseLeaderController();
+        chooseLeaderController.setGui(this);
+        chooseLeaderController.initializeLeaderCards(leaderCards);
     }
 
     /**
      * this method initializes the scene to choose the resources
      */
-    private void initChooseResourcesSelection(){
+    private void initChooseResourcesSelection() {
 
         try {
             FXMLLoader loader = GuiManager.loadFXML("/gui/chooseResources");
@@ -226,11 +227,11 @@ public class Gui extends View {
     /**
      * this method initializes the game board
      */
-    private void initGameBoard(){
+    private void initGameBoard() {
 
-        try{
+        try {
             gameSceneController.initializeGameBoard();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Could not initialize Game Board Scene");
         }
     }
@@ -253,11 +254,12 @@ public class Gui extends View {
 
     /**
      * This method throws an alert to the user and it is called when something goes wrong
+     *
      * @param title alert's title
-     * @param text alert's text
+     * @param text  alert's text
      */
 
-    public void alertUser(String title, String text, Alert.AlertType type){
+    public void alertUser(String title, String text, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(text);
@@ -280,12 +282,12 @@ public class Gui extends View {
 
     }
 
-    public String getPlayerNickname(){
+    public String getPlayerNickname() {
         return player.getNickname();
     }
 
-    public int getNumberOfPlayers(){
-        return otherPlayerBoards.size() +1;
+    public int getNumberOfPlayers() {
+        return otherPlayerBoards.size() + 1;
     }
 
     /**
@@ -296,7 +298,7 @@ public class Gui extends View {
     @Override
     public void setLeaderCardChoice(List<LeaderCard> cardChoice) {
 
-        Platform.runLater( () -> {
+        Platform.runLater(() -> {
             String infoMessage = "Select two leader cards.";
             initGameScene();
             initChooseLeadersSelection(cardChoice);
@@ -321,7 +323,7 @@ public class Gui extends View {
     public void setResourceTypeChoice(int numberOfResources) {
 
 
-        Platform.runLater( () -> {
+        Platform.runLater(() -> {
             String infoMessage = "Select " + numberOfResources + " resource type.";
             initChooseResourcesSelection();
             chooseResourcesController.setInstructionalLabel(infoMessage);
@@ -332,14 +334,15 @@ public class Gui extends View {
 
     /**
      * this method updates the game board
+     *
      * @param cardMarket the card market
-     * @param market the marble market
+     * @param market     the marble market
      * @param freeMarble the free marble
      */
     public void updateGameBoard(DevelopmentDeck[][] cardMarket, Marble[][] market, Marble freeMarble) {
 
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             gameBoard.getMarket().update(market, freeMarble);
             gameBoard.getCardMarket().update(cardMarket);
             gameBoardController.updateMarbleMarket(gameBoard);
@@ -351,14 +354,14 @@ public class Gui extends View {
     @Override
     public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
-        Platform.runLater(()-> {
+        Platform.runLater(() -> {
             String lorenzoMessage = "";
             int amount;
-            if(lorenzoAction instanceof ActionTokenDiscard){
+            if (lorenzoAction instanceof ActionTokenDiscard) {
                 DevelopmentCardType type = ((ActionTokenDiscard) lorenzoAction).getType();
                 amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
                 lorenzoMessage = "Lorenzo discarded " + amount + " card of type: " + type.toString();
-            }else if(lorenzoAction instanceof ActionTokenMove){
+            } else if (lorenzoAction instanceof ActionTokenMove) {
                 amount = ((ActionTokenMove) lorenzoAction).getSteps();
                 lorenzoMessage = "Lorenzo move on his Poperoad by " + amount + ". ";
                 actionButtonsController.updateLorenzoPosition(amount);
@@ -371,10 +374,10 @@ public class Gui extends View {
     @Override
     public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
 
-        Platform.runLater(()->{
-            player.updateDeposit(updatedStrongbox,updatedWarehouse,auxiliaryDeposit);
+        Platform.runLater(() -> {
+            player.updateDeposit(updatedStrongbox, updatedWarehouse, auxiliaryDeposit);
             player.setStandardActionDone();
-            playerTabController.updatePlayerBoard(player.getNickname(),player.getPlayerBoard());
+            playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
             actionButtonsController.setLeaderActionVisible(true);
             actionButtonsController.setStandardActionVisible(false);
             actionButtonsController.setResourcePaneVisible(false);
@@ -402,7 +405,7 @@ public class Gui extends View {
     public void askTurnAction() {
 
         TurnActions action = gameSceneController.getTurnAction();
-        switch (action){
+        switch (action) {
             case BUY_CARD:
                 setBuyCardAction(false);
                 break;
@@ -410,10 +413,10 @@ public class Gui extends View {
                 setBuyResourceAction(false);
                 break;
             case ACTIVATE_PRODUCTION:
-                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(),false);
+                setProductionChoice(player.getDevelopmentCards(), player.getProductionLeaderCards(), false);
                 break;
             case LEADER_ACTION:
-                setLeaderCardAction(player.getHand(),false);
+                setLeaderCardAction(player.getHand(), false);
                 break;
             case END_TURN:
 
@@ -430,12 +433,12 @@ public class Gui extends View {
     @Override
     public void setProductionChoice(List<DevelopmentCard> developmentCards, List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
 
-        Platform.runLater(()->{
-            if(!actionRejectedBefore){
+        Platform.runLater(() -> {
+            if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which production power you want to activate.");
                 gameSceneController.setProductionDevelopmentCard(developmentCards);
                 gameSceneController.setProductionLeaderCard(leaderCards);
-            }else{
+            } else {
                 //game.restore();
                 String informationMessage = "Production action rejected. Try again. ";
                 alertUser("Warning", "Try again.", Alert.AlertType.WARNING);
@@ -452,11 +455,11 @@ public class Gui extends View {
     @Override
     public void setLeaderCardAction(List<LeaderCard> leaderCards, boolean actionRejectedBefore) {
 
-        Platform.runLater(()->{
-            if(!actionRejectedBefore){
+        Platform.runLater(() -> {
+            if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which cards you want to discard/activate. ");
-              //  gameSceneController.setLeaderCardHand(player.getHand());
-            }else{
+                //  gameSceneController.setLeaderCardHand(player.getHand());
+            } else {
                 //gameSceneController.restore();
                 String informationMessage = "Leader card action rejected. Try again. ";
                 alertUser("Warning!", informationMessage, Alert.AlertType.WARNING);
@@ -473,9 +476,9 @@ public class Gui extends View {
     @Override
     public void setBuyCardAction(boolean actionRejectedBefore) {
 
-        Platform.runLater(()->{
-                //gameSceneController.restore();
-                alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
+        Platform.runLater(() -> {
+            //gameSceneController.restore();
+            alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
         });
     }
 
@@ -486,11 +489,11 @@ public class Gui extends View {
      */
     @Override
     public void setBuyResourceAction(boolean actionRejectedBefore) {
-        Platform.runLater(()->{
-            if(!actionRejectedBefore){
+        Platform.runLater(() -> {
+            if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which row/column you want to buy");
                 gameSceneController.showResourceMarket();
-            }else{
+            } else {
                 //gameSceneController.restore();
                 alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
             }
@@ -535,8 +538,8 @@ public class Gui extends View {
                     loginWaitController.setInformationBox(infoMessage);
                     primaryStage.setScene(loginWaitScene);
                     primaryStage.show();
-                    if(!isLocalMatch)
-                        sendMessage(new LoginDoneMessage(user,true));
+                    if (!isLocalMatch)
+                        sendMessage(new LoginDoneMessage(user, true));
                 });
 
     }
@@ -550,9 +553,9 @@ public class Gui extends View {
     public void showNewUserLogged(String username) {
 
         String infoMessage = loginWaitController.getInformationBox() + "\n" + username + " joined the match!";
-        Platform.runLater(()->{
-                    loginWaitController.setInformationBox(infoMessage);
-                });
+        Platform.runLater(() -> {
+            loginWaitController.setInformationBox(infoMessage);
+        });
     }
 
 
@@ -562,7 +565,7 @@ public class Gui extends View {
     @Override
     public void serverNotFound() {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             alertUser("Error", "No server found", Alert.AlertType.ERROR);
         });
     }
@@ -575,11 +578,11 @@ public class Gui extends View {
     @Override
     public void showAnotherClientDisconnection(String otherClient) {
 
-        Platform.runLater(()->{
-            alertUser("Information", otherClient+"has disconnected from the match!", Alert.AlertType.INFORMATION);
+        Platform.runLater(() -> {
+            alertUser("Information", otherClient + "has disconnected from the match!", Alert.AlertType.INFORMATION);
             otherPlayerBoards.remove(otherClient);
             gameSceneController.removePlayerBoard(otherClient);
-            otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+            otherPlayerBoards.forEach((k, v) -> gameSceneController.updatePlayerBoard(k, v));
 
 
         });
@@ -590,7 +593,7 @@ public class Gui extends View {
      */
     @Override
     public void showServerDisconnection() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             alertUser("Error", "Server disconnected. Try again later", Alert.AlertType.ERROR);
             primaryStage.setScene(startingScene);
         });
@@ -616,19 +619,29 @@ public class Gui extends View {
 
     /**
      * Shows the game is finished
+     *
      * @param winner game winner
      */
     @Override
     public void showEndGame(String winner) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             try {
                // endGameController.setWinner(winner);
                 endGameController.setMessage(winner + " has won the match");
                 primaryStage.setScene(endGameScene);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ignored) {
+
+        }
+        Platform.runLater(()->{
+            primaryStage.setScene(startingScene);
         });
 
     }
@@ -641,8 +654,8 @@ public class Gui extends View {
     @Override
     public void showLoginFailed(boolean isFirstPlayer) {
 
-        Platform.runLater(()->{
-            alertUser("Error","Login failed. Try again with a different username", Alert.AlertType.ERROR);
+        Platform.runLater(() -> {
+            alertUser("Error", "Login failed. Try again with a different username", Alert.AlertType.ERROR);
         });
 
     }
@@ -656,38 +669,38 @@ public class Gui extends View {
     @Override
     public void showPlayTurn(String currentPlayer) {
 
-            Platform.runLater(() -> {
-                if (!isGameScene) {
-                    isGameScene = true;
-                    try {
-                        FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
-                        Parent root = loader.load();
-                        gameSceneController.leftBorder.setCenter(root);
-                        actionButtonsController = loader.getController();
-                        actionButtonsController.setGui(this);
-                        actionButtonsController.setGameController(gameSceneController);
-                        gameSceneController.initializeActions();
-                        //if(!isLocalMatch)
-                            //gameSceneController.addLeadersToPlayer();
+        Platform.runLater(() -> {
+            if (!isGameScene) {
+                isGameScene = true;
+                try {
+                    FXMLLoader loader = GuiManager.loadFXML("/gui/actions");
+                    Parent root = loader.load();
+                    gameSceneController.leftBorder.setCenter(root);
+                    actionButtonsController = loader.getController();
+                    actionButtonsController.setGui(this);
+                    actionButtonsController.setGameController(gameSceneController);
+                    gameSceneController.initializeActions();
+                    //if(!isLocalMatch)
+                    //gameSceneController.addLeadersToPlayer();
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    primaryStage.setScene(gameScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                primaryStage.setScene(gameScene);
+            }
 
-                if (currentPlayer.equals(player.getNickname())) {
-                    //actionButtonsController.setLorenzoVisible(false);
-                    player.resetTurnActionCounter();
-                    actionButtonsController.setWaitVisible(false);
-                    actionButtonsController.setChooseActionTypeVisible(true);
-                } else {
-                    actionButtonsController.setLorenzoVisible(false);
-                    actionButtonsController.setWaitVisible(true);
-                    actionButtonsController.setChooseActionTypeVisible(false);
-                }
+            if (currentPlayer.equals(player.getNickname())) {
+                //actionButtonsController.setLorenzoVisible(false);
+                player.resetTurnActionCounter();
+                actionButtonsController.setWaitVisible(false);
+                actionButtonsController.setChooseActionTypeVisible(true);
+            } else {
+                actionButtonsController.setLorenzoVisible(false);
+                actionButtonsController.setWaitVisible(true);
+                actionButtonsController.setChooseActionTypeVisible(false);
+            }
 
-            });
+        });
     }
 
 
@@ -697,14 +710,13 @@ public class Gui extends View {
     @Override
     public void setPlaceResourcesAction() {
 
-        Platform.runLater(()->{
-            if(player.getBoughtResources().size()!=0) {
+        Platform.runLater(() -> {
+            if (player.getBoughtResources().size() != 0) {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
                 actionButtonsController.setChooseActionTypeVisible(false);
                 actionButtonsController.setBackButtonVisible(false); //added recently
-            }
-            else{
+            } else {
                 player.setStandardActionDone();
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
@@ -715,6 +727,7 @@ public class Gui extends View {
 
     /**
      * This method tells the user that the leader card action has been accepted
+     *
      * @param user
      * @param card
      * @param activate
@@ -722,8 +735,8 @@ public class Gui extends View {
     @Override
     public void showAcceptedLeaderAction(String user, LeaderCard card, boolean activate) {
 
-        Platform.runLater(()->{
-            if(user.equals(player.getNickname())) {
+        Platform.runLater(() -> {
+            if (user.equals(player.getNickname())) {
                 alertUser("Information", "Leader card action accepted.", Alert.AlertType.CONFIRMATION);
                 player.useLeaderCard(card, activate);
                 playerTabController.controlLeaders(player);
@@ -732,8 +745,8 @@ public class Gui extends View {
                 actionButtonsController.setStandardActionVisible(!player.isStandardActionPlayed());
                 actionButtonsController.setEndTurnVisible(true);
                 playerBoardController.showActiveLeaders();
-            }else{
-                if(activate) {
+            } else {
+                if (activate) {
                     otherPlayerBoards.get(user).getActiveLeaderCards().add(card);
                     gameSceneController.addLeaderToOtherPlayer(user, card);
                 }
@@ -747,7 +760,7 @@ public class Gui extends View {
      */
     @Override
     public void showRejectedLeaderAction() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             alertUser("Warning", "Leader card action rejected.", Alert.AlertType.WARNING);
             playerTabController.controlLeaders(player);
         });
@@ -756,15 +769,15 @@ public class Gui extends View {
     /**
      * This method tells the user that the buy card action has been accepted
      *
-     * @param x, y card coordinates
+     * @param x,   y card coordinates
      * @param user
      */
     @Override
     public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
 
-        Platform.runLater(()->{
-            if(player.getNickname().equals(user)) {
-                DevelopmentCard cardChosen =player.buyDevelopmentCard(x, y);
+        Platform.runLater(() -> {
+            if (player.getNickname().equals(user)) {
+                DevelopmentCard cardChosen = player.buyDevelopmentCard(x, y);
                 player.setStandardActionDone();
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
@@ -774,7 +787,7 @@ public class Gui extends View {
                 actionButtonsController.setStandardActionVisible(false);
                 actionButtonsController.setEndTurnVisible(true);
                 gameSceneController.makeCardMarketClickable(false);
-            }else{
+            } else {
                 alertUser("Information", user + "has bought a card from market.", Alert.AlertType.INFORMATION);
             }
         });
@@ -783,17 +796,25 @@ public class Gui extends View {
 
     /**
      * Show the results of a card production request
+     *
+     * @param user the current user
      * @param accepted true if request accepted, false if not
      */
     @Override
-    public void showProductionRequestResults(boolean accepted) {
+    public void showProductionRequestResults(String user, boolean accepted) {
 
-        Platform.runLater(()->{
-            if(!accepted) {
-                alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
-            }else{
-                alertUser("Information", "Production activated. End the production to see your new resources", Alert.AlertType.INFORMATION);
-                playerBoardController.hideProductionButton();
+        Platform.runLater(() -> {
+
+            if (player.getNickname().equals(user)) {
+                if (!accepted) {
+                    alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
+                } else {
+                    alertUser("Information", "Production activated. End the production to see your new resources", Alert.AlertType.INFORMATION);
+                    playerBoardController.hideProductionButton();
+                }
+            } else {
+                if (accepted)
+                    alertUser("Action played", user.toUpperCase() + " has used the production power", Alert.AlertType.INFORMATION);
             }
         });
     }
@@ -806,14 +827,14 @@ public class Gui extends View {
     @Override
     public void showLeaderCardsSelectionAccepted(List<LeaderCard> choice) {
 
-        Platform.runLater(() ->{
+        Platform.runLater(() -> {
             player.setHand(choice);
             gameSceneController.addLeadersToPlayer();
             System.out.println(choice);
             Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
             sendMessage(message);
             gameSceneController.hideLeaders();
-            if(otherPlayerBoards.size()+1==1) {
+            if (otherPlayerBoards.size() + 1 == 1) {
                 try {
                     actionButtonsController.showLorenzoPosition();
                 } catch (IOException e) {
@@ -826,21 +847,21 @@ public class Gui extends View {
 
     /**
      * Shows the results of the move deposit request.
-     * @param x,y the floors to swap
+     *
+     * @param x,y      the floors to swap
      * @param accepted true if the request has been accepted, false if rejected
      */
     @Override
     public void showMoveDepositResult(int x, int y, boolean accepted) {
 
-        if(accepted) {
-            Platform.runLater(()->{
+        if (accepted) {
+            Platform.runLater(() -> {
                 player.getDeposit().swapFloors(x, y);
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
             });
-        }
-        else {
-            Platform.runLater(()->{
-                alertUser("Warning","Move deposit request rejected. Try again", Alert.AlertType.WARNING);
+        } else {
+            Platform.runLater(() -> {
+                alertUser("Warning", "Move deposit request rejected. Try again", Alert.AlertType.WARNING);
             });
             //setPlaceResourcesAction();
         }
@@ -849,30 +870,34 @@ public class Gui extends View {
     /**
      * Shows the result of the place resources request.
      *
+     * @param user
      * @param accepted   true if the request has been accepted
      * @param userChoice the user choice
      */
     @Override
-    public void showPlaceResourcesResult(boolean accepted, Map<Resource, Integer> userChoice) {
+    public void showPlaceResourcesResult(String user, boolean accepted, Map<Resource, Integer> userChoice) {
 
-        if(accepted){
-            Platform.runLater(()->{
-                player.addResource(userChoice);
-                player.setStandardActionDone();
-                playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
-                actionButtonsController.setLeaderActionVisible(true);
-                actionButtonsController.setStandardActionVisible(false);
-                actionButtonsController.setResourcePaneVisible(false);
-                actionButtonsController.setSwapPaneVisible(false);
-                actionButtonsController.setEndTurnVisible(true);
-            });
-        }
-        else{
-            Platform.runLater(()->{
-                alertUser("Warning","Incorrect place resources. Try again.", Alert.AlertType.WARNING);
-                setPlaceResourcesAction();
-            });
-        }
+        if(player.getNickname().equals(user)) {
+            if (accepted) {
+                Platform.runLater(() -> {
+                    player.addResource(userChoice);
+                    player.setStandardActionDone();
+                    playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
+                    actionButtonsController.setLeaderActionVisible(true);
+                    actionButtonsController.setStandardActionVisible(false);
+                    actionButtonsController.setResourcePaneVisible(false);
+                    actionButtonsController.setSwapPaneVisible(false);
+                    actionButtonsController.setEndTurnVisible(true);
+                });
+            } else {
+                Platform.runLater(() -> {
+                    alertUser("Warning", "Incorrect place resources. Try again.", Alert.AlertType.WARNING);
+                    setPlaceResourcesAction();
+                });
+            }
+        }else
+            if(accepted)
+                System.out.println(user + " has bought resources from market");
     }
 
     /**
@@ -883,11 +908,11 @@ public class Gui extends View {
     @Override
     public void showResourceSelectionAccepted(Map<ResourceType, Integer> resourceChoice) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
 
-            int j=3;
-            for(ResourceType resourceType: resourceChoice.keySet()){
-                for(int i=0; i<resourceChoice.get(resourceType); i++)
+            int j = 3;
+            for (ResourceType resourceType : resourceChoice.keySet()) {
+                for (int i = 0; i < resourceChoice.get(resourceType); i++)
                     player.getDeposit().addResource(j, new Resource(resourceType));
                 j--;
             }
@@ -906,7 +931,7 @@ public class Gui extends View {
     @Override
     public void showReconnectionToMatch() {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             try {
                 gameSceneController.initializeGameBoard();
                 gameSceneController.initializePlayerBoard();
@@ -919,7 +944,7 @@ public class Gui extends View {
     @Override
     public void updatePlayerPosition(int position) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             player.updateCurrentPosition(position);
             playerTabController.updatePlayerPosition(player.getNickname(), player);
         });
@@ -928,44 +953,46 @@ public class Gui extends View {
     @Override
     public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
 
-        Platform.runLater(()->{
-            if(!otherPlayerBoards.containsKey(user)){
-                otherPlayerBoards.put(user,clientPlayerBoard);
-                gameSceneController.addPlayerBoard(user,clientPlayerBoard);
-            }else {
+        Platform.runLater(() -> {
+            if (!otherPlayerBoards.containsKey(user)) {
                 otherPlayerBoards.put(user, clientPlayerBoard);
-                otherPlayerBoards.forEach((k,v) -> gameSceneController.updatePlayerBoard(k,v));
+                gameSceneController.addPlayerBoard(user, clientPlayerBoard);
+            } else {
+                otherPlayerBoards.put(user, clientPlayerBoard);
+                otherPlayerBoards.forEach((k, v) -> gameSceneController.updatePlayerBoard(k, v));
             }
         });
     }
 
 
     public void start() {
-        new EchoClient(myIp,myPort,this).start();
+        new EchoClient(myIp, myPort, this).start();
     }
 
     /**
      * This method sends a message on the socket
+     *
      * @param message the message to send
      */
-    public void sendMessage(Message message){
+    public void sendMessage(Message message) {
 
-        if(isLocalMatch)
+        if (isLocalMatch)
             localMatchHandler.executeMessageFromClient(message);
-        else{
-            new MessageSender(socket,message).sendMsg(outputStream);
+        else {
+            new MessageSender(socket, message).sendMsg(outputStream);
         }
     }
 
     /**
      * this method sets the message in the num of players scene
+     *
      * @param message the message to set
      */
     public void selectNumberOfPlayers(LoginRequest message) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             numOfPlayersController.setNicknameMessage(message);
-            if(isLocalMatch)
+            if (isLocalMatch)
                 numOfPlayersController.setLocalMatch();
             primaryStage.setScene(numberOfPlayersScene);
 
@@ -974,6 +1001,7 @@ public class Gui extends View {
 
     /**
      * this method sets the player board's controller
+     *
      * @param controller the controller to set
      */
     public void setPlayerBoardController(PlayerBoardController controller) {
@@ -985,28 +1013,42 @@ public class Gui extends View {
      */
     public void startLocalMatch() {
 
-        Platform.runLater(()->{
-                localMatchHandler = new LocalMatchHandler(this);
-                primaryStage.setScene(nicknameScene);
-                primaryStage.show();
+        Platform.runLater(() -> {
+            localMatchHandler = new LocalMatchHandler(this);
+            primaryStage.setScene(nicknameScene);
+            primaryStage.show();
         });
 
     }
 
     /**
      * Update the player's hand and the active leader cards after reconnection
-     * @param hand player's hand
+     *
+     * @param hand              player's hand
      * @param activeLeaderCards player's active leader cards
      */
     @Override
-    public void showLeaderCardUpdate(List<LeaderCard> hand, List<LeaderCard> activeLeaderCards){
+    public void showLeaderCardUpdate(List<LeaderCard> hand, List<LeaderCard> activeLeaderCards) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             player.setHand(hand);
             gameSceneController.addLeadersToPlayer();
-            activeLeaderCards.forEach(p->player.useLeaderCard(p,true));
+            activeLeaderCards.forEach(p -> player.useLeaderCard(p, true));
 
         });
 
+    }
+
+    /**
+     * Shows the vatican report action
+     *
+     * @param view the client's view
+     */
+    @Override
+    public void showVaticanReport(View view) {
+
+        Platform.runLater(() -> {
+            alertUser("Vatican Report", "VATICAN REPORT! Be prepared to pay your duties to the Pope!", Alert.AlertType.INFORMATION);
+        });
     }
 }

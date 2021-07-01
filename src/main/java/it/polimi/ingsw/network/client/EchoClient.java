@@ -2,8 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.PingMessage;
-import it.polimi.ingsw.messages.setup.server.EndGameMessage;
-import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.messages.setup.server.CloseMatchMessage;
 import it.polimi.ingsw.view.client.View;
 
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /**
  * the client. It handle the connection on the client side
@@ -49,8 +49,8 @@ public class EchoClient {
 
     public void start() {
 
-        initializeClientConnection();
-        System.out.println("[CLIENT] connected to " + server.getInetAddress() + "...");
+        if(initializeClientConnection()) System.out.println("[CLIENT] connected to " + server.getInetAddress() + "...");
+        else Thread.currentThread().interrupt();
 
         try {
             outputStream = new ObjectOutputStream(server.getOutputStream());
@@ -66,7 +66,7 @@ public class EchoClient {
         try {
             server.setSoTimeout(3000);
         } catch (SocketException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         new Thread(this::pingServer).start();
@@ -94,12 +94,16 @@ public class EchoClient {
     /**
      * This method initializes a socket connection on ip-serverPort.
      */
-    public void initializeClientConnection() {
+    public boolean initializeClientConnection() {
+
         try {
             server = new Socket(ip, serverPort);
         } catch (IOException e) {
             System.out.println("Can't connect to server on port: " + serverPort);
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -126,13 +130,15 @@ public class EchoClient {
 
                 Object next = input.readObject();
                 Message message = (Message) next;
-                if(!isPing(message)) {
-                    if (isEnd(message)) break;
+                if (!isPing(message)) {
+                    if (isClose(message)) break;
                     processMessage(message);
                 }
-
             }
-           input.close();
+
+            input.close();
+        }catch (SocketTimeoutException ignored){
+
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
             e.printStackTrace();
             if (!server.isClosed()) {
@@ -165,8 +171,8 @@ public class EchoClient {
      * @param message the received message
      * @return true if end game message message
      */
-    public boolean isEnd(Message message){
-        return message instanceof EndGameMessage;
+    public boolean isClose(Message message){
+        return message instanceof CloseMatchMessage;
     }
 
 
@@ -180,8 +186,7 @@ public class EchoClient {
                     Thread.sleep(1500);
                     Message message = new PingMessage();
                     outputStream.writeObject( message);
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException | IOException ignored) {
                 }
             } while (!server.isClosed());
 

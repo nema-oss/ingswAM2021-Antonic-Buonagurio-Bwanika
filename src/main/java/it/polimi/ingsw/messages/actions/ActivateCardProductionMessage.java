@@ -40,7 +40,7 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showProductionRequestResults(accepted);
+        view.showProductionRequestResults(user, accepted);
     }
     /**
      * Get the message type

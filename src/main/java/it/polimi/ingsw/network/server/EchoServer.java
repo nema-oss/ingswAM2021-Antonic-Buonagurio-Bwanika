@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -58,9 +60,10 @@ public class EchoServer implements InGameReconnectionHandler {
         initializeServer();
         while (true) {
             try {
+                //Thread.sleep(3000);
                 Socket client = server.accept();
                 findAMatch(client);
-            } catch(IOException e) {
+            } catch(IOException e){
                 break;
             }
         }

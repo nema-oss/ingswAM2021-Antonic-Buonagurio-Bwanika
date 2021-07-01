@@ -1,13 +1,11 @@
 package it.polimi.ingsw.messages.actions;
 
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
-import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,7 +41,7 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showProductionRequestResults(accepted);
+        view.showProductionRequestResults(user, accepted);
     }
     /**
      * Get the message type

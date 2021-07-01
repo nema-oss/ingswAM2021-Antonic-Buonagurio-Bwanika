@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -316,6 +313,15 @@ public class ClientPlayer {
     public boolean isLeaderCardActive(LeaderCard leaderCard) {
 
         return activeLeaderCards.stream().anyMatch(p->p.getId().equals(leaderCard.getId()));
+    }
+
+    public Map<LeaderCard,Boolean> getLeaderCards() {
+
+        Map<LeaderCard, Boolean> leaderCardBooleanMap = new HashMap<>();
+        for(LeaderCard card: hand)
+            leaderCardBooleanMap.put(card, activeLeaderCards.contains(card));
+
+        return leaderCardBooleanMap;
     }
 }
 

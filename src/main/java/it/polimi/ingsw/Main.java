@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.server.EchoServer;
 import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.view.client.CliLocal;
 import it.polimi.ingsw.view.client.gui.Gui;
 import it.polimi.ingsw.view.client.gui.GuiManager;
 import javafx.stage.Stage;
@@ -30,7 +31,7 @@ public class Main {
         if(args.length == 2 && args[1].equals("-cli"))
             new Cli().gameSetup();
         else if(args.length == 3 && args[1].equals("-local") && args[2].equals("-cli")){
-            new Cli().gameSetupLocalMatch();
+            new CliLocal().gameSetupLocalMatch();
         }
         else if(args.length == 2 && args[1].equals("-gui")){
             GuiManager.isLocalMatch = false;

@@ -36,13 +36,13 @@ public class PlayerBoardController {
     Button boardProdButton, cardProdButton, leaderProdButton, place1, place2, place3;
 
     @FXML
-    GridPane devCards, floor1, floor2, floor3, popeRoad;
+    GridPane devCards1, devCards2, devCards3, floor1, floor2, floor3, popeRoad;
 
     @FXML
     AnchorPane strongbox, pBoard, extraDeposit1, extraDeposit2;
 
     @FXML
-    BorderPane dev1, dev2, dev3;
+    BorderPane dev11, dev21, dev31, dev12, dev22, dev32, dev13, dev23, dev33;
 
     @FXML
     Label strongboxCoinCount, strongboxShieldCount, strongboxServantCount, strongboxStoneCount;
@@ -283,9 +283,15 @@ public class PlayerBoardController {
             Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
             gui.sendMessage(msg);
             prodCardsList.clear();
-            dev1.setStyle("");
-            dev2.setStyle("");
-            dev3.setStyle("");
+            dev11.setStyle("");
+            dev21.setStyle("");
+            dev31.setStyle("");
+            dev12.setStyle("");
+            dev22.setStyle("");
+            dev32.setStyle("");
+            dev13.setStyle("");
+            dev23.setStyle("");
+            dev33.setStyle("");
             isDev1Selected = false;
             isDev2Selected = false;
             isDev3Selected = false;
@@ -385,13 +391,41 @@ public class PlayerBoardController {
                 });
 
                 if(i==0) {
-                    dev1.setCenter(card);
+                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
+                        case 1:
+                            dev11.setCenter(card);
+                            break;
+                        case 2:
+                            dev12.setCenter(card);
+                            break;
+                        case 3:
+                            dev13.setCenter(card);
+                    }
+
                 }
                 else if(i==1) {
-                    dev2.setCenter(card);
+                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
+                        case 1:
+                            dev21.setCenter(card);
+                            break;
+                        case 2:
+                            dev22.setCenter(card);
+                            break;
+                        case 3:
+                            dev23.setCenter(card);
+                    }
                 }
                 else{
-                    dev3.setCenter(card);
+                    switch(clientPlayerBoard.getDevelopmentCard(i).getLevel()){
+                        case 1:
+                            dev31.setCenter(card);
+                            break;
+                        case 2:
+                            dev32.setCenter(card);
+                            break;
+                        case 3:
+                            dev33.setCenter(card);
+                    }
                 }
 
             }
@@ -404,40 +438,116 @@ public class PlayerBoardController {
      * @return true if card is selected, false otherwise
      */
     public boolean controlDevelopmentCard(ImageView card){
-        if(card.getParent().equals(dev1)){
+        if(card.getParent().equals(dev11)){
             if(!isDev1Selected){
                 isDev1Selected = true;
-                dev1.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                dev11.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
             }
             else{
                 isDev1Selected = false;
-                dev1.setStyle("");
+                dev11.setStyle("");
                 return false;
             }
         }
-        else if(card.getParent().equals(dev2)){
+        else if(card.getParent().equals(dev12)){
+            if(!isDev1Selected){
+                isDev1Selected = true;
+                dev12.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev1Selected = false;
+                dev12.setStyle("");
+                return false;
+            }
+        }
+        else if(card.getParent().equals(dev13)){
+            if(!isDev1Selected){
+                isDev1Selected = true;
+                dev13.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev1Selected = false;
+                dev13.setStyle("");
+                return false;
+            }
+        }
+        else if(card.getParent().equals(dev21)){
             if(!isDev2Selected){
                 isDev2Selected = true;
-                dev2.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                dev21.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
             }
             else{
                 isDev2Selected = false;
-                dev2.setStyle("");
+                dev21.setStyle("");
                 return false;
             }
 
         }
-        else {
+        else if(card.getParent().equals(dev22)){
+            if(!isDev2Selected){
+                isDev2Selected = true;
+                dev22.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev2Selected = false;
+                dev22.setStyle("");
+                return false;
+            }
+
+        }
+        else if(card.getParent().equals(dev23)){
+            if(!isDev2Selected){
+                isDev2Selected = true;
+                dev23.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev2Selected = false;
+                dev23.setStyle("");
+                return false;
+            }
+
+        }
+        else if(card.getParent().equals(dev31)){
             if(!isDev3Selected){
                 isDev3Selected = true;
-                dev3.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                dev31.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
                 return true;
             }
             else{
                 isDev3Selected = false;
-                dev3.setStyle("");
+                dev31.setStyle("");
+                return false;
+            }
+
+        }
+        else if(card.getParent().equals(dev32)){
+            if(!isDev3Selected){
+                isDev3Selected = true;
+                dev32.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev3Selected = false;
+                dev32.setStyle("");
+                return false;
+            }
+
+        }
+        else{
+            if(!isDev3Selected){
+                isDev3Selected = true;
+                dev33.setStyle("-fx-border-width: 5; -fx-border-color: #143595");
+                return true;
+            }
+            else{
+                isDev3Selected = false;
+                dev33.setStyle("");
                 return false;
             }
 

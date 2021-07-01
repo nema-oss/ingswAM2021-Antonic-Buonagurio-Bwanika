@@ -184,14 +184,42 @@ public class Player{
      * @param cost the resources to take
      * @throws InsufficientResourcesException if the player doesn't have enough resources
      */
-    public void takeResourceForAction(Map<ResourceType, Integer> cost) throws InsufficientResourcesException {
+    public void takeResourceForAction(Map<ResourceType, Integer> cost) throws Exception {
 
         Map<ResourceType,List<Resource>> availableResourcesDeposit = getDeposit().getAll();
         Map<ResourceType,List<Resource>> availableResourcesStrongbox = getStrongbox().getAll();
-
-        // default mode: first deposit then strongbox
+        ArrayList<AuxiliaryDeposit> extraDeposits = (ArrayList<AuxiliaryDeposit>) getActiveEffects().getAuxiliaryDeposits();
+        ArrayList<AuxiliaryDeposit> checked = new ArrayList<>();
+        // default mode: first extraDeposits, then deposit, then strongbox
         for(ResourceType type: cost.keySet()) {
+            int maxFromAux = 0;
+            for(AuxiliaryDeposit deposit: extraDeposits){
+                if(type.equals(deposit.getType()) && !checked.contains(deposit)){
+                    if(cost.get(type) <= deposit.getSize()) {
+                        deposit.getResources(cost.get(type));
+                    }
+                    else{
+                        maxFromAux = deposit.getSize();
+                        deposit.getResources(maxFromAux);
+                    }
+                    checked.add(deposit);
+                }
+            }
+
             if(availableResourcesDeposit.containsKey(type)) {
+                if (cost.get(type) - maxFromAux <= availableResourcesDeposit.get(type).size())
+                    getDeposit().getResources(type, cost.get(type)-maxFromAux);
+                else {
+                    int maxFromDeposit = availableResourcesDeposit.get(type).size();
+                    getDeposit().getResources(type, maxFromDeposit);
+                    int minFromStrongbox = cost.get(type) - maxFromDeposit - maxFromAux;
+                    getStrongbox().getResource(type, minFromStrongbox);
+                }
+            }
+            else{
+                getStrongbox().getResource(type, cost.get(type) - maxFromAux);
+            }
+            /*if(availableResourcesDeposit.containsKey(type)) {
                 if (cost.get(type) <= availableResourcesDeposit.get(type).size())
                     getDeposit().getResources(type, cost.get(type));
                 else {
@@ -203,7 +231,7 @@ public class Player{
             }
             else{
                 getStrongbox().getResource(type, cost.get(type));
-            }
+            }*/
         }
     }
 
@@ -280,7 +308,7 @@ public class Player{
      * @param positionIndex coordinates
      */
 
-    public void activateProduction(int positionIndex) throws InsufficientPaymentException, InsufficientResourcesException {
+    public void activateProduction(int positionIndex) throws InsufficientPaymentException, Exception {
 
         DevelopmentCard card = getPlayerBoard().getDevelopmentCard(positionIndex);
         checkCardRequirements(card.getProductionRequirements());

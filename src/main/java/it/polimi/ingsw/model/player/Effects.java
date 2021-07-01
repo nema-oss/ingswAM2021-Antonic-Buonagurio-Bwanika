@@ -136,6 +136,8 @@ public class Effects{
         }
         catch (InsufficientPaymentException | InsufficientResourcesException e){
             throw new InsufficientPaymentException();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

@@ -14,10 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.naming.InsufficientResourcesException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -210,4 +207,63 @@ class PlayerTest {
 
     }
 
+    @Test
+    void takeResourceForAction() throws InsufficientDevelopmentCardsException, NonExistentCardException, Exception, FullDepositException {
+        game = new Game();
+        gameBoard = new GameBoard();
+        player = new Player("PlayerTest", gameBoard, game);
+        CardFactory cardFactory = new CardFactory();
+        leaderDeck = new LeaderDeck(cardFactory.getLeaderCards());
+        List<LeaderCard> leaderCards = new ArrayList<>();
+        leaderCards.add(leaderDeck.getListOfCards().get(5));
+        leaderCards.add(leaderDeck.getListOfCards().get(6));
+        player.setHand(leaderCards);
+        for(int i=0; i<5; i++)
+            player.getStrongbox().addResource(new Resource(ResourceType.STONE));
+        for(int i=0; i<5; i++)
+            player.getStrongbox().addResource(new Resource(ResourceType.COIN));
+        for(int i=0; i<5; i++)
+            player.getStrongbox().addResource(new Resource(ResourceType.SERVANT));
+        for(int i=0; i<5; i++)
+            player.getStrongbox().addResource(new Resource(ResourceType.SHIELD));
+        player.activateLeaderCard(0);
+        player.activateLeaderCard(1);
+        System.out.println("Extra Deposits:");
+        for(AuxiliaryDeposit auxiliaryDeposit: player.getActiveEffects().getAuxiliaryDeposits()){
+            for(int i=0; i<2; i++)
+                auxiliaryDeposit.addResource(new Resource(auxiliaryDeposit.getType()));
+                System.out.println(auxiliaryDeposit.getSize() + " " + auxiliaryDeposit.getType());
+        }
+        System.out.println("Strongbox");
+        Map<ResourceType, List<Resource>> strongbox = player.getStrongbox().getAll();
+        for(ResourceType resourceType: strongbox.keySet()){
+            System.out.println(strongbox.get(resourceType).size() +" "+resourceType.toString());
+        }
+        player.getDeposit().addResource(2, new Resource(ResourceType.SHIELD));
+        System.out.println("Deposit");
+        Map<ResourceType, List<Resource>> deposit = player.getDeposit().getAll();
+        for(ResourceType resourceType: deposit.keySet()){
+            System.out.println(deposit.get(resourceType).size() +" "+resourceType.toString());
+        }
+        HashMap<ResourceType, Integer> cost = new HashMap<>();
+        cost.put(ResourceType.SHIELD, 4);
+        cost.put(ResourceType.SERVANT, 4);
+        cost.put(ResourceType.COIN, 4);
+        player.takeResourceForAction(cost);
+        System.out.println("\nExtra Deposits:");
+        for(AuxiliaryDeposit auxiliaryDeposit: player.getActiveEffects().getAuxiliaryDeposits()){
+            System.out.println(auxiliaryDeposit.getSize() + " " + auxiliaryDeposit.getType());
+        }
+        System.out.println("Strongbox");
+        strongbox = player.getStrongbox().getAll();
+        for(ResourceType resourceType: strongbox.keySet()){
+            System.out.println(strongbox.get(resourceType).size() +" "+resourceType.toString());
+        }
+        System.out.println("Deposit");
+        deposit = player.getDeposit().getAll();
+        for(ResourceType resourceType: deposit.keySet()){
+            System.out.println(deposit.get(resourceType).size() +" "+resourceType.toString());
+        }
+
+    }
 }

@@ -1,4 +1,6 @@
 # Masters of Renaissance
+![Masters-of-Renaissance_box3D_ombra](https://user-images.githubusercontent.com/69718409/123828764-1c20b680-d902-11eb-893a-d897be8df36a.png)
+
 
 In Masters of Renaissance, you are an important citizen of Florence and your goal is to increase your fame and prestige. Take resources from the market and use them to buy new cards. Expand your power both in the city and in the surrounding territories! Every card gives you a production power that transforms the resources so you can store them in your strongbox. Try to use the leaders’ abilities to your advantage and don’t forget to show your devotion to the Pope!
 
@@ -14,13 +16,16 @@ Masters of Renaissance is a game with simple rules offering deep strategic choic
 
 ## Functionalities
 
-1. Complete rules
-2. CLI
-3. Socket 
-4. GUI
-5. Multiple games
-6. Local game
-7. Disconnection resilience 
+|     |     |
+| --- | --- |
+| **Functionality** | **State** |
+| Complete rules | GREEN |
+| CLI | GREEN |
+| GUI | GREEN |
+| Multiple games | GREEN |
+| Local game | GREEN |
+| Disconnection resilience | GREEN |
+| Socket | GREEN |
 
 
 ## Instructions for build and execution:
@@ -62,3 +67,10 @@ To launch the program with the graphical user interface (GUI), double-click on t
 ```bash
 java -jar AM10.jar -client -gui
 ```
+
+To launch the program in local mode execute in the terminal.
+
+```bash
+java -jar AM10.jar -client -local -gui
+```
+

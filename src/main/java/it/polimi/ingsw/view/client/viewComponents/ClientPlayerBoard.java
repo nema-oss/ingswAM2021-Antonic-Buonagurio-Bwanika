@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.client.viewComponents;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.player.*;
@@ -19,7 +20,9 @@ public class ClientPlayerBoard implements Serializable {
     private final List<Stack<DevelopmentCard>> developmentCards;
     private HashMap<ArrayList<Resource>,ArrayList<Resource>> productionPower;
     private final CellFactory cellFactory;
-    private List<LeaderCard> activeLeaderCard;
+    private final List<LeaderCard> activeLeaderCard;
+    private final int victoryPoints;
+    private List<AuxiliaryDeposit> playerAuxiliaryDeposits;
 
 
     public ClientPlayerBoard(){
@@ -29,11 +32,12 @@ public class ClientPlayerBoard implements Serializable {
         popeRoad = new ClientPopeRoad(cells);
         deposit = new ClientDeposit();
         strongbox = new ClientStrongbox();
-        developmentCards = new ArrayList<Stack<DevelopmentCard>>();
-        developmentCards.add(new Stack<DevelopmentCard>());
-        developmentCards.add(new Stack<DevelopmentCard>());
-        developmentCards.add(new Stack<DevelopmentCard>());
+        developmentCards = new ArrayList<>();
+        developmentCards.add(new Stack<>());
+        developmentCards.add(new Stack<>());
+        developmentCards.add(new Stack<>());
         activeLeaderCard = new ArrayList<>();
+        victoryPoints = 0;
     }
 
     /**
@@ -129,5 +133,20 @@ public class ClientPlayerBoard implements Serializable {
      */
     public void addActiveLeaderCard(LeaderCard card) {
         activeLeaderCard.add(card);
+    }
+
+    /**
+     * @return player's auxiliary deposits
+     */
+    public List<AuxiliaryDeposit> getPlayerAuxiliaryDeposits() {
+        return playerAuxiliaryDeposits;
+    }
+
+    /**
+     * this  method sets player's auxiliary deposits
+     * @param playerAuxiliaryDeposits player's deposits
+     */
+    public void setPlayerAuxiliaryDeposit(List<AuxiliaryDeposit> playerAuxiliaryDeposits) {
+        this.playerAuxiliaryDeposits = playerAuxiliaryDeposits;
     }
 }

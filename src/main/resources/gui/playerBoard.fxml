@@ -12,27 +12,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pBoard" prefHeight="441.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.PlayerBoardController">
-    <ImageView fitHeight="609.0" fitWidth="614.0" layoutX="131.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+<AnchorPane fx:id="pBoard" prefHeight="374.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.PlayerBoardController">
+    <ImageView fitHeight="609.0" fitWidth="614.0" layoutX="134.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/Boards/MastersofRenaissance_PlayerBoard(11_2020)-1.png" />
     </ImageView>
-    <GridPane fx:id="devCards" layoutX="370.0" layoutY="204.0" prefHeight="183.0" prefWidth="348.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="108.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="122.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="120.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      <children>
-         <BorderPane fx:id="dev3" GridPane.columnIndex="2" />
-         <BorderPane fx:id="dev1" />
-         <BorderPane fx:id="dev2" GridPane.columnIndex="1" />
-      </children>
-    </GridPane>
-    <AnchorPane layoutX="146.0" layoutY="158.0" prefHeight="156.0" prefWidth="118.0">
-        <GridPane fx:id="floor1" layoutX="50.0" layoutY="29.0" prefHeight="30.0" prefWidth="28.0">
+    <AnchorPane layoutX="155.0" layoutY="168.0" prefHeight="156.0" prefWidth="118.0">
+        <GridPane fx:id="floor1" layoutX="45.0" layoutY="20.0" prefHeight="30.0" prefWidth="28.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
@@ -40,7 +25,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
-        <GridPane fx:id="floor2" layoutX="37.0" layoutY="70.0" prefHeight="30.0" prefWidth="52.0">
+        <GridPane fx:id="floor2" layoutX="33.0" layoutY="59.0" prefHeight="30.0" prefWidth="52.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,7 +34,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
-        <GridPane fx:id="floor3" layoutX="21.0" layoutY="112.0" prefHeight="30.0" prefWidth="84.0">
+        <GridPane fx:id="floor3" layoutX="17.0" layoutY="100.0" prefHeight="30.0" prefWidth="84.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -60,7 +45,7 @@
             </rowConstraints>
         </GridPane>
     </AnchorPane>
-    <AnchorPane fx:id="strongbox" layoutX="134.0" layoutY="314.0" prefHeight="114.0" prefWidth="137.0">
+    <AnchorPane fx:id="strongbox" layoutX="145.0" layoutY="310.0" prefHeight="114.0" prefWidth="137.0">
         <ImageView fitHeight="44.0" fitWidth="39.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@Images/Resources/coin.png" />
         </ImageView>
@@ -94,7 +79,7 @@
             </font>
         </Label>
     </AnchorPane>
-    <AnchorPane layoutY="2.0" prefHeight="439.0" prefWidth="130.0">
+    <AnchorPane prefHeight="439.0" prefWidth="130.0">
         <AnchorPane prefHeight="183.0" prefWidth="130.0">
             <ImageView fx:id="leader1" fitHeight="168.0" fitWidth="110.0" layoutX="10.0" layoutY="8.0" onMouseClicked="#actionsOnLeader1" pickOnBounds="true" preserveRatio="true" />
          <AnchorPane fx:id="extraDeposit1" layoutX="29.0" layoutY="134.0" prefHeight="33.0" prefWidth="76.0" visible="false">
@@ -117,7 +102,7 @@
       <ComboBox fx:id="resourceChoiceBox1" layoutX="6.0" layoutY="177.0" prefHeight="33.0" prefWidth="121.0" promptText="Resource" styleClass="round" stylesheets="@gameBoard.css" visible="false" />
       <ComboBox fx:id="resourceChoiceBox2" layoutX="8.0" layoutY="358.0" prefHeight="33.0" prefWidth="121.0" promptText="Resource" styleClass="round" stylesheets="@gameBoard.css" visible="false" />
     </AnchorPane>
-    <GridPane fx:id="popeRoad" layoutX="152.0" layoutY="22.0" prefHeight="94.0" prefWidth="575.0">
+    <GridPane fx:id="popeRoad" layoutX="155.0" layoutY="20.0" prefHeight="96.0" prefWidth="574.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -247,16 +232,16 @@
 
 
     </GridPane>
-    <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="278.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fx:id="firstVaticanSection" fitHeight="50.0" fitWidth="52.0" layoutX="281.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/PopeRoadResources/quadratogiallo.png" />
     </ImageView>
-    <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="428.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fx:id="secondVaticanSection" fitHeight="50.0" fitWidth="52.0" layoutX="429.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/PopeRoadResources/quadratoarancione.png" />
     </ImageView>
-    <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="611.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fx:id="thirdVaticanSection" fitHeight="50.0" fitWidth="50.0" layoutX="611.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/PopeRoadResources/quadratorosso.png" />
     </ImageView>
-    <AnchorPane layoutX="277.0" layoutY="295.0">
+    <AnchorPane layoutX="282.0" layoutY="292.0">
         <ImageView fx:id="res1" fitHeight="28.0" fitWidth="28.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#switchOnNextResource" pickOnBounds="true" preserveRatio="true">
             <Image url="@Images/Resources/coin.png" />
         </ImageView>
@@ -272,4 +257,14 @@
    <Button fx:id="place1" layoutX="369.0" layoutY="392.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="110.0" styleClass="round" stylesheets="@gameBoard.css" text="Place here" visible="false" />
    <Button fx:id="place2" layoutX="485.0" layoutY="392.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="110.0" styleClass="round" stylesheets="@gameBoard.css" text="Place here" visible="false" />
    <Button fx:id="place3" layoutX="606.0" layoutY="392.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="110.0" styleClass="round" stylesheets="@gameBoard.css" text="Place here" visible="false" />
+   <Label layoutX="-169.0" layoutY="93.0" text="Label" />
+   <BorderPane fx:id="dev31" layoutX="369.0" layoutY="176.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev32" layoutX="490.0" layoutY="176.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev33" layoutX="611.0" layoutY="168.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev12" layoutX="490.0" layoutY="240.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev11" layoutX="369.0" layoutY="240.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev23" layoutX="611.0" layoutY="208.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev22" layoutX="490.0" layoutY="204.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev21" layoutX="369.0" layoutY="204.0" prefHeight="168.0" prefWidth="110.0" />
+   <BorderPane fx:id="dev13" layoutX="611.0" layoutY="240.0" prefHeight="168.0" prefWidth="110.0" />
 </AnchorPane>

@@ -393,8 +393,8 @@ public class Gui extends View {
     @Override
     public void showLastRound() {
 
-        Platform.runLater(() -> {
-            alertUser("Last Round", "GET READY! We are at the end of the journey! LAST ROUND START!", Alert.AlertType.INFORMATION);
+        Platform.runLater(()->{
+            alertUser("Last Round","GET READY! We are at the end of the journey! LAST ROUND STARTS NOW!" , Alert.AlertType.INFORMATION);
         });
     }
 
@@ -915,6 +915,8 @@ public class Gui extends View {
                 j--;
             }
             playerBoardController.update(player.getPlayerBoard());
+            gameSceneController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
+
             UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
             sendMessage(message);
             //playerBoardController.updateDeposit(player.getDeposit());

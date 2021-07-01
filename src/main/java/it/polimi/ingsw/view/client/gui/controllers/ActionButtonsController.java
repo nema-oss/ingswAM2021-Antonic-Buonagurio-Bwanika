@@ -97,6 +97,7 @@ public class ActionButtonsController implements Initializable {
             setChooseActionTypeVisible(false);
             setChooseLeaderActionVisible(true);
             setBackButtonVisible(true);
+            gameController.makeLeadersClickable(true);
         });
         setChooseActionTypeVisible(true);
 
@@ -123,6 +124,7 @@ public class ActionButtonsController implements Initializable {
             setChooseActionTypeVisible(false);
             setEndTurnVisible(false);
             setActivateProductionVisible(true);
+            gameController.makeLeadersClickable(true);
 
             Message msg = new ActivateProductionMessage(gui.getPlayerNickname());
             gui.sendMessage(msg);
@@ -195,6 +197,7 @@ public class ActionButtonsController implements Initializable {
                 gui.sendMessage(updateClientPlayerBoardsMessage);
                 gui.sendMessage(msg);
                 gameController.makeCardMarketClickable(false);
+                gameController.makeLeadersClickable(false);
             }
         });
         setEndTurnVisible(false);
@@ -221,6 +224,7 @@ public class ActionButtonsController implements Initializable {
             setActivateProductionVisible(false);
             setBuyCardVisible(false);
             gameController.makeCardMarketClickable(false);
+            gameController.makeLeadersClickable(false);
             gameController.makeProductionClickable(false);
             if(!leaderAction.isVisible()) {
                 setChooseActionTypeVisible(true);

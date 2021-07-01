@@ -28,7 +28,7 @@ public class ChooseResourcesController implements Initializable {
     private Label title;
 
     @FXML
-    private AnchorPane coinView, servantView, stoneView;
+    private AnchorPane coinView, servantView, stoneView, shieldView;
 
     @FXML
     private Button button;
@@ -70,6 +70,8 @@ public class ChooseResourcesController implements Initializable {
 
         Message message = new ChooseResourcesMessage(gui.getClientPlayer().getNickname(),selectedResourceTypes,false);
         gui.sendMessage(message);
+
+        hide();
 
     }
 
@@ -115,13 +117,13 @@ public class ChooseResourcesController implements Initializable {
     public void hide(){
         coinView.setVisible(false);
         servantView.setVisible(false);
-        servantView.setVisible(false);
+        shieldView.setVisible(false);
         stoneView.setVisible(false);
         servant.setVisible(false);
         stone.setVisible(false);
         shield.setVisible(false);
         coin.setVisible(false);
         button.setVisible(false);
-        title.setText("Waiting for other players to setup their board");
+        title.setText("Waiting for other players");
     }
 }

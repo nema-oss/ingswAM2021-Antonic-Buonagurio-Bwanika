@@ -757,16 +757,16 @@ public class PlayerBoardController {
         System.out.println("sono in show extra deposit");
         System.out.println(amount);
         if(extraDeposit.equals(extraDeposit1)) {
-            if (amount == 1)
+            if (amount >= 1)
                 dep1a.setVisible(true);
             if (amount == 2)
-                dep2a.setVisible(true);
+                dep1b.setVisible(true);
         }
         else if(extraDeposit.equals(extraDeposit2)){
-            if(amount==1)
-                dep1a.setVisible(true);
-            if(amount == 2)
+            if(amount >= 1)
                 dep2a.setVisible(true);
+            if(amount == 2)
+                dep2b.setVisible(true);
         }
     }
 

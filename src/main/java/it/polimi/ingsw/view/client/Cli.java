@@ -101,7 +101,7 @@ public class Cli extends View {
 
         showBoard(gameBoard, player);
 
-        showLeaderCards(player.getHand());
+        showLeaderCards(player.getLeaderCards());
 
         otherPlayerBoards.forEach((k, v) -> showOtherPlayerBoard(k, v));
 

@@ -1324,6 +1324,7 @@ public class Cli extends View {
     @Override
     public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
         player.buyDevelopmentCard(x, y);
+        player.setStandardActionDone();
         System.out.println("Buy development card request accepted");
         askTurnAction();
     }
@@ -1434,7 +1435,7 @@ public class Cli extends View {
             int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
             DevelopmentCardType developmentCardType = ((ActionTokenDiscard) lorenzoAction).getType();
             Formatting.clearScreen();
-            showTitle();
+
             System.out.println("Lorenzo discarded " + amount + " card of type " + developmentCardType + " from the market");
         } else if (lorenzoAction instanceof ActionTokenMove) {
             int steps = ((ActionTokenMove) lorenzoAction).getSteps();
@@ -1442,12 +1443,18 @@ public class Cli extends View {
             showTitle();
             System.out.println("Lorenzo moved " + steps + " forward on his Poperoad");
         }
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ignored) {
+
+        }
     }
 
     @Override
     public void showProductionResult(Map<ResourceType, List<Resource>> updatedStrongbox, List<List<Resource>> updatedWarehouse, List<AuxiliaryDeposit> auxiliaryDeposit) {
         player.updateDeposit(updatedStrongbox, updatedWarehouse, auxiliaryDeposit);
-        askTurnAction();
+        //askTurnAction();
     }
 
     /**
@@ -1482,19 +1489,18 @@ public class Cli extends View {
             System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
                     " Press Enter to continue.");
 
-        AtomicBoolean correct = new AtomicBoolean(false);
+        //AtomicBoolean correct = new AtomicBoolean(false);
         inputWithTimeout();
         inputThread = inputExecutor.submit(() -> {
 
-            do {
+            boolean correct = false;
+            while(!correct){
                 String input = inputWithTimeout();
                 TurnActions action = InputValidator.isValidAction(input.toLowerCase(Locale.ROOT), player.isStandardActionPlayed());
-                correct.set(action != null);
-                if (!correct.get()) {
+                correct = action != null;
+                if (!correct) {
                     System.out.println("Incorrect action. Try again");
                 } else {
-                    if (action != null)
-
                         switch (action) {
                             case BUY_RESOURCES:
                                 setBuyResourceAction(false);
@@ -1517,7 +1523,8 @@ public class Cli extends View {
                             case CHEAT:
                                 sendMessage(socket, new CheatMessage(player.getNickname()));
                                 player.setStandardActionDone();
-                                break;
+                                askTurnAction();
+                                return;
                             case RESET:
                                 askTurnAction();
                                 return;
@@ -1535,8 +1542,7 @@ public class Cli extends View {
                                 }
                         }
                 }
-
-            } while (!correct.get() && !player.allPossibleActionDone());
+            }
         });
     }
 
@@ -1721,7 +1727,6 @@ public class Cli extends View {
             if (!Thread.interrupted())
                 sendMessage(socket, new BuyDevelopmentCardMessage(player.getNickname(), userChoice.getX(), userChoice.getY(), true));
 
-            player.setStandardActionDone();
         });
 
 

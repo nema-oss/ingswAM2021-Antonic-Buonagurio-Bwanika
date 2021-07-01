@@ -236,7 +236,7 @@ public class ClientPlayer {
     }
 
     /**
-     * this method sets the layer's board
+     * this method sets the player's board
      * @param board the board to set
      */
     public void setPlayerBoard(ClientPlayerBoard board) {
@@ -278,6 +278,7 @@ public class ClientPlayer {
             LeaderCard leaderCard = hand.stream().filter(p->p.getId().equals(card.getId())).findAny().orElse(null);
 
             card.useEffect(activeEffects);
+
             if(leaderCard != null) {
                 activeLeaderCards.add(leaderCard);
                 playerBoard.addActiveLeaderCard(leaderCard);
@@ -298,8 +299,10 @@ public class ClientPlayer {
         ClientStrongbox strongbox = playerBoard.getStrongbox();
         ClientDeposit deposit = playerBoard.getDeposit();
 
-        if(activeEffects.isExtraDeposit())
+        if(activeEffects.isExtraDeposit()) {
             activeEffects.updateAuxiliaryDeposits(auxiliaryDeposits);
+            playerBoard.setPlayerAuxiliaryDeposit(activeEffects.getAuxiliaryDeposits());
+        }
 
         strongbox.update(updatedStrongbox);
         deposit.update(updatedWarehouse);

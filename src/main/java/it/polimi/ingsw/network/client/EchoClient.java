@@ -2,8 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.setup.PingMessage;
-import it.polimi.ingsw.messages.setup.server.EndGameMessage;
-import it.polimi.ingsw.view.client.Cli;
+import it.polimi.ingsw.messages.setup.server.CloseMatchMessage;
 import it.polimi.ingsw.view.client.View;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
 
 /**
  * the client. It handle the connection on the client side
@@ -133,12 +131,12 @@ public class EchoClient {
                 Object next = input.readObject();
                 Message message = (Message) next;
                 if (!isPing(message)) {
-                    //if (isEnd(message)) break;
+                    if (isClose(message)) break;
                     processMessage(message);
                 }
             }
 
-            //input.close();
+            input.close();
         }catch (SocketTimeoutException ignored){
 
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
@@ -173,8 +171,8 @@ public class EchoClient {
      * @param message the received message
      * @return true if end game message message
      */
-    public boolean isEnd(Message message){
-        return message instanceof EndGameMessage;
+    public boolean isClose(Message message){
+        return message instanceof CloseMatchMessage;
     }
 
 
@@ -188,8 +186,7 @@ public class EchoClient {
                     Thread.sleep(1500);
                     Message message = new PingMessage();
                     outputStream.writeObject( message);
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException | IOException ignored) {
                 }
             } while (!server.isClosed());
 

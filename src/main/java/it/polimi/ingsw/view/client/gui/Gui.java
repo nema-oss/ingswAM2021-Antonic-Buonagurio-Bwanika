@@ -635,6 +635,15 @@ public class Gui extends View {
             }
         });
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ignored) {
+
+        }
+        Platform.runLater(()->{
+            primaryStage.setScene(startingScene);
+        });
+
     }
 
     /**

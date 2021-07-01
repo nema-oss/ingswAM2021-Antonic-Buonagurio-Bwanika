@@ -729,7 +729,8 @@ public class VirtualView implements VirtualViewInterface{
 
         EndGameMessage message = new EndGameMessage(winner);
         clients.values().forEach(p->sendMessage(p,message));
-
+        clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
+        endMatch();
         /*
         if(!isLocalMatch) {
             try {

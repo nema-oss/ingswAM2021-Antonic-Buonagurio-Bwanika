@@ -56,6 +56,7 @@ public class PlayerBoardController {
     ComboBox<String> resourceChoiceBox1, resourceChoiceBox2;
 
     public Gui gui;
+    private Button productionButton;
     private LeaderCard l1, l2;
     private List<DevelopmentCard> prodCardsList;
     private Map<LeaderCard, ResourceType> leaderProductionChoice;
@@ -258,6 +259,7 @@ public class PlayerBoardController {
 
         Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, false);
         gui.sendMessage(msg);
+        productionButton = boardProdButton;
     }
 
     /**
@@ -284,6 +286,7 @@ public class PlayerBoardController {
         if(prodCardsList.size()!=0) {
             Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
             gui.sendMessage(msg);
+            productionButton = cardProdButton;
             prodCardsList.clear();
             dev11.setStyle("");
             dev12.setStyle("");
@@ -318,6 +321,7 @@ public class PlayerBoardController {
 
             Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderProductionChoice, false);
             gui.sendMessage(msg);
+            productionButton = leaderProdButton;
             leaderProductionChoice.clear();
             resourceChoiceBox1.setVisible(false);
             resourceChoiceBox2.setVisible(false);
@@ -854,6 +858,10 @@ public class PlayerBoardController {
         else if(vaticanReportNumber==3){
             thirdVaticanSection.setVisible(false);
         }
+    }
+
+    public void hideProductionButton(){
+        productionButton.setVisible(false);
     }
 
 

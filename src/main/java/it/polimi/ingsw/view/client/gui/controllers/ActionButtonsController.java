@@ -344,6 +344,7 @@ public class ActionButtonsController implements Initializable {
         if(size!=0) {
 
             resourcePane.setVisible(true);
+            resourcePane.toFront(); //added recently
             placeResourcesOk.setVisible(true);
             placeResourcesMessage.setVisible(true);
             setEndTurnVisible(false);

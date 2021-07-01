@@ -179,6 +179,7 @@ public class ClientPlayer {
      */
     public void setStandardActionDone() {
         standardActionPlayed = true;
+        System.out.println(isStandardActionPlayed());
     }
 
     /**

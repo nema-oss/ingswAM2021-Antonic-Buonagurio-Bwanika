@@ -94,5 +94,10 @@ public interface VirtualViewInterface {
      * @param updatedWarehouse the uppdate warehouse
      */
     void updateDepositAfterAction(String user, Map<ResourceType, List<Resource>> updateStrongbox, List<List<Resource>> updatedWarehouse);
+
+    /**
+     * Notify players that vatican report has started
+     */
+    void notifyVaticanReport();
 }
 

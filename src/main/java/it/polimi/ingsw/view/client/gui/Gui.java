@@ -579,7 +579,7 @@ public class Gui extends View {
     public void showAnotherClientDisconnection(String otherClient) {
 
         Platform.runLater(() -> {
-            alertUser("Information", otherClient + "has disconnected from the match!", Alert.AlertType.INFORMATION);
+            alertUser("Information", otherClient + " has disconnected from the match!", Alert.AlertType.INFORMATION);
             otherPlayerBoards.remove(otherClient);
             gameSceneController.removePlayerBoard(otherClient);
             otherPlayerBoards.forEach((k, v) -> gameSceneController.updatePlayerBoard(k, v));

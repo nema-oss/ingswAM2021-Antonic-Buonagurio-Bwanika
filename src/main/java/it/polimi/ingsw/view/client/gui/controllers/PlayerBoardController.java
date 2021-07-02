@@ -812,14 +812,24 @@ public class PlayerBoardController {
     public void showExtraDeposit(AnchorPane extraDeposit, int amount){
 
         if(extraDeposit.equals(extraDeposit1)) {
-            if (amount >= 1)
+            if(amount>=0){
+                dep1a.setVisible(false);
+                dep1b.setVisible(false);
+            }
+            if (amount >= 1) {
                 dep1a.setVisible(true);
+            }
             if (amount == 2)
                 dep1b.setVisible(true);
         }
         else if(extraDeposit.equals(extraDeposit2)){
-            if(amount >= 1)
+            if(amount>=0){
+                dep2a.setVisible(false);
+                dep2b.setVisible(false);
+            }
+            if(amount >= 1) {
                 dep2a.setVisible(true);
+            }
             if(amount == 2)
                 dep2b.setVisible(true);
         }

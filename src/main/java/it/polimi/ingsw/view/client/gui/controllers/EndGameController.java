@@ -3,12 +3,18 @@ package it.polimi.ingsw.view.client.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class EndGameController {
 
     @FXML
     Label message;
 
-    private String winner;
 
     /**
      * this method sets the message in the final scene
@@ -16,13 +22,5 @@ public class EndGameController {
      */
     public void setMessage(String text){
         message.setText(text);
-    }
-
-    /**
-     * Set the game winner
-     * @param winner game winner
-     */
-    public void setWinner(String winner) {
-        this.winner = winner;
     }
 }

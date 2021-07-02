@@ -819,7 +819,7 @@ public class MatchController implements ControllerInterface{
             for (Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
                 numOfCards = numOfCards + stack.size();
 
-            if (numOfCards == 1 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
+            if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
 
                 viewInterface.lastRound();
                 isLastRound=true;

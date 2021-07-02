@@ -44,29 +44,29 @@ public class EndMultiplayerController {
             first.setVisible(true);
             firstName.setVisible(true);
             points1.setVisible(true);
-            firstName.setText(players.remove(0));
-            points1.setText(pointsList.remove(0).toString());
+            firstName.setText(players.remove(players.size()-1));
+            points1.setText(pointsList.remove(pointsList.size()-1).toString());
             second.setVisible(true);
             secondName.setVisible(true);
             points2.setVisible(true);
-            secondName.setText(players.remove(0));
-            points2.setText(pointsList.remove(0).toString());
+            secondName.setText(players.remove(players.size()-1));
+            points2.setText(pointsList.remove(pointsList.size()-1).toString());
         }
 
         if(numOfPlayers >= 3){
             third.setVisible(true);
             thirdName.setVisible(true);
             points3.setVisible(true);
-            thirdName.setText(players.remove(0));
-            points3.setText(pointsList.remove(0).toString());
+            thirdName.setText(players.remove(players.size()-1));
+            points3.setText(pointsList.remove(pointsList.size()-1).toString());
         }
 
         if(numOfPlayers==4){
             fourth.setVisible(true);
             fourthName.setVisible(true);
             points4.setVisible(true);
-            fourthName.setText(players.remove(0));
-            points4.setText(pointsList.remove(0).toString());
+            fourthName.setText(players.remove(players.size()-1));
+            points4.setText(pointsList.remove(pointsList.size()-1).toString());
         }
     }
 }

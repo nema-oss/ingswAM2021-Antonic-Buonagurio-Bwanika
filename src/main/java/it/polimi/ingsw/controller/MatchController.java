@@ -545,7 +545,6 @@ public class MatchController implements ControllerInterface{
             try {
                 game.getCurrentPlayer().buyDevelopmentCard(row, column);
                 game.getCurrentPlayer().setStandardActionPlayed(true);
-                //controlEndOfGame();
             } catch (InsufficientPaymentException e) {
                 errors.add(Error.INSUFFICIENT_PAYMENT);
             } catch (NonExistentCardException e) {
@@ -560,21 +559,6 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
-
-    /*public List<Error> onPlaceCard(String nickname, DevelopmentCard card, int index){
-
-        List<Error> errors = new ArrayList<>(controlTurn(nickname));
-
-        if(errors.isEmpty()){
-           try {
-               game.getCurrentPlayer().getPlayerBoard().addDevelopmentCard(card, index);
-           }
-           catch (IllegalArgumentException e){
-               errors.add(Error.INVALID_ACTION);
-           }
-        }
-        return errors;
-    } */
 
     /**
      * this method calls the Player's method buyResoources
@@ -687,7 +671,6 @@ public class MatchController implements ControllerInterface{
                             game.vaticanReport(curr.getPositionIndex());
                             viewInterface.notifyVaticanReport();
                         }
-                        //controlEndOfGame();
                         break;
                     }
             } catch (NonExistentCardException e) {
@@ -728,8 +711,6 @@ public class MatchController implements ControllerInterface{
                 sendPlayTurn();
             }
         }
-
-        //checkLastRound();
 
         return errors;
     }
@@ -825,7 +806,7 @@ public class MatchController implements ControllerInterface{
     /**
      * this method controls if a player has reached one of the conditions to end the game, which means:
      * if he has drawn the 7th DevelopmentCard, or
-     * if he has reached the last popespace
+     * if he has reached the last pope space
      * @return true if ended
      */
     public boolean controlEndOfGame(){
@@ -865,24 +846,6 @@ public class MatchController implements ControllerInterface{
                 sendPlayTurn();
             }
         }
-
-        /*
-        if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
-
-            sendEndTurn();
-
-            game.nextPlayer();
-
-            game.getCurrentPlayer().setStandardActionPlayed(false);
-            game.getCurrentPlayer().setLeaderActionPlayed(false);
-            if (game.getListOfPlayers().size() == 1)
-                game.lorenzoTurn();
-            sendPlayTurn();
-
-
-        }
-
-         */
 
     }
 

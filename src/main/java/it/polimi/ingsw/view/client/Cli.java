@@ -102,13 +102,12 @@ public class Cli extends View {
         cliGraphics.showBoard(gameBoard, player);
 
         cliGraphics.showLeaderCards(player.getLeaderCards());
-
         otherPlayerBoards.forEach((k, v) -> cliGraphics.showOtherPlayerBoard(k, v));
 
         if (currentPlayer.equals(player.getNickname())) {
             askTurnAction();
         } else {
-            System.out.println(currentPlayer + " is playing its turn...");
+            System.out.println(currentPlayer + " is playing their turn...");
         }
 
     }
@@ -557,10 +556,10 @@ public class Cli extends View {
     public void askTurnAction() {
 
         if (isLocalMatch)
-            System.out.println("It's your turn. You can choose both a turn action among these " + TurnActions.getLocalMatchTurnAction() +
+            System.out.println("It's your turn. You can choose a turn action among these " + TurnActions.getLocalMatchTurnAction() +
                     " Press Enter to continue.");
         else
-            System.out.println("It's your turn. You can choose both a turn action among these " + Arrays.asList(TurnActions.values()) +
+            System.out.println("It's your turn. You can choose a turn action among these " + Arrays.asList(TurnActions.values()) +
                     " Press Enter to continue.");
 
         //AtomicBoolean correct = new AtomicBoolean(false);

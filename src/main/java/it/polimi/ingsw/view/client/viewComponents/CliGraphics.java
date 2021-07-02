@@ -433,16 +433,27 @@ public class CliGraphics {
 
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
+                int ind=1;
+                if(clientPlayerBoard.getDevelopmentCards().get(j).size()==2)
+                    ind = 0;
+                else
+                    ind=1;
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(1).getVictoryPoints()));
+
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getVictoryPoints()));
                 System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
+                int ind=1;
+                if(clientPlayerBoard.getDevelopmentCards().get(j).size()==2)
+                    ind = 0;
+                else
+                    ind=1;
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());

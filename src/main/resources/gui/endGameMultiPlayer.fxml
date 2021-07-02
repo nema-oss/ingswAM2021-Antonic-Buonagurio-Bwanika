@@ -14,22 +14,22 @@
          </font>
         </Label>
       <Label layoutX="307.0" layoutY="272.0" />
-      <Label fx:id="firstPlace" alignment="CENTER" layoutX="369.0" layoutY="295.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+      <Label fx:id="firstPlace" alignment="CENTER" layoutX="369.0" layoutY="295.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css" visible="false">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label fx:id="secondPlace" layoutX="369.0" layoutY="400.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+      <Label fx:id="secondPlace" layoutX="369.0" layoutY="400.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css" visible="false">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label fx:id="thirdPlace" layoutX="369.0" layoutY="508.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+      <Label fx:id="thirdPlace" layoutX="369.0" layoutY="508.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css" visible="false">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label fx:id="fourthPlace" layoutX="369.0" layoutY="612.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css">
+      <Label fx:id="fourthPlace" layoutX="369.0" layoutY="612.0" prefHeight="79.0" prefWidth="458.0" styleClass="order" stylesheets="@gameBoard.css" visible="false">
          <font>
             <Font size="40.0" />
          </font>

@@ -96,7 +96,6 @@ public class ClientHandler implements Runnable{
                 Object next = inputStream.readObject();
                 Message message = (Message) next;
                 if(!isPing(message)) {
-                    System.out.println(message);
                     processMessage(message);
                 }
             }

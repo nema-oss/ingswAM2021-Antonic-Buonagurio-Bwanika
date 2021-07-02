@@ -465,6 +465,7 @@ public class VirtualView implements VirtualViewInterface{
     public void activateProductionDevelopmentCard(String user, List<DevelopmentCard> developmentCards) {
 
         List<Error> errors = matchController.onActivateDevelopmentProduction(user, developmentCards);
+        System.out.println(errors);
         if (isActive) {
             if (errors.isEmpty())
                 onAcceptedActivateProductionDevelopmentCard(user, developmentCards);

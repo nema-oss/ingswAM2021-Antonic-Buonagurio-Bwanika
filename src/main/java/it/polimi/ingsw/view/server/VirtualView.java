@@ -247,7 +247,7 @@ public class VirtualView implements VirtualViewInterface{
      * This method asks a client to play its turn and sends a wait message to the others
      * @param username the nickname of the player that has to play
      */
-    public void playTurn(String username){
+    public synchronized void playTurn(String username){
 
         SetGameBoardMessage message = new SetGameBoardMessage(matchController.getCardMarket(), matchController.getMarbleMarket(), matchController.getFreeMarble());
 
@@ -283,6 +283,9 @@ public class VirtualView implements VirtualViewInterface{
     private void onAcceptedChooseLeaderCard(String user, List<LeaderCard> leaderCards) {
         Message requestAccepted = new UpdateWriter().cardSelectionAccepted(user,leaderCards);
         sendMessage(clients.get(user), requestAccepted);
+
+        matchController.sendChooseLeaderCards();
+        matchController.onAllLeaderCardsSelected();
     }
 
     /**

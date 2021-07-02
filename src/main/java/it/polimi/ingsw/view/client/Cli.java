@@ -129,6 +129,10 @@ public class Cli extends View {
         new EchoClient(myIp, myPort, this).start();
     }
 
+
+    /**
+     * Setup local Match
+     */
     public void gameSetupLocalMatch() {
 
         isLocalMatch = true;
@@ -137,6 +141,7 @@ public class Cli extends View {
         message.setFirstPlayer(true);
         showLogin(message);
     }
+
 
     //View Override methods
 
@@ -219,8 +224,8 @@ public class Cli extends View {
             }
 
             if (!Thread.interrupted()) {
-                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(), userChoice, true));
                 System.out.println("\nWait a minute, we are preparing the match...");
+                sendMessage(socket, new ChooseLeadersMessage(player.getNickname(), userChoice, true));
             }
 
         });
@@ -504,12 +509,12 @@ public class Cli extends View {
             int amount = ((ActionTokenDiscard) lorenzoAction).getAmount();
             DevelopmentCardType developmentCardType = ((ActionTokenDiscard) lorenzoAction).getType();
             Formatting.clearScreen();
-
+            Formatting.printWhiteSpaceBlock(0.3);
             System.out.println("Lorenzo discarded " + amount + " card of type " + developmentCardType + " from the market");
         } else if (lorenzoAction instanceof ActionTokenMove) {
             int steps = ((ActionTokenMove) lorenzoAction).getSteps();
             Formatting.clearScreen();
-            cliGraphics.showTitle();
+            Formatting.printWhiteSpaceBlock(0.3);
             System.out.println("Lorenzo moved " + steps + " forward on his Poperoad");
         }
 

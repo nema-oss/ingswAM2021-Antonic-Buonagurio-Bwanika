@@ -37,6 +37,20 @@ public class Formatting {
 
     }
 
+    /**
+     * Print white space block
+     * @param height space's size
+     */
+    public static void printWhiteSpaceBlock(double height){
+        StringBuilder clean = new StringBuilder();
+        for (double i = 0; i < height; i = i + 5) {
+            clean.append("\n\n\n\n\n");
+        }
+
+        System.out.print(clean);
+
+    }
+
 
 
     public enum Unicode {

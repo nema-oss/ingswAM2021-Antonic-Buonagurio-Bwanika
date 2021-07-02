@@ -46,6 +46,7 @@ public class EndMultiplayerController {
             points1.setVisible(true);
             firstName.setText(players.remove(players.size()-1));
             points1.setText(pointsList.remove(pointsList.size()-1).toString());
+            setMessage(firstName.getText()+" won the match!");
             second.setVisible(true);
             secondName.setVisible(true);
             points2.setVisible(true);

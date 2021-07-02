@@ -95,7 +95,7 @@ public class PlayerBoardController {
             if (!is1active) {
                 createCardMenu(leader1, l1, event);
 
-            } else if(leaderProdButton.isVisible()){
+            } else if(leaderProdButton.isVisible() && l1.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)){
                 if(!isL1Selected) {
                     leader1.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #515fdb");
                     resourceChoiceBox1.setVisible(true);
@@ -121,7 +121,7 @@ public class PlayerBoardController {
             if (!is2active) {
                 createCardMenu(leader2, l2, event);
 
-            } else if(leaderProdButton.isVisible()) {
+            } else if(leaderProdButton.isVisible() && l2.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION)) {
                 if(!isL2Selected) {
                     leader2.getParent().setStyle("-fx-border-width: 5; -fx-border-color: #1c3899");
 
@@ -689,6 +689,7 @@ public class PlayerBoardController {
     public void setProductionClickable(Boolean bool){
         boardProdButton.setVisible(bool);
         cardProdButton.setVisible(bool);
+        if((l1.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION) && is1active)|| (l2.getLeaderType().equals(LeaderCardType.EXTRA_PRODUCTION) && is2active))
         leaderProdButton.setVisible(bool);
     }
 

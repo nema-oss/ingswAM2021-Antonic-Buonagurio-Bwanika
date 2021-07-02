@@ -545,7 +545,7 @@ public class MatchController implements ControllerInterface{
             try {
                 game.getCurrentPlayer().buyDevelopmentCard(row, column);
                 game.getCurrentPlayer().setStandardActionPlayed(true);
-                controlEndOfGame();
+                //controlEndOfGame();
             } catch (InsufficientPaymentException e) {
                 errors.add(Error.INSUFFICIENT_PAYMENT);
             } catch (NonExistentCardException e) {
@@ -610,7 +610,7 @@ public class MatchController implements ControllerInterface{
                 game.vaticanReport(game.getCurrentPlayer().getPositionIndex());
                 viewInterface.notifyVaticanReport();
             }
-            controlEndOfGame();
+            //controlEndOfGame();
             viewInterface.sendResourcesBought(resourcesBought);
 
         }
@@ -646,7 +646,7 @@ public class MatchController implements ControllerInterface{
                         index = game.getCurrentPlayer().getHand().indexOf(l);
                         game.getCurrentPlayer().activateLeaderCard(index);
                         game.getCurrentPlayer().setLeaderActionPlayed(true);
-                        controlEndOfGame();
+                        //controlEndOfGame();
                     }
             } catch (NonExistentCardException e) {
                 errors.add(Error.CARD_DOESNT_EXIST);
@@ -687,7 +687,7 @@ public class MatchController implements ControllerInterface{
                             game.vaticanReport(curr.getPositionIndex());
                             viewInterface.notifyVaticanReport();
                         }
-                        controlEndOfGame();
+                        //controlEndOfGame();
                         break;
                     }
             } catch (NonExistentCardException e) {
@@ -720,12 +720,13 @@ public class MatchController implements ControllerInterface{
             game.getCurrentPlayer().setStandardActionPlayed(false);
             game.getCurrentPlayer().setLeaderActionPlayed(false);
 
-            controlEndOfGame();
-            game.nextPlayer();
-            if (game.getListOfPlayers().size() == 1) {
-                onLorenzoTurn();
+            if(!controlEndOfGame()) {
+                game.nextPlayer();
+                if (game.getListOfPlayers().size() == 1) {
+                    onLorenzoTurn();
+                }
+                sendPlayTurn();
             }
-            sendPlayTurn();
         }
 
         //checkLastRound();
@@ -825,15 +826,17 @@ public class MatchController implements ControllerInterface{
      * this method controls if a player has reached one of the conditions to end the game, which means:
      * if he has drawn the 7th DevelopmentCard, or
      * if he has reached the last popespace
+     * @return true if ended
      */
-    public void controlEndOfGame(){
+    public boolean controlEndOfGame(){
+
         if(!isLastRound) {
 
             int numOfCards = 0;
             for (Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
                 numOfCards = numOfCards + stack.size();
 
-            if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
+            if (numOfCards == 1 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
 
                 viewInterface.lastRound();
                 isLastRound=true;
@@ -842,8 +845,10 @@ public class MatchController implements ControllerInterface{
             if(game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
                 Map<String, Integer> leaderboard = game.endGame();
                 viewInterface.notifyWinner(leaderboard);
+                return true;
             }
         }
+        return false;
 
     }
 
@@ -852,6 +857,7 @@ public class MatchController implements ControllerInterface{
      * if it is the last turn, game ends
      */
     public void nextTurn(){
+
 
         if(game.getCurrentPlayer().hasPlayedStandardAction() && game.getCurrentPlayer().hasPlayedLeaderAction()) {
             if (game.getListOfPlayers().size() == 1) {
@@ -964,7 +970,8 @@ public class MatchController implements ControllerInterface{
      */
     @Override
     public void sendPlayTurn(){
-        viewInterface.playTurn(game.getCurrentPlayer().getNickname());
+        if(!controlEndOfGame())
+            viewInterface.playTurn(game.getCurrentPlayer().getNickname());
     }
 
 

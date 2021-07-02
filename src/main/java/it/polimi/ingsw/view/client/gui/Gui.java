@@ -79,6 +79,7 @@ public class Gui extends View {
     private EndGameController endPlayerController;
     private EndMultiplayerController endMultiplayerController;
     private Scene endGameScene;
+    private boolean lorenzoGame;
 
     public Gui(String ip, int port, Stage stage, Scene scene) {
 
@@ -92,6 +93,7 @@ public class Gui extends View {
         initTurnActions();
         initEndGame();
         isGameScene = false;
+        lorenzoGame = false;
 
     }
 
@@ -361,6 +363,14 @@ public class Gui extends View {
     public void showLorenzoAction(ActionToken lorenzoAction, int lorenzoPosition) {
 
         Platform.runLater(() -> {
+            if(!lorenzoGame){
+                try {
+                    actionButtonsController.showLorenzoPosition();
+                    lorenzoGame = true;
+                } catch (IOException e) {
+                    System.out.println("Can't load lorenzo position");
+                }
+            }
             String lorenzoMessage = "";
             int amount;
             if (lorenzoAction instanceof ActionTokenDiscard) {
@@ -624,20 +634,17 @@ public class Gui extends View {
 
         Platform.runLater(() -> {
             if (leaderboard.size() == 1) {
-                try {
-                    String winner = leaderboard.keySet().stream().findFirst().get();
-                    endPlayerController.setMessage(winner + " has won the match");
-                    primaryStage.setScene(endGameScene);
-                } catch (Exception e) {
-                    System.out.println("Can't load the End Game scene");
-                }
-            } else {
+                String winner = leaderboard.keySet().stream().findFirst().get();
+                endPlayerController.setMessage(winner + " has won the match");
+                primaryStage.setScene(endGameScene);
+            }else{
+                primaryStage.setScene(endGameScene);
                 endMultiplayerController.setWinner(leaderboard);
             }
         });
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(30000);
         } catch (InterruptedException ignored) {
 
         }

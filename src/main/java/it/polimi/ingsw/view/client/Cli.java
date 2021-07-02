@@ -1013,7 +1013,7 @@ public class Cli extends View {
         }
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(30000);
         } catch (InterruptedException ignored) {
         }
 

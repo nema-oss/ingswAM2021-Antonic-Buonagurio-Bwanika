@@ -131,19 +131,17 @@ public class EchoClient {
                 Object next = input.readObject();
                 Message message = (Message) next;
                 if (!isPing(message)) {
-                    if (isClose(message)) break;
+                    if(isClose(message)) break;
                     processMessage(message);
                 }
             }
-
             input.close();
+            server.close();
         }catch (SocketTimeoutException ignored){
 
         } catch (ClassNotFoundException | ClassCastException | IOException e) {
-            e.printStackTrace();
             if (!server.isClosed()) {
                 serverDisconnection();
-                e.printStackTrace();
             }
         }
     }

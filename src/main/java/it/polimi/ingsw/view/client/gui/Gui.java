@@ -786,7 +786,7 @@ public class Gui extends View {
                 actionButtonsController.setEndTurnVisible(true);
                 gameSceneController.makeCardMarketClickable(false);
             } else {
-                gameBoardController.setTurnActionInformationBox(user + "has bought a card from market.");
+                gameBoardController.setTurnActionInformationBox(user + " has bought a card from market.");
             }
         });
 

@@ -19,26 +19,6 @@ public class MessageSender {
         this.messageOutput = message;
     }
 
-   //TODO ABORT THIS METHOD
-    /**
-     * This method send a message to the socket. It return false/true if the operation is
-     * successful or not
-     */
-    public synchronized boolean sendMsg() {
-        if(!socket.isClosed()){
-            try{
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeObject( messageOutput);
-                outputStream.reset();
-                return true;
-            }catch (IOException e){
-                System.out.println("Can't send message on socket");
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
     /**
      * This method send a message to the socket. It return false/true if the operation is
      * successful or not

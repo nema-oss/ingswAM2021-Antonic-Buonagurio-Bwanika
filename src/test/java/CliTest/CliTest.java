@@ -1,31 +1,22 @@
 package CliTest;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardFactory;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.DevelopmentDeck;
 import it.polimi.ingsw.model.cards.leadercards.AuxiliaryDeposit;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
 import it.polimi.ingsw.model.exception.WrongDepositSwapException;
-import it.polimi.ingsw.model.gameboard.CardMarket;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Board;
-import it.polimi.ingsw.model.player.Deposit;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.client.Cli;
 import it.polimi.ingsw.view.client.utils.Formatting;
-import it.polimi.ingsw.view.client.utils.InputValidator;
 import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import it.polimi.ingsw.view.client.viewComponents.ClientPlayer;
-import it.polimi.ingsw.view.client.viewComponents.ClientGameBoard;
 import org.junit.Test;
 
-import java.text.Normalizer;
 import java.util.*;
 
 public class CliTest {
@@ -42,16 +33,11 @@ public class CliTest {
     @Test
     public void showTitle(){
         Cli cli = new Cli();
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
         List<Resource> resources = new ArrayList<>();
         resources.add(new Resource(ResourceType.SHIELD));
         resources.add(new Resource(ResourceType.STONE));
         resources.add(new Resource(ResourceType.COIN));
         resources.add(new Resource(ResourceType.SERVANT));
-        Map<Resource,Integer> userChoice = InputValidator.isValidPlaceResourceAction(resources,input);
-        System.out.println(userChoice);
-
     }
 
     @Test

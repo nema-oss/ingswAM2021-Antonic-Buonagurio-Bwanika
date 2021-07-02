@@ -40,6 +40,9 @@ public class GameBoardController{
      * @param text the  message to show
      */
     public void setTurnActionInformationBox(String text){
+        if(!infoBox.isVisible())
+            infoBox.setVisible(true);
+
         infoBox.setWrapText(true);
         infoBox.setText(text);
     }

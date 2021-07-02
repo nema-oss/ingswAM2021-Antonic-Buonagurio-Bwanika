@@ -50,5 +50,5 @@
     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="282.0" layoutY="826.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/Boards/marblesCorrespondances.png" />
     </ImageView>
-   <Label fx:id="infoBox" alignment="CENTER" layoutX="282.0" layoutY="741.0" prefHeight="71.0" prefWidth="200.0" styleClass="info" stylesheets="@gameBoard.css" textAlignment="CENTER" />
+   <Label fx:id="infoBox" alignment="CENTER" layoutX="282.0" layoutY="741.0" prefHeight="71.0" prefWidth="200.0" styleClass="info" stylesheets="@gameBoard.css" textAlignment="CENTER" visible="false" wrapText="true" />
 </AnchorPane>

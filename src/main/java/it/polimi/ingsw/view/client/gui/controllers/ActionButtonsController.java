@@ -469,4 +469,8 @@ public class ActionButtonsController implements Initializable {
     public void updateLorenzoPosition(int lorenzoPosition){
         lorenzoController.update(lorenzoPosition);
     }
+
+    public void setWaitingMessageText(String text){
+        waitingMessage.setText(text);
+    }
 }

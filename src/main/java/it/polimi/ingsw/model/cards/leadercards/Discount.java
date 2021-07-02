@@ -46,8 +46,4 @@ public class Discount extends LeaderCard{
         return discountAmount;
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
 }

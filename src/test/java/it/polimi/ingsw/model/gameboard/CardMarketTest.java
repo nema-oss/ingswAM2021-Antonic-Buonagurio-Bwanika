@@ -28,6 +28,7 @@ class CardMarketTest {
     void testCardMarket(){
 
         //controls that every miniDeck of the cardMarket contains cards of  the same color and level
+        cardMarket.getCardMarket();
         for (int i=0; i<3; i++)
             for(int j=0; j<4; j++){
                 DevelopmentDeck miniDeck = cardMarket.getMiniDeck(i,j);
@@ -56,7 +57,6 @@ class CardMarketTest {
                     try{assertEquals(cardMarket.getCard(i-1,j).getType(), cardMarket.getCard(i,j).getType());}
                     catch(NonExistentCardException e){e.printStackTrace();}
             }
-
     }
 
     @Test

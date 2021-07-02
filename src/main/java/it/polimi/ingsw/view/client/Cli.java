@@ -1008,9 +1008,12 @@ public class Cli extends View {
     @Override
     public void showEndGame(Map<String, Integer> leaderboard) {
 
+
+        Formatting.printWhiteSpaceBlock(0.3);
         for(String player: leaderboard.keySet()){
             System.out.println(player + "   victory: " + leaderboard.get(player));
         }
+
 
         try {
             Thread.sleep(30000);

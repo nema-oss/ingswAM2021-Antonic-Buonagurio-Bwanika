@@ -47,9 +47,10 @@
 }
 
 .info{
-    -fx-background-color: white;
+    -fx-background-color: #d09b59;
+    -fx-text-alignment: center;
     -fx-background-radius: 30;
     -fx-background-insets: 0;
-    -fx-text-fill: black;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 14;
 }

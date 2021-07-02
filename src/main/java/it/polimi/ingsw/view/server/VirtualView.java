@@ -370,7 +370,6 @@ public class VirtualView implements VirtualViewInterface{
      */
     public void buyDevelopmentCards(String user, int x, int y){
         List<Error> errors = matchController.onBuyDevelopmentCards(user, x,y);
-        errors.forEach(System.out::println);
         if(isActive){
             if(errors.isEmpty())
                 onAcceptedBuyDevelopmentCards(user,x,y);

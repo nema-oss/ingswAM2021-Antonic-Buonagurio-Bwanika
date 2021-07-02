@@ -442,11 +442,8 @@ public class Gui extends View {
         Platform.runLater(() -> {
             if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which production power you want to activate.");
-                gameSceneController.setProductionDevelopmentCard(developmentCards);
-                gameSceneController.setProductionLeaderCard(leaderCards);
             } else {
-                //game.restore();
-                String informationMessage = "Production action rejected. Try again. ";
+                String informationMessage = "Production action rejected. Try again.";
                 alertUser("Warning", "Try again.", Alert.AlertType.WARNING);
             }
         });
@@ -464,9 +461,7 @@ public class Gui extends View {
         Platform.runLater(() -> {
             if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which cards you want to discard/activate. ");
-                //  gameSceneController.setLeaderCardHand(player.getHand());
             } else {
-                //gameSceneController.restore();
                 String informationMessage = "Leader card action rejected. Try again. ";
                 alertUser("Warning!", informationMessage, Alert.AlertType.WARNING);
 
@@ -483,7 +478,6 @@ public class Gui extends View {
     public void setBuyCardAction(boolean actionRejectedBefore) {
 
         Platform.runLater(() -> {
-            //gameSceneController.restore();
             alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
         });
     }
@@ -499,9 +493,7 @@ public class Gui extends View {
         Platform.runLater(() -> {
             if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which row/column you want to buy");
-                gameSceneController.showResourceMarket();
             } else {
-                //gameSceneController.restore();
                 alertUser("Warning!", "Try again", Alert.AlertType.WARNING);
             }
         });
@@ -518,11 +510,9 @@ public class Gui extends View {
         boolean isFirstPlayer = message.isFirstPlayer();
         nicknameController.setIsFirstPlayer(isFirstPlayer);
 
-        //numOfPlayersController.hideNumberOfPlayersButton();
         Platform.runLater(
                 () -> {
                     primaryStage.setScene(nicknameScene);
-                    //numOfPlayersController.showNumberOfPlayersButton();
                     primaryStage.show();
                 });
 
@@ -691,8 +681,7 @@ public class Gui extends View {
                     actionButtonsController.setGui(this);
                     actionButtonsController.setGameController(gameSceneController);
                     gameSceneController.initializeActions();
-                    //if(!isLocalMatch)
-                    //gameSceneController.addLeadersToPlayer();
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -701,7 +690,6 @@ public class Gui extends View {
             }
 
             if (currentPlayer.equals(player.getNickname())) {
-                //actionButtonsController.setLorenzoVisible(false);
                 player.resetTurnActionCounter();
                 actionButtonsController.setWaitVisible(false);
                 actionButtonsController.setChooseActionTypeVisible(true);
@@ -726,7 +714,7 @@ public class Gui extends View {
                 actionButtonsController.setSwapPaneVisible(true);
                 actionButtonsController.setPlaceResources(player.getBoughtResources());
                 actionButtonsController.setChooseActionTypeVisible(false);
-                actionButtonsController.setBackButtonVisible(false); //added recently
+                actionButtonsController.setBackButtonVisible(false);
             } else {
                 player.setStandardActionDone();
                 actionButtonsController.setLeaderActionVisible(true);
@@ -792,7 +780,6 @@ public class Gui extends View {
                 player.setStandardActionDone();
                 playerTabController.updatePlayerBoard(player.getNickname(), player.getPlayerBoard());
                 alertUser("Information", "Accepted buy card", Alert.AlertType.INFORMATION);
-                //playerTabController.setPlaceCard(player.getNickname(), cardChosen);
                 actionButtonsController.setBuyCardVisible(false);
                 actionButtonsController.setLeaderActionVisible(true);
                 actionButtonsController.setStandardActionVisible(false);
@@ -876,7 +863,6 @@ public class Gui extends View {
             Platform.runLater(() -> {
                 alertUser("Warning", "Move deposit request rejected. Try again", Alert.AlertType.WARNING);
             });
-            //setPlaceResourcesAction();
         }
     }
 
@@ -935,7 +921,6 @@ public class Gui extends View {
 
             UpdateClientPlayerBoardsMessage message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
             sendMessage(message);
-            //playerBoardController.updateDeposit(player.getDeposit());
 
         });
 

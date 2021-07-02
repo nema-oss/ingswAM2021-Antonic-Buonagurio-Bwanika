@@ -48,11 +48,6 @@ public class ExtraProduction extends LeaderCard{
         return productionResult;
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
     /**
      * this method sets the result resource
      * @param resourceType the type  of resource wanted

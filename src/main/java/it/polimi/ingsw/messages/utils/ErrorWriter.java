@@ -51,33 +51,72 @@ public class ErrorWriter {
         return new ChooseResourcesMessage( user, resourceType, false);
     }
 
+    /**
+     * this method sends a card purchase rejected message
+     * @param user the player to notify
+     * @param x row index of card
+     * @param y column index of card
+     * @return the rejection message
+     */
     public Message buyCardRejected(String user, int x, int y) {
         return new BuyDevelopmentCardMessage(user,x,y,false);
     }
 
+    /**
+     * this method sends a resource purchase rejected message
+     * @param user the player to notify
+     * @param x row index of market
+     * @param y column index of market
+     * @return the rejection message
+     */
     public Message buyResourceRejected(String user, int x, int y) {
         return new BuyResourcesMessage(user, x, y,false);
     }
 
+    /**
+     * this method sends a card production rejected message
+     * @param user the player to notify
+     * @param cards the list of cards to activate production on
+     * @return the rejection message
+     */
     public Message productionCardRejected(String user,List<DevelopmentCard> cards) {
         return new ActivateCardProductionMessage(user,cards,false);
     }
 
+    /**
+     * this method sends a board production rejected message
+     * @param user the player to notify
+     * @param resourceType the map of resources to get and to give
+     * @return the rejection message
+     */
     public Message productionBoardRejected(String user, Map<Resource, List<ResourceType>> resourceType) {
         return new ActivateBoardProductionMessage(user,resourceType,false);
     }
 
+    /**
+     * this method sends a leader production rejected message
+     * @param user the player to notify
+     * @param choice the map with the leader cards ant the resources to get
+     * @return the rejection message
+     */
     public Message productionLeaderRejected(String user, Map<LeaderCard, ResourceType> choice) {
         return new ActivateLeaderProductionMessage(user, choice, false);
     }
 
+    /**
+     * this method sends a leader card activation rejected message
+     * @param card the card to activated
+     * @return the rejection message
+     */
     public Message activateLeaderRejected(LeaderCard card) {
         return new LeaderActionRejected();
     }
 
+
     public Message moveDepositRequestRejected(String user,int a, int b) {
         return new MoveDepositMessage(user,a, b, false);
     }
+
 
     public Message discardLeaderRejected(LeaderCard card) {
         return new LeaderActionRejected();

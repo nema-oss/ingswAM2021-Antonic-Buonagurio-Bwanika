@@ -47,10 +47,10 @@
 }
 
 .info{
-    -fx-background-color: #d09b59;
+    -fx-border-color: #000000;
     -fx-text-alignment: center;
     -fx-background-radius: 30;
     -fx-background-insets: 0;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
     -fx-font-size: 14;
 }

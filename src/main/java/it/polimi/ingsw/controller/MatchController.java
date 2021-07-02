@@ -653,7 +653,6 @@ public class MatchController implements ControllerInterface{
             } catch (InsufficientResourcesException | InsufficientDevelopmentCardsException e) {
                 errors.add(Error.INSUFFICIENT_PAYMENT);
             } catch (Exception e){
-                e.printStackTrace();
             }
         }
 

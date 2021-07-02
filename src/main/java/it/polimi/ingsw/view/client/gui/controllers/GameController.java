@@ -47,18 +47,6 @@ public class GameController implements Initializable{
         instructionalLabel.setText(s);
     }
 
-    public void setLeaderCardHand(List<LeaderCard> hand) {
-    }
-
-    public void showResourceMarket() {
-    }
-
-
-    public void setProductionDevelopmentCard(List<DevelopmentCard> developmentCards) {
-    }
-
-    public void setProductionLeaderCard(List<LeaderCard> leaderCards) {
-    }
 
     public Gui gui;
 

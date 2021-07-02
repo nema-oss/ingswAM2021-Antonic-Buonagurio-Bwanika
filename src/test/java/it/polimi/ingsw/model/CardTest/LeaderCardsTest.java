@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.CardFactory;
 import it.polimi.ingsw.model.cards.DevelopmentCardType;
 import it.polimi.ingsw.model.cards.leadercards.*;
 import it.polimi.ingsw.model.gameboard.Producible;
+import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.model.player.Effects;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,6 +105,9 @@ public class LeaderCardsTest {
 
         leaderCard.useEffect(effects);
         assertTrue(effects.isExtraProduction());
+
+        leaderCard.setProductionResult(ResourceType.COIN);
+        assertTrue(leaderCard.getProductionResult().stream().anyMatch(Resource  -> Resource.getType().equals(ResourceType.COIN)));
     }
 
     @Test

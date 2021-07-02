@@ -47,7 +47,7 @@ public interface VirtualViewInterface {
     /**
      * Notify the winner and the losers
      */
-    void notifyWinner(String winner);
+    void notifyWinner(Map<String,Integer> leaderboard);
     /**
      * This method asks a user to play its turn
      * @param nickname the user's nickname

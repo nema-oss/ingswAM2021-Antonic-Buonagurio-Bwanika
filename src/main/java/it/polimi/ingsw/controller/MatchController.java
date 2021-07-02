@@ -718,14 +718,6 @@ public class MatchController implements ControllerInterface{
         return errors;
     }
 
-    private void checkLastRound() {
-
-        if(isLastRound && game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
-            Player winner = game.endGame();
-            viewInterface.notifyWinner(winner.getNickname());
-        }
-
-    }
 
     /**
      * Manages the Lorenzo turn
@@ -833,8 +825,8 @@ public class MatchController implements ControllerInterface{
             }
         }else{
             if(game.getListOfPlayers().get(0).equals(game.getCurrentPlayer())) {
-                Player winner = game.endGame();
-                viewInterface.notifyWinner(winner.getNickname());
+                Map<String, Integer> leaderboard = game.endGame();
+                viewInterface.notifyWinner(leaderboard);
             }
         }
 

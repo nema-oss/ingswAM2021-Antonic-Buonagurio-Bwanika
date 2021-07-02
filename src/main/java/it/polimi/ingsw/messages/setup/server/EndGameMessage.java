@@ -7,21 +7,23 @@ import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.Serializable;
+import java.util.Map;
+
 /**
  * Message to notify the game is finished due to errors
  * @author Nemanja Antonic
  */
 public class EndGameMessage implements SetupMessage, Serializable {
     private final MessageType messageType;
-    private final String winner;
+    private final Map<String,Integer> leaderboard;
 
     /**
      * Server-side constructor to create the message
-     * @param winner
+     * @param leaderboard the game leaderboard
      */
-    public EndGameMessage(String winner) {
+    public EndGameMessage(Map<String,Integer> leaderboard) {
         this.messageType = MessageType.END_GAME;
-        this.winner = winner;
+        this.leaderboard = leaderboard;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class EndGameMessage implements SetupMessage, Serializable {
      * @param view: receiver view
      */
     public void execute(View view){
-        view.showEndGame(winner);
+        view.showEndGame(leaderboard);
     }
     /**
      * Get the message type

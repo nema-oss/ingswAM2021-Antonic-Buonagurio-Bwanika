@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,8 +55,7 @@ class GameTest {
     void endGame(){
         CardFactory cardFactory = new CardFactory();
         player1.getPlayerBoard().addDevelopmentCard(cardFactory.getDevelopmentCards().get(4));
-        Player winner = game.endGame();
-        assertTrue(winner.equals(player1));
+        Map<String,Integer> leaderboard = game.endGame();
     }
 
     @Test

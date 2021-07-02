@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.cards.leadercards.WhiteToResource;
 import it.polimi.ingsw.model.exception.FullDepositException;
 import it.polimi.ingsw.model.exception.InsufficientPaymentException;
 import it.polimi.ingsw.model.exception.NonExistentCardException;
-import it.polimi.ingsw.model.exception.ProductionRequirementsException;
 import it.polimi.ingsw.model.gameboard.GameBoard;
 import it.polimi.ingsw.model.gameboard.Producible;
 import it.polimi.ingsw.model.gameboard.Resource;

@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 
 /**
  * this class is the controller for the "actions.fxml" file
+ *
  * @author chiara
  */
 
@@ -43,37 +44,37 @@ public class ActionButtonsController implements Initializable {
     @FXML
     private ProgressIndicator wait;
 
-     @FXML
-     private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton, actionTokenOk, backButton, cheat;
+    @FXML
+    private Button standardAction, leaderAction, buyResource, buyCard, startProd, rowOrColumnOk, rowOk, columnOk, endProd, placeResourcesOk, swapOk, endTurnButton, actionTokenOk, backButton, cheat;
 
-     @FXML
-     private CheckBox discard1, discard2, discard3, discard4;
-     @FXML
-     private ComboBox<String> rowOrColumn;
+    @FXML
+    private CheckBox discard1, discard2, discard3, discard4;
+    @FXML
+    private ComboBox<String> rowOrColumn;
 
-     @FXML
-     private ComboBox<Integer> rowIndex, columnIndex, floorComboBox1, floorComboBox2, floorComboBox3, floorComboBox4, firstSwap, secondSwap;
+    @FXML
+    private ComboBox<Integer> rowIndex, columnIndex, floorComboBox1, floorComboBox2, floorComboBox3, floorComboBox4, firstSwap, secondSwap;
 
-     @FXML
-     private Label waitingMessage, devMessage, prodMessage, leaderMessage, placeResourcesMessage, lorenzoLabel;
+    @FXML
+    private Label waitingMessage, devMessage, prodMessage, leaderMessage, placeResourcesMessage, lorenzoLabel;
 
-     @FXML
-     private ImageView firstRes, secondRes, thirdRes, fourthRes, actionToken;
+    @FXML
+    private ImageView firstRes, secondRes, thirdRes, fourthRes, actionToken;
 
 
-     private ResourceType toPut1, toPut2, toPut3, toPut4;
-     private GameController gameController;
-     private Gui gui;
-     private List<Resource> boughtResources;
-     public LorenzoController lorenzoController;
+    private ResourceType toPut1, toPut2, toPut3, toPut4;
+    private GameController gameController;
+    private Gui gui;
+    private List<Resource> boughtResources;
+    public LorenzoController lorenzoController;
 
-    public void setGui(Gui gui){
+    public void setGui(Gui gui) {
         this.gui = gui;
     }
 
-     public void setGameController(GameController gameController){
-         this.gameController = gameController;
-     }
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
 
     /**
      * this method creates all the buttons for the actions and sets them invisible
@@ -86,6 +87,11 @@ public class ActionButtonsController implements Initializable {
         wait.setPrefWidth(80);
         setWaitVisible(false);
 
+        try {
+            showLorenzoPosition();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
@@ -144,52 +150,52 @@ public class ActionButtonsController implements Initializable {
         rowOrColumn.setItems(FXCollections.observableArrayList("row", "column"));
         setRowOrColumnVisible(false);
         rowOrColumnOk.setOnAction(event -> {
-            if(rowOrColumn.getValue()!= null && rowOrColumn.getValue().equals("row"))
+            if (rowOrColumn.getValue() != null && rowOrColumn.getValue().equals("row"))
                 setRowIndexVisible(true);
-            else if(rowOrColumn.getValue()!= null && rowOrColumn.getValue().equals("column"))
+            else if (rowOrColumn.getValue() != null && rowOrColumn.getValue().equals("column"))
                 setColumnIndexVisible(true);
             setRowOrColumnVisible(false);
         });
-        rowIndex.setItems(FXCollections.observableArrayList(1,2,3));
+        rowIndex.setItems(FXCollections.observableArrayList(1, 2, 3));
         setRowIndexVisible(false);
         rowOk.setOnAction(event -> {
-            if(rowIndex.getValue()!= null) {
+            if (rowIndex.getValue() != null) {
                 setRowIndexVisible(false);
                 Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), rowIndex.getValue() - 1, -1, false);
                 gui.sendMessage(msg);
             }
         });
-        columnIndex.setItems(FXCollections.observableArrayList(1,2,3,4));
+        columnIndex.setItems(FXCollections.observableArrayList(1, 2, 3, 4));
         setColumnIndexVisible(false);
         columnOk.setOnAction(event -> {
-            if(columnIndex.getValue()!= null) {
+            if (columnIndex.getValue() != null) {
                 setColumnIndexVisible(false);
                 Message msg = new BuyResourcesMessage(gui.getPlayerNickname(), -1, columnIndex.getValue() - 1, false);
                 gui.sendMessage(msg);
             }
         });
 
-        floorComboBox1.setItems(FXCollections.observableArrayList(1,2,3));
-        floorComboBox2.setItems(FXCollections.observableArrayList(1,2,3));
-        floorComboBox3.setItems(FXCollections.observableArrayList(1,2,3));
-        floorComboBox4.setItems(FXCollections.observableArrayList(1,2,3));
+        floorComboBox1.setItems(FXCollections.observableArrayList(1, 2, 3));
+        floorComboBox2.setItems(FXCollections.observableArrayList(1, 2, 3));
+        floorComboBox3.setItems(FXCollections.observableArrayList(1, 2, 3));
+        floorComboBox4.setItems(FXCollections.observableArrayList(1, 2, 3));
         placeResourcesOk.setOnAction(event -> sendPlaceResources());
         setResourcePaneVisible(false);
 
         swapOk.setOnAction(event -> sendSwapFloors());
-        firstSwap.setItems(FXCollections.observableArrayList(1,2,3));
-        secondSwap.setItems(FXCollections.observableArrayList(1,2,3));
+        firstSwap.setItems(FXCollections.observableArrayList(1, 2, 3));
+        secondSwap.setItems(FXCollections.observableArrayList(1, 2, 3));
         setSwapPaneVisible(false);
 
         devMessage.setVisible(false);
 
         prodMessage.setVisible(false);
 
-        leaderMessage .setVisible(false);
+        leaderMessage.setVisible(false);
 
         endTurnButton.setOnAction(event -> {
 
-            if(!gui.checkTurnEnd())
+            if (!gui.checkTurnEnd())
                 gui.alertUser("Warning", "You can't end your turn without playing a standard action", Alert.AlertType.WARNING);
             else {
                 Message msg = new EndTurnMessage(gui.getPlayerNickname());
@@ -226,11 +232,10 @@ public class ActionButtonsController implements Initializable {
             gameController.makeCardMarketClickable(false);
             gameController.makeLeadersClickable(false);
             gameController.makeProductionClickable(false);
-            if(!leaderAction.isVisible()) {
+            if (!leaderAction.isVisible()) {
                 setChooseActionTypeVisible(true);
                 setBackButtonVisible(false);
-            }
-            else{
+            } else {
                 setEndTurnVisible(true);
             }
         });
@@ -239,50 +244,51 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * these methods show or hide the action buttons
+     *
      * @param value: true to set object visible, false otherwise
      */
-    public void setBackButtonVisible(boolean value){
+    public void setBackButtonVisible(boolean value) {
         backButton.setVisible(value);
     }
 
-    public void setWaitVisible(boolean value){
+    public void setWaitVisible(boolean value) {
         wait.setVisible(value);
         waitingMessage.setVisible(value);
         endTurnButton.setVisible(false);
         backButton.setVisible(false);
     }
 
-    public void setChooseActionTypeVisible(boolean value){
-        if(!lorenzoPane.isVisible()) {
+    public void setChooseActionTypeVisible(boolean value) {
+        if (!lorenzoPane.isVisible()) {
             standardAction.setVisible(value);
             leaderAction.setVisible(value);
         }
     }
 
-    public void setStandardActionVisible(boolean value){
+    public void setStandardActionVisible(boolean value) {
         standardAction.setVisible(value);
     }
 
-    public void setLeaderActionVisible(boolean value){
+    public void setLeaderActionVisible(boolean value) {
         leaderAction.setVisible(value);
     }
 
-    public void setChooseStandardActionVisible(boolean value){
+    public void setChooseStandardActionVisible(boolean value) {
         buyCard.setVisible(value);
         buyResource.setVisible(value);
         startProd.setVisible(value);
         cheat.setVisible(value);
     }
 
-    public void setChooseLeaderActionVisible(boolean value){
+    public void setChooseLeaderActionVisible(boolean value) {
         leaderMessage.setVisible(value);
     }
 
-    public void setBuyCardVisible(boolean value){
+    public void setBuyCardVisible(boolean value) {
         devMessage.setVisible(value);
     }
 
-    public void setRowOrColumnVisible(boolean value){
+    public void setRowOrColumnVisible(boolean value) {
         rowOrColumn.setVisible(value);
         rowOrColumnOk.setVisible(value);
     }
@@ -292,18 +298,18 @@ public class ActionButtonsController implements Initializable {
         columnOk.setVisible(value);
     }
 
-    public void setRowIndexVisible(boolean value){
+    public void setRowIndexVisible(boolean value) {
         rowIndex.setVisible(value);
         rowOk.setVisible(value);
     }
 
-    public void setActivateProductionVisible(boolean value){
+    public void setActivateProductionVisible(boolean value) {
 
         endProd.setVisible(value);
 
     }
 
-    public void setResourcePaneVisible(boolean value){
+    public void setResourcePaneVisible(boolean value) {
 
         firstRes.setVisible(value);
         secondRes.setVisible(value);
@@ -324,24 +330,25 @@ public class ActionButtonsController implements Initializable {
 
     }
 
-    public void setSwapPaneVisible(boolean value){
+    public void setSwapPaneVisible(boolean value) {
         swapPane.setVisible(value);
     }
 
-    public void setEndTurnVisible(boolean value){
+    public void setEndTurnVisible(boolean value) {
         endTurnButton.setVisible(value);
     }
 
     /**
      * this method prepares the pane to place the resources
+     *
      * @param resources to place
      */
-    public void setPlaceResources(List<Resource> resources){
+    public void setPlaceResources(List<Resource> resources) {
 
         int size = resources.size();
         this.boughtResources = resources;
 
-        if(size!=0) {
+        if (size != 0) {
 
             resourcePane.setVisible(true);
             resourcePane.toFront(); //added recently
@@ -349,14 +356,14 @@ public class ActionButtonsController implements Initializable {
             placeResourcesMessage.setVisible(true);
             setEndTurnVisible(false);
 
-            firstRes.setImage(new Image("/gui/Images/Resources/" +resources.get(0).getType().label + ".png"));
+            firstRes.setImage(new Image("/gui/Images/Resources/" + resources.get(0).getType().label + ".png"));
             firstRes.setVisible(true);
             floorComboBox1.setVisible(true);
             discard1.setVisible(true);
             toPut1 = resources.get(0).getType();
 
             if (size >= 2) {
-                secondRes.setImage(new Image("/gui/Images/Resources/" +resources.get(1).getType().label + ".png"));
+                secondRes.setImage(new Image("/gui/Images/Resources/" + resources.get(1).getType().label + ".png"));
                 secondRes.setVisible(true);
                 floorComboBox2.setVisible(true);
                 discard2.setVisible(true);
@@ -364,7 +371,7 @@ public class ActionButtonsController implements Initializable {
             }
 
             if (size >= 3) {
-                thirdRes.setImage(new Image("/gui/Images/Resources/" +resources.get(2).getType().label + ".png"));
+                thirdRes.setImage(new Image("/gui/Images/Resources/" + resources.get(2).getType().label + ".png"));
                 thirdRes.setVisible(true);
                 floorComboBox3.setVisible(true);
                 discard3.setVisible(true);
@@ -372,7 +379,7 @@ public class ActionButtonsController implements Initializable {
             }
 
             if (size == 4) {
-                fourthRes.setImage(new Image("/gui/Images/Resources/" +resources.get(3).getType().label + ".png"));
+                fourthRes.setImage(new Image("/gui/Images/Resources/" + resources.get(3).getType().label + ".png"));
                 fourthRes.setVisible(true);
                 floorComboBox4.setVisible(true);
                 discard4.setVisible(true);
@@ -385,20 +392,20 @@ public class ActionButtonsController implements Initializable {
     /**
      * this method sends the message with the resources chosen and where to put them
      */
-    public void sendPlaceResources(){
+    public void sendPlaceResources() {
 
         Map<Resource, Integer> map = new HashMap<>();
 
-        if(floorComboBox1.isVisible() && !discard1.isSelected() && floorComboBox1.getValue()!=null) {
+        if (floorComboBox1.isVisible() && !discard1.isSelected() && floorComboBox1.getValue() != null) {
             map.put(new Resource(toPut1), floorComboBox1.getValue());
         }
-        if(floorComboBox2.isVisible() && !discard2.isSelected() && floorComboBox2.getValue()!=null) {
+        if (floorComboBox2.isVisible() && !discard2.isSelected() && floorComboBox2.getValue() != null) {
             map.put(new Resource(toPut2), floorComboBox2.getValue());
         }
-        if(floorComboBox3.isVisible() && !discard3.isSelected() && floorComboBox3.getValue()!=null) {
+        if (floorComboBox3.isVisible() && !discard3.isSelected() && floorComboBox3.getValue() != null) {
             map.put(new Resource(toPut3), floorComboBox3.getValue());
         }
-        if(floorComboBox4.isVisible() && !discard4.isSelected() && floorComboBox4.getValue()!=null) {
+        if (floorComboBox4.isVisible() && !discard4.isSelected() && floorComboBox4.getValue() != null) {
             map.put(new Resource(toPut4), floorComboBox4.getValue());
         }
 
@@ -411,9 +418,9 @@ public class ActionButtonsController implements Initializable {
     /**
      * this method sens the message to swap the deposit's floors
      */
-    public void sendSwapFloors(){
+    public void sendSwapFloors() {
 
-        if(firstSwap.getValue()!=null && secondSwap.getValue()!=null) {
+        if (firstSwap.getValue() != null && secondSwap.getValue() != null) {
             Message msg = new MoveDepositMessage(gui.getPlayerNickname(), firstSwap.getValue(), secondSwap.getValue(), false);
             gui.sendMessage(msg);
         }
@@ -422,9 +429,10 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * this method shows or hides lorenzo's turn
+     *
      * @param value true to set visible, false otherwise
      */
-    public void setLorenzoVisible(boolean value){
+    public void setLorenzoVisible(boolean value) {
         lorenzoLabel.setVisible(value);
         actionToken.setVisible(value);
         lorenzoPane.setVisible(value);
@@ -433,10 +441,11 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * this method shows the action token drawn by the player and explains the corresponding action
+     *
      * @param tokenDrawn the action token drawn
-     * @param text string of explanation
+     * @param text       string of explanation
      */
-    public void showLorenzoTurn(ActionToken tokenDrawn, String text){
+    public void showLorenzoTurn(ActionToken tokenDrawn, String text) {
 
         actionToken.setImage(new Image("/gui/Images/ActionTokens/cerchio" + tokenDrawn.getId() + ".png"));
         lorenzoLabel.setText(text);
@@ -452,6 +461,7 @@ public class ActionButtonsController implements Initializable {
 
     /**
      * this method shows lorenzo's position
+     *
      * @throws IOException if unable to load fxml file
      */
     public void showLorenzoPosition() throws IOException {
@@ -462,15 +472,17 @@ public class ActionButtonsController implements Initializable {
 
     }
 
+
     /**
      * this method updates lorenzo's position
+     *
      * @param lorenzoPosition new position
      */
-    public void updateLorenzoPosition(int lorenzoPosition){
+    public void updateLorenzoPosition(int lorenzoPosition) {
         lorenzoController.update(lorenzoPosition);
     }
 
-    public void setWaitingMessageText(String text){
+    public void setWaitingMessageText(String text) {
         waitingMessage.setText(text);
     }
 }

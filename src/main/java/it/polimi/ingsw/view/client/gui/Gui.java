@@ -838,7 +838,7 @@ public class Gui extends View {
                 try {
                     actionButtonsController.showLorenzoPosition();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Can't load Lorenzo's Button");
                 }
             }
         });
@@ -953,7 +953,7 @@ public class Gui extends View {
     public void updateOtherPlayerBoards(String user, ClientPlayerBoard clientPlayerBoard) {
 
         Platform.runLater(() -> {
-            if (!otherPlayerBoards.containsKey(user)) {
+            if (!otherPlayerBoards.containsKey(user) && !user.equals(player.getNickname())) {
                 otherPlayerBoards.put(user, clientPlayerBoard);
                 gameSceneController.addPlayerBoard(user, clientPlayerBoard);
             } else {

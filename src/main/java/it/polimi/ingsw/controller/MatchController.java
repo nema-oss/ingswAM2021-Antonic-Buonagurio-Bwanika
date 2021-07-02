@@ -945,15 +945,14 @@ public class MatchController implements ControllerInterface{
         if(!game.getListOfPlayers().contains(game.getPlayerByNickname(nickname)))
             errors.add(Error.INVALID_ACTION);
         else {
-            game.removePlayer(nickname);
-
-            if(game.getListOfPlayers().size() <= 1)
+            if(game.getListOfPlayers().size() - 1 <= 1)
                 viewInterface.endMatch();
 
         }
 
         if(errors.isEmpty()) {
             game.nextPlayer();
+            game.removePlayer(nickname);
             sendPlayTurn();
 
         }

@@ -12,7 +12,6 @@ import java.util.List;
  * @author Nemanja Antonic
  */
 public class ActivateCardProductionMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private final String user;
     private List<DevelopmentCard> choice;
     boolean accepted;
@@ -26,7 +25,6 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
         this.choice = choice;
         this.user = user;
         this.accepted=accepted;
-        this.messageType = ActionMessageType.ACTIVATE_DEVELOPMENT_CARD_PRODUCTION;
     }
     /**
      * Execute the request server side
@@ -42,13 +40,7 @@ public class ActivateCardProductionMessage implements Serializable, ActionMessag
     public void execute(View view){
         view.showProductionRequestResults(user, accepted);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getMessageType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

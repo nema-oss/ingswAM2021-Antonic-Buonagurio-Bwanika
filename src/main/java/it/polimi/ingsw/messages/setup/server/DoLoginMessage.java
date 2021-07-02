@@ -1,7 +1,6 @@
 package it.polimi.ingsw.messages.setup.server;
 
 import it.polimi.ingsw.messages.setup.SetupMessage;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -14,14 +13,12 @@ import java.io.Serializable;
 
 public class DoLoginMessage implements SetupMessage, Serializable {
 
-    private final SetupMessageType messageType;
     private boolean isFirstPlayer;
 
     /**
      * Server-side constructor to create the message
      */
     public DoLoginMessage() {
-        this.messageType = SetupMessageType.LOGIN;
         isFirstPlayer = false;
     }
 
@@ -40,13 +37,7 @@ public class DoLoginMessage implements SetupMessage, Serializable {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public SetupMessageType getType() {
-        return messageType;
-    }
+
 
     /**
      * Set to true if it's the first player in the lobby

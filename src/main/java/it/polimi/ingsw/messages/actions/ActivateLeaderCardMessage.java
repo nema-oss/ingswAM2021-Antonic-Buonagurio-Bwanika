@@ -12,7 +12,6 @@ import java.io.Serializable;
  */
 public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
 
-    private final ActionMessageType messageType;
     private LeaderCard choice;
     boolean accepted;
 
@@ -24,7 +23,6 @@ public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
     public ActivateLeaderCardMessage(LeaderCard choice, boolean accepted) {
         this.choice = choice;
         this.accepted = accepted;
-        messageType = ActionMessageType.ACTIVATE_LEADERCARD;
     }
     /**
      * Execute the request client side
@@ -38,13 +36,6 @@ public class ActivateLeaderCardMessage implements Serializable, ActionMessage{
      * @param virtualView: receiver view
      */
     public void execute(VirtualView virtualView) {
-    }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
     }
     /**
      * Get the accepted attribute

@@ -14,7 +14,6 @@ import java.util.Map;
  */
 public class PlaceResourcesMessage implements Serializable, ActionMessage {
 
-    private final ActionMessageType messageType;
     private final String user;
     private final Map<Resource,Integer> userChoice;
     private boolean accepted;
@@ -26,7 +25,6 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
     public PlaceResourcesMessage(String user, Map<Resource, Integer> userChoice) {
         this.user = user;
         this.userChoice = userChoice;
-        messageType = ActionMessageType.PLACE_RESOURCES;
         accepted = true;
     }
     /**
@@ -44,13 +42,7 @@ public class PlaceResourcesMessage implements Serializable, ActionMessage {
         virtualView.placeResource(user,userChoice);
         virtualView.discardResources(user,discardResources);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;

@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private LeaderCard choice;
 
     /**
@@ -20,7 +19,6 @@ public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
      */
     public DiscardLeaderCardMessage(LeaderCard choice) {
         this.choice = choice;
-        messageType = ActionMessageType.DISCARD_LEADERCARD;
     }
     /**
      * Execute the request client side
@@ -36,11 +34,5 @@ public class DiscardLeaderCardMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
 }

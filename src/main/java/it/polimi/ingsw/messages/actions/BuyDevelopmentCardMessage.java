@@ -10,7 +10,6 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private final String user;
     int x;
     int y;
@@ -27,7 +26,6 @@ public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
         this.y = y;
         this.accepted = accepted;
         this.user = user;
-        messageType = ActionMessageType.BUY_DEVELOPMENT;
     }
     /**
      * Execute the request client side
@@ -46,13 +44,7 @@ public class BuyDevelopmentCardMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         virtualView.buyDevelopmentCards(user,x,y);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

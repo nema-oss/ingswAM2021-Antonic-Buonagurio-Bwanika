@@ -11,14 +11,12 @@ import java.io.Serializable;
  */
 public class ActivateProductionMessage implements Serializable, ActionMessage {
 
-    private final ActionMessageType messageType;
     private final String user;
 
     /**
      * Server-side constructor to create the message
      */
     public ActivateProductionMessage(String user) {
-        messageType = ActionMessageType.ACTIVATE_PRODUCTION;
         this.user = user;
     }
     /**
@@ -35,11 +33,5 @@ public class ActivateProductionMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         virtualView.activateProduction(user);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
 }

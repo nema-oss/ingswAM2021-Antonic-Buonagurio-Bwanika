@@ -1,8 +1,6 @@
 package it.polimi.ingsw.messages.setup.server;
 
 import it.polimi.ingsw.messages.setup.SetupMessage;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
-import it.polimi.ingsw.model.gameboard.Resource;
 import it.polimi.ingsw.model.gameboard.ResourceType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -17,7 +15,6 @@ import java.util.Map;
  */
 public class ChooseResourcesMessage implements Serializable, SetupMessage {
 
-    private SetupMessageType messageType;
     private String user;
     private Map<ResourceType,Integer> resourceChoice;
     private boolean accepted;
@@ -30,7 +27,6 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
     public ChooseResourcesMessage(String user, Map<ResourceType,Integer> resourceChoice, boolean accepted) {
         this.resourceChoice = resourceChoice;
         this.accepted = accepted;
-        this.messageType = SetupMessageType.CHOOSE_RESOURCES;
         this.user = user;
     }
 
@@ -50,13 +46,7 @@ public class ChooseResourcesMessage implements Serializable, SetupMessage {
         virtualView.chooseResourceType(user,resourceChoice);
     }
 
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public SetupMessageType getType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

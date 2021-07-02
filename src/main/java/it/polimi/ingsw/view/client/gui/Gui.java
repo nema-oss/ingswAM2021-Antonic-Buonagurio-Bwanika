@@ -242,7 +242,7 @@ public class Gui extends View {
     private void initEndGame() {
 
         try {
-            FXMLLoader loader = GuiManager.loadFXML("/gui/winner");
+            FXMLLoader loader = GuiManager.loadFXML("/gui/endGameSingle");
             Parent root = loader.load();
             endGameScene = new Scene(root);
             endGameController = loader.getController();

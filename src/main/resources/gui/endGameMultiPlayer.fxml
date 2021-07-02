@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.EndGameController">
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" styleClass="anchorPane" stylesheets="@Background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.client.gui.controllers.EndMultiplayerController">
     <children>
         <Label fx:id="message" alignment="CENTER" layoutX="102.0" layoutY="89.0" prefHeight="137.0" prefWidth="1419.0" text="CONGRATULATIONS! YOU WON THE GAME!" textFill="#7c2929">
          <font>

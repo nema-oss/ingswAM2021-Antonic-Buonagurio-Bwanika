@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class BuyResourcesMessage implements Serializable, ActionMessage {
 
-    private final ActionMessageType messageType;
     private String user;
     private int x;
     private int y;
@@ -34,7 +33,6 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
         this.y = y;
         this.user = user;
         this.accepted = accepted;
-        messageType = ActionMessageType.BUY_RESOURCES;
     }
     /**
      * This method asks the user to select where to place it's resources if the buy request has been accepted otherwise
@@ -57,13 +55,7 @@ public class BuyResourcesMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         virtualView.buyResources(user,x,y);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

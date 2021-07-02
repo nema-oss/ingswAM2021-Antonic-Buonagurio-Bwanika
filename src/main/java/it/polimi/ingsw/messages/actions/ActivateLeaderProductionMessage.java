@@ -13,7 +13,6 @@ import java.util.Map;
  * @author Nemanja Antonic
  */
 public class ActivateLeaderProductionMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private final String user;
     private Map<LeaderCard, ResourceType> choice;
     boolean accepted;
@@ -27,7 +26,6 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
         this.choice = choice;
         this.user = user;
         this.accepted = accepted;
-        this.messageType = ActionMessageType.ACTIVATE_LEADERCARD_PRODUCTION;
     }
     /**
      * Execute the request server side
@@ -43,13 +41,7 @@ public class ActivateLeaderProductionMessage implements Serializable, ActionMess
     public void execute(View view){
         view.showProductionRequestResults(user, accepted);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getMessageType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

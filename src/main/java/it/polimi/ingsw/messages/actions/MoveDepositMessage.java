@@ -11,7 +11,6 @@ import java.io.Serializable;
  */
 
 public class MoveDepositMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private int x;
     private int y;
     private String user;
@@ -28,7 +27,6 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
         this.x = x;
         this.y = y;
         this.accepted = accepted;
-        messageType = ActionMessageType.MOVE_DEPOSIT;
     }
     /**
      * Execute the request client side
@@ -44,13 +42,7 @@ public class MoveDepositMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         virtualView.moveDeposit(user,x,y);
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

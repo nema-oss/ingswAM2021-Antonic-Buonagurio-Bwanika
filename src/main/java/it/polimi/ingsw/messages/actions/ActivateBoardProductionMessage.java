@@ -14,7 +14,6 @@ import java.util.Map;
  * @author Nemanja Antonic
  */
 public class ActivateBoardProductionMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     private final String user;
     private Map<Resource, List<ResourceType>> choice;
     boolean accepted;
@@ -28,7 +27,6 @@ public class ActivateBoardProductionMessage implements Serializable, ActionMessa
         this.choice = choice;
         this.user = user;
         this.accepted=accepted;
-        this.messageType = ActionMessageType.ACTIVATE_BOARD_PRODUCTION;
     }
     /**
      * Execute the request server side
@@ -43,13 +41,6 @@ public class ActivateBoardProductionMessage implements Serializable, ActionMessa
      */
     public void execute(View view){
        view.showProductionRequestResults(user,accepted);
-    }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getMessageType() {
-        return messageType;
     }
 
     /**

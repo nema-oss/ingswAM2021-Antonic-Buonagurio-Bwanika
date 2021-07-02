@@ -1,7 +1,6 @@
 package it.polimi.ingsw.messages.setup.client;
 
 import it.polimi.ingsw.messages.setup.SetupMessage;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -14,7 +13,6 @@ public class LoginRequest implements SetupMessage, Serializable {
 
     private String nickname;
     private int numberOfPlayers;
-    private final SetupMessageType messageType;
 
     /**
      * Server-side constructor to create the message
@@ -22,7 +20,6 @@ public class LoginRequest implements SetupMessage, Serializable {
      */
     public LoginRequest(String nickname){
         this.nickname = nickname;
-        this.messageType = SetupMessageType.LOGIN_REQUEST;
         this.numberOfPlayers = -1;
     }
 
@@ -34,13 +31,6 @@ public class LoginRequest implements SetupMessage, Serializable {
         return nickname;
     }
 
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public SetupMessageType getType() {
-        return messageType;
-    }
 
     /**
      * Get the number of players requested

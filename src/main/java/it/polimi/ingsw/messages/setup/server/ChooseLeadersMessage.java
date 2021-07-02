@@ -1,7 +1,6 @@
 package it.polimi.ingsw.messages.setup.server;
 
 import it.polimi.ingsw.messages.setup.SetupMessage;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.model.cards.leadercards.LeaderCard;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -16,7 +15,6 @@ import java.util.List;
  */
 public class ChooseLeadersMessage implements Serializable, SetupMessage {
 
-    private final SetupMessageType messageType;
     private List<LeaderCard> choice;
     private String user;
     private boolean accepted;
@@ -31,7 +29,6 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
         this.choice = choice;
         this.user = user;
         this.accepted = accepted;
-        messageType = SetupMessageType.CHOOSE_LEADERS;
     }
     /**
      * Execute the request client side
@@ -51,13 +48,7 @@ public class ChooseLeadersMessage implements Serializable, SetupMessage {
         virtualView.chooseLeaderCards(user,choice);
     }
 
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public SetupMessageType getType() {
-        return messageType;
-    }
+
     /**
      * Get the accepted attribute
      * @return accepted

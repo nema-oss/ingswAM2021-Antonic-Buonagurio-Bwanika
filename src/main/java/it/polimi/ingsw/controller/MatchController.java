@@ -117,12 +117,25 @@ public class MatchController implements ControllerInterface{
 
         List<LeaderCard> leaders = new ArrayList<>();
 
-        game.getLeaderDeck().shuffle();
-        for (int i=0; i<4 && game.getLeaderDeck().getListOfCards().size() > 0; i++){
-            leaders.add(game.getLeaderDeck().drawCard());
+        boolean cardSelectionDone = true;
+        for(Player p: game.getListOfPlayers()){
+            if (p.getHand() == null || p.getHand().size() < 2) {
+                cardSelectionDone = false;
+                break;
+            }
         }
+        if(cardSelectionDone){
+            game.setGamePhase(GamePhase.CHOOSE_RESOURCES);
+            sendChooseResources();
+        }
+        else {
+            game.getLeaderDeck().shuffle();
+            for (int i = 0; i < 4 && game.getLeaderDeck().getListOfCards().size() > 0; i++) {
+                leaders.add(game.getLeaderDeck().drawCard());
+            }
 
-        viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders );
+            viewInterface.toDoChooseLeaderCards(game.getCurrentPlayer().getNickname(), leaders);
+        }
 
     }
 
@@ -158,6 +171,7 @@ public class MatchController implements ControllerInterface{
 
         game.nextPlayer();
 
+        /*
         boolean cardSelectionDone = true;
         for(Player p: game.getListOfPlayers()){
             if (p.getHand() == null || p.getHand().size() < 2) {
@@ -171,6 +185,8 @@ public class MatchController implements ControllerInterface{
         }
         else
             sendChooseLeaderCards();
+
+         */
 
         return errors;
     }
@@ -1048,6 +1064,14 @@ public class MatchController implements ControllerInterface{
             return player.getActiveEffects().getAuxiliaryDeposits();
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * After all players have selected their leader cards, start resources selection
+     */
+    @Override
+    public void onAllLeaderCardsSelected() {
+
     }
 
 }

@@ -295,4 +295,9 @@ public interface ControllerInterface {
      * @return the updated auxiliary deposit
      */
     List<AuxiliaryDeposit> getUpdateAuxiliaryDeposit(String user);
+
+    /**
+     * After all players have selected their leader cards, start resources selection
+     */
+    void onAllLeaderCardsSelected();
 }

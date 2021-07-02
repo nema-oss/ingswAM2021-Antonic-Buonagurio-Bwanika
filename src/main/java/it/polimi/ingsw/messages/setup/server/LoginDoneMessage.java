@@ -1,7 +1,6 @@
 package it.polimi.ingsw.messages.setup.server;
 
 import it.polimi.ingsw.messages.setup.SetupMessage;
-import it.polimi.ingsw.messages.setup.SetupMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -12,7 +11,6 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class LoginDoneMessage implements Serializable, SetupMessage {
-    private final SetupMessageType messageType;
     private final String user;
     boolean accepted;
 
@@ -23,7 +21,6 @@ public class LoginDoneMessage implements Serializable, SetupMessage {
     public LoginDoneMessage(String user, boolean accepted) {
         this.user = user;
         this.accepted = accepted;
-        this.messageType = SetupMessageType.LOGIN_DONE;
     }
 
     @Override
@@ -39,13 +36,6 @@ public class LoginDoneMessage implements Serializable, SetupMessage {
     }
 
 
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public SetupMessageType getType() {
-        return messageType;
-    }
     /**
      * Get the accepted attribute
      * @return accepted

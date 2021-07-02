@@ -49,17 +49,17 @@ public class CliTest {
         cards.put(leaderCards.get(12),true);
         cards.put(leaderCards.get(13),false);
         Cli cli = new Cli();
-        cli.showLeaderCards(cards);
+        cli.getCliGraphics().showLeaderCards(cards);
         for(int i=0; i<16; i+=4)
             leaders.add(leaderCards.get(i));
-        cli.showLeaderCards(leaderCards);
+        cli.getCliGraphics().showLeaderCards(leaderCards);
     }
 
     @Test
     public void showGameBoard() {
         ClientGameBoard gameBoard = new ClientGameBoard();
         Cli cli = new Cli();
-        cli.showGameBoard(gameBoard);
+        cli.getCliGraphics().showGameBoard(gameBoard);
 
     }
 
@@ -74,9 +74,9 @@ public class CliTest {
                 }
 
         }
-        cli.showGameBoard(gameBoard);
+        cli.getCliGraphics().showGameBoard(gameBoard);
         Formatting.clearScreen();
-        cli.showGameBoard(gameBoard);
+        cli.getCliGraphics().showGameBoard(gameBoard);
         cli.askTurnAction();
 
     }
@@ -108,7 +108,7 @@ public class CliTest {
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         p.getPlayerBoard().getPopeRoad().move(22);
-        cli.showBoard(cgameBoard, p);
+        cli.getCliGraphics().showBoard(cgameBoard, p);
         //cli.showPopeRoad(p);
         //cli.showOtherPlayerBoard("paolo", p.getPlayerBoard());
     }
@@ -116,7 +116,7 @@ public class CliTest {
     @Test
     public void showAllResources(){
         Cli cli = new Cli();
-        cli.showAllAvailableResources();
+        cli.getCliGraphics().showAllAvailableResources();
 
     }
 
@@ -133,7 +133,7 @@ public class CliTest {
         HashMap<LeaderCard, Boolean> active = new HashMap<>();
         active.put(hand.get(0), true);
         active.put(hand.get(1), false);
-        cli.showLeaderCards(active);
+        cli.getCliGraphics().showLeaderCards(active);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class CliTest {
         auxiliaryDeposit.addResource(new Resource(ResourceType.COIN));
         auxiliaryDeposit.addResource(new Resource(ResourceType.COIN));
         Cli cli = new Cli();
-        cli.showExtraDeposit(auxiliaryDeposit);
+        cli.getCliGraphics().showExtraDeposit(auxiliaryDeposit);
     }
 
 }

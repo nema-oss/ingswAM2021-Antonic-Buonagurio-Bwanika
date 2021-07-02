@@ -1,8 +1,6 @@
 package it.polimi.ingsw.messages.actions.server;
 
-import it.polimi.ingsw.messages.MessageType;
 import it.polimi.ingsw.messages.actions.ActionMessage;
-import it.polimi.ingsw.messages.actions.ActionMessageType;
 import it.polimi.ingsw.view.client.View;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -13,7 +11,6 @@ import java.io.Serializable;
  * @author Nemanja Antonic
  */
 public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
-    private final ActionMessageType messageType;
     int position;
 
     /**
@@ -22,7 +19,6 @@ public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
      */
     public MoveOnPopeRoadMessage(int position) {
         this.position = position;
-        messageType = ActionMessageType.MOVE_ON_POPEROAD;
     }
     /**
      * Execute the request client side
@@ -38,11 +34,5 @@ public class MoveOnPopeRoadMessage implements Serializable, ActionMessage {
     public void execute(VirtualView virtualView){
         //method in virtualView
     }
-    /**
-     * Get the message type
-     * @return the message type
-     */
-    public ActionMessageType getType() {
-        return messageType;
-    }
+
 }

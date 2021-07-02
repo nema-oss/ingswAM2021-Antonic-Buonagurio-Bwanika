@@ -29,9 +29,11 @@ public class NumOfPlayersController implements Initializable {
     @FXML
     public void switchToLobby() {
 
-        int numOfPlayers = comboBox.getValue();
-        message.setNumberOfPlayers(numOfPlayers);
-        gui.sendMessage(message);
+        if(comboBox.getValue()!=null) {
+            int numOfPlayers = comboBox.getValue();
+            message.setNumberOfPlayers(numOfPlayers);
+            gui.sendMessage(message);
+        }
     }
 
     @Override

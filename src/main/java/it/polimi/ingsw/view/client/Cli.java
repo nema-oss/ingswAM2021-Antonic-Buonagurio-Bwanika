@@ -1323,10 +1323,15 @@ public class Cli extends View {
      */
     @Override
     public void showAcceptedBuyDevelopmentCard(String user, int x, int y) {
-        player.buyDevelopmentCard(x, y);
-        player.setStandardActionDone();
-        System.out.println("Buy development card request accepted");
-        askTurnAction();
+
+        if(player.getNickname().equals(user)) {
+            player.buyDevelopmentCard(x, y);
+            player.setStandardActionDone();
+            System.out.println("Buy development card request accepted");
+            askTurnAction();
+        }else{
+
+        }
     }
 
     /**
@@ -1372,7 +1377,7 @@ public class Cli extends View {
     @Override
     public void showPlaceResourcesResult(String user, boolean accepted, Map<Resource, Integer> userChoice) {
 
-        if (player.getNickname().equals(user)) {
+        if (player.getNickname().equals(user)){
             if (accepted) {
                 System.out.println("The other resources will be discarded. Press Enter to continue");
                 player.addResource(userChoice);

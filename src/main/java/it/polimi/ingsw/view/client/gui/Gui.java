@@ -489,6 +489,7 @@ public class Gui extends View {
      */
     @Override
     public void setBuyResourceAction(boolean actionRejectedBefore) {
+
         Platform.runLater(() -> {
             if (!actionRejectedBefore) {
                 gameSceneController.setInstructionLabel("Select which row/column you want to buy");
@@ -828,7 +829,6 @@ public class Gui extends View {
         Platform.runLater(() -> {
             player.setHand(choice);
             gameSceneController.addLeadersToPlayer();
-            System.out.println(choice);
             Message message = new UpdateClientPlayerBoardsMessage(player.getNickname(), player.getPlayerBoard());
             sendMessage(message);
             gameSceneController.hideLeaders();
@@ -895,7 +895,7 @@ public class Gui extends View {
             }
         }else
             if(accepted)
-                System.out.println(user + " has bought resources from market");
+                alertUser("Information", user + " has bought resources from market", Alert.AlertType.INFORMATION);
     }
 
     /**

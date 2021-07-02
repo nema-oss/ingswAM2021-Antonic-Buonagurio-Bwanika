@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class EndMultiplayerController {
 
     @FXML
-    Label message, firstPlace, secondPlace, thirdPlace, fourthPlace ;
+    Label message, firstName, secondName, thirdName, fourthName, points1, points2, points3, points4, first, second, third, fourth;
 
 
     /**
@@ -41,18 +41,32 @@ public class EndMultiplayerController {
                 }
 
         if(numOfPlayers >= 2){
-            firstPlace.setVisible(true);
-            firstPlace.setText("FIRST PLACE: " +players.remove(0).toUpperCase() + "  with "+pointsList.remove(0)+" points");
-            secondPlace.setVisible(true);
-            secondPlace.setText("SECOND PLACE: " +players.remove(0).toUpperCase() + "  with "+pointsList.remove(0)+" points");
+            first.setVisible(true);
+            firstName.setVisible(true);
+            points1.setVisible(true);
+            firstName.setText(players.remove(0));
+            points1.setText(pointsList.remove(0).toString());
+            second.setVisible(true);
+            secondName.setVisible(true);
+            points2.setVisible(true);
+            secondName.setText(players.remove(0));
+            points2.setText(pointsList.remove(0).toString());
         }
+
         if(numOfPlayers >= 3){
-            thirdPlace.setVisible(true);
-            thirdPlace.setText("THIRD PLACE: " +players.remove(0).toUpperCase() + "  with "+pointsList.remove(0)+" points");
+            third.setVisible(true);
+            thirdName.setVisible(true);
+            points3.setVisible(true);
+            thirdName.setText(players.remove(0));
+            points3.setText(pointsList.remove(0).toString());
         }
+
         if(numOfPlayers==4){
-            fourthPlace.setVisible(true);
-            fourthPlace.setText("FOURTH PLACE: " +players.remove(0).toUpperCase() + "  with "+pointsList.remove(0)+" points");
+            fourth.setVisible(true);
+            fourthName.setVisible(true);
+            points4.setVisible(true);
+            fourthName.setText(players.remove(0));
+            points4.setText(pointsList.remove(0).toString());
         }
     }
 }

@@ -793,7 +793,7 @@ public class Gui extends View {
                 actionButtonsController.setEndTurnVisible(true);
                 gameSceneController.makeCardMarketClickable(false);
             } else {
-                gameBoardController.setTurnActionInformationBox(user + "has bought a card from market.");
+                gameBoardController.setTurnActionInformationBox(user + " has bought a card from market.");
             }
         });
 
@@ -815,7 +815,6 @@ public class Gui extends View {
                     alertUser("Warning", "Production request rejected.Try again", Alert.AlertType.WARNING);
                 } else {
                     alertUser("Information", "Production activated. End the production to see your new resources", Alert.AlertType.INFORMATION);
-                    playerBoardController.hideProductionButton();
                 }
             } else {
                 if (accepted) {

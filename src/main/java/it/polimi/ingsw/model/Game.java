@@ -91,7 +91,7 @@ public class Game {
                 }
             }
             throw new Exception();
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception ignored){}
 
         return null;
     }

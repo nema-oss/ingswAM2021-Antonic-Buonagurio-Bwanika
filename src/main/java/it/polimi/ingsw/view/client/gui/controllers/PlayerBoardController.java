@@ -56,7 +56,6 @@ public class PlayerBoardController {
     ComboBox<String> resourceChoiceBox1, resourceChoiceBox2;
 
     public Gui gui;
-    private Button productionButton =  cardProdButton;
     private LeaderCard l1, l2;
     private List<DevelopmentCard> prodCardsList;
     private Map<LeaderCard, ResourceType> leaderProductionChoice;
@@ -259,7 +258,6 @@ public class PlayerBoardController {
 
         Message msg = new ActivateBoardProductionMessage(gui.getPlayerNickname(), map, false);
         gui.sendMessage(msg);
-        productionButton = boardProdButton;
     }
 
     /**
@@ -286,7 +284,6 @@ public class PlayerBoardController {
         if(prodCardsList.size()!=0) {
             Message msg = new ActivateCardProductionMessage(gui.getPlayerNickname(), prodCardsList, false);
             gui.sendMessage(msg);
-            productionButton = cardProdButton;
             prodCardsList.clear();
             dev11.setStyle("");
             dev12.setStyle("");
@@ -321,7 +318,6 @@ public class PlayerBoardController {
 
             Message msg = new ActivateLeaderProductionMessage(gui.getPlayerNickname(), leaderProductionChoice, false);
             gui.sendMessage(msg);
-            productionButton = leaderProdButton;
             leaderProductionChoice.clear();
             resourceChoiceBox1.setVisible(false);
             resourceChoiceBox2.setVisible(false);
@@ -666,7 +662,6 @@ public class PlayerBoardController {
 
     }
 
-
     /**
      * this method updates the whole player board
      * @param clientPlayerBoard the player to update
@@ -812,14 +807,24 @@ public class PlayerBoardController {
     public void showExtraDeposit(AnchorPane extraDeposit, int amount){
 
         if(extraDeposit.equals(extraDeposit1)) {
-            if (amount >= 1)
+            if(amount>=0){
+                dep1a.setVisible(false);
+                dep1b.setVisible(false);
+            }
+            if (amount >= 1) {
                 dep1a.setVisible(true);
+            }
             if (amount == 2)
                 dep1b.setVisible(true);
         }
         else if(extraDeposit.equals(extraDeposit2)){
-            if(amount >= 1)
+            if(amount>=0){
+                dep2a.setVisible(false);
+                dep2b.setVisible(false);
+            }
+            if(amount >= 1) {
                 dep2a.setVisible(true);
+            }
             if(amount == 2)
                 dep2b.setVisible(true);
         }
@@ -858,10 +863,6 @@ public class PlayerBoardController {
         else if(vaticanReportNumber==3){
             thirdVaticanSection.setVisible(false);
         }
-    }
-
-    public void hideProductionButton(){
-        productionButton.setVisible(false);
     }
 
 

@@ -112,19 +112,35 @@ public class ErrorWriter {
         return new LeaderActionRejected();
     }
 
-
+    /**
+     * this method sends a move deposit request rejected message
+     * @param user the player to notify
+     * @param a the first floor to swap
+     * @param b the second floor to swap
+     * @return the rejection message
+     */
     public Message moveDepositRequestRejected(String user,int a, int b) {
         return new MoveDepositMessage(user,a, b, false);
     }
 
-
+    /**
+     * this method sends a discard leader rejected message
+     * @param card the card to discard
+     * @return the rejection message
+     */
     public Message discardLeaderRejected(LeaderCard card) {
         return new LeaderActionRejected();
     }
 
+    /**
+     * this method sends a resources placement rejected message
+     * @param user the player to notify
+     * @param userChoice a map with the resources and the positions chosen
+     * @return the rejection message
+     */
     public Message placeResourceRejected(String user, Map<Resource, Integer> userChoice) {
-        Message message = new PlaceResourcesMessage(user,userChoice);
-        ((PlaceResourcesMessage) message).setAccepted(false);
+        PlaceResourcesMessage message = new PlaceResourcesMessage(user,userChoice);
+        message.setAccepted(false);
         return message;
     }
 }

@@ -124,6 +124,6 @@ public class ChooseResourcesController implements Initializable {
         shield.setVisible(false);
         coin.setVisible(false);
         button.setVisible(false);
-        title.setText("Waiting for other players to setup  their board");
+        title.setText("Waiting for other players to play");
     }
 }

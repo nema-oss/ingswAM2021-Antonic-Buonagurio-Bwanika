@@ -801,6 +801,13 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty()) {
             game.movePlayersDiscard(nickname,numberOfResourcesToDiscard);
             game.getListOfPlayers().stream().map(Player::getNickname).filter(pNickname -> !pNickname.equals(nickname)).collect(Collectors.toList()).forEach(viewInterface::updatePlayerPosition);
+
+            for(Player p : game.getListOfPlayers()){
+                if(p.getPositionIndex() == p.getPopeRoad().getSize()-1){
+                    viewInterface.lastRound();
+                    isLastRound = true;
+                }
+            }
         }
 
         return errors;
@@ -819,7 +826,7 @@ public class MatchController implements ControllerInterface{
             for (Stack<DevelopmentCard> stack : game.getCurrentPlayer().getPlayerBoard().getDevelopmentCards())
                 numOfCards = numOfCards + stack.size();
 
-            if (numOfCards == 1 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
+            if (numOfCards == 7 || game.getCurrentPlayer().getPositionIndex() == game.getCurrentPlayer().getPopeRoad().getSize() - 1) {
 
                 viewInterface.lastRound();
                 isLastRound=true;

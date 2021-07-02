@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -24,6 +25,8 @@ public class GameBoardController{
     private GridPane cardMarket, marbleMarket;
     @FXML
     private ImageView freeMarble;
+    @FXML
+    private Label infoBox;
 
     private Gui gui;
 
@@ -33,7 +36,16 @@ public class GameBoardController{
 
 
     /**
-     *
+     * this method shows a message in the info box
+     * @param text the  message to show
+     */
+    public void setInformationalBox(String text){
+        infoBox.setWrapText(true);
+        infoBox.setText(text);
+    }
+
+    /**
+     * this method adds a cart to the card market
      */
     public void setCard(ImageView card, int i, int j){
         card.setFitWidth(140.0);

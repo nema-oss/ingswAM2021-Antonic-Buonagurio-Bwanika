@@ -15,4 +15,6 @@ public interface InGameReconnectionHandler {
     boolean hasDisconnectedBefore(String nickname);
 
     void addClientHandler(String user, ClientHandler clientHandler);
+
+    void endMatch(int lobbyID);
 }

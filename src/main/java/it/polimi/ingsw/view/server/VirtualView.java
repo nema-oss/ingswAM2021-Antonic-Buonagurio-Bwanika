@@ -715,6 +715,8 @@ public class VirtualView implements VirtualViewInterface{
                 }
             }
             System.out.println("[SERVER] Disconnection! Match in lobby number " + lobbyID + " finished");
+            isActive = false;
+            inGameReconnectionHandler.endMatch(lobbyID);
         }else{
             EndLocalMatchMessage message = new EndLocalMatchMessage();
             clients.values().forEach(p -> sendMessage(clients.get(p), message));
@@ -737,7 +739,7 @@ public class VirtualView implements VirtualViewInterface{
             try {
                 Thread.sleep(30000);
                 clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
-                Thread.sleep(120000);
+                //Thread.sleep(120000);
                 endMatch();
             } catch (InterruptedException ignored) {
 

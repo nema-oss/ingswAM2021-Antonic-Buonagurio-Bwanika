@@ -28,4 +28,9 @@ public class FakeServer implements InGameReconnectionHandler {
     public void addClientHandler(String user, ClientHandler clientHandler) {
 
     }
+
+    @Override
+    public void endMatch(int lobbyID) {
+
+    }
 }

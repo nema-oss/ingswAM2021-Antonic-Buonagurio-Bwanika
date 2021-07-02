@@ -170,4 +170,10 @@ public class EchoServer implements InGameReconnectionHandler {
     public void addClientHandler(String user, ClientHandler clientHandler) {
         playersClientHandlers.put(user,clientHandler);
     }
+
+    @Override
+    public void endMatch(int lobbyID) {
+        lobbies.removeIf(p->p.getLobbyID() == lobbyID && !p.isActive());
+
+    }
 }

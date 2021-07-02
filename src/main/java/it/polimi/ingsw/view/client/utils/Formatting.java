@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.client.utils;
 
+import it.polimi.ingsw.messages.setup.server.DoLoginMessage;
 import it.polimi.ingsw.view.client.viewComponents.ClientMarbleMarket;
 
 import static it.polimi.ingsw.view.client.utils.Formatting.ColorCode.ANSI_BLUE;
@@ -35,6 +36,7 @@ public class Formatting {
         System.out.print(clean);
 
     }
+
 
 
     public enum Unicode {

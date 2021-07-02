@@ -40,6 +40,7 @@ public class Cli extends View {
     protected String playerColor = ANSI_CYAN.escape();
     ExecutorService inputExecutor;
     Future inputThread;
+    CliGraphics cliGraphics;
 
 
     public Cli() {
@@ -47,6 +48,7 @@ public class Cli extends View {
         this.inputValidator = new InputValidator();
         inputExecutor = Executors.newSingleThreadExecutor();
         this.disconnected = false;
+        cliGraphics = new CliGraphics();
         //gameSetup();
     }
 
@@ -2470,6 +2472,7 @@ public class Cli extends View {
         doLoginMessage.setFirstPlayer(isFirstPlayer);
         showLogin(doLoginMessage);
     }
+
 
     /**
      * This method shows the titlescreen

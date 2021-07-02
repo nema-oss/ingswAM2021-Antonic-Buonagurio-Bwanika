@@ -74,3 +74,7 @@ To launch the program in local mode execute in the terminal.
 java -jar AM10.jar -client -local -gui
 ```
 
+###Demo version
+
+To speed up the demo trial we added the "cheat" option among the actions a player can perform during their turn. 
+This action immediately adds 50 units of each existing resource to their strongbox.

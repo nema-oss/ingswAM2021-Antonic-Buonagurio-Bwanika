@@ -56,7 +56,7 @@ public class PlayerBoardController {
     ComboBox<String> resourceChoiceBox1, resourceChoiceBox2;
 
     public Gui gui;
-    private Button productionButton;
+    private Button productionButton =  cardProdButton;
     private LeaderCard l1, l2;
     private List<DevelopmentCard> prodCardsList;
     private Map<LeaderCard, ResourceType> leaderProductionChoice;

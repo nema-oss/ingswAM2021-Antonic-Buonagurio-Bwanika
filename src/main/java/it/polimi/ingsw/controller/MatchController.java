@@ -801,6 +801,13 @@ public class MatchController implements ControllerInterface{
         if(errors.isEmpty()) {
             game.movePlayersDiscard(nickname,numberOfResourcesToDiscard);
             game.getListOfPlayers().stream().map(Player::getNickname).filter(pNickname -> !pNickname.equals(nickname)).collect(Collectors.toList()).forEach(viewInterface::updatePlayerPosition);
+
+            for(Player p : game.getListOfPlayers()){
+                if(p.getPositionIndex() == p.getPopeRoad().getSize()-1){
+                    viewInterface.lastRound();
+                    isLastRound = true;
+                }
+            }
         }
 
         return errors;

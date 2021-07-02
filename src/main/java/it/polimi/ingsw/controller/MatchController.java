@@ -970,7 +970,8 @@ public class MatchController implements ControllerInterface{
      */
     @Override
     public void sendPlayTurn(){
-        viewInterface.playTurn(game.getCurrentPlayer().getNickname());
+        if(!controlEndOfGame())
+            viewInterface.playTurn(game.getCurrentPlayer().getNickname());
     }
 
 

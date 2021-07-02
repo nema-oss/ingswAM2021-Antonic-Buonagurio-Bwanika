@@ -338,14 +338,14 @@ public class CliGraphics {
 
         for (int i = 0; i < 3; i++) {
             if (clientPlayerBoard.getDevelopmentCards().get(i).size() > 0) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).peek().getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape());
-                for (ResourceType resourceType : clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet()) {
-                    System.out.print(getResourceTypeColor(resourceType) + clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().get(resourceType) +
+                for (ResourceType resourceType : clientPlayerBoard.getDevelopmentCards().get(i).peek().getProductionRequirements().keySet()) {
+                    System.out.print(getResourceTypeColor(resourceType) + clientPlayerBoard.getDevelopmentCards().get(i).peek().getProductionRequirements().get(resourceType) +
                             RESOURCE.escape() + ANSI_RESET.escape() + " ");
                 }
                 showGameBoardCardUtil(results, faithResults, i);
-                if (clientPlayerBoard.getDevelopmentCards().get(i).get(0).getProductionRequirements().keySet().size() > 1)
+                if (clientPlayerBoard.getDevelopmentCards().get(i).peek().getProductionRequirements().keySet().size() > 1)
                     System.out.print(color + "\t" + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
                 else
                     System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
@@ -365,7 +365,7 @@ public class CliGraphics {
         System.out.print("\t\t\t\t");
         for (int i = 0; i < 3; i++) {
             if (clientPlayerBoard.getDevelopmentCards().get(i).size() > 0) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).peek().getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
@@ -384,7 +384,7 @@ public class CliGraphics {
 
         for (int i = 0; i < 3; i++) {
             if (clientPlayerBoard.getDevelopmentCards().get(i).size() > 0) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).get(0).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(i).peek().getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 if (results.get(i).keySet().size() > 0) {
                     for (ResourceType resourceType : results.get(i).keySet()) {
@@ -403,9 +403,9 @@ public class CliGraphics {
 
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 0) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).peek().getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).peek().getVictoryPoints()));
                 System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             } else {
                 System.out.print(ANSI_RESET.escape() + BOLD_VERTICAL.escape() + "\t\t" + BOLD_VERTICAL.escape() + "\t\t\t");
@@ -416,7 +416,7 @@ public class CliGraphics {
 
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 0) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).peek().getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
@@ -433,16 +433,27 @@ public class CliGraphics {
 
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
+                int ind=1;
+                if(clientPlayerBoard.getDevelopmentCards().get(j).size()==2)
+                    ind = 0;
+                else
+                    ind=1;
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
-                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
+
+                System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getVictoryPoints()));
                 System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
             }
         }
         System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 1) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(1).getType());
+                int ind=1;
+                if(clientPlayerBoard.getDevelopmentCards().get(j).size()==2)
+                    ind = 0;
+                else
+                    ind=1;
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(ind).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());
@@ -452,7 +463,7 @@ public class CliGraphics {
         System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
                 System.out.print(color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t");
                 System.out.print((clientPlayerBoard.getDevelopmentCards().get(j).get(0).getVictoryPoints()));
                 System.out.print("\t" + color + BOLD_VERTICAL.escape() + ANSI_RESET.escape() + "\t\t\t");
@@ -461,7 +472,7 @@ public class CliGraphics {
         System.out.print("\n\t\t\t\t\t\t\t\t\t");
         for (int j = 0; j < 3; j++) {
             if (clientPlayerBoard.getDevelopmentCards().get(j).size() > 2) {
-                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(2).getType());
+                color = getDevelopmentTypeColor(clientPlayerBoard.getDevelopmentCards().get(j).get(0).getType());
                 System.out.print(color + DOWN_LEFT.escape());
                 for (int k = 0; k < MAX_SPACES; k++)
                     System.out.print(color + BOLD_HORIZ.escape());

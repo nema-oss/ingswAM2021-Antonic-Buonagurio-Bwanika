@@ -100,11 +100,11 @@ public class CliTest {
         p.getDeposit().addResource(1,new Resource(ResourceType.SHIELD));
         p.getDeposit().addResource(2,new Resource(ResourceType.STONE));
         p.getStrongbox().addResource(aLot);
-        p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,1));
+        //p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,1));
+        p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,1));
-        p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,1));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,2));
-        p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,2));
+        p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(1,3));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(0,2));
         p.getPlayerBoard().addDevelopmentCard(gameBoard.getCardMarket().getCard(2,0));
         p.getPlayerBoard().getPopeRoad().move(22);

@@ -56,6 +56,7 @@ class GameTest {
         CardFactory cardFactory = new CardFactory();
         player1.getPlayerBoard().addDevelopmentCard(cardFactory.getDevelopmentCards().get(4));
         Map<String,Integer> leaderboard = game.endGame();
+        assertEquals(2, leaderboard.get("Player1"));
     }
 
     @Test

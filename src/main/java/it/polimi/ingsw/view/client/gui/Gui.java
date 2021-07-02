@@ -76,7 +76,8 @@ public class Gui extends View {
 
     private PlayerTabController playerTabController;
 
-    private EndGameController endGameController;
+    private EndGameController endPlayerController;
+    private EndMultiplayerController endMultiplayerController;
     private Scene endGameScene;
 
     public Gui(String ip, int port, Stage stage, Scene scene) {
@@ -245,11 +246,16 @@ public class Gui extends View {
             FXMLLoader loader = GuiManager.loadFXML("/gui/endGameSingle");
             Parent root = loader.load();
             endGameScene = new Scene(root);
-            endGameController = loader.getController();
-
-        } catch (IOException e) {
+            endPlayerController = loader.getController();
+            FXMLLoader loader2 = GuiManager.loadFXML("/gui/endGameMultiPlayer");
+            Parent root2 = loader2.load();
+            endGameScene = new Scene(root2);
+            endMultiplayerController = loader2.getController();
+        }catch (IOException ignored) {
+            ignored.printStackTrace();
             System.out.println("Could not initialize End game Scene");
         }
+
     }
 
     /**
@@ -393,8 +399,8 @@ public class Gui extends View {
     @Override
     public void showLastRound() {
 
-        Platform.runLater(()->{
-            alertUser("Last Round","GET READY! We are at the end of the journey! LAST ROUND STARTS NOW!" , Alert.AlertType.INFORMATION);
+        Platform.runLater(() -> {
+            alertUser("Last Round", "GET READY! We are at the end of the journey! LAST ROUND STARTS NOW!", Alert.AlertType.INFORMATION);
         });
     }
 
@@ -621,18 +627,22 @@ public class Gui extends View {
     /**
      * Shows the game is finished
      *
-     * @param winner game winner
+     * @param leaderboard the game leader board
      */
     @Override
-    public void showEndGame(String winner) {
+    public void showEndGame(Map<String, Integer> leaderboard) {
 
         Platform.runLater(() -> {
-            try {
-               // endGameController.setWinner(winner);
-                endGameController.setMessage(winner + " has won the match");
-                primaryStage.setScene(endGameScene);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (leaderboard.size() == 1) {
+                try {
+                    String winner = leaderboard.keySet().stream().findFirst().get();
+                    endPlayerController.setMessage(winner + " has won the match");
+                    primaryStage.setScene(endGameScene);
+                } catch (Exception e) {
+                    System.out.println("Can't load the End Game scene");
+                }
+            } else {
+                endMultiplayerController.setWinner(leaderboard);
             }
         });
 
@@ -641,7 +651,7 @@ public class Gui extends View {
         } catch (InterruptedException ignored) {
 
         }
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             primaryStage.setScene(startingScene);
         });
 
@@ -789,7 +799,7 @@ public class Gui extends View {
                 actionButtonsController.setEndTurnVisible(true);
                 gameSceneController.makeCardMarketClickable(false);
             } else {
-                alertUser("Information", user + "has bought a card from market.", Alert.AlertType.INFORMATION);
+                gameBoardController.setTurnActionInformationBox(user + "has bought a card from market.");
             }
         });
 
@@ -798,7 +808,7 @@ public class Gui extends View {
     /**
      * Show the results of a card production request
      *
-     * @param user the current user
+     * @param user     the current user
      * @param accepted true if request accepted, false if not
      */
     @Override
@@ -814,8 +824,11 @@ public class Gui extends View {
                     playerBoardController.hideProductionButton();
                 }
             } else {
-                if (accepted)
-                    alertUser("Action played", user.toUpperCase() + " has used the production power", Alert.AlertType.INFORMATION);
+                if (accepted) {
+                    Platform.runLater(() -> {
+                        gameBoardController.setTurnActionInformationBox(user + " has used the production power");
+                    });
+                }
             }
         });
     }
@@ -877,7 +890,7 @@ public class Gui extends View {
     @Override
     public void showPlaceResourcesResult(String user, boolean accepted, Map<Resource, Integer> userChoice) {
 
-        if(player.getNickname().equals(user)) {
+        if (player.getNickname().equals(user)) {
             if (accepted) {
                 Platform.runLater(() -> {
                     player.addResource(userChoice);
@@ -895,9 +908,10 @@ public class Gui extends View {
                     setPlaceResourcesAction();
                 });
             }
-        }else
-            if(accepted)
-                alertUser("Information", user + " has bought resources from market", Alert.AlertType.INFORMATION);
+        } else if (accepted)
+            Platform.runLater(()->{
+                gameBoardController.setTurnActionInformationBox(user + " has bought resources from market");
+            });
     }
 
     /**

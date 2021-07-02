@@ -1411,7 +1411,6 @@ public class Cli extends View {
         sendMessage(socket, message);
     }
 
-
     @Override
     public void showReconnectionToMatch() {
         System.out.println("Reconnection to match...");
@@ -2438,14 +2437,26 @@ public class Cli extends View {
     }
 
     /**
-     * @param winner
+     * Show end game
+     * @param leaderboard the leaderboard
      */
     @Override
-    public void showEndGame(String winner) {
-        if (player.getNickname().equals(winner))
-            showYouWin();
-        else
-            showYouLose(winner);
+    public void showEndGame(Map<String, Integer> leaderboard) {
+
+        for(String player: leaderboard.keySet()){
+            System.out.println(player + "   victory: " + leaderboard.get(player));
+        }
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ignored) {
+        }
+
+        System.out.println("Do you want to reconnect again? Type 'YES' to reconnect.");
+        if (inputWithTimeout().toLowerCase(Locale.ROOT).equals("yes"))
+            gameSetup();
+
+
     }
 
     /**

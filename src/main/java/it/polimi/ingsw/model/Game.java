@@ -206,15 +206,20 @@ public class Game {
 
     /**
      * this method manage the end of match and assign the winner
+     * @return
      */
-    public Player endGame(){
+    public Map<String, Integer> endGame(){
 
         for(Player p: listOfPlayers){
             p.addVictoryPoints(checkCardsPoints(p));
             p.addVictoryPoints(checkResourcePoints(p));
         }
         winner = listOfPlayers.stream().max(Comparator.comparing(Player::getVictoryPoints)).get();
-        return winner;
+        Map<String,Integer> leaderboard = new TreeMap<>();
+        for(Player player: listOfPlayers ){
+            leaderboard.put(player.getNickname(), player.getVictoryPoints());
+        }
+        return leaderboard;
     }
 
     /**

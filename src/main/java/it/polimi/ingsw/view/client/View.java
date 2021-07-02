@@ -194,7 +194,7 @@ public abstract class View {
      * Shows the game is finished
      * @param winner game winner
      */
-    public abstract void showEndGame(String winner);
+    public abstract void showEndGame(Map<String,Integer> winner);
 
     /**
      * This method tells the user that login has been rejected

@@ -39,7 +39,7 @@ public class GameBoardController{
      * this method shows a message in the info box
      * @param text the  message to show
      */
-    public void setInformationalBox(String text){
+    public void setTurnActionInformationBox(String text){
         infoBox.setWrapText(true);
         infoBox.setText(text);
     }

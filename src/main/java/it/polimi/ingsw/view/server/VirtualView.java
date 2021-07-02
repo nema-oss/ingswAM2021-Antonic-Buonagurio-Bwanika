@@ -722,12 +722,12 @@ public class VirtualView implements VirtualViewInterface{
     /**
      * Notify the winner and the losers
      *
-     * @param winner the winner
+     * @param leaderboard the game leaderboard
      */
     @Override
-    public void notifyWinner(String winner) {
+    public void notifyWinner(Map<String,Integer> leaderboard) {
 
-        EndGameMessage message = new EndGameMessage(winner);
+        EndGameMessage message = new EndGameMessage(leaderboard);
         clients.values().forEach(p->sendMessage(p,message));
         clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
         endMatch();
@@ -945,7 +945,9 @@ public class VirtualView implements VirtualViewInterface{
 
         if(clients.values().size() == 1){
             String player = clients.keySet().stream().findFirst().get();
-            notifyWinner(player);
+            Map<String, Integer> leaderBoard = new HashMap<>();
+            leaderBoard.put(player, 100);
+            notifyWinner(leaderBoard);
         }
     }
 }

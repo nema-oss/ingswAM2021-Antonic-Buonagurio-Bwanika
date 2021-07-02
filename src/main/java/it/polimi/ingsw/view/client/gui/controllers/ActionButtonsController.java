@@ -87,12 +87,6 @@ public class ActionButtonsController implements Initializable {
         wait.setPrefWidth(80);
         setWaitVisible(false);
 
-        try {
-            showLorenzoPosition();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
             setChooseStandardActionVisible(true);

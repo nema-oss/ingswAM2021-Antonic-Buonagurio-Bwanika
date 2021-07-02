@@ -34,7 +34,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showLeaderCards(cardChoice);
+        getCliGraphics().showLeaderCards(cardChoice);
 
         List<LeaderCard> userChoice = new ArrayList<>();
         System.out.println("Select 2 cards among these leader cards. The cards are numbered from" +
@@ -83,8 +83,8 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showGameBoard(gameBoard);
-        showAllAvailableResources();
+        getCliGraphics().showGameBoard(gameBoard);
+        getCliGraphics().showAllAvailableResources();
 
 
         AtomicBoolean correct = new AtomicBoolean(true);
@@ -144,7 +144,7 @@ public class CliLocal extends Cli {
                         break;
                     case SHOW_GAMEBOARD:
                         Formatting.clearScreen();
-                        showGameBoard(gameBoard);
+                        getCliGraphics().showGameBoard(gameBoard);
                         askTurnAction();
                         break;
                     case CHEAT:
@@ -184,7 +184,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showGameBoard(gameBoard);
+        getCliGraphics().showGameBoard(gameBoard);
 
         if (actionRejectedBefore)
             System.out.println("Your previous buy resource request has been rejected. Try again");
@@ -240,7 +240,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showBoard(gameBoard, player);
+        getCliGraphics().showBoard(gameBoard, player);
 
 
         List<Resource> resourceList = player.getBoughtResources();
@@ -248,7 +248,7 @@ public class CliLocal extends Cli {
         System.out.println("Move your deposit floor. Write 'x,y' to swap the Xth floor with the Yth one. Write 'done' to finish. Press " +
                 "Enter to continue.");
 
-        showAllAvailableResources(resourceList);
+        getCliGraphics().showAllAvailableResources(resourceList);
 
         String input = inputWithTimeout();
         while (!input.equals("done")) {
@@ -270,12 +270,12 @@ public class CliLocal extends Cli {
         }
 
         Formatting.clearScreen();
-        showBoard(gameBoard, player);
+        getCliGraphics().showBoard(gameBoard, player);
 
         System.out.println("Place you resources in the deposit. Write e.g. 'shield 1, stone 2' to place a shield in " +
                 "the first floor and a stone in the second floor. ");
 
-        showAllAvailableResources(resourceList);
+        getCliGraphics().showAllAvailableResources(resourceList);
 
         input = inputWithTimeout();
         boolean correct = false;
@@ -306,7 +306,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showGameBoard(gameBoard);
+        getCliGraphics().showGameBoard(gameBoard);
 
         if (actionRejectedBefore)
             System.out.println("Your previous buy card request has been rejected. Try a different one." +
@@ -351,7 +351,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showBoard(gameBoard, player);
+        getCliGraphics().showBoard(gameBoard, player);
 
         if (actionRejectedBefore)
             System.out.println("Your production request has been rejected. Try again.");
@@ -413,7 +413,7 @@ public class CliLocal extends Cli {
 
         Formatting.clearScreen();
 
-        showLeaderCards(leaderCards);
+        getCliGraphics().showLeaderCards(leaderCards);
 
         if (actionRejectedBefore)
             System.out.println("Leader card selection incorrect. Try again.");

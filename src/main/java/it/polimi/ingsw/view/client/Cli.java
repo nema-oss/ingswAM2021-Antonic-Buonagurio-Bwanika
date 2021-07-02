@@ -262,8 +262,8 @@ public class Cli extends View {
 
         inputThread = inputExecutor.submit(() -> {
 
-            System.out.println("Choose " + numberOfResources + " among the resource type available. You can choose" +
-                    numberOfResources + "resources. Press Enter to continue");
+            System.out.println("Choose " + numberOfResources + " among the resource type available. You can choose " +
+                    numberOfResources + " resource(s). Press Enter to continue");
 
             Map<ResourceType, Integer> resourceTypesChoice = new HashMap<>();
             inputWithTimeout();
@@ -792,8 +792,8 @@ public class Cli extends View {
                     userChoice = InputValidator.isValidBuyCardAction(input);
                     correct = userChoice != null;
                     if (!correct)
-                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
-                                "and Yth column");
+                        System.out.println("Incorrect buy request. Try again. Remember, 1,2 to select the first row " +
+                                "second column.");
                     if (Thread.interrupted()) return;
                 } while (!correct);
             }
@@ -821,8 +821,8 @@ public class Cli extends View {
         if (actionRejectedBefore)
             System.out.println("Your previous buy resource request has been rejected. Try again");
         else
-            System.out.println("Select where you want to place the free marble. E.g. 1,2 to select the first row " +
-                    "second column.");
+            System.out.println("Select where you want to place the free marble. E.g. row,1 to select the first row " +
+                    "; column,2 to select the second column");
 
         inputThread = inputExecutor.submit(() -> {
 
@@ -838,8 +838,8 @@ public class Cli extends View {
                     userChoice = InputValidator.isValidBuyResourcesAction(input);
                     correct = userChoice != null;
                     if (!correct)
-                        System.out.println("Incorrect buy request. Try again. Remember, write X,Y to select the Xth row " +
-                                "and Yth column");
+                        System.out.println("Incorrect buy request. Try again. Remember, write row,1 to select the first row " +
+                                "; column,2 to select the second column");
                     if (Thread.interrupted()) return;
                 } while (!correct);
             }

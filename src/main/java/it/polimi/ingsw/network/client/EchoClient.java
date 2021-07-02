@@ -135,7 +135,6 @@ public class EchoClient {
                     processMessage(message);
                 }
             }
-
             input.close();
         }catch (SocketTimeoutException ignored){
 

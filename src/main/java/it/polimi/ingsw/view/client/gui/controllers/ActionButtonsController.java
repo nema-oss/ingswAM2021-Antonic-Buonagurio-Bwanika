@@ -87,6 +87,7 @@ public class ActionButtonsController implements Initializable {
         wait.setPrefWidth(80);
         setWaitVisible(false);
 
+
         standardAction.setOnAction(event -> {
             setChooseActionTypeVisible(false);
             setChooseStandardActionVisible(true);
@@ -100,7 +101,6 @@ public class ActionButtonsController implements Initializable {
             gameController.makeLeadersClickable(true);
         });
         setChooseActionTypeVisible(true);
-
 
         buyResource.setOnAction(event -> {
             setChooseStandardActionVisible(false);

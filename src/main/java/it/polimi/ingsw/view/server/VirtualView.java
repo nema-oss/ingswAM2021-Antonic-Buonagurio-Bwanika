@@ -732,19 +732,18 @@ public class VirtualView implements VirtualViewInterface{
 
         EndGameMessage message = new EndGameMessage(leaderboard);
         clients.values().forEach(p->sendMessage(p,message));
-        clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
-        endMatch();
-        /*
+
         if(!isLocalMatch) {
             try {
                 Thread.sleep(30000);
+                clients.values().forEach(p->sendMessage(p,new CloseMatchMessage()));
+                Thread.sleep(120000);
                 endMatch();
             } catch (InterruptedException ignored) {
 
             }
         }
 
-         */
     }
 
     /**

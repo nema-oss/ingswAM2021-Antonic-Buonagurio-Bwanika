@@ -77,7 +77,7 @@ java -jar AM10.jar -client -local -gui
 java -jar AM10.jar -client -local -cli
 ```
 
-###Demo version
+### Demo version
 
 To speed up the demo trial we added the "cheat" option among the actions a player can perform during their turn. 
 This action immediately adds 50 units of each existing resource to their strongbox.

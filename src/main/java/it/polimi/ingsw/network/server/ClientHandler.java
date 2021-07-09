@@ -167,7 +167,7 @@ public class ClientHandler implements Runnable{
                 Thread.sleep(1500);
                 Message message = new PingMessage();
                 new MessageSender(client, message).sendMsg(outputStream);
-            } catch (InterruptedException  ignored) {
+            } catch (InterruptedException ignored) {
             }
         }while(!client.isClosed());
 

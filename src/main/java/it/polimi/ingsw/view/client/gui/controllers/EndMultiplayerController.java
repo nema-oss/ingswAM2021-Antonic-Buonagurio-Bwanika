@@ -34,8 +34,8 @@ public class EndMultiplayerController {
         List<String> players = new ArrayList<>();
 
         for(Integer points : pointsList)
-            for(String user : pointsMap.keySet())
-                if(pointsMap.get(user).equals(points)) {
+            for(String user : pointsMap.keySet() )
+                if(pointsMap.get(user).equals(points) && !players.contains(user)) {
                     players.add(user);
                     break;
                 }

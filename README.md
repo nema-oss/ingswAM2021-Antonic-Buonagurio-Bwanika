@@ -47,7 +47,7 @@ In terminal execute:
 ```bash
 java -jar AM10.jar -server 
 ```
-The server will be listening on the default port 1234.
+The server will be listening on the default port 3456.
 
 If you would like to change the port:
 ```bash
@@ -55,7 +55,7 @@ java -jar AM10.jar -server PORT
 ```
 Where you can replace PORT with your preferred port number. Example:
 ```bash 
-java -jar AM10.jar -server 8080
+java -jar AM10.jar -server 1234
 ```
 
 #### Client
@@ -73,8 +73,11 @@ To launch the program in local mode execute in the terminal.
 ```bash
 java -jar AM10.jar -client -local -gui
 ```
+```bash
+java -jar AM10.jar -client -local -cli
+```
 
-###Demo version
+### Demo version
 
 To speed up the demo trial we added the "cheat" option among the actions a player can perform during their turn. 
 This action immediately adds 50 units of each existing resource to their strongbox.
